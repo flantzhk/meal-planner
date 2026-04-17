@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meal Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: "#f5ecdf", sand: "#ebddc6", ink: "#2e2a24",
+            terra: "#b4593a", sage: "#6b8a6c", warm: "#6d5b46",
+          },
+          fontFamily: {
+            display: ["Lora", "Georgia", "serif"],
+            body: ["Source Sans 3", "system-ui", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    html, body { background: #f5ecdf; color: #2e2a24; font-family: "Source Sans 3", system-ui, sans-serif; }
+    h1, h2, h3 { font-family: Lora, Georgia, serif; }
+    .num { font-variant-numeric: tabular-nums; }
+  </style>
+  <script src="shared.js"></script>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useEffect, useMemo, useState } = React;
+    const MEALS = ["breakfast", "lunch", "dinner"];
+
+    function lastEatenPill(le, lang) {
+      if (le.status === "never") {
+        return <span className="text-xs text-warm/60">— {MP.i18n.t(lang, "never")}</span>;
+      }
+      const color = le.status === "recent" ? "bg-terra/15 text-terra"
+                 : le.status === "warming" ? "bg-amber-200/60 text-amber-900"
+                 : "bg-sage/20 text-sage";
+      return <span className={`text-xs px-2 py-0.5 rounded-full ${color} num`}>{le.days}{MP.i18n.t(lang, "daysAgo")}</span>;
+    }
+
+    function Modal({ open, onClose, children, title }) {
+      if (!open) return null;
+      return (
+        <div className="fixed inset-0 z-40 bg-ink/40 flex items-start justify-center p-4 overflow-y-auto"
+             onClick={onClose}>
+          <div className="bg-cream w-full max-w-3xl rounded-2xl shadow-xl mt-10 mb-10"
+               onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-warm/10">
+              <h2 className="font-display text-xl">{title}</h2>
+              <button onClick={onClose} className="text-warm text-xl leading-none">×</button>
+            </div>
+            <div className="p-5">{children}</div>
+          </div>
+        </div>
+      );
+    }
+
+    function RecipePicker({ mealType, recipes, eatenLog, onPick, lang, usedIds }) {
+      const [q, setQ] = useState("");
+      const [cuisine, setCuisine] = useState("all");
+      const today = MP.date.hkToday();
+      const filtered = useMemo(() => {
+        return recipes
+          .filter((r) => !r.meal_type || r.meal_type.includes(mealType))
+          .filter((r) => (cuisine === "all" ? true : r.cuisine === cuisine))
+          .filter((r) => (q ? r.name.toLowerCase().includes(q.toLowerCase()) : true));
+      }, [recipes, mealType, cuisine, q]);
+      const cuisines = useMemo(() => ["all", ...Array.from(new Set(recipes.map((r) => r.cuisine).filter(Boolean)))], [recipes]);
+
+      return (
+        <div>
+          <div className="flex gap-2 mb-4">
+            <input value={q} onChange={(e) => setQ(e.target.value)}
+              placeholder="Search…"
+              className="flex-1 rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+            <select value={cuisine} onChange={(e) => setCuisine(e.target.value)}
+              className="rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm">
+              {cuisines.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            {filtered.map((r) => {
+              const le = MP.lastEaten(r.id, eatenLog, today);
+              const used = usedIds.includes(r.id);
+              return (
+                <button key={r.id}
+                  onClick={() => onPick(r.id)}
+                  className={`text-left bg-white rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 hover:ring-terra/40 transition ${used ? "opacity-60" : ""}`}>
+                  {MP.recipeImage(r) && (
+                    <img src={MP.recipeImage(r)} alt="" className="w-full h-28 object-cover"
+                         onError={(e) => {
+                           const src = e.target.src;
+                           if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
+                           if (r.hero_image && src !== r.hero_image) { e.target.src = r.hero_image; return; }
+                           e.target.style.display = "none";
+                         }} />
+                  )}
+                  <div className="p-3">
+                    <div className="font-display text-[17px] leading-tight">{r.name}</div>
+                    <div className="flex items-center justify-between mt-1">
+                      <span className="text-xs text-warm">
+                        {r.cuisine} · <span className="num">{(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}</span>m
+                      </span>
+                      {lastEatenPill(le, lang)}
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+
+    function ShoppingList({ recipes, plan, lang }) {
+      const groups = MP.buildShoppingList(recipes, plan);
+      const sourceLabels = {
+        "wet-market": "Wet market", "parknshop": "PARKnSHOP",
+        "hktvmall": "HKTVmall", "city-super": "City'super", "other": "Other",
+      };
+      const categoryLabels = {
+        meat: "Meat & Seafood", produce: "Vegetables & Fruit",
+        dairy: "Dairy & Eggs", pantry: "Pantry & Dry Goods",
+        bakery: "Bread & Bakery", frozen: "Frozen", other: "Other",
+      };
+      const sourceOrder = ["wet-market", "parknshop", "city-super", "hktvmall", "other"];
+      return (
+        <div>
+          <div className="text-sm text-warm mb-4">
+            Week of <span className="num">{plan.week_start}</span> · Serves <span className="num">{plan.serves || 4}</span>
+          </div>
+          {sourceOrder.map((src) => {
+            const g = groups[src];
+            if (!g) return null;
+            return (
+              <div key={src} className="mb-6">
+                <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
+                {Object.entries(g).map(([cat, items]) => (
+                  <div key={cat} className="mt-2">
+                    <div className="uppercase tracking-wide text-xs text-warm mb-1">{categoryLabels[cat] || cat}</div>
+                    <ul className="space-y-0.5">
+                      {items.map((it, i) => (
+                        <li key={i} className="flex gap-3 text-[15px]">
+                          <input type="checkbox" className="accent-terra" />
+                          <span className="num text-warm min-w-[5rem]">
+                            {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                          </span>
+                          <span>{it.item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
+
+    function SettingsPanel({ onClose }) {
+      const [base, setBase] = useState(localStorage.getItem("mpApiBase") || "");
+      const [tok, setTok] = useState(localStorage.getItem("mpFaithToken") || "");
+      const [status, setStatus] = useState("");
+      async function test() {
+        if (base) MP.api.setBase(base);
+        try {
+          const r = await MP.api.health();
+          setStatus("OK: " + JSON.stringify(r));
+        } catch (e) { setStatus("FAIL: " + e.message); }
+      }
+      return (
+        <div>
+          <label className="block text-sm text-warm">Worker URL</label>
+          <input value={base} onChange={(e) => setBase(e.target.value)}
+            placeholder="https://meal-planner-api.<you>.workers.dev"
+            className="mt-1 w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+          <label className="block text-sm text-warm mt-4">Faith token</label>
+          <input value={tok} onChange={(e) => setTok(e.target.value)} type="password"
+            className="mt-1 w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+          <div className="mt-4 flex gap-2">
+            <button onClick={() => { MP.api.setBase(base); MP.api.setToken(tok); onClose(); location.reload(); }}
+              className="bg-ink text-cream px-4 py-2 rounded-lg">Save</button>
+            <button onClick={test} className="bg-sand text-ink px-4 py-2 rounded-lg">Test</button>
+          </div>
+          {status && <div className="mt-3 text-sm text-warm">{status}</div>}
+        </div>
+      );
+    }
+
+    function Feedback({ date }) {
+      const [items, setItems] = useState(null);
+      useEffect(() => { MP.api.getFeedback(date).then(setItems).catch(() => setItems([])); }, [date]);
+      if (!items) return null;
+      if (items.length === 0) return <p className="text-sm text-warm">No feedback yet this week.</p>;
+      return (
+        <ul className="space-y-2">
+          {items.map((f, i) => (
+            <li key={i} className="text-sm">
+              <span className="num text-warm">{f.date}</span> · {f.meal} ·{" "}
+              {f.rating > 0 ? "👍" : f.rating < 0 ? "👎" : "💬"} {f.recipe_id}
+              {f.note ? <span className="text-warm italic"> — {f.note}</span> : null}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    function App() {
+      const [recipes, setRecipes] = useState(null);
+      const [plan, setPlan] = useState(null);
+      const [eatenLog, setEatenLog] = useState({});
+      const [err, setErr] = useState(null);
+      const [picker, setPicker] = useState(null); // { dayIdx, meal }
+      const [showShop, setShowShop] = useState(false);
+      const [showSettings, setShowSettings] = useState(false);
+      const [saving, setSaving] = useState(false);
+      const [flash, setFlashMsg] = useState("");
+
+      const lang = "en"; // planner stays English; language is for helper view.
+
+      useEffect(() => {
+        (async () => {
+          try {
+            const [rs, wp, el] = await Promise.all([
+              MP.api.getRecipes(), MP.api.getWeekplan(), MP.api.getEatenLog(),
+            ]);
+            setRecipes(rs);
+            setEatenLog(el || {});
+            if (wp) setPlan(wp);
+            else setPlan(makeEmptyPlan());
+          } catch (e) { setErr(e.message); }
+        })();
+      }, []);
+
+      function makeEmptyPlan() {
+        const ws = MP.date.mondayOf(MP.date.hkToday());
+        const names = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+        return {
+          week_start: ws, shopping_day: "Monday", serves: 4, language: "en",
+          days: names.map((n, i) => ({ day: n, date: MP.date.addDays(ws, i), breakfast: null, lunch: null, dinner: null })),
+        };
+      }
+
+      const recipesById = useMemo(() => {
+        const m = {}; (recipes || []).forEach((r) => m[r.id] = r); return m;
+      }, [recipes]);
+
+      const usedIds = useMemo(() => {
+        if (!plan) return [];
+        const ids = [];
+        for (const d of plan.days) for (const m of MEALS) if (d[m]) ids.push(d[m]);
+        return ids;
+      }, [plan]);
+
+      function setSlot(dayIdx, meal, id) {
+        setPlan((p) => {
+          const days = p.days.map((d, i) => i === dayIdx ? { ...d, [meal]: id } : d);
+          return { ...p, days };
+        });
+      }
+
+      function shiftWeek(delta) {
+        setPlan((p) => {
+          const newStart = MP.date.addDays(p.week_start, delta * 7);
+          const names = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+          return {
+            ...p,
+            week_start: newStart,
+            days: names.map((n, i) => {
+              const prior = p.days[i] || {};
+              return { ...prior, day: n, date: MP.date.addDays(newStart, i) };
+            }),
+          };
+        });
+      }
+
+      async function savePlan() {
+        if (!MP.api.hasToken()) {
+          setShowSettings(true);
+          setFlashMsg("Paste your Faith token in Settings first.");
+          return;
+        }
+        setSaving(true);
+        try {
+          await MP.api.putWeekplan(plan);
+          const el = await MP.api.getEatenLog();
+          setEatenLog(el || {});
+          setFlashMsg("✓ Week saved. Helper will see it.");
+        } catch (e) {
+          setFlashMsg("Save failed: " + e.message);
+        } finally { setSaving(false); }
+      }
+
+      if (err) {
+        return (
+          <div className="max-w-xl mx-auto p-6">
+            <h1 className="font-display text-3xl">Meal Planner</h1>
+            <p className="text-terra mt-4">Could not load: {err}</p>
+            <button onClick={() => setShowSettings(true)} className="mt-3 bg-ink text-cream px-4 py-2 rounded-lg">Open Settings</button>
+            <Modal open={showSettings} onClose={() => setShowSettings(false)} title="Settings">
+              <SettingsPanel onClose={() => setShowSettings(false)} />
+            </Modal>
+          </div>
+        );
+      }
+      if (!recipes || !plan) return <div className="p-6 text-warm">Loading…</div>;
+
+      const today = MP.date.hkToday();
+
+      return (
+        <main className="max-w-[1400px] mx-auto px-6 pt-6 pb-16">
+          <header className="flex items-center justify-between gap-4 flex-wrap mb-6">
+            <div>
+              <h1 className="font-display text-3xl">Meal Planner</h1>
+              <div className="text-warm text-sm">
+                Week of <span className="num">{plan.week_start}</span>
+                <button onClick={() => shiftWeek(-1)} className="ml-3 text-terra">◀ prev</button>
+                <button onClick={() => shiftWeek(1)} className="ml-2 text-terra">next ▶</button>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <label className="text-sm text-warm">Serves
+                <select value={plan.serves || 4} onChange={(e) => setPlan((p) => ({...p, serves: Number(e.target.value)}))}
+                  className="ml-1 rounded-lg border border-warm/20 bg-white px-2 py-1">
+                  {[2,3,4,5,6].map((n) => <option key={n} value={n}>{n}</option>)}
+                </select>
+              </label>
+              <button onClick={() => setShowShop(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">🛒 Shopping list</button>
+              <button onClick={savePlan} disabled={saving}
+                className="bg-terra text-cream px-4 py-2 rounded-lg text-sm disabled:opacity-60">
+                {saving ? "Saving…" : "Save Week"}
+              </button>
+              <button onClick={() => setShowSettings(true)} className="bg-ink/80 text-cream px-3 py-2 rounded-lg text-sm">⚙︎</button>
+            </div>
+          </header>
+
+          {flash && <div className="mb-4 text-sm text-terra">{flash}</div>}
+
+          <div className="overflow-x-auto">
+            <table className="w-full border-separate border-spacing-3">
+              <thead>
+                <tr>
+                  <th className="w-24"></th>
+                  {plan.days.map((d) => (
+                    <th key={d.date} className="text-left font-normal">
+                      <div className="font-display text-lg">{d.day}</div>
+                      <div className="text-xs text-warm num">
+                        {d.date}{d.date === today ? " · today" : ""}
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {MEALS.map((meal) => (
+                  <tr key={meal} className="align-top">
+                    <td className="text-sm text-warm uppercase tracking-wide pt-4">{meal}</td>
+                    {plan.days.map((d, dayIdx) => {
+                      const r = d[meal] ? recipesById[d[meal]] : null;
+                      const conflicts = MP.schedule.dayConflicts(d, recipesById);
+                      const inConflict = r && conflicts.some((pair) => pair.includes(meal));
+                      const sched = r ? MP.schedule.forMeal(meal, r) : null;
+                      return (
+                        <td key={d.date}>
+                          <button onClick={() => setPicker({ dayIdx, meal })}
+                            className={`w-full h-full min-h-[88px] text-left rounded-xl p-3 transition ring-1 ${
+                              r ? "bg-white ring-black/5 hover:ring-terra/40" : "bg-sand/60 ring-sand hover:bg-sand"
+                            }`}>
+                            {r ? (
+                              <div>
+                                <div className="font-display leading-tight text-[15px]">{r.name}</div>
+                                <div className="text-xs text-warm mt-1 flex items-center justify-between gap-2">
+                                  <span className="num">{sched.startTime}</span>
+                                  {inConflict && <span title="Stove conflict" className="text-terra">⚠</span>}
+                                  {sched.flagEarly && <span title="Start previous day" className="text-amber-700">🌙</span>}
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="text-warm text-sm">+ pick</div>
+                            )}
+                          </button>
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <section className="mt-10 grid md:grid-cols-2 gap-6">
+            <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+              <h2 className="font-display text-xl mb-3">This week's feedback</h2>
+              <Feedback date={plan.days[0]?.date || today} />
+            </div>
+            <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+              <h2 className="font-display text-xl mb-3">Tip</h2>
+              <p className="text-sm text-warm leading-relaxed">
+                ⚠ next to a meal means two recipes need the stove at the same time — rearrange or simplify one.{" "}
+                🌙 means start the night before or defrost today (check the helper's "Prep for tomorrow" panel).
+                Send the helper: <code className="text-xs bg-sand px-1 py-0.5 rounded">…/helper.html</code>
+              </p>
+            </div>
+          </section>
+
+          <Modal open={!!picker} onClose={() => setPicker(null)}
+            title={picker ? `${plan.days[picker.dayIdx].day} — ${picker.meal}` : ""}>
+            {picker && (
+              <RecipePicker
+                mealType={picker.meal} recipes={recipes} eatenLog={eatenLog}
+                usedIds={usedIds} lang={lang}
+                onPick={(id) => { setSlot(picker.dayIdx, picker.meal, id); setPicker(null); }}
+              />
+            )}
+          </Modal>
+
+          <Modal open={showShop} onClose={() => setShowShop(false)} title="Shopping list">
+            <ShoppingList recipes={recipes} plan={plan} lang={lang} />
+          </Modal>
+
+          <Modal open={showSettings} onClose={() => setShowSettings(false)} title="Settings">
+            <SettingsPanel onClose={() => setShowSettings(false)} />
+          </Modal>
+        </main>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
