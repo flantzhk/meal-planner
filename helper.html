@@ -65,6 +65,44 @@
       );
     }
 
+    // Change 2: NowBar — fixed slim bar always visible at top
+    function NowBar({ day, nextDay, recipesById, nowMin, lang }) {
+      let content = null;
+      let overdue = false;
+
+      if (day) {
+        const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
+        const upcoming = tasks.find((tk) => (tk.kind === "cook" || tk.kind === "serve") && tk.at > nowMin);
+        if (upcoming) {
+          const minsToStart = upcoming.at - nowMin;
+          overdue = minsToStart <= 0;
+          const startMsg = overdue
+            ? "⚡ Cook now"
+            : minsToStart < 60
+              ? `Start cooking in ${minsToStart} min`
+              : `Start cooking at ${MP.schedule.fmtTime(upcoming.at)}`;
+          content = startMsg;
+        } else {
+          content = "🌙 All done for today";
+        }
+      } else {
+        content = "🌙 All done for today";
+      }
+
+      const nowClock = MP.date.hkNowClock(lang);
+
+      return (
+        <div
+          className={`fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 text-sm ${
+            overdue ? "bg-terra text-cream" : "bg-ink text-cream"
+          }`}
+          style={{ height: "44px" }}>
+          <span className="num font-semibold">{nowClock}</span>
+          <span>{content}</span>
+        </div>
+      );
+    }
+
     function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onVerify }) {
       const sched = MP.schedule.forMeal(mealType, recipe, { mealTime });
       const name = MP.i18n.recipeName(recipe, lang);
@@ -72,7 +110,7 @@
       const showEng = !recipe.translations_verified && lang !== "en";
 
       return (
-        <article className="bg-white/70 rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
+        <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
           {MP.recipeImage(recipe) && (
             <img src={MP.recipeImage(recipe)} alt={recipe.name}
               className="w-full h-44 object-cover"
@@ -84,7 +122,6 @@
                 e.target.style.display = "none";
               }}
               onError={(e) => {
-                // maxresdefault doesn't exist for every video; fall back to hqdefault, then hide.
                 const src = e.target.src;
                 if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
                 if (recipe.hero_image && src !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
@@ -126,7 +163,7 @@
             )}
 
             <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
-            <ul className="mt-1 text-[15px] leading-relaxed">
+            <ul className="mt-1 text-sm leading-relaxed">
               {recipe.ingredients.map((ing, i) => (
                 <li key={i} className="flex gap-3 py-0.5">
                   <span className="num text-warm min-w-[4.5rem]">
@@ -144,7 +181,7 @@
                   <span className="step-num font-display text-terra text-lg leading-7 min-w-[1.5rem]">
                     {s.step}
                   </span>
-                  <div className="leading-relaxed text-[15px]">
+                  <div className="leading-relaxed text-sm">
                     <div>{MP.i18n.stepText(s, lang)}</div>
                     {showEng && (
                       <div className="text-warm/70 italic text-sm mt-0.5">{s.instruction}</div>
@@ -186,7 +223,7 @@
       return (
         <section className="mt-8 rounded-2xl border border-sage/40 bg-sage/10 p-4">
           <h3 className="font-display text-lg mb-2">🌙 {t(lang, "prepTomorrow")}</h3>
-          <ul className="list-disc pl-5 space-y-1 text-[15px]">
+          <ul className="list-disc pl-5 space-y-1 text-sm">
             {items.map((it, i) => <li key={i}>{it}</li>)}
           </ul>
         </section>
@@ -194,9 +231,6 @@
     }
 
     function ComingUpView({ plan, upcoming, recipesById, today, lang, onOpen }) {
-      // Build a flat list of every day from the current week's Monday forward
-      // across the current plan + any future plans. The whole week is shown,
-      // not just "from today" — the helper wants to glance at Mon–Sun.
       const weekFloor = MP.date.mondayOf(today);
       const allDays = [];
       const seen = new Set();
@@ -217,7 +251,6 @@
         return <p className="text-warm text-sm">Nothing planned yet.</p>;
       }
 
-      // Group by week_start for section headings.
       const groups = {};
       for (const d of allDays) {
         const wk = MP.date.mondayOf(d.date);
@@ -240,10 +273,10 @@
                     const isToday = d.date === today;
                     const isPast = d.date < today;
                     return (
-                      <div key={d.date} className={`rounded-xl p-3 ring-1 ${
+                      <div key={d.date} className={`rounded-xl p-4 ring-1 ${
                         isToday ? "bg-white ring-terra/40" :
-                        isPast ? "bg-white/30 ring-black/5 opacity-60" :
-                        "bg-white/60 ring-black/5"
+                        isPast ? "bg-white ring-black/5 opacity-60" :
+                        "bg-white ring-black/5"
                       }`}>
                         <div className="flex items-baseline justify-between">
                           <div className="font-display text-lg">
@@ -253,7 +286,7 @@
                           </div>
                           <div className="text-xs text-warm num">{MP.date.prettyDate(d.date)}</div>
                         </div>
-                        <ul className="mt-2 space-y-1 text-[15px]">
+                        <ul className="mt-2 space-y-1 text-sm">
                           {["breakfast","lunch","dinner"].map((m) => {
                             const r = d[m] ? recipesById[d[m]] : null;
                             if (!r) return (
@@ -264,13 +297,21 @@
                             );
                             const time = d[m + "_time"] || MP.schedule.defaultMealTime(m);
                             const servesNote = d[m + "_serves"] ? ` · ${d[m + "_serves"]}p` : "";
+                            // Change 7: dependency icons
+                            const deps = r.dependencies || [];
+                            const hasLongDep = deps.some((dep) => dep.hours_before >= 12);
+                            const hasMarinate = deps.some((dep) => dep.type === "marinate" && dep.hours_before < 12);
                             return (
                               <li key={m}>
                                 <button
                                   onClick={() => onOpen && onOpen({ recipe: r, mealType: m, date: d.date, mealTime: d[m+"_time"], mealServes: d[m+"_serves"] })}
                                   className="w-full flex items-baseline justify-between gap-2 text-left hover:bg-terra/5 rounded-lg px-1 py-0.5 transition">
                                   <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem]">{m}</span>
-                                  <span className="flex-1 underline decoration-terra/30 underline-offset-2">{r.name}</span>
+                                  <span className="flex-1 underline decoration-terra/30 underline-offset-2">
+                                    {r.name}
+                                    {hasLongDep && <span className="ml-1 text-xs" title="Needs overnight prep">🌙</span>}
+                                    {hasMarinate && <span className="ml-1 text-xs" title="Needs marinating">🧂</span>}
+                                  </span>
                                   <span className="text-xs text-warm num shrink-0">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}{servesNote}</span>
                                 </button>
                               </li>
@@ -290,7 +331,11 @@
 
     function ShoppingView({ recipes, plan, pantry, onToggle, lang, sources, extras, onToggleExtra }) {
       const groups = MP.buildShoppingList(recipes, plan, sources);
-      const [filter, setFilter] = useState("all");
+      // Change 8: persist filter to sessionStorage
+      const [filter, setFilter] = useState(() => sessionStorage.getItem("mpShopFilter") || "all");
+      // Change 4: search state
+      const [search, setSearch] = useState("");
+
       const sourceLabels = {
         "wet-market": "🥬 Wet market", "supermarket": "🛒 Fusion / Marketplace",
         "hktvmall": "📦 HKTVmall", "other": "Other",
@@ -302,6 +347,12 @@
       };
       const sourceOrder = ["wet-market", "supermarket", "hktvmall", "other"];
       const key = (it) => (it.item || "").toLowerCase().trim();
+
+      // Change 8: persist filter on change
+      function updateFilter(val) {
+        setFilter(val);
+        sessionStorage.setItem("mpShopFilter", val);
+      }
 
       const counts = {};
       for (const src of sourceOrder) {
@@ -319,96 +370,212 @@
       const showSource = (src) => filter === "all" || filter === src;
       const showExtras = extrasTotal > 0 && (filter === "all" || filter === "extras");
 
+      // Change 4: search — flatten all items across all sources
+      const searchActive = search.trim().length > 0;
+      let searchResults = [];
+      if (searchActive) {
+        const q = search.toLowerCase();
+        for (const src of sourceOrder) {
+          const g = groups[src];
+          if (!g) continue;
+          for (const [cat, items] of Object.entries(g)) {
+            for (const it of items) {
+              if ((it.item || "").toLowerCase().includes(q)) {
+                searchResults.push({ ...it, _src: src, _cat: cat });
+              }
+            }
+          }
+        }
+      }
+
       return (
         <div>
           <p className="text-sm text-warm mb-3">
-            Tap ✓ if you already have it at home. Tap a shop below to focus on just that list.
+            Tap 'Got it' to mark items you already have. They'll move to the bottom.
           </p>
 
-          <nav className="sticky top-0 z-10 -mx-4 px-4 py-2 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-2">
-            <button onClick={() => setFilter("all")}
-              className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "bg-ink text-cream ring-ink" : "bg-white text-ink ring-warm/20"}`}>
-              All
-            </button>
-            {sourceOrder.map((src) => {
-              if (!counts[src]) return null;
-              const active = filter === src;
-              const { remaining, total } = counts[src];
-              return (
-                <button key={src} onClick={() => setFilter(src)}
-                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "bg-terra text-cream ring-terra" : "bg-white text-ink ring-warm/20"}`}>
-                  {sourceLabels[src]}
-                  <span className={`ml-1.5 num text-xs ${active ? "text-cream/80" : "text-warm"}`}>{remaining}/{total}</span>
-                </button>
-              );
-            })}
-            {extrasTotal > 0 && (
-              <button onClick={() => setFilter("extras")}
-                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "bg-sage text-cream ring-sage" : "bg-white text-ink ring-warm/20"}`}>
-                ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-cream/80" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
-              </button>
-            )}
-          </nav>
+          {/* Change 4: Search input */}
+          <div className="relative mb-3">
+            <input value={search} onChange={e => setSearch(e.target.value)}
+              placeholder="Search items…"
+              className="w-full rounded-xl border border-warm/20 bg-white px-4 py-2.5 pr-10 text-sm" />
+            {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-warm">×</button>}
+          </div>
 
-          {showExtras && (
-            <section className="mb-6">
-              <h3 className="font-display text-lg text-sage">➕ Extras</h3>
-              <ul className="mt-2 space-y-1">
-                {(extras || []).map((x) => (
-                  <li key={x.id}
-                    className={`flex items-center gap-3 text-[15px] p-2 rounded-lg ${x.done ? "opacity-40 line-through" : "bg-white/60"}`}>
-                    <button
-                      onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
-                        x.done ? "bg-sage text-white" : "bg-sand text-warm ring-1 ring-warm/20"
-                      }`}>
-                      {x.done ? "✓" : ""}
-                    </button>
-                    <span className="flex-1">{x.item}</span>
-                    <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+          {/* Filter nav — hidden during search */}
+          {!searchActive && (
+            <nav className="sticky top-11 z-10 -mx-4 px-4 py-2 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-3">
+              {/* Change 1: unified active state for All button */}
+              <button onClick={() => updateFilter("all")}
+                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                All
+              </button>
+              {sourceOrder.map((src) => {
+                if (!counts[src]) return null;
+                const active = filter === src;
+                const { remaining, total } = counts[src];
+                return (
+                  <button key={src} onClick={() => updateFilter(src)}
+                    className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                    {sourceLabels[src]}
+                    <span className={`ml-1.5 num text-xs ${active ? "text-terra/70" : "text-warm"}`}>{remaining}/{total}</span>
+                  </button>
+                );
+              })}
+              {extrasTotal > 0 && (
+                <button onClick={() => updateFilter("extras")}
+                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                  ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-terra/70" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
+                </button>
+              )}
+            </nav>
           )}
 
-          {sourceOrder.map((src) => {
-            const g = groups[src];
-            if (!g) return null;
-            if (!showSource(src)) return null;
-            return (
-              <section key={src} className="mb-6">
-                <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
-                {Object.entries(g).map(([cat, items]) => (
-                  <div key={cat} className="mt-2">
-                    <div className="uppercase tracking-wide text-xs text-warm mb-1">{categoryLabels[cat] || cat}</div>
-                    <ul className="space-y-1">
-                      {items.map((it, i) => {
-                        const has = !!pantry[key(it)];
-                        return (
-                          <li key={i}
-                            className={`flex items-center gap-3 text-[15px] p-2 rounded-lg ${has ? "opacity-40 line-through" : "bg-white/60"}`}>
-                            <button
-                              aria-label={has ? "Mark as need to buy" : "Mark as already have"}
-                              onClick={() => onToggle(key(it), !has)}
-                              className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
-                                has ? "bg-sage text-white" : "bg-sand text-warm ring-1 ring-warm/20"
-                              }`}>
-                              {has ? "✓" : ""}
-                            </button>
-                            <span className="num text-warm min-w-[5rem]">
-                              {Number(it.amount.toFixed(2)).toString()} {it.unit}
-                            </span>
-                            <span>{it.item}</span>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                ))}
-              </section>
-            );
-          })}
+          {/* Change 4: Search results */}
+          {searchActive && (
+            <div className="mb-6">
+              <div className="text-xs text-warm uppercase tracking-wide mb-2">Results for '{search}'</div>
+              {searchResults.length === 0 && (
+                <p className="text-sm text-warm/60 italic">No items found.</p>
+              )}
+              <ul className="space-y-1">
+                {searchResults.map((it, i) => {
+                  const has = !!pantry[key(it)];
+                  return (
+                    <li key={i} className={`flex items-center gap-3 text-sm p-4 rounded-lg bg-white`}>
+                      {/* Change 5: Got it pill button */}
+                      <button
+                        aria-label={has ? "Mark as need to buy" : "Mark as already have"}
+                        onClick={() => onToggle(key(it), !has)}
+                        className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition ${
+                          has ? "bg-sage/20 text-sage border-sage/40" : "bg-white text-warm border-warm/30"
+                        }`}>
+                        {has ? "✓ Got it" : "Got it"}
+                      </button>
+                      <span className="num text-warm min-w-[5rem]">
+                        {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                      </span>
+                      <span className="flex-1">{it.item}</span>
+                      <span className="text-xs text-warm/60">{sourceLabels[it._src] || it._src}</span>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
+
+          {/* Normal view — hidden during search */}
+          {!searchActive && (
+            <>
+              {showExtras && (
+                <section className="mb-6">
+                  <h3 className="font-display text-lg text-sage">➕ Extras</h3>
+                  {/* Change 5: extras with Got it pill */}
+                  {(() => {
+                    const unchecked = (extras || []).filter((x) => !x.done);
+                    const checked = (extras || []).filter((x) => x.done);
+                    return (
+                      <>
+                        <ul className="mt-2 space-y-1">
+                          {unchecked.map((x) => (
+                            <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white">
+                              <button
+                                onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
+                                className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-white text-warm border-warm/30">
+                                Got it
+                              </button>
+                              <span className="flex-1">{x.item}</span>
+                              <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
+                            </li>
+                          ))}
+                        </ul>
+                        {checked.length > 0 && (
+                          <details className="mt-2">
+                            <summary className="text-xs text-warm cursor-pointer">Got it ({checked.length})</summary>
+                            <ul className="mt-1 space-y-1">
+                              {checked.map((x) => (
+                                <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
+                                  <button
+                                    onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
+                                    className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-sage/20 text-sage border-sage/40">
+                                    ✓ Got it
+                                  </button>
+                                  <span className="flex-1">{x.item}</span>
+                                  <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </details>
+                        )}
+                      </>
+                    );
+                  })()}
+                </section>
+              )}
+
+              {sourceOrder.map((src) => {
+                const g = groups[src];
+                if (!g) return null;
+                if (!showSource(src)) return null;
+                return (
+                  <section key={src} className="mb-6">
+                    <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
+                    {Object.entries(g).map(([cat, items]) => {
+                      const unchecked = items.filter((it) => !pantry[key(it)]);
+                      const checked = items.filter((it) => !!pantry[key(it)]);
+                      return (
+                        <div key={cat} className="mt-2">
+                          <div className="uppercase tracking-wide text-xs text-warm mb-1">{categoryLabels[cat] || cat}</div>
+                          {/* Change 5: unchecked items with Got it pill */}
+                          <ul className="space-y-1">
+                            {unchecked.map((it, i) => {
+                              const has = false;
+                              return (
+                                <li key={i} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white">
+                                  <button
+                                    aria-label="Mark as already have"
+                                    onClick={() => onToggle(key(it), true)}
+                                    className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-white text-warm border-warm/30">
+                                    Got it
+                                  </button>
+                                  <span className="num text-warm min-w-[5rem]">
+                                    {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                                  </span>
+                                  <span>{it.item}</span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                          {/* Change 5: checked items in collapsed details at bottom */}
+                          {checked.length > 0 && (
+                            <details>
+                              <summary className="text-xs text-warm cursor-pointer mt-2">Got it ({checked.length})</summary>
+                              <ul className="mt-1 space-y-1">
+                                {checked.map((it, i) => (
+                                  <li key={i} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
+                                    <button
+                                      aria-label="Mark as need to buy"
+                                      onClick={() => onToggle(key(it), false)}
+                                      className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-sage/20 text-sage border-sage/40">
+                                      ✓ Got it
+                                    </button>
+                                    <span className="num text-warm min-w-[5rem]">
+                                      {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                                    </span>
+                                    <span>{it.item}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </details>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </section>
+                );
+              })}
+            </>
+          )}
         </div>
       );
     }
@@ -433,11 +600,11 @@
         serve: "bg-sage/20 text-sage",
       };
       return (
-        <section className="bg-white/70 rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
+        <section className="bg-white rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
           <h3 className="font-display text-lg mb-3">⏱ Today's schedule</h3>
           <ol className="space-y-2">
-            {tasks.map((t, i) => {
-              const past = t.at <= nowMin;
+            {tasks.map((tk, i) => {
+              const past = tk.at <= nowMin;
               const upNext = !past && tasks.slice(0, i).every((x) => x.at <= nowMin);
               return (
                 <li key={i}
@@ -446,14 +613,14 @@
                     past ? "opacity-40" : ""
                   }`}>
                   <div className="num text-warm min-w-[4.5rem] pt-0.5">
-                    {MP.schedule.fmtTime(t.at)}
+                    {MP.schedule.fmtTime(tk.at)}
                   </div>
                   <div className="flex-1">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[t.kind]}`}>
-                      {kindLabel[t.kind]}
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[tk.kind]}`}>
+                      {kindLabel[tk.kind]}
                     </span>
-                    <span className={past ? "line-through" : ""}>{t.label}</span>
-                    {t.flagEarly && !past && (
+                    <span className={past ? "line-through" : ""}>{tk.label}</span>
+                    {tk.flagEarly && !past && (
                       <div className="text-xs text-terra mt-0.5">⚠ Start earlier than usual</div>
                     )}
                   </div>
@@ -468,7 +635,6 @@
 
     function UpNextBanner({ day, recipesById, nowMin, lang }) {
       if (!day) return null;
-      // Find the next upcoming meal by serve-time
       const meals = ["breakfast", "lunch", "dinner"];
       const options = [];
       for (const m of meals) {
@@ -482,7 +648,7 @@
       const nextMeal = options.find((o) => o.serveMin > nowMin);
       if (!nextMeal) {
         return (
-          <div className="mb-4 p-3 rounded-xl bg-sand/60 text-sm text-warm">
+          <div className="mb-4 p-4 rounded-xl bg-sand/60 text-sm text-warm">
             🌙 All meals served for today. Rest up!
           </div>
         );
@@ -515,7 +681,7 @@
       const [tab, setTab] = useState("today"); // "today" | "coming" | "shop"
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
-      const [upcoming, setUpcoming] = useState([]); // [plan, plan, ...] from today onward
+      const [upcoming, setUpcoming] = useState([]);
       const [pantry, setPantry] = useState({});
       const [sources, setSources] = useState({});
       const [extras, setExtras] = useState([]);
@@ -546,7 +712,6 @@
       }, []);
 
       async function togglePantryItem(item, have) {
-        // Optimistic update
         setPantry((p) => {
           const next = { ...p };
           if (have) next[item] = new Date().toISOString().slice(0, 10);
@@ -556,7 +721,6 @@
         try { await MP.api.togglePantry(item, have); }
         catch (e) {
           flash("Could not save: " + e.message, true);
-          // Roll back
           const fresh = await MP.api.getPantry().catch(() => ({}));
           setPantry(fresh || {});
         }
@@ -602,8 +766,6 @@
           const r = recipesById[recipeId];
           if (!r) return;
           const updated = { ...r, translations_verified: true };
-          // Note: this endpoint needs Faith's token. Helper view won't have it — we just
-          // send the write anyway; if 401, we explain.
           try {
             await MP.api.upsertRecipe(recipeId, updated);
             setRecipes((rs) => rs.map((x) => (x.id === recipeId ? updated : x)));
@@ -645,8 +807,11 @@
       }
 
       return (
-        <main className="max-w-xl mx-auto px-4 pt-6 pb-16">
-          <header className="flex items-start justify-between gap-3 mb-4">
+        <main className="max-w-xl mx-auto px-4 pt-11 pb-24">
+          {/* Change 2: NowBar — always visible fixed bar */}
+          <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+
+          <header className="flex items-start justify-between gap-3 mb-4 mt-6">
             <div>
               <div className="uppercase tracking-wide text-xs text-warm">{t(lang, "today")}</div>
               <h1 className="font-display text-3xl leading-tight">
@@ -654,7 +819,7 @@
               </h1>
               <div className="font-display text-2xl text-terra num mt-1">🕐 {clockStr}</div>
             </div>
-            <LangToggle lang={lang} onChange={setLang} />
+            {/* Change 6: LangToggle removed from header */}
           </header>
 
           <nav className="flex gap-1 mb-6 bg-sand rounded-full p-1 text-sm">
@@ -676,7 +841,9 @@
             <>
               <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
               <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-              <div className="space-y-5">
+              {/* Change 3: PrepTomorrow moved BEFORE meal cards */}
+              <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
+              <div className="space-y-5 mt-6">
                 {["breakfast", "lunch", "dinner"].map((meal) => {
                   const id = todayDay[meal];
                   if (!id) return null;
@@ -694,7 +861,6 @@
                   );
                 })}
               </div>
-              <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
             </>
           )}
 
@@ -716,7 +882,12 @@
           )}
 
           <div id="flash" aria-live="polite"
-            className="fixed left-1/2 -translate-x-1/2 bottom-5 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
+            className="fixed left-1/2 -translate-x-1/2 bottom-20 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
+          </div>
+
+          {/* Change 6: Fixed footer with LangToggle */}
+          <div className="fixed bottom-0 left-0 right-0 z-30 bg-cream/95 backdrop-blur border-t border-warm/10 px-4 py-2 flex justify-center">
+            <LangToggle lang={lang} onChange={setLang} />
           </div>
 
           {study && (

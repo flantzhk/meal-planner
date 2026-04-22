@@ -496,6 +496,14 @@
     return MP.youtubeThumb(recipe && recipe.youtube_url) || (recipe && recipe.hero_image) || null;
   };
 
+  // ---------- Formatting helpers ----------
+  MP.formatDuration = function(mins) {
+    if (!mins || mins < 1) return "0 min";
+    if (mins < 60) return `${Math.round(mins)} min`;
+    const h = Math.floor(mins / 60), m = Math.round(mins % 60);
+    return m ? `${h}h ${m}m` : `${h}h`;
+  };
+
   // ---------- Last-eaten ----------
   MP.lastEaten = function lastEaten(recipeId, eatenLog, today) {
     const dates = (eatenLog && eatenLog[recipeId]) || [];

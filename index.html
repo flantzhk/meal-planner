@@ -69,6 +69,7 @@
       );
     }
 
+    // Change 8: RecipePicker with "Recently used" section
     function RecipePicker({ mealType, recipes, eatenLog, onPick, lang, usedIds }) {
       const [q, setQ] = useState("");
       const [cuisine, setCuisine] = useState("all");
@@ -81,8 +82,34 @@
       }, [recipes, mealType, cuisine, q]);
       const cuisines = useMemo(() => ["all", ...Array.from(new Set(recipes.map((r) => r.cuisine).filter(Boolean)))], [recipes]);
 
+      // Change 8: recently used — 6 recipe IDs with most-recent dates for this meal type
+      const recent = useMemo(() => {
+        return recipes
+          .filter(r => !r.meal_type || r.meal_type.includes(mealType))
+          .map(r => ({ r, le: MP.lastEaten(r.id, eatenLog, today) }))
+          .filter(({le}) => le.status !== 'never')
+          .sort((a, b) => (a.le.days || 999) - (b.le.days || 999))
+          .slice(0, 6)
+          .map(({r}) => r);
+      }, [recipes, eatenLog, mealType]);
+
       return (
         <div>
+          {/* Change 8: Recently used horizontal scroll row */}
+          {recent.length > 0 && (
+            <div className="mb-4">
+              <div className="text-xs uppercase tracking-wide text-warm mb-2">Recently used</div>
+              <div className="flex gap-2 overflow-x-auto pb-1">
+                {recent.map(r => (
+                  <button key={r.id} onClick={() => onPick(r.id)}
+                    className="shrink-0 flex flex-col items-center bg-white rounded-xl p-2 ring-1 ring-black/5 hover:ring-terra/40 w-24 text-center">
+                    {MP.recipeImage(r) && <img src={MP.recipeImage(r)} className="w-20 h-14 object-cover rounded-lg mb-1" />}
+                    <span className="text-xs leading-tight line-clamp-2">{r.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
           <div className="flex gap-2 mb-4">
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder="Search…"
@@ -118,7 +145,8 @@
                          }} />
                   )}
                   <div className="p-3">
-                    <div className="font-display text-[17px] leading-tight">{r.name}</div>
+                    {/* Change 1: text-[17px] -> text-base */}
+                    <div className="font-display text-base leading-tight">{r.name}</div>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-warm">
                         {r.cuisine} · <span className="num">{(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}</span>m
@@ -134,11 +162,13 @@
       );
     }
 
+    // Change 5: Shopping filter persistence via sessionStorage
     function ShoppingList({ recipes, plan, lang, pantry, onToggle, sources, onSetSource, extras, onAddExtra, onToggleExtra, onRemoveExtra }) {
       const groups = MP.buildShoppingList(recipes, plan, sources);
       const [newItem, setNewItem] = useState("");
       const [newSource, setNewSource] = useState("supermarket");
-      const [filter, setFilter] = useState("all"); // "all" | source key | "extras"
+      // Change 5: persist filter to sessionStorage
+      const [filter, setFilter] = useState(() => sessionStorage.getItem('mpShopFilter') || 'all');
       const sourceLabels = {
         "wet-market": "🥬 Wet market", "supermarket": "🛒 Fusion / Marketplace",
         "hktvmall": "📦 HKTVmall", "other": "Other",
@@ -150,6 +180,9 @@
       };
       const sourceOrder = ["wet-market", "supermarket", "hktvmall", "other"];
       const key = (it) => (it.item || "").toLowerCase().trim();
+
+      // Change 5: applyFilter helper
+      function applyFilter(f) { setFilter(f); sessionStorage.setItem('mpShopFilter', f); }
 
       // Per-section "remaining" counts so the nav shows how much is left in each shop.
       const counts = {};
@@ -168,17 +201,47 @@
       const showExtras = onAddExtra && (filter === "all" || filter === "extras");
       const showSource = (src) => filter === "all" || filter === src;
 
+      // Change 7: WhatsApp share function
+      function shareWhatsApp() {
+        const sourceLabelsPlain = { "wet-market": "Wet market", "supermarket": "Supermarket", "hktvmall": "HKTVmall", "other": "Other" };
+        let text = `Shopping list — week of ${plan.week_start}\n\n`;
+        for (const src of ["wet-market","supermarket","hktvmall","other"]) {
+          const g = groups[src]; if (!g) continue;
+          text += `*${sourceLabelsPlain[src]}*\n`;
+          for (const [cat, items] of Object.entries(g)) {
+            for (const it of items) {
+              const k = (it.item||"").toLowerCase().trim();
+              if (pantry[k]) continue; // skip already-have items
+              text += `• ${Number(it.amount.toFixed(2))} ${it.unit} ${it.item}\n`;
+            }
+          }
+          text += "\n";
+        }
+        if (extras && extras.filter(x=>!x.done).length > 0) {
+          text += `*Extras*\n`;
+          for (const x of extras.filter(e=>!e.done)) text += `• ${x.item}\n`;
+        }
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+      }
+
       return (
         <div>
           <div className="text-sm text-warm mb-3">
             Week of <span className="num">{plan.week_start}</span> · Serves <span className="num">{plan.serves || 4}</span>
+            {/* Change 7: WhatsApp share button */}
+            <div className="mt-2">
+              <button onClick={shareWhatsApp} className="flex items-center gap-1.5 bg-sage text-white px-3 py-1.5 rounded-lg text-sm">
+                📱 Share via WhatsApp
+              </button>
+            </div>
             <div className="mt-1 text-xs">Tap a shop below to focus on just that list. Ticked items are already in the pantry.</div>
           </div>
 
           {/* Jump / filter nav — sticky so it stays reachable while scrolling */}
+          {/* Change 1: unified active state for all pills */}
           <nav className="sticky top-0 z-10 -mx-5 px-5 py-3 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-2">
-            <button onClick={() => setFilter("all")}
-              className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "bg-ink text-cream ring-ink" : "bg-white text-ink ring-warm/20"}`}>
+            <button onClick={() => applyFilter("all")}
+              className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
               All
             </button>
             {sourceOrder.map((src) => {
@@ -186,23 +249,23 @@
               const active = filter === src;
               const { remaining, total } = counts[src];
               return (
-                <button key={src} onClick={() => setFilter(src)}
-                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "bg-terra text-cream ring-terra" : "bg-white text-ink ring-warm/20"}`}>
+                <button key={src} onClick={() => applyFilter(src)}
+                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
                   {sourceLabels[src]}
-                  <span className={`ml-1.5 num text-xs ${active ? "text-cream/80" : "text-warm"}`}>{remaining}/{total}</span>
+                  <span className={`ml-1.5 num text-xs ${active ? "text-terra/80" : "text-warm"}`}>{remaining}/{total}</span>
                 </button>
               );
             })}
             {onAddExtra && extrasTotal > 0 && (
-              <button onClick={() => setFilter("extras")}
-                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "bg-sage text-cream ring-sage" : "bg-white text-ink ring-warm/20"}`}>
-                ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-cream/80" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
+              <button onClick={() => applyFilter("extras")}
+                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-terra/80" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
               </button>
             )}
           </nav>
 
           {showExtras && (
-            <div className="mb-5 p-3 rounded-xl bg-sand/40">
+            <div className="mb-5 p-4 rounded-xl bg-sand/40">
               <div className="font-display text-base mb-2">➕ Extras (non-recipe)</div>
               <form className="flex flex-wrap gap-2 items-center"
                 onSubmit={(e) => { e.preventDefault(); if (newItem.trim()) { onAddExtra(newItem, newSource); setNewItem(""); } }}>
@@ -221,7 +284,7 @@
               {extras && extras.length > 0 && (
                 <ul className="mt-3 space-y-1">
                   {extras.map((x) => (
-                    <li key={x.id} className={`flex items-center gap-2 text-[15px] ${x.done ? "opacity-40 line-through" : ""}`}>
+                    <li key={x.id} className={`flex items-center gap-2 text-sm ${x.done ? "opacity-40 line-through" : ""}`}>
                       <input type="checkbox" className="accent-sage w-4 h-4"
                         checked={!!x.done}
                         onChange={(e) => onToggleExtra(x.id, e.target.checked)} />
@@ -250,7 +313,7 @@
                         const k = key(it);
                         const has = !!pantry[k];
                         return (
-                          <li key={i} className={`flex flex-wrap gap-2 text-[15px] items-center py-1 ${has ? "opacity-40 line-through" : ""}`}>
+                          <li key={i} className={`flex flex-wrap gap-2 text-sm items-center py-1 ${has ? "opacity-40 line-through" : ""}`}>
                             <input type="checkbox" className="accent-sage w-4 h-4"
                               checked={has}
                               onChange={(e) => onToggle(k, e.target.checked)} />
@@ -369,7 +432,7 @@
             </div>
           </div>
           {onUpdate && (
-            <div className="mb-4 p-3 rounded-xl bg-sand/50 flex flex-wrap gap-4 items-end">
+            <div className="mb-4 p-4 rounded-xl bg-sand/50 flex flex-wrap gap-4 items-end">
               <label className="text-sm text-warm">
                 <div className="text-xs uppercase tracking-wide">Serve at</div>
                 <input type="time" value={effTime}
@@ -402,7 +465,8 @@
           {onSetSource && (
             <p className="text-xs text-warm mb-2">Set where you buy each one — saved globally so every recipe using it will remember.</p>
           )}
-          <ul className="text-[15px] space-y-1">
+          {/* Change 1: text-[15px] -> text-sm */}
+          <ul className="text-sm space-y-1">
             {recipe.ingredients.map((ing, i) => {
               const k = (ing.item || "").toLowerCase().trim();
               const savedSource = (sources && sources[k]) || ing.source || "";
@@ -439,7 +503,8 @@
             {recipe.steps.map((s) => (
               <li key={s.step} className="flex gap-3">
                 <span className="font-display text-terra text-lg min-w-[1.5rem]">{s.step}</span>
-                <div className="text-[15px] leading-relaxed">{s.instruction}</div>
+                {/* Change 1: text-[15px] -> text-sm */}
+                <div className="text-sm leading-relaxed">{s.instruction}</div>
               </li>
             ))}
           </ol>
@@ -509,7 +574,8 @@
                       }} />
                   )}
                   <div className="p-3">
-                    <div className="font-display text-[16px] leading-tight">{r.name}</div>
+                    {/* Change 1: text-[16px] -> text-base */}
+                    <div className="font-display text-base leading-tight">{r.name}</div>
                     <div className="flex items-center justify-between mt-1">
                       <span className="text-xs text-warm">
                         {r.cuisine} · <span className="num">{(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}</span>m
@@ -628,7 +694,7 @@
       return (
         <div className="space-y-6">
           {/* Basic info */}
-          <section>
+          <section className="p-4">
             <h4 className="font-display text-lg mb-3">Basic info</h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="sm:col-span-2">
@@ -750,16 +816,50 @@
             ))}
           </section>
 
-          {/* Ingredients */}
+          {/* Ingredients — Change 4: responsive mobile stacked / desktop grid */}
           <section>
             <div className="flex items-center justify-between mb-2">
               <h4 className="font-display text-lg">Ingredients</h4>
               <button type="button" onClick={addIng}
                 className="text-sm bg-sand text-ink px-3 py-1 rounded-lg">+ Add</button>
             </div>
-            <div className="space-y-2">
+            {/* Mobile stacked cards */}
+            <div className="sm:hidden space-y-3">
+              {form.ingredients.map((ing, i) => (
+                <div key={i} className="bg-sand/30 rounded-xl p-3 space-y-2">
+                  <div className="flex gap-2">
+                    <input value={ing.item} onChange={(e) => setIng(i, "item", e.target.value)} placeholder="Item name" className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm" />
+                    <button type="button" onClick={() => removeIng(i)} className="text-warm/40 hover:text-terra px-2">×</button>
+                  </div>
+                  <div className="flex gap-2">
+                    <input type="number" value={ing.amount} onChange={(e) => setIng(i, "amount", e.target.value)} className="w-20 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm num" />
+                    <select value={ing.unit} onChange={(e) => setIng(i, "unit", e.target.value)} className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                      {["g","kg","ml","l","tsp","tbsp","cup","oz","lb","whole","cloves","sprigs","bunches"].map((u) => <option key={u}>{u}</option>)}
+                    </select>
+                    <select value={ing.category} onChange={(e) => setIng(i, "category", e.target.value)} className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                      {["produce","meat","dairy","pantry","bakery","frozen","other"].map((c) => <option key={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div className="flex gap-2">
+                    <select value={ing.source} onChange={(e) => setIng(i, "source", e.target.value)} className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                      <option value="wet-market">Wet mkt</option>
+                      <option value="supermarket">Supermarket</option>
+                      <option value="hktvmall">HKTVmall</option>
+                      <option value="other">Other</option>
+                    </select>
+                    <select value={ing.scales} onChange={(e) => setIng(i, "scales", e.target.value)} className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                      <option value="linear">Linear</option>
+                      <option value="fixed">Fixed</option>
+                      <option value="taper">Taper</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Desktop grid */}
+            <div className="hidden sm:block space-y-2">
               {/* header row */}
-              <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 text-xs text-warm uppercase tracking-wide px-1">
+              <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 text-xs text-warm uppercase tracking-wide px-1">
                 <span>Item</span><span>Amount</span><span>Unit</span><span>Category</span><span>Shop</span><span>Scales</span><span></span>
               </div>
               {form.ingredients.map((ing, i) => (
@@ -886,7 +986,7 @@
       );
     }
 
-function useNow() {
+    function useNow() {
       const [now, setNow] = useState(() => MP.date.hkNowMin());
       useEffect(() => {
         const id = setInterval(() => setNow(MP.date.hkNowMin()), 30 * 1000);
@@ -899,7 +999,7 @@ function useNow() {
       const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
       if (tasks.length === 0) {
         return (
-          <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+          <div className="bg-white rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
             <h2 className="font-display text-xl mb-1">⏱ Today's schedule</h2>
             <p className="text-sm text-warm">Nothing planned for today yet.</p>
           </div>
@@ -913,7 +1013,7 @@ function useNow() {
         serve: "bg-sage/20 text-sage",
       };
       return (
-        <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+        <div className="bg-white rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
           <h2 className="font-display text-xl mb-3">⏱ Today's schedule</h2>
           <ol className="space-y-2">
             {tasks.map((t, i) => {
@@ -949,6 +1049,43 @@ function useNow() {
       );
     }
 
+    // Change 9: WeekSummary component
+    function WeekSummary({ plan, recipes }) {
+      const recipesById = useMemo(() => {
+        const m = {}; (recipes||[]).forEach(r => m[r.id]=r); return m;
+      }, [recipes]);
+
+      let totalCost = 0, totalCookMins = 0;
+      const cuisines = new Set();
+      for (const d of plan.days||[]) {
+        for (const meal of ['breakfast','lunch','dinner']) {
+          const r = d[meal] ? recipesById[d[meal]] : null;
+          if (!r) continue;
+          if (r.estimated_cost_hkd) totalCost += r.estimated_cost_hkd;
+          totalCookMins += (r.prep_time_mins||0) + (r.cook_time_mins||0);
+          if (r.cuisine) cuisines.add(r.cuisine);
+        }
+      }
+      const planned = (plan.days||[]).reduce((n,d) => n + ['breakfast','lunch','dinner'].filter(m=>d[m]).length, 0);
+
+      return (
+        <div className="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
+          {[
+            { label: "Meals planned", value: `${planned}/21`, icon: "🍽️" },
+            { label: "Est. weekly cost", value: totalCost ? `HK$${Math.round(totalCost)}` : "—", icon: "💰" },
+            { label: "Total cook time", value: totalCookMins ? MP.formatDuration(totalCookMins) : "—", icon: "⏱" },
+            { label: "Cuisines", value: cuisines.size ? [...cuisines].join(", ") : "—", icon: "🌍" },
+          ].map(({label, value, icon}) => (
+            <div key={label} className="bg-white rounded-xl p-4 text-center shadow-sm ring-1 ring-black/5">
+              <div className="text-2xl mb-1">{icon}</div>
+              <div className="font-display text-lg leading-tight">{value}</div>
+              <div className="text-xs text-warm mt-1">{label}</div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
     function App() {
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
@@ -965,6 +1102,12 @@ function useNow() {
       const [showSettings, setShowSettings] = useState(false);
       const [saving, setSaving] = useState(false);
       const [flash, setFlashMsg] = useState("");
+      // Change 2: unsaved changes indicator
+      const [isDirty, setIsDirty] = useState(false);
+
+      // All hooks MUST be above the early returns so React's hook count stays
+      // consistent between loading and loaded renders.
+      const nowMin = useNow();
 
       const lang = "en"; // planner stays English; language is for helper view.
 
@@ -1064,6 +1207,7 @@ function useNow() {
         return ids;
       }, [plan]);
 
+      // Change 2: setSlot marks dirty
       function setSlot(dayIdx, meal, id) {
         setPlan((p) => {
           const days = p.days.map((d, i) => {
@@ -1077,7 +1221,9 @@ function useNow() {
           });
           return { ...p, days };
         });
+        setIsDirty(true);
       }
+      // Change 2: setSlotMeta marks dirty
       function setSlotMeta(dayIdx, meal, { time, serves }) {
         setPlan((p) => {
           const days = p.days.map((d, i) => {
@@ -1091,6 +1237,7 @@ function useNow() {
           });
           return { ...p, days };
         });
+        setIsDirty(true);
       }
 
       async function shiftWeek(delta) {
@@ -1100,6 +1247,7 @@ function useNow() {
         try { stored = await MP.api.getWeekplanFor(newStart); } catch (e) { /* offline */ }
         if (stored && stored.week_start === newStart) {
           setPlan(stored);
+          setIsDirty(false); // loaded from server — not dirty
           return;
         }
         const names = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
@@ -1111,6 +1259,7 @@ function useNow() {
             breakfast: null, lunch: null, dinner: null,
           })),
         }));
+        setIsDirty(false); // fresh empty scaffold — not dirty
       }
 
       async function savePlan() {
@@ -1125,14 +1274,30 @@ function useNow() {
           const el = await MP.api.getEatenLog();
           setEatenLog(el || {});
           setFlashMsg("✓ Week saved. Helper will see it.");
+          setIsDirty(false); // Change 2: clear dirty on successful save
         } catch (e) {
           setFlashMsg("Save failed: " + e.message);
         } finally { setSaving(false); }
       }
 
-      // All hooks MUST be above the early returns so React's hook count stays
-      // consistent between loading and loaded renders.
-      const nowMin = useNow();
+      // Change 6: copyLastWeek function
+      async function copyLastWeek() {
+        const prevStart = MP.date.addDays(plan.week_start, -7);
+        let prev = null;
+        try { prev = await MP.api.getWeekplanFor(prevStart); } catch(e) {}
+        if (!prev || !prev.days) { setFlashMsg("No saved plan for last week."); return; }
+        // Copy just the meal assignments (not times/serves overrides) into current week
+        setPlan((p) => ({
+          ...p,
+          days: p.days.map((d, i) => {
+            const src = prev.days[i];
+            if (!src) return d;
+            return { ...d, breakfast: src.breakfast, lunch: src.lunch, dinner: src.dinner };
+          }),
+        }));
+        setIsDirty(true);
+        setFlashMsg("Meals copied from last week — review and save.");
+      }
 
       if (err) {
         return (
@@ -1166,6 +1331,8 @@ function useNow() {
                 Week of <span className="num">{plan.week_start}</span>
                 <button onClick={() => shiftWeek(-1)} className="ml-3 text-terra">◀ prev</button>
                 <button onClick={() => shiftWeek(1)} className="ml-2 text-terra">next ▶</button>
+                {/* Change 6: copy last week button */}
+                <button onClick={copyLastWeek} className="text-xs text-warm underline ml-2">copy last week</button>
               </div>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -1179,9 +1346,10 @@ function useNow() {
                 className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">👁 <span className="hidden sm:inline">Helper view</span></a>
               <button onClick={() => setShowLibrary(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">📖 <span className="hidden sm:inline">Recipes</span></button>
               <button onClick={() => setShowShop(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">🛒 <span className="hidden sm:inline">Shopping list</span></button>
+              {/* Change 2: dynamic Save button */}
               <button onClick={savePlan} disabled={saving}
-                className="bg-terra text-cream px-3 py-2 rounded-lg text-sm disabled:opacity-60">
-                {saving ? "Saving…" : "Save"}
+                className={`px-3 py-2 rounded-lg text-sm disabled:opacity-60 transition ${isDirty ? 'bg-terra text-cream ring-2 ring-terra/50' : 'bg-sand text-warm'}`}>
+                {saving ? "Saving…" : isDirty ? "● Save" : "Saved ✓"}
               </button>
               <button onClick={() => setShowSettings(true)} className="bg-ink/80 text-cream px-3 py-2 rounded-lg text-sm">⚙︎</button>
             </div>
@@ -1189,6 +1357,7 @@ function useNow() {
 
           {flash && <div className="mb-4 text-sm text-terra">{flash}</div>}
 
+          {/* Change 1: bg-white/70 -> bg-white, p-4 */}
           <section className="mb-4 md:mb-6 bg-white rounded-2xl p-4 md:p-5 shadow-sm ring-1 ring-terra/20 flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="text-xs uppercase tracking-wide text-terra">Right now · {MP.date.dayName(today)}, {MP.date.prettyDate(today)} · 🕐 <span className="num">{clockStr}</span></div>
@@ -1220,7 +1389,7 @@ function useNow() {
               const isToday = d.date === today;
               const conflicts = MP.schedule.dayConflicts(d, recipesById);
               return (
-                <div key={d.date} className={`rounded-2xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white/70 ring-black/5"}`}>
+                <div key={d.date} className={`rounded-2xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white ring-black/5"}`}>
                   <div className="flex items-baseline justify-between mb-2">
                     <div className={`font-display text-lg ${isToday ? "text-terra" : ""}`}>
                       {d.day}{isToday && " · Today"}
@@ -1245,11 +1414,12 @@ function useNow() {
                           {r ? (
                             <div className="flex-1 min-w-0">
                               <div className="font-display leading-tight truncate">{r.name}</div>
+                              {/* Change 3: stove conflict warnings on mobile */}
                               <div className="text-xs text-warm flex items-center gap-2 mt-0.5">
                                 <span className="num">{sched.startTime}</span>
                                 {servesOverride && <span className="num bg-sand px-1.5 rounded">{servesOverride}p</span>}
-                                {inConflict && <span className="text-terra">⚠ stove clash</span>}
-                                {sched.flagEarly && !inConflict && <span className="text-amber-700">🌙 night before</span>}
+                                {inConflict && <span className="text-xs text-terra">⚠ stove clash</span>}
+                                {sched?.flagEarly && !inConflict && <span className="text-xs text-amber-700">🌙 night before</span>}
                               </div>
                             </div>
                           ) : (
@@ -1304,7 +1474,8 @@ function useNow() {
                             }`}>
                             {r ? (
                               <div>
-                                <div className="font-display leading-tight text-[15px]">{r.name}</div>
+                                {/* Change 1: text-[15px] -> text-sm */}
+                                <div className="font-display leading-tight text-sm">{r.name}</div>
                                 <div className="text-xs text-warm mt-1 flex items-center justify-between gap-2">
                                   <span className="num">{sched.startTime}</span>
                                   <span className="flex items-center gap-1">
@@ -1342,6 +1513,9 @@ function useNow() {
               <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />
             </section>
           )}
+
+          {/* Change 9: WeekSummary strip */}
+          <WeekSummary plan={plan} recipes={recipes} />
 
           <Modal open={!!picker} onClose={() => setPicker(null)}
             title={picker ? `${plan.days[picker.dayIdx].day} — ${picker.meal}` : ""}>
