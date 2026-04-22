@@ -64,6 +64,20 @@
       });
       return fmt.format(new Date());
     },
+    // Hong Kong current hour (0-23)
+    hkHour() {
+      const s = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Hong_Kong", hour: "2-digit", hour12: false,
+      }).format(new Date());
+      return parseInt(s, 10);
+    },
+    // Which meal is "now" based on HK hour: before 10 → breakfast, before 3pm → lunch, else dinner
+    currentMeal() {
+      const h = MP.date.hkHour();
+      if (h < 10) return "breakfast";
+      if (h < 15) return "lunch";
+      return "dinner";
+    },
     parse(s) {
       // Parse YYYY-MM-DD as a local date at noon (avoids TZ edge cases).
       const [y, m, d] = s.split("-").map(Number);
