@@ -70,6 +70,54 @@ async function getWeekplan(env) {
   return raw ? JSON.parse(raw) : null;
 }
 
+// Return Monday of the current week in HK timezone (YYYY-MM-DD)
+function hkMonday() {
+  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
+  const day = now.getDay(); // 0=Sun … 6=Sat
+  const diff = day === 0 ? -6 : 1 - day;
+  now.setDate(now.getDate() + diff);
+  return now.toISOString().slice(0, 10);
+}
+
+// If no plan exists for the current week, automatically copy the most recent
+// past plan forward (same meals, updated dates). Called on GET /weekplan.
+async function getOrAutoAdvance(env) {
+  const thisMonday = hkMonday();
+
+  // Already have a plan for this week — return it and keep current pointer fresh.
+  const existing = await getWeekplanFor(env, thisMonday);
+  if (existing) {
+    await env.MEAL_DATA.put("weekplan:current", JSON.stringify(existing));
+    return existing;
+  }
+
+  // Find all saved plans older than this week.
+  const allKeys = await listWeekplans(env, "");
+  const pastKeys = allKeys.filter((k) => k < thisMonday);
+  if (pastKeys.length === 0) return null;
+
+  // Most recent past plan (listWeekplans returns sorted asc, so last = most recent).
+  const lastKey = pastKeys[pastKeys.length - 1];
+  const lastPlan = await getWeekplanFor(env, lastKey);
+  if (!lastPlan) return null;
+
+  // Copy forward: same recipe IDs, new dates starting from this Monday.
+  const monDate = new Date(thisMonday + "T00:00:00");
+  const newPlan = {
+    ...lastPlan,
+    week_start: thisMonday,
+    auto_repeated: true,
+    days: (lastPlan.days || []).map((day, i) => {
+      const d = new Date(monDate);
+      d.setDate(d.getDate() + i);
+      return { ...day, date: d.toISOString().slice(0, 10) };
+    }),
+  };
+
+  await putWeekplan(env, newPlan);
+  return newPlan;
+}
+
 async function getWeekplanFor(env, weekStart) {
   const raw = await env.MEAL_DATA.get(`weekplan:ws:${weekStart}`);
   return raw ? JSON.parse(raw) : null;
@@ -296,7 +344,9 @@ export default {
       if (url.pathname === "/weekplan" && request.method === "GET") {
         const ws = url.searchParams.get("week_start");
         if (ws) return json(await getWeekplanFor(env, ws), {}, origin);
-        return json(await getWeekplan(env), {}, origin);
+        // No specific week requested — return current week, auto-repeating last
+        // week if no plan has been saved for this week yet.
+        return json(await getOrAutoAdvance(env), {}, origin);
       }
       if (url.pathname === "/weekplans" && request.method === "GET") {
         const from = url.searchParams.get("from") || "";
