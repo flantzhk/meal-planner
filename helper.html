@@ -714,8 +714,11 @@
                 {minsToServe > 0 && <span> · {minsToServe} min away</span>}
               </div>
             </div>
-            <div className={`num font-display text-3xl leading-none ${overdue ? "text-terra" : "text-sage"}`}>
-              {MP.schedule.fmtTime(nextMeal.startMin)}
+            <div className="text-right">
+              <div className="text-xs text-warm uppercase tracking-wide mb-0.5">Start cooking at</div>
+              <div className={`num font-display text-3xl leading-none ${overdue ? "text-terra" : "text-sage"}`}>
+                {MP.schedule.fmtTime(nextMeal.startMin)}
+              </div>
             </div>
           </div>
         </div>
