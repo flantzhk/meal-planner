@@ -288,8 +288,9 @@
       );
     }
 
-    function ShoppingView({ recipes, plan, pantry, onToggle, lang }) {
-      const groups = MP.buildShoppingList(recipes, plan);
+    function ShoppingView({ recipes, plan, pantry, onToggle, lang, sources, extras, onToggleExtra }) {
+      const groups = MP.buildShoppingList(recipes, plan, sources);
+      const [filter, setFilter] = useState("all");
       const sourceLabels = {
         "wet-market": "🥬 Wet market", "supermarket": "🛒 Fusion / Marketplace",
         "hktvmall": "📦 HKTVmall", "other": "Other",
@@ -301,14 +302,80 @@
       };
       const sourceOrder = ["wet-market", "supermarket", "hktvmall", "other"];
       const key = (it) => (it.item || "").toLowerCase().trim();
+
+      const counts = {};
+      for (const src of sourceOrder) {
+        const g = groups[src];
+        if (!g) continue;
+        let remaining = 0, total = 0;
+        for (const items of Object.values(g)) for (const it of items) {
+          total++; if (!pantry[key(it)]) remaining++;
+        }
+        counts[src] = { remaining, total };
+      }
+      const extrasRemaining = (extras || []).filter((x) => !x.done).length;
+      const extrasTotal = (extras || []).length;
+
+      const showSource = (src) => filter === "all" || filter === src;
+      const showExtras = extrasTotal > 0 && (filter === "all" || filter === "extras");
+
       return (
         <div>
           <p className="text-sm text-warm mb-3">
-            Tap ✓ if you already have it at home. It will stay ticked next week too.
+            Tap ✓ if you already have it at home. Tap a shop below to focus on just that list.
           </p>
+
+          <nav className="sticky top-0 z-10 -mx-4 px-4 py-2 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-2">
+            <button onClick={() => setFilter("all")}
+              className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "bg-ink text-cream ring-ink" : "bg-white text-ink ring-warm/20"}`}>
+              All
+            </button>
+            {sourceOrder.map((src) => {
+              if (!counts[src]) return null;
+              const active = filter === src;
+              const { remaining, total } = counts[src];
+              return (
+                <button key={src} onClick={() => setFilter(src)}
+                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "bg-terra text-cream ring-terra" : "bg-white text-ink ring-warm/20"}`}>
+                  {sourceLabels[src]}
+                  <span className={`ml-1.5 num text-xs ${active ? "text-cream/80" : "text-warm"}`}>{remaining}/{total}</span>
+                </button>
+              );
+            })}
+            {extrasTotal > 0 && (
+              <button onClick={() => setFilter("extras")}
+                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "bg-sage text-cream ring-sage" : "bg-white text-ink ring-warm/20"}`}>
+                ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-cream/80" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
+              </button>
+            )}
+          </nav>
+
+          {showExtras && (
+            <section className="mb-6">
+              <h3 className="font-display text-lg text-sage">➕ Extras</h3>
+              <ul className="mt-2 space-y-1">
+                {(extras || []).map((x) => (
+                  <li key={x.id}
+                    className={`flex items-center gap-3 text-[15px] p-2 rounded-lg ${x.done ? "opacity-40 line-through" : "bg-white/60"}`}>
+                    <button
+                      onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
+                      className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-sm font-bold ${
+                        x.done ? "bg-sage text-white" : "bg-sand text-warm ring-1 ring-warm/20"
+                      }`}>
+                      {x.done ? "✓" : ""}
+                    </button>
+                    <span className="flex-1">{x.item}</span>
+                    <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {sourceOrder.map((src) => {
             const g = groups[src];
             if (!g) return null;
+            if (!showSource(src)) return null;
             return (
               <section key={src} className="mb-6">
                 <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
@@ -450,6 +517,8 @@
       const [plan, setPlan] = useState(null);
       const [upcoming, setUpcoming] = useState([]); // [plan, plan, ...] from today onward
       const [pantry, setPantry] = useState({});
+      const [sources, setSources] = useState({});
+      const [extras, setExtras] = useState([]);
       const [study, setStudy] = useState(null); // { recipe, mealType, date, mealTime, mealServes }
       const [err, setErr] = useState(null);
 
@@ -460,14 +529,18 @@
           try {
             const today = MP.date.hkToday();
             const monday = MP.date.mondayOf(today);
-            const [rs, wp, pa, upc] = await Promise.all([
+            const [rs, wp, pa, upc, sr, ex] = await Promise.all([
               MP.api.getRecipes(), MP.api.getWeekplan(), MP.api.getPantry(),
               MP.api.getWeekplans(monday).catch(() => []),
+              MP.api.getSources().catch(() => ({})),
+              MP.api.getExtras().catch(() => ([])),
             ]);
             setRecipes(rs);
             setPlan(wp);
             setUpcoming(upc || []);
             setPantry(pa || {});
+            setSources(sr || {});
+            setExtras(ex || []);
           } catch (e) { setErr(e.message); }
         })();
       }, []);
@@ -634,6 +707,11 @@
             <ShoppingView
               recipes={recipes} plan={plan} pantry={pantry}
               onToggle={togglePantryItem} lang={lang}
+              sources={sources} extras={extras}
+              onToggleExtra={async (id, done) => {
+                setExtras((xs) => xs.map((x) => x.id === id ? { ...x, done } : x));
+                try { await MP.api.updateExtra(id, { done }); } catch (e) { flash("Save failed", true); }
+              }}
             />
           )}
 

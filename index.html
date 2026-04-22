@@ -138,9 +138,10 @@
       const groups = MP.buildShoppingList(recipes, plan, sources);
       const [newItem, setNewItem] = useState("");
       const [newSource, setNewSource] = useState("supermarket");
+      const [filter, setFilter] = useState("all"); // "all" | source key | "extras"
       const sourceLabels = {
-        "wet-market": "Wet market", "supermarket": "Fusion / Marketplace",
-        "hktvmall": "HKTVmall", "other": "Other",
+        "wet-market": "🥬 Wet market", "supermarket": "🛒 Fusion / Marketplace",
+        "hktvmall": "📦 HKTVmall", "other": "Other",
       };
       const categoryLabels = {
         meat: "Meat & Seafood", produce: "Vegetables & Fruit",
@@ -149,14 +150,58 @@
       };
       const sourceOrder = ["wet-market", "supermarket", "hktvmall", "other"];
       const key = (it) => (it.item || "").toLowerCase().trim();
+
+      // Per-section "remaining" counts so the nav shows how much is left in each shop.
+      const counts = {};
+      for (const src of sourceOrder) {
+        const g = groups[src];
+        if (!g) continue;
+        let remaining = 0, total = 0;
+        for (const items of Object.values(g)) for (const it of items) {
+          total++; if (!pantry[key(it)]) remaining++;
+        }
+        counts[src] = { remaining, total };
+      }
+      const extrasRemaining = (extras || []).filter((x) => !x.done).length;
+      const extrasTotal = (extras || []).length;
+
+      const showExtras = onAddExtra && (filter === "all" || filter === "extras");
+      const showSource = (src) => filter === "all" || filter === src;
+
       return (
         <div>
-          <div className="text-sm text-warm mb-4">
+          <div className="text-sm text-warm mb-3">
             Week of <span className="num">{plan.week_start}</span> · Serves <span className="num">{plan.serves || 4}</span>
-            <div className="mt-1 text-xs">Ticked items are in the pantry already — helper keeps this list current.</div>
+            <div className="mt-1 text-xs">Tap a shop below to focus on just that list. Ticked items are already in the pantry.</div>
           </div>
 
-          {onAddExtra && (
+          {/* Jump / filter nav — sticky so it stays reachable while scrolling */}
+          <nav className="sticky top-0 z-10 -mx-5 px-5 py-3 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-2">
+            <button onClick={() => setFilter("all")}
+              className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "bg-ink text-cream ring-ink" : "bg-white text-ink ring-warm/20"}`}>
+              All
+            </button>
+            {sourceOrder.map((src) => {
+              if (!counts[src]) return null;
+              const active = filter === src;
+              const { remaining, total } = counts[src];
+              return (
+                <button key={src} onClick={() => setFilter(src)}
+                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "bg-terra text-cream ring-terra" : "bg-white text-ink ring-warm/20"}`}>
+                  {sourceLabels[src]}
+                  <span className={`ml-1.5 num text-xs ${active ? "text-cream/80" : "text-warm"}`}>{remaining}/{total}</span>
+                </button>
+              );
+            })}
+            {onAddExtra && extrasTotal > 0 && (
+              <button onClick={() => setFilter("extras")}
+                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "bg-sage text-cream ring-sage" : "bg-white text-ink ring-warm/20"}`}>
+                ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-cream/80" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
+              </button>
+            )}
+          </nav>
+
+          {showExtras && (
             <div className="mb-5 p-3 rounded-xl bg-sand/40">
               <div className="font-display text-base mb-2">➕ Extras (non-recipe)</div>
               <form className="flex flex-wrap gap-2 items-center"
@@ -193,6 +238,7 @@
           {sourceOrder.map((src) => {
             const g = groups[src];
             if (!g) return null;
+            if (!showSource(src)) return null;
             return (
               <div key={src} className="mb-6">
                 <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
