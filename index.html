@@ -332,7 +332,7 @@
       );
     }
 
-    function RecipePreview({ recipe, meal, mealTime, mealServes, planServes, onChange, onUpdate, pantry, onTogglePantry, sources, onSetSource }) {
+    function RecipePreview({ recipe, meal, mealTime, mealServes, planServes, onChange, onUpdate, onEdit, pantry, onTogglePantry, sources, onSetSource }) {
       const img = MP.recipeImage(recipe);
       const effTime = mealTime || MP.schedule.defaultMealTime(meal);
       const effServes = mealServes || planServes || recipe.serves_base || 4;
@@ -443,14 +443,17 @@
               </li>
             ))}
           </ol>
-          <div className="mt-6 flex gap-2">
+          <div className="mt-6 flex gap-2 flex-wrap">
             <button onClick={onChange} className="bg-sand text-ink px-4 py-2 rounded-lg text-sm">Change this meal</button>
+            {onEdit && (
+              <button onClick={onEdit} className="bg-sand text-ink px-4 py-2 rounded-lg text-sm">✏️ Edit recipe</button>
+            )}
           </div>
         </div>
       );
     }
 
-    function RecipeLibrary({ recipes, eatenLog, onOpen, lang }) {
+    function RecipeLibrary({ recipes, eatenLog, onOpen, onNew, lang }) {
       const [q, setQ] = useState("");
       const [cuisine, setCuisine] = useState("all");
       const [mealType, setMealType] = useState("all");
@@ -479,13 +482,16 @@
               {cuisines.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <div className="text-xs text-warm mb-3 num">{filtered.length} of {recipes.length} recipes</div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-xs text-warm num">{filtered.length} of {recipes.length} recipes</div>
+            {onNew && <button onClick={onNew} className="bg-terra text-cream px-3 py-1.5 rounded-lg text-sm">+ New recipe</button>}
+          </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {filtered.map((r) => {
               const le = MP.lastEaten(r.id, eatenLog, today);
               return (
-                <button key={r.id} onClick={() => onOpen(r)}
-                  className="text-left bg-white rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 hover:ring-terra/40 transition">
+                <div key={r.id} className="relative group text-left bg-white rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 hover:ring-terra/40 transition">
+                <button onClick={() => onOpen(r)} className="w-full text-left">
                   {MP.recipeImage(r) && (
                     <img src={MP.recipeImage(r)} alt="" className="w-full h-28 object-cover"
                       onLoad={(e) => {
@@ -515,8 +521,336 @@
                     </div>
                   </div>
                 </button>
+                {onNew && (
+                  <button onClick={(e) => { e.stopPropagation(); onNew(r); }}
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition bg-white/90 text-warm text-xs px-2 py-1 rounded-lg shadow ring-1 ring-warm/20">
+                    ✏️
+                  </button>
+                )}
+                </div>
               );
             })}
+          </div>
+        </div>
+      );
+    }
+
+    // ---------- RecipeForm ----------
+    // create: pass recipe=null
+    // edit:   pass the existing recipe object
+    // onSave(savedRecipe)  — called after successful PUT
+    // onDelete()           — called after successful DELETE
+
+    const BLANK_INGREDIENT = { item: "", amount: "", unit: "g", category: "produce", source: "wet-market", scales: "linear" };
+    const BLANK_STEP = { instruction: "", instruction_tl: "", instruction_il: "" };
+
+    function RecipeForm({ recipe: initRecipe, onSave, onDelete, onCancel }) {
+      const isNew = !initRecipe;
+      const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+
+      const [form, setForm] = useState(() => initRecipe ? { ...initRecipe } : {
+        id: "", name: "", name_tl: "", name_il: "",
+        cuisine: "", meal_type: ["dinner"],
+        serves_base: 4, prep_time_mins: 15, cook_time_mins: 30, active_time_mins: 20,
+        estimated_cost_hkd: "",
+        youtube_url: "", hero_image: "",
+        ingredients: [{ ...BLANK_INGREDIENT }],
+        steps: [{ step: 1, ...BLANK_STEP }],
+        dependencies: [],
+        translations_verified: false,
+      });
+
+      const [busy, setBusy] = useState(false);
+      const [err, setErr] = useState("");
+      const [confirmDel, setConfirmDel] = useState(false);
+      const [showTrans, setShowTrans] = useState(false);
+
+      function setF(k, v) { setForm((f) => ({ ...f, [k]: v })); }
+
+      // ingredients helpers
+      function setIng(i, k, v) {
+        setForm((f) => { const ings = [...f.ingredients]; ings[i] = { ...ings[i], [k]: v }; return { ...f, ingredients: ings }; });
+      }
+      function addIng() { setForm((f) => ({ ...f, ingredients: [...f.ingredients, { ...BLANK_INGREDIENT }] })); }
+      function removeIng(i) { setForm((f) => ({ ...f, ingredients: f.ingredients.filter((_, j) => j !== i) })); }
+
+      // steps helpers
+      function setStep(i, k, v) {
+        setForm((f) => { const ss = [...f.steps]; ss[i] = { ...ss[i], [k]: v }; return { ...f, steps: ss }; });
+      }
+      function addStep() {
+        setForm((f) => ({ ...f, steps: [...f.steps, { step: f.steps.length + 1, ...BLANK_STEP }] }));
+      }
+      function removeStep(i) {
+        setForm((f) => ({ ...f, steps: f.steps.filter((_, j) => j !== i).map((s, j) => ({ ...s, step: j + 1 })) }));
+      }
+
+      // dependencies helpers
+      function setDep(i, k, v) {
+        setForm((f) => { const ds = [...f.dependencies]; ds[i] = { ...ds[i], [k]: v }; return { ...f, dependencies: ds }; });
+      }
+      function addDep() { setForm((f) => ({ ...f, dependencies: [...f.dependencies, { type: "marinate", hours_before: 2 }] })); }
+      function removeDep(i) { setForm((f) => ({ ...f, dependencies: f.dependencies.filter((_, j) => j !== i) })); }
+
+      async function save() {
+        setErr(""); setBusy(true);
+        try {
+          const id = form.id || slug(form.name) || `recipe-${Date.now()}`;
+          const payload = {
+            ...form, id,
+            serves_base: Number(form.serves_base) || 4,
+            prep_time_mins: Number(form.prep_time_mins) || 0,
+            cook_time_mins: Number(form.cook_time_mins) || 0,
+            active_time_mins: Number(form.active_time_mins) || 0,
+            estimated_cost_hkd: form.estimated_cost_hkd ? Number(form.estimated_cost_hkd) : undefined,
+            ingredients: form.ingredients
+              .filter((i) => i.item.trim())
+              .map((i) => ({ ...i, amount: Number(i.amount) || 0 })),
+            steps: form.steps.filter((s) => s.instruction.trim()),
+          };
+          const saved = await MP.api.upsertRecipe(id, payload);
+          onSave(saved || payload);
+        } catch (e) { setErr(e.message); }
+        finally { setBusy(false); }
+      }
+
+      async function del() {
+        setBusy(true);
+        try {
+          await MP.api.deleteRecipe(form.id);
+          onDelete();
+        } catch (e) { setErr(e.message); setBusy(false); }
+      }
+
+      const inputCls = "w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm";
+      const labelCls = "block text-xs uppercase tracking-wide text-warm mb-1";
+
+      return (
+        <div className="space-y-6">
+          {/* Basic info */}
+          <section>
+            <h4 className="font-display text-lg mb-3">Basic info</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="sm:col-span-2">
+                <label className={labelCls}>Recipe name (English) *</label>
+                <input value={form.name} onChange={(e) => {
+                  setF("name", e.target.value);
+                  if (isNew) setF("id", slug(e.target.value));
+                }} className={inputCls} />
+              </div>
+              {isNew && (
+                <div className="sm:col-span-2">
+                  <label className={labelCls}>ID (auto-generated, lowercase-hyphens)</label>
+                  <input value={form.id} onChange={(e) => setF("id", e.target.value)} className={inputCls} />
+                </div>
+              )}
+              <div>
+                <label className={labelCls}>Cuisine</label>
+                <input value={form.cuisine} onChange={(e) => setF("cuisine", e.target.value)}
+                  list="cuisine-list" className={inputCls} />
+                <datalist id="cuisine-list">
+                  {["Filipino","Chinese","Western","Italian","Thai","Japanese","Indian","Korean","Middle Eastern"].map((c) => <option key={c} value={c} />)}
+                </datalist>
+              </div>
+              <div>
+                <label className={labelCls}>Meal type</label>
+                <div className="flex gap-3 pt-1">
+                  {["breakfast","lunch","dinner"].map((m) => (
+                    <label key={m} className="flex items-center gap-1.5 text-sm cursor-pointer">
+                      <input type="checkbox" className="accent-terra"
+                        checked={(form.meal_type || []).includes(m)}
+                        onChange={(e) => setF("meal_type", e.target.checked
+                          ? [...(form.meal_type || []), m]
+                          : (form.meal_type || []).filter((x) => x !== m))} />
+                      {m}
+                    </label>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>Serves (base)</label>
+                <input type="number" min="1" max="20" value={form.serves_base}
+                  onChange={(e) => setF("serves_base", e.target.value)} className={inputCls} />
+              </div>
+              <div className="grid grid-cols-3 gap-2">
+                <div>
+                  <label className={labelCls}>Prep (min)</label>
+                  <input type="number" min="0" value={form.prep_time_mins}
+                    onChange={(e) => setF("prep_time_mins", e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                  <label className={labelCls}>Cook (min)</label>
+                  <input type="number" min="0" value={form.cook_time_mins}
+                    onChange={(e) => setF("cook_time_mins", e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                  <label className={labelCls}>Active (min)</label>
+                  <input type="number" min="0" value={form.active_time_mins}
+                    onChange={(e) => setF("active_time_mins", e.target.value)} className={inputCls} />
+                </div>
+              </div>
+              <div>
+                <label className={labelCls}>Est. cost (HKD)</label>
+                <input type="number" min="0" value={form.estimated_cost_hkd}
+                  onChange={(e) => setF("estimated_cost_hkd", e.target.value)} className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>YouTube URL</label>
+                <input value={form.youtube_url || ""} onChange={(e) => setF("youtube_url", e.target.value)} className={inputCls} />
+              </div>
+              <div>
+                <label className={labelCls}>Hero image URL</label>
+                <input value={form.hero_image || ""} onChange={(e) => setF("hero_image", e.target.value)} className={inputCls} />
+              </div>
+            </div>
+          </section>
+
+          {/* Translations */}
+          <section>
+            <button type="button" onClick={() => setShowTrans((v) => !v)}
+              className="text-sm text-terra underline">
+              {showTrans ? "▲ Hide" : "▼ Show"} Tagalog / Ilocano name translations
+            </button>
+            {showTrans && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+                <div>
+                  <label className={labelCls}>Name — Tagalog</label>
+                  <input value={form.name_tl || ""} onChange={(e) => setF("name_tl", e.target.value)} className={inputCls} />
+                </div>
+                <div>
+                  <label className={labelCls}>Name — Ilocano</label>
+                  <input value={form.name_il || ""} onChange={(e) => setF("name_il", e.target.value)} className={inputCls} />
+                </div>
+              </div>
+            )}
+          </section>
+
+          {/* Dependencies */}
+          <section>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-display text-lg">Dependencies</h4>
+              <button type="button" onClick={addDep}
+                className="text-sm bg-sand text-ink px-3 py-1 rounded-lg">+ Add</button>
+            </div>
+            <p className="text-xs text-warm mb-3">Things that need to happen before cooking starts (marinate, defrost).</p>
+            {(form.dependencies || []).length === 0 && <p className="text-sm text-warm/60 italic">None</p>}
+            {(form.dependencies || []).map((d, i) => (
+              <div key={i} className="flex items-center gap-2 mb-2">
+                <select value={d.type} onChange={(e) => setDep(i, "type", e.target.value)}
+                  className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                  <option value="marinate">Marinate</option>
+                  <option value="defrost">Defrost</option>
+                </select>
+                <input type="number" min="0.5" step="0.5" value={d.hours_before}
+                  onChange={(e) => setDep(i, "hours_before", Number(e.target.value))}
+                  className="w-20 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm" />
+                <span className="text-sm text-warm">hrs before</span>
+                <button type="button" onClick={() => removeDep(i)} className="text-warm/50 hover:text-terra ml-auto">×</button>
+              </div>
+            ))}
+          </section>
+
+          {/* Ingredients */}
+          <section>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-display text-lg">Ingredients</h4>
+              <button type="button" onClick={addIng}
+                className="text-sm bg-sand text-ink px-3 py-1 rounded-lg">+ Add</button>
+            </div>
+            <div className="space-y-2">
+              {/* header row */}
+              <div className="hidden sm:grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 text-xs text-warm uppercase tracking-wide px-1">
+                <span>Item</span><span>Amount</span><span>Unit</span><span>Category</span><span>Shop</span><span>Scales</span><span></span>
+              </div>
+              {form.ingredients.map((ing, i) => (
+                <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-1.5 items-center">
+                  <input value={ing.item} onChange={(e) => setIng(i, "item", e.target.value)}
+                    placeholder="e.g. chicken thigh" className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm" />
+                  <input type="number" value={ing.amount} onChange={(e) => setIng(i, "amount", e.target.value)}
+                    className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm num" />
+                  <select value={ing.unit} onChange={(e) => setIng(i, "unit", e.target.value)}
+                    className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                    {["g","kg","ml","l","tsp","tbsp","cup","oz","lb","whole","cloves","sprigs","bunches"].map((u) => <option key={u}>{u}</option>)}
+                  </select>
+                  <select value={ing.category} onChange={(e) => setIng(i, "category", e.target.value)}
+                    className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                    {["produce","meat","dairy","pantry","bakery","frozen","other"].map((c) => <option key={c}>{c}</option>)}
+                  </select>
+                  <select value={ing.source} onChange={(e) => setIng(i, "source", e.target.value)}
+                    className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                    <option value="wet-market">Wet mkt</option>
+                    <option value="supermarket">Supermarket</option>
+                    <option value="hktvmall">HKTVmall</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <select value={ing.scales} onChange={(e) => setIng(i, "scales", e.target.value)}
+                    className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm">
+                    <option value="linear">Linear</option>
+                    <option value="fixed">Fixed</option>
+                    <option value="taper">Taper</option>
+                  </select>
+                  <button type="button" onClick={() => removeIng(i)} className="text-warm/40 hover:text-terra px-1">×</button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Steps */}
+          <section>
+            <div className="flex items-center justify-between mb-2">
+              <h4 className="font-display text-lg">Steps</h4>
+              <button type="button" onClick={addStep}
+                className="text-sm bg-sand text-ink px-3 py-1 rounded-lg">+ Add</button>
+            </div>
+            <div className="space-y-3">
+              {form.steps.map((s, i) => (
+                <div key={i} className="flex gap-3">
+                  <span className="font-display text-terra text-xl mt-2 min-w-[1.5rem]">{s.step}</span>
+                  <div className="flex-1 space-y-1">
+                    <textarea rows={2} value={s.instruction}
+                      onChange={(e) => setStep(i, "instruction", e.target.value)}
+                      placeholder="Instruction (English)…"
+                      className="w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm resize-y" />
+                    {showTrans && (<>
+                      <textarea rows={1} value={s.instruction_tl || ""}
+                        onChange={(e) => setStep(i, "instruction_tl", e.target.value)}
+                        placeholder="Tagalog…"
+                        className="w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm resize-y" />
+                      <textarea rows={1} value={s.instruction_il || ""}
+                        onChange={(e) => setStep(i, "instruction_il", e.target.value)}
+                        placeholder="Ilocano…"
+                        className="w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm resize-y" />
+                    </>)}
+                  </div>
+                  <button type="button" onClick={() => removeStep(i)}
+                    className="text-warm/40 hover:text-terra mt-2">×</button>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Actions */}
+          {err && <p className="text-sm text-terra">{err}</p>}
+          <div className="flex gap-2 flex-wrap pt-2 border-t border-warm/10">
+            <button type="button" onClick={save} disabled={busy || !form.name.trim()}
+              className="bg-terra text-cream px-5 py-2 rounded-lg text-sm disabled:opacity-50">
+              {busy ? "Saving…" : isNew ? "Create recipe" : "Save changes"}
+            </button>
+            <button type="button" onClick={onCancel}
+              className="bg-sand text-ink px-4 py-2 rounded-lg text-sm">Cancel</button>
+            {!isNew && !confirmDel && (
+              <button type="button" onClick={() => setConfirmDel(true)}
+                className="ml-auto text-sm text-warm/60 hover:text-terra">Delete recipe</button>
+            )}
+            {!isNew && confirmDel && (
+              <div className="ml-auto flex items-center gap-2">
+                <span className="text-sm text-terra">Delete {form.name}?</span>
+                <button type="button" onClick={del} disabled={busy}
+                  className="bg-terra text-cream px-3 py-1.5 rounded-lg text-sm">Yes, delete</button>
+                <button type="button" onClick={() => setConfirmDel(false)}
+                  className="bg-sand text-ink px-3 py-1.5 rounded-lg text-sm">Cancel</button>
+              </div>
+            )}
           </div>
         </div>
       );
@@ -627,6 +961,7 @@ function useNow() {
       const [preview, setPreview] = useState(null); // { dayIdx, meal, recipe }
       const [showShop, setShowShop] = useState(false);
       const [showLibrary, setShowLibrary] = useState(false);
+      const [editRecipe, setEditRecipe] = useState(null); // null=closed, false=new, recipe=edit
       const [showSettings, setShowSettings] = useState(false);
       const [saving, setSaving] = useState(false);
       const [flash, setFlashMsg] = useState("");
@@ -679,6 +1014,22 @@ function useNow() {
         setExtras((xs) => xs.filter((x) => x.id !== id));
         try { await MP.api.removeExtra(id); }
         catch (e) { setFlashMsg("Remove extra failed: " + e.message); }
+      }
+
+      function handleRecipeSaved(saved) {
+        setRecipes((rs) => {
+          const idx = rs.findIndex((r) => r.id === saved.id);
+          return idx >= 0 ? rs.map((r) => r.id === saved.id ? saved : r) : [...rs, saved];
+        });
+        setEditRecipe(null);
+        setFlashMsg(`✓ "${saved.name}" saved.`);
+      }
+
+      function handleRecipeDeleted(id) {
+        setRecipes((rs) => rs.filter((r) => r.id !== id));
+        setEditRecipe(null);
+        setPreview(null);
+        setFlashMsg("Recipe deleted.");
       }
 
       async function setIngredientSource(item, source) {
@@ -1023,13 +1374,27 @@ function useNow() {
                 planServes={plan.serves || 4}
                 onUpdate={({ time, serves }) => setSlotMeta(preview.dayIdx, preview.meal, { time, serves })}
                 onChange={() => { const p = preview; setPreview(null); setPicker({ dayIdx: p.dayIdx, meal: p.meal }); }}
+                onEdit={() => { setEditRecipe(preview.recipe); setPreview(null); }}
               />
             )}
           </Modal>
 
           <Modal open={showLibrary} onClose={() => setShowLibrary(false)} title="Recipe library">
             <RecipeLibrary recipes={recipes} eatenLog={eatenLog} lang={lang}
-              onOpen={(r) => { setShowLibrary(false); setPreview({ dayIdx: 0, meal: (r.meal_type||["dinner"])[0], recipe: r }); }} />
+              onOpen={(r) => { setShowLibrary(false); setPreview({ dayIdx: 0, meal: (r.meal_type||["dinner"])[0], recipe: r }); }}
+              onNew={(r) => { setShowLibrary(false); setEditRecipe(r || false); }} />
+          </Modal>
+
+          <Modal open={editRecipe !== null} onClose={() => setEditRecipe(null)}
+            title={editRecipe ? `Edit — ${editRecipe.name}` : "New recipe"}>
+            {editRecipe !== null && (
+              <RecipeForm
+                recipe={editRecipe || null}
+                onSave={handleRecipeSaved}
+                onDelete={() => handleRecipeDeleted(editRecipe.id)}
+                onCancel={() => setEditRecipe(null)}
+              />
+            )}
           </Modal>
 
           <Modal open={showSettings} onClose={() => setShowSettings(false)} title="Settings">
