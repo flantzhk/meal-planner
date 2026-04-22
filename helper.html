@@ -245,9 +245,9 @@
       if (items.length === 0) return null;
       return (
         <section className="rounded-2xl overflow-hidden shadow-sm mt-4">
-          {/* Dark header band — visually distinct from the sage UpNextBanner */}
-          <div className="bg-ink text-cream px-5 py-3">
-            <div className="text-xs font-semibold uppercase tracking-widest opacity-60">Do this today</div>
+          {/* Warm brown header — distinct from ink (timing), sage (up next), terra (urgent) */}
+          <div className="bg-warm text-cream px-5 py-3">
+            <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Do this today</div>
             <div className="font-display text-xl mt-0.5">Tonight's prep</div>
           </div>
           <div className="bg-sand/60 divide-y divide-warm/10">
@@ -311,12 +311,14 @@
                         "bg-white ring-black/5"
                       }`}>
                         <div className="flex items-baseline justify-between">
-                          <div className="font-display text-lg">
-                            {MP.date.dayName(d.date)}
-                            {isToday && " · Today"}
-                            {isPast && " · Done"}
+                          <div>
+                            <div className="font-display text-lg leading-tight">
+                              {MP.date.dayName(d.date)}
+                              {isToday && <span className="text-terra"> · Today</span>}
+                            </div>
+                            <div className="text-xs text-warm num mt-0.5">{MP.date.prettyDate(d.date)}</div>
                           </div>
-                          <div className="text-xs text-warm num">{MP.date.prettyDate(d.date)}</div>
+                          {isPast && <span className="text-xs text-warm/50 italic">Done</span>}
                         </div>
                         <ul className="mt-2 space-y-1 text-sm">
                           {["breakfast","lunch","dinner"].map((m) => {
@@ -423,7 +425,7 @@
       return (
         <div>
           <p className="text-sm text-warm mb-3">
-            Tap 'Got it' to mark items you already have. They'll move to the bottom.
+            Tick ✓ items you already have at home. They'll move to the bottom.
           </p>
 
           {/* Change 4: Search input */}
@@ -475,17 +477,16 @@
                   const has = !!pantry[key(it)];
                   return (
                     <li key={i} className={`flex items-center gap-3 text-sm p-4 rounded-lg bg-white`}>
-                      {/* Change 5: Got it pill button */}
                       <button
                         aria-label={has ? "Mark as need to buy" : "Mark as already have"}
                         onClick={() => onToggle(key(it), !has)}
-                        className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition ${
-                          has ? "bg-sage/20 text-sage border-sage/40" : "bg-white text-warm border-warm/30"
+                        className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${
+                          has ? "bg-sage border-sage text-white" : "border-warm/40 bg-white"
                         }`}>
-                        {has ? "✓ Got it" : "Got it"}
+                        {has && <span className="text-sm font-bold leading-none">✓</span>}
                       </button>
                       <span className="num text-warm min-w-[5rem]">
-                        {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                        {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
                       </span>
                       <span className="flex-1">{it.item}</span>
                       <span className="text-xs text-warm/60">{sourceLabels[it._src] || it._src}</span>
@@ -513,8 +514,7 @@
                             <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white">
                               <button
                                 onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
-                                className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-white text-warm border-warm/30">
-                                Got it
+                                className="shrink-0 w-7 h-7 rounded-full border-2 border-warm/40 bg-white flex items-center justify-center transition">
                               </button>
                               <span className="flex-1">{x.item}</span>
                               <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
@@ -523,14 +523,14 @@
                         </ul>
                         {checked.length > 0 && (
                           <details className="mt-2">
-                            <summary className="text-xs text-warm cursor-pointer">Got it ({checked.length})</summary>
+                            <summary className="text-xs text-warm cursor-pointer">Already have ({checked.length})</summary>
                             <ul className="mt-1 space-y-1">
                               {checked.map((x) => (
                                 <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
                                   <button
                                     onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
-                                    className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-sage/20 text-sage border-sage/40">
-                                    ✓ Got it
+                                    className="shrink-0 w-7 h-7 rounded-full border-2 bg-sage border-sage text-white flex items-center justify-center transition">
+                                    <span className="text-sm font-bold leading-none">✓</span>
                                   </button>
                                   <span className="flex-1">{x.item}</span>
                                   <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
@@ -567,11 +567,10 @@
                                   <button
                                     aria-label="Mark as already have"
                                     onClick={() => onToggle(key(it), true)}
-                                    className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-white text-warm border-warm/30">
-                                    Got it
+                                    className="shrink-0 w-7 h-7 rounded-full border-2 border-warm/40 bg-white flex items-center justify-center transition">
                                   </button>
                                   <span className="num text-warm min-w-[5rem]">
-                                    {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                                    {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
                                   </span>
                                   <span>{it.item}</span>
                                 </li>
@@ -581,18 +580,18 @@
                           {/* Change 5: checked items in collapsed details at bottom */}
                           {checked.length > 0 && (
                             <details>
-                              <summary className="text-xs text-warm cursor-pointer mt-2">Got it ({checked.length})</summary>
+                              <summary className="text-xs text-warm cursor-pointer mt-2">Already have ({checked.length})</summary>
                               <ul className="mt-1 space-y-1">
                                 {checked.map((it, i) => (
                                   <li key={i} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
                                     <button
                                       aria-label="Mark as need to buy"
                                       onClick={() => onToggle(key(it), false)}
-                                      className="shrink-0 px-2 py-0.5 rounded-full text-xs font-semibold border transition bg-sage/20 text-sage border-sage/40">
-                                      ✓ Got it
+                                      className="shrink-0 w-7 h-7 rounded-full border-2 bg-sage border-sage text-white flex items-center justify-center transition">
+                                      <span className="text-sm font-bold leading-none">✓</span>
                                     </button>
                                     <span className="num text-warm min-w-[5rem]">
-                                      {Number(it.amount.toFixed(2)).toString()} {it.unit}
+                                      {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
                                     </span>
                                     <span>{it.item}</span>
                                   </li>
@@ -675,7 +674,7 @@
         const mealTime = day[m + "_time"];
         const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(m));
         const sched = MP.schedule.forMeal(m, r, { mealTime });
-        options.push({ meal: m, recipe: r, serveMin, startMin: sched.startMin });
+        options.push({ meal: m, recipe: r, serveMin, startMin: sched.startMin, flagEarly: sched.flagEarly });
       }
       const nextMeal = options.find((o) => o.serveMin > nowMin);
       if (!nextMeal) {
@@ -687,8 +686,27 @@
       }
       const minsToStart = nextMeal.startMin - nowMin;
       const minsToServe = nextMeal.serveMin - nowMin;
-      const overdue = minsToStart <= 0;
       const emoji = nextMeal.meal === "breakfast" ? "🍳" : nextMeal.meal === "lunch" ? "🥗" : "🍽️";
+
+      // Overnight-prep meal: a completely different state — warm brown, not sage/terra
+      if (nextMeal.flagEarly) {
+        return (
+          <div className="mb-5 rounded-2xl overflow-hidden shadow-sm">
+            <div className="bg-warm text-cream px-5 py-3">
+              <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Needs overnight prep</div>
+              <div className="font-display text-2xl leading-tight mt-0.5">
+                {emoji} {MP.i18n.recipeName(nextMeal.recipe, lang)}
+              </div>
+            </div>
+            <div className="bg-white px-5 py-3">
+              <p className="text-sm text-ink">This meal needs preparation that should have started yesterday. Check with Faith before cooking.</p>
+              <p className="text-sm text-warm mt-1 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}</p>
+            </div>
+          </div>
+        );
+      }
+
+      const overdue = minsToStart <= 0;
       const action = overdue
         ? "Start cooking now"
         : minsToStart < 60
@@ -696,7 +714,7 @@
           : `Start cooking at ${MP.schedule.fmtTime(nextMeal.startMin)}`;
       return (
         <div className={`mb-5 rounded-2xl overflow-hidden shadow-sm ${overdue ? "ring-2 ring-terra" : ""}`}>
-          {/* Coloured top band: sage when upcoming, terra when overdue */}
+          {/* sage = on track, terra = overdue */}
           <div className={`px-5 py-3 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
             <div className="text-xs font-semibold uppercase tracking-widest opacity-80">
               {overdue ? "⚡ Cook now" : "Up next"}
@@ -705,7 +723,6 @@
               {emoji} {MP.i18n.recipeName(nextMeal.recipe, lang)}
             </div>
           </div>
-          {/* Action detail row */}
           <div className="bg-white px-5 py-3 flex items-center justify-between gap-4">
             <div>
               <div className={`font-semibold text-base ${overdue ? "text-terra" : "text-ink"}`}>{action}</div>

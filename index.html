@@ -615,7 +615,16 @@
       const isNew = !initRecipe;
       const slug = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 
-      const [form, setForm] = useState(() => initRecipe ? { ...initRecipe } : {
+      const [form, setForm] = useState(() => initRecipe ? {
+        ...initRecipe,
+        // Normalise fields that may be null/missing in KV data
+        ingredients: initRecipe.ingredients && initRecipe.ingredients.length > 0
+          ? initRecipe.ingredients : [{ ...BLANK_INGREDIENT }],
+        steps: initRecipe.steps && initRecipe.steps.length > 0
+          ? initRecipe.steps : [{ step: 1, ...BLANK_STEP }],
+        dependencies: initRecipe.dependencies || [],
+        meal_type: initRecipe.meal_type || ["dinner"],
+      } : {
         id: "", name: "", name_tl: "", name_il: "",
         cuisine: "", meal_type: ["dinner"],
         serves_base: 4, prep_time_mins: 15, cook_time_mins: 30, active_time_mins: 20,
@@ -826,7 +835,7 @@
             </div>
             {/* Mobile stacked cards */}
             <div className="sm:hidden space-y-3">
-              {form.ingredients.map((ing, i) => (
+              {(form.ingredients || []).map((ing, i) => (
                 <div key={i} className="bg-sand/30 rounded-xl p-3 space-y-2">
                   <div className="flex gap-2">
                     <input value={ing.item} onChange={(e) => setIng(i, "item", e.target.value)} placeholder="Item name" className="flex-1 rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm" />
@@ -863,7 +872,7 @@
               <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-2 text-xs text-warm uppercase tracking-wide px-1">
                 <span>Item</span><span>Amount</span><span>Unit</span><span>Category</span><span>Shop</span><span>Scales</span><span></span>
               </div>
-              {form.ingredients.map((ing, i) => (
+              {(form.ingredients || []).map((ing, i) => (
                 <div key={i} className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_auto] gap-1.5 items-center">
                   <input value={ing.item} onChange={(e) => setIng(i, "item", e.target.value)}
                     placeholder="e.g. chicken thigh" className="rounded-lg border border-warm/20 bg-white px-2 py-1.5 text-sm" />
@@ -904,7 +913,7 @@
                 className="text-sm bg-sand text-ink px-3 py-1 rounded-lg">+ Add</button>
             </div>
             <div className="space-y-3">
-              {form.steps.map((s, i) => (
+              {(form.steps || []).map((s, i) => (
                 <div key={i} className="flex gap-3">
                   <span className="font-display text-terra text-xl mt-2 min-w-[1.5rem]">{s.step}</span>
                   <div className="flex-1 space-y-1">
