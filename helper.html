@@ -65,9 +65,7 @@
       );
     }
 
-    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onFeedback, onVerify }) {
-      const [note, setNote] = useState("");
-      const [showNote, setShowNote] = useState(false);
+    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onVerify }) {
       const sched = MP.schedule.forMeal(mealType, recipe, { mealTime });
       const name = MP.i18n.recipeName(recipe, lang);
       const servedAtLabel = MP.schedule.fmtTime(MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(mealType)));
@@ -154,24 +152,6 @@
                 </li>
               ))}
             </ol>
-
-            <div className="mt-6 flex items-center gap-2">
-              <button onClick={() => onFeedback(recipe.id, mealType, 1, "")}
-                className="px-4 py-2 rounded-full bg-sage/20 text-sage font-medium">👍 {t(lang, "loved")}</button>
-              <button onClick={() => onFeedback(recipe.id, mealType, -1, "")}
-                className="px-4 py-2 rounded-full bg-terra/10 text-terra font-medium">👎 {t(lang, "disliked")}</button>
-              <button onClick={() => setShowNote((v) => !v)}
-                className="px-4 py-2 rounded-full bg-sand text-warm font-medium">💬 {t(lang, "comment")}</button>
-            </div>
-            {showNote && (
-              <div className="mt-3 flex gap-2">
-                <input value={note} onChange={(e) => setNote(e.target.value)}
-                  className="flex-1 rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm"
-                  placeholder="…" />
-                <button onClick={() => { if (note.trim()) { onFeedback(recipe.id, mealType, 0, note); setNote(""); setShowNote(false); } }}
-                  className="px-4 py-2 rounded-lg bg-ink text-cream text-sm">{t(lang, "save")}</button>
-              </div>
-            )}
 
             {!recipe.translations_verified && lang !== "en" && (
               <button onClick={() => onVerify(recipe.id)}
@@ -373,11 +353,12 @@
     function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
       const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
       if (tasks.length === 0) return null;
-      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook" };
+      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook", serve: "🍽️ Serve" };
       const kindClass = {
         defrost: "bg-sky-100 text-sky-900",
         marinate: "bg-amber-100 text-amber-900",
         cook: "bg-terra/20 text-terra",
+        serve: "bg-sage/20 text-sage",
       };
       return (
         <section className="bg-white/70 rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
@@ -537,14 +518,6 @@
         return n;
       }, [recipes, plan, pantry]);
 
-      async function feedback(recipe_id, meal, rating, note) {
-        try {
-          await MP.api.postFeedback({ date: today, recipe_id, meal, rating, note });
-          const msg = rating > 0 ? "👍 Thanks!" : rating < 0 ? "👎 Noted." : "💬 Saved.";
-          flash(msg);
-        } catch (e) { flash("Could not save: " + e.message, true); }
-      }
-
       async function verify(recipeId) {
         try {
           const r = recipesById[recipeId];
@@ -637,7 +610,7 @@
                       lang={lang} today={today}
                       mealTime={todayDay[meal + "_time"]}
                       mealServes={mealServes}
-                      onFeedback={feedback} onVerify={verify}
+                      onVerify={verify}
                     />
                   );
                 })}

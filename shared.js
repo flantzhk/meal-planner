@@ -288,7 +288,9 @@
   };
 
   // ---------- Start time / scheduling ----------
-  const MEAL_TIME = { breakfast: 7.5 * 60, lunch: 12 * 60, dinner: 18 * 60 };
+  // Default serve times (HK). Breakfast 7:15am, lunch 12:00pm, dinner 6:30pm.
+  // Faith can override per-meal in the planner via day[meal+"_time"].
+  const MEAL_TIME = { breakfast: 7 * 60 + 15, lunch: 12 * 60, dinner: 18 * 60 + 30 };
   const HELPER_START_MIN = 7 * 60;
 
   function fmtTime(minutesFromMidnight) {
@@ -354,6 +356,7 @@
         const r = recipesById[id]; if (!r) continue;
         const mealTime = day[m + "_time"];
         const sched = MP.schedule.forMeal(m, r, { mealTime });
+        const serveMin = parseHM(mealTime) ?? MEAL_TIME[m];
         // Cook-start reminder
         tasks.push({
           at: Math.max(0, sched.startMin),
@@ -363,6 +366,15 @@
           recipeId: r.id,
           priority: 2,
           flagEarly: sched.flagEarly,
+        });
+        // Serve reminder
+        tasks.push({
+          at: serveMin,
+          label: `Serve ${r.name}`,
+          kind: "serve",
+          meal: m,
+          recipeId: r.id,
+          priority: 3,
         });
         // Dependencies that fall on the same day
         for (const d of r.dependencies || []) {

@@ -432,25 +432,7 @@
       );
     }
 
-    function Feedback({ date }) {
-      const [items, setItems] = useState(null);
-      useEffect(() => { MP.api.getFeedback(date).then(setItems).catch(() => setItems([])); }, [date]);
-      if (!items) return null;
-      if (items.length === 0) return <p className="text-sm text-warm">No feedback yet this week.</p>;
-      return (
-        <ul className="space-y-2">
-          {items.map((f, i) => (
-            <li key={i} className="text-sm">
-              <span className="num text-warm">{f.date}</span> · {f.meal} ·{" "}
-              {f.rating > 0 ? "👍" : f.rating < 0 ? "👎" : "💬"} {f.recipe_id}
-              {f.note ? <span className="text-warm italic"> — {f.note}</span> : null}
-            </li>
-          ))}
-        </ul>
-      );
-    }
-
-    function useNow() {
+function useNow() {
       const [now, setNow] = useState(() => MP.date.hkNowMin());
       useEffect(() => {
         const id = setInterval(() => setNow(MP.date.hkNowMin()), 30 * 1000);
@@ -732,11 +714,7 @@
             </table>
           </div>
 
-          <section className="mt-10 grid md:grid-cols-2 gap-6">
-            <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
-              <h2 className="font-display text-xl mb-3">This week's feedback</h2>
-              <Feedback date={plan.days[0]?.date || today} />
-            </div>
+          <section className="mt-10">
             <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
               <h2 className="font-display text-xl mb-3">Tip</h2>
               <p className="text-sm text-warm leading-relaxed">
