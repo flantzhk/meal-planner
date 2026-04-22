@@ -587,6 +587,10 @@
         } finally { setSaving(false); }
       }
 
+      // All hooks MUST be above the early returns so React's hook count stays
+      // consistent between loading and loaded renders.
+      const nowMin = useNow();
+
       if (err) {
         return (
           <div className="max-w-xl mx-auto p-6">
@@ -602,7 +606,6 @@
       if (!recipes || !plan) return <div className="p-6 text-warm">Loading…</div>;
 
       const today = MP.date.hkToday();
-      const nowMin = useNow();
       const clockStr = MP.date.hkNowClock("en");
       const currentMeal = MP.date.currentMeal();
       const todayDay = plan.days.find((d) => d.date === today);
