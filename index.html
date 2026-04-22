@@ -441,6 +441,60 @@ function useNow() {
       return now;
     }
 
+    function TodayTimeline({ day, nextDay, recipesById, nowMin }) {
+      const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
+      if (tasks.length === 0) {
+        return (
+          <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+            <h2 className="font-display text-xl mb-1">⏱ Today's schedule</h2>
+            <p className="text-sm text-warm">Nothing planned for today yet.</p>
+          </div>
+        );
+      }
+      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook", serve: "🍽️ Serve" };
+      const kindClass = {
+        defrost: "bg-sky-100 text-sky-900",
+        marinate: "bg-amber-100 text-amber-900",
+        cook: "bg-terra/20 text-terra",
+        serve: "bg-sage/20 text-sage",
+      };
+      return (
+        <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
+          <h2 className="font-display text-xl mb-3">⏱ Today's schedule</h2>
+          <ol className="space-y-2">
+            {tasks.map((t, i) => {
+              const past = t.at <= nowMin;
+              const upNext = !past && tasks.slice(0, i).every((x) => x.at <= nowMin);
+              return (
+                <li key={i}
+                  className={`flex items-start gap-3 p-2 rounded-lg ${
+                    upNext ? "bg-terra/10 ring-1 ring-terra" :
+                    past ? "opacity-40" : ""
+                  }`}>
+                  <div className="num text-warm min-w-[5rem] pt-0.5">
+                    {MP.schedule.fmtTime(t.at)}
+                  </div>
+                  <div className="flex-1">
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[t.kind]}`}>
+                      {kindLabel[t.kind]}
+                    </span>
+                    <span className={past ? "line-through" : ""}>{t.label}</span>
+                    {t.flagEarly && !past && (
+                      <div className="text-xs text-terra mt-0.5">⚠ Start earlier than usual</div>
+                    )}
+                  </div>
+                  {upNext && <span className="text-xs text-terra font-semibold self-center">← next</span>}
+                </li>
+              );
+            })}
+          </ol>
+          <p className="text-xs text-warm mt-4 leading-relaxed">
+            Send the helper: <code className="text-xs bg-sand px-1 py-0.5 rounded">…/helper.html</code>
+          </p>
+        </div>
+      );
+    }
+
     function App() {
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
@@ -594,6 +648,8 @@ function useNow() {
       const todayRecipe = todayDay && todayDay[currentMeal] ? recipesById[todayDay[currentMeal]] : null;
       const todayRecipeSched = todayRecipe ? MP.schedule.forMeal(currentMeal, todayRecipe, { mealTime: todayDay && todayDay[currentMeal + "_time"] }) : null;
       const todayMealTime = todayDay ? (todayDay[currentMeal + "_time"] || MP.schedule.defaultMealTime(currentMeal)) : null;
+      const tomorrowDay = todayDay ? plan.days.find((d) => d.date === MP.date.addDays(today, 1)) : null;
+      const nowMin = MP.date.hkNowMin();
 
       return (
         <main className="max-w-[1400px] mx-auto px-6 pt-6 pb-16">
@@ -696,10 +752,20 @@ function useNow() {
                                   <span className="num">{sched.startTime}</span>
                                   <span className="flex items-center gap-1">
                                     {servesOverride && <span className="num text-warm bg-sand px-1.5 rounded" title="Custom serves">{servesOverride}p</span>}
-                                    {inConflict && <span title="Stove conflict" className="text-terra">⚠</span>}
-                                    {sched.flagEarly && <span title="Start previous day" className="text-amber-700">🌙</span>}
+                                    {inConflict && <span className="text-terra">⚠</span>}
+                                    {sched.flagEarly && <span className="text-amber-700">🌙</span>}
                                   </span>
                                 </div>
+                                {inConflict && (
+                                  <div className="text-[11px] text-terra mt-1 leading-snug">
+                                    ⚠ Stove clash with {conflicts.flat().filter((m) => m !== meal)[0]} — shuffle or simplify.
+                                  </div>
+                                )}
+                                {sched.flagEarly && !inConflict && (
+                                  <div className="text-[11px] text-amber-700 mt-1 leading-snug">
+                                    🌙 Start the night before (defrost / long marinate).
+                                  </div>
+                                )}
                               </div>
                             ) : (
                               <div className="text-warm text-sm">+ pick</div>
@@ -714,16 +780,11 @@ function useNow() {
             </table>
           </div>
 
-          <section className="mt-10">
-            <div className="bg-white/70 rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
-              <h2 className="font-display text-xl mb-3">Tip</h2>
-              <p className="text-sm text-warm leading-relaxed">
-                ⚠ next to a meal means two recipes need the stove at the same time — rearrange or simplify one.{" "}
-                🌙 means start the night before or defrost today (check the helper's "Prep for tomorrow" panel).
-                Send the helper: <code className="text-xs bg-sand px-1 py-0.5 rounded">…/helper.html</code>
-              </p>
-            </div>
-          </section>
+          {todayDay && (
+            <section className="mt-10">
+              <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />
+            </section>
+          )}
 
           <Modal open={!!picker} onClose={() => setPicker(null)}
             title={picker ? `${plan.days[picker.dayIdx].day} — ${picker.meal}` : ""}>
