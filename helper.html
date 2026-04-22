@@ -522,6 +522,21 @@
         return (plan.days || []).find((d) => d.date === tmr);
       }, [plan, today]);
 
+      // MUST be declared before any early returns so hook count stays stable.
+      const needCount = useMemo(() => {
+        if (!recipes || !plan) return 0;
+        const g = MP.buildShoppingList(recipes, plan);
+        let n = 0;
+        for (const src of Object.values(g)) {
+          for (const cat of Object.values(src)) {
+            for (const it of cat) {
+              if (!pantry[(it.item || "").toLowerCase().trim()]) n++;
+            }
+          }
+        }
+        return n;
+      }, [recipes, plan, pantry]);
+
       async function feedback(recipe_id, meal, rating, note) {
         try {
           await MP.api.postFeedback({ date: today, recipe_id, meal, rating, note });
@@ -576,20 +591,6 @@
           ingredients: r.ingredients.map((i) => MP.scale(i, s, r.serves_base || 4)),
         };
       }
-
-      const needCount = useMemo(() => {
-        if (!recipes || !plan) return 0;
-        const g = MP.buildShoppingList(recipes, plan);
-        let n = 0;
-        for (const src of Object.values(g)) {
-          for (const cat of Object.values(src)) {
-            for (const it of cat) {
-              if (!pantry[(it.item || "").toLowerCase().trim()]) n++;
-            }
-          }
-        }
-        return n;
-      }, [recipes, plan, pantry]);
 
       return (
         <main className="max-w-xl mx-auto px-4 pt-6 pb-16">
