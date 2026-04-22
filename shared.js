@@ -73,6 +73,21 @@
       }).format(new Date());
       return parseInt(s, 10);
     },
+    // Hong Kong current minutes-from-midnight
+    hkNowMin() {
+      const parts = new Intl.DateTimeFormat("en-GB", {
+        timeZone: "Asia/Hong_Kong", hour: "2-digit", minute: "2-digit", hour12: false,
+      }).formatToParts(new Date());
+      const h = parseInt(parts.find((p) => p.type === "hour").value, 10);
+      const m = parseInt(parts.find((p) => p.type === "minute").value, 10);
+      return h * 60 + m;
+    },
+    hkNowClock(lang) {
+      const fmt = new Intl.DateTimeFormat(lang === "en" ? "en-US" : "en-GB", {
+        timeZone: "Asia/Hong_Kong", hour: "numeric", minute: "2-digit", hour12: true,
+      });
+      return fmt.format(new Date());
+    },
     // Which meal is "now" based on HK hour: before 10 → breakfast, before 3pm → lunch, else dinner
     currentMeal() {
       const h = MP.date.hkHour();
@@ -325,6 +340,78 @@
       };
     },
     fmtTime,
+    // Build an ordered timeline of tasks for today: defrost alerts (from today's
+    // recipes AND tomorrow's), marinate prep (today's only, since same-day), and
+    // start-cooking reminders. Each task: { at: minutes, label, kind, meal }.
+    // Returns only tasks in the current day (00:00–23:59); same-day tasks
+    // that cross midnight are represented with `at` clamped to 0 and flag=true.
+    buildDayTasks(day, nextDay, recipesById, opts = {}) {
+      const tasks = [];
+      const meals = ["breakfast", "lunch", "dinner"];
+      // Today's meals
+      for (const m of meals) {
+        const id = day[m]; if (!id) continue;
+        const r = recipesById[id]; if (!r) continue;
+        const mealTime = day[m + "_time"];
+        const sched = MP.schedule.forMeal(m, r, { mealTime });
+        // Cook-start reminder
+        tasks.push({
+          at: Math.max(0, sched.startMin),
+          label: `Start cooking ${r.name}`,
+          kind: "cook",
+          meal: m,
+          recipeId: r.id,
+          priority: 2,
+          flagEarly: sched.flagEarly,
+        });
+        // Dependencies that fall on the same day
+        for (const d of r.dependencies || []) {
+          if (d.type === "marinate") {
+            const at = sched.startMin - d.hours_before * 60;
+            tasks.push({
+              at: Math.max(0, at),
+              label: `Start marinating ${r.name}`,
+              kind: "marinate",
+              meal: m,
+              recipeId: r.id,
+              priority: 1,
+              flagEarly: at < 0,
+            });
+          }
+        }
+      }
+      // Tomorrow's recipes may need action today (defrost, long marinate)
+      if (nextDay) {
+        for (const m of meals) {
+          const id = nextDay[m]; if (!id) continue;
+          const r = recipesById[id]; if (!r) continue;
+          for (const d of r.dependencies || []) {
+            if (d.type === "defrost" && d.hours_before >= 12) {
+              tasks.push({
+                at: 8 * 60, // 08:00 today
+                label: `Take ${r.name} out of freezer (for tomorrow's ${m})`,
+                kind: "defrost",
+                meal: m,
+                recipeId: r.id,
+                priority: 0,
+              });
+            }
+            if (d.type === "marinate" && d.hours_before >= 12) {
+              tasks.push({
+                at: 20 * 60, // 08:00pm tonight — rough
+                label: `Start marinating ${r.name} tonight (for tomorrow's ${m})`,
+                kind: "marinate",
+                meal: m,
+                recipeId: r.id,
+                priority: 0,
+              });
+            }
+          }
+        }
+      }
+      tasks.sort((a, b) => a.at - b.at || a.priority - b.priority);
+      return tasks;
+    },
     // Detect overlapping active cook windows for a day's meals (stove conflict).
     dayConflicts(day, recipesById) {
       const slots = [];
@@ -372,6 +459,14 @@
   MP.youtubeThumb = function youtubeThumb(url, quality = "maxresdefault") {
     const id = MP.youtubeId(url);
     return id ? `https://img.youtube.com/vi/${id}/${quality}.jpg` : null;
+  };
+
+  // YouTube's "no thumbnail" placeholder is a fixed 120x90 image served at
+  // 200 OK. onError won't fire for it, so detect by natural dimensions.
+  MP.isYoutubePlaceholder = function isYoutubePlaceholder(imgEl) {
+    if (!imgEl) return false;
+    const w = imgEl.naturalWidth, h = imgEl.naturalHeight;
+    return (w === 120 && h === 90);
   };
 
   // Best image for a recipe card: YouTube thumbnail if we have a real video,

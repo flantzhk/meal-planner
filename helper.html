@@ -78,6 +78,13 @@
           {MP.recipeImage(recipe) && (
             <img src={MP.recipeImage(recipe)} alt={recipe.name}
               className="w-full h-44 object-cover"
+              onLoad={(e) => {
+                if (!MP.isYoutubePlaceholder(e.target)) return;
+                const src = e.target.src;
+                if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
+                if (recipe.hero_image && src !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                e.target.style.display = "none";
+              }}
               onError={(e) => {
                 // maxresdefault doesn't exist for every video; fall back to hqdefault, then hide.
                 const src = e.target.src;
@@ -354,6 +361,102 @@
       );
     }
 
+    function useNow() {
+      const [now, setNow] = useState(() => MP.date.hkNowMin());
+      useEffect(() => {
+        const id = setInterval(() => setNow(MP.date.hkNowMin()), 30 * 1000);
+        return () => clearInterval(id);
+      }, []);
+      return now;
+    }
+
+    function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
+      const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
+      if (tasks.length === 0) return null;
+      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook" };
+      const kindClass = {
+        defrost: "bg-sky-100 text-sky-900",
+        marinate: "bg-amber-100 text-amber-900",
+        cook: "bg-terra/20 text-terra",
+      };
+      return (
+        <section className="bg-white/70 rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
+          <h3 className="font-display text-lg mb-3">⏱ Today's schedule</h3>
+          <ol className="space-y-2">
+            {tasks.map((t, i) => {
+              const past = t.at <= nowMin;
+              const upNext = !past && tasks.slice(0, i).every((x) => x.at <= nowMin);
+              return (
+                <li key={i}
+                  className={`flex items-start gap-3 p-2 rounded-lg ${
+                    upNext ? "bg-terra/10 ring-1 ring-terra" :
+                    past ? "opacity-40" : ""
+                  }`}>
+                  <div className="num text-warm min-w-[4.5rem] pt-0.5">
+                    {MP.schedule.fmtTime(t.at)}
+                  </div>
+                  <div className="flex-1">
+                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[t.kind]}`}>
+                      {kindLabel[t.kind]}
+                    </span>
+                    <span className={past ? "line-through" : ""}>{t.label}</span>
+                    {t.flagEarly && !past && (
+                      <div className="text-xs text-terra mt-0.5">⚠ Start earlier than usual</div>
+                    )}
+                  </div>
+                  {upNext && <span className="text-xs text-terra font-semibold self-center">← next</span>}
+                </li>
+              );
+            })}
+          </ol>
+        </section>
+      );
+    }
+
+    function UpNextBanner({ day, recipesById, nowMin, lang }) {
+      if (!day) return null;
+      // Find the next upcoming meal by serve-time
+      const meals = ["breakfast", "lunch", "dinner"];
+      const options = [];
+      for (const m of meals) {
+        if (!day[m]) continue;
+        const r = recipesById[day[m]]; if (!r) continue;
+        const mealTime = day[m + "_time"];
+        const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(m));
+        const sched = MP.schedule.forMeal(m, r, { mealTime });
+        options.push({ meal: m, recipe: r, serveMin, startMin: sched.startMin });
+      }
+      const nextMeal = options.find((o) => o.serveMin > nowMin);
+      if (!nextMeal) {
+        return (
+          <div className="mb-4 p-3 rounded-xl bg-sand/60 text-sm text-warm">
+            🌙 All meals served for today. Rest up!
+          </div>
+        );
+      }
+      const minsToStart = nextMeal.startMin - nowMin;
+      const minsToServe = nextMeal.serveMin - nowMin;
+      const emoji = nextMeal.meal === "breakfast" ? "🍳" : nextMeal.meal === "lunch" ? "🥗" : "🍽️";
+      const startMsg =
+        minsToStart <= 0 ? `⚡ Start cooking now — should already be on the stove`
+        : minsToStart < 60 ? `Start cooking in ${minsToStart} min (at ${MP.schedule.fmtTime(nextMeal.startMin)})`
+        : `Start cooking at ${MP.schedule.fmtTime(nextMeal.startMin)}`;
+      return (
+        <div className={`mb-4 p-4 rounded-2xl ring-1 ${minsToStart <= 0 ? "bg-terra/15 ring-terra text-ink" : "bg-sage/15 ring-sage/40 text-ink"}`}>
+          <div className="text-xs uppercase tracking-wide text-warm">Up next</div>
+          <div className="font-display text-xl mt-1">
+            {emoji} {MP.i18n.meals[lang][nextMeal.meal]} — {MP.i18n.recipeName(nextMeal.recipe, lang)}
+          </div>
+          <div className="text-sm text-warm mt-1">
+            Serve at <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span> ({minsToServe} min)
+          </div>
+          <div className={`text-sm mt-0.5 ${minsToStart <= 0 ? "text-terra font-semibold" : "text-warm"}`}>
+            {startMsg}
+          </div>
+        </div>
+      );
+    }
+
     function App() {
       const [lang, setLang] = useState(langStore());
       const [tab, setTab] = useState("today"); // "today" | "coming" | "shop"
@@ -400,6 +503,8 @@
       }
 
       const today = MP.date.hkToday();
+      const nowMin = useNow();
+      const clockStr = MP.date.hkNowClock(lang);
       const recipesById = useMemo(() => {
         const m = {};
         (recipes || []).forEach((r) => { m[r.id] = r; });
@@ -494,6 +599,7 @@
               <h1 className="font-display text-3xl leading-tight">
                 {MP.date.dayName(today, lang)}, {MP.date.prettyDate(today, lang)}
               </h1>
+              <div className="font-display text-2xl text-terra num mt-1">🕐 {clockStr}</div>
             </div>
             <LangToggle lang={lang} onChange={setLang} />
           </header>
@@ -515,6 +621,8 @@
 
           {tab === "today" && (
             <>
+              <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+              <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
               <div className="space-y-5">
                 {["breakfast", "lunch", "dinner"].map((meal) => {
                   const id = todayDay[meal];

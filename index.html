@@ -102,6 +102,14 @@
                   className={`text-left bg-white rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 hover:ring-terra/40 transition ${used ? "opacity-60" : ""}`}>
                   {MP.recipeImage(r) && (
                     <img src={MP.recipeImage(r)} alt="" className="w-full h-28 object-cover"
+                         onLoad={(e) => {
+                           if (MP.isYoutubePlaceholder(e.target)) {
+                             const src = e.target.src;
+                             if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
+                             if (r.hero_image && src !== r.hero_image) { e.target.src = r.hero_image; return; }
+                             e.target.style.display = "none";
+                           }
+                         }}
                          onError={(e) => {
                            const src = e.target.src;
                            if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
@@ -240,6 +248,13 @@
         <div>
           {img && (
             <img src={img} alt="" className="w-full h-48 object-cover rounded-xl mb-4"
+              onLoad={(e) => {
+                if (!MP.isYoutubePlaceholder(e.target)) return;
+                const s = e.target.src;
+                if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                e.target.style.display = "none";
+              }}
               onError={(e) => {
                 const s = e.target.src;
                 if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
@@ -353,6 +368,13 @@
                   className="text-left bg-white rounded-xl overflow-hidden shadow-sm ring-1 ring-black/5 hover:ring-terra/40 transition">
                   {MP.recipeImage(r) && (
                     <img src={MP.recipeImage(r)} alt="" className="w-full h-28 object-cover"
+                      onLoad={(e) => {
+                        if (!MP.isYoutubePlaceholder(e.target)) return;
+                        const s = e.target.src;
+                        if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                        if (r.hero_image && s !== r.hero_image) { e.target.src = r.hero_image; return; }
+                        e.target.style.display = "none";
+                      }}
                       onError={(e) => {
                         const s = e.target.src;
                         if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
@@ -426,6 +448,15 @@
           ))}
         </ul>
       );
+    }
+
+    function useNow() {
+      const [now, setNow] = useState(() => MP.date.hkNowMin());
+      useEffect(() => {
+        const id = setInterval(() => setNow(MP.date.hkNowMin()), 30 * 1000);
+        return () => clearInterval(id);
+      }, []);
+      return now;
     }
 
     function App() {
@@ -571,6 +602,8 @@
       if (!recipes || !plan) return <div className="p-6 text-warm">Loading…</div>;
 
       const today = MP.date.hkToday();
+      const nowMin = useNow();
+      const clockStr = MP.date.hkNowClock("en");
       const currentMeal = MP.date.currentMeal();
       const todayDay = plan.days.find((d) => d.date === today);
       const todayRecipe = todayDay && todayDay[currentMeal] ? recipesById[todayDay[currentMeal]] : null;
@@ -611,7 +644,7 @@
 
           <section className="mb-6 bg-white rounded-2xl p-5 shadow-sm ring-1 ring-terra/20 flex flex-wrap items-center justify-between gap-4">
             <div>
-              <div className="text-xs uppercase tracking-wide text-terra">Right now · {MP.date.dayName(today)}, {MP.date.prettyDate(today)}</div>
+              <div className="text-xs uppercase tracking-wide text-terra">Right now · {MP.date.dayName(today)}, {MP.date.prettyDate(today)} · 🕐 <span className="num">{clockStr}</span></div>
               <div className="font-display text-2xl mt-1">
                 {currentMeal === "breakfast" ? "🍳 Breakfast" : currentMeal === "lunch" ? "🥗 Lunch" : "🍽️ Dinner"}
                 {todayRecipe ? <span className="text-ink"> — {todayRecipe.name}</span> : <span className="text-warm/60"> — not planned</span>}
