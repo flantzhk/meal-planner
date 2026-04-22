@@ -175,22 +175,25 @@
 
             <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
             <ul className="mt-1 text-sm leading-relaxed">
-              {recipe.ingredients.map((ing, i) => (
-                <li key={i} className="flex gap-3 py-0.5">
-                  <span className="num text-warm min-w-[4.5rem]">
-                    {Number(ing.amount.toFixed(2)).toString()} {ing.unit}
-                  </span>
-                  <span>{ing.item}</span>
-                </li>
-              ))}
+              {(recipe.ingredients || []).map((ing, i) => {
+                const amt = ing.amount != null ? Number(Number(ing.amount).toFixed(2)) : "";
+                return (
+                  <li key={i} className="flex gap-3 py-0.5">
+                    <span className="num text-warm min-w-[4.5rem]">
+                      {amt !== "" ? amt : ""} {ing.unit || ""}
+                    </span>
+                    <span>{ing.item || ""}</span>
+                  </li>
+                );
+              })}
             </ul>
 
             <h3 className="mt-5 font-display text-lg">{t(lang, "steps")}</h3>
             <ol className="mt-1 space-y-3">
-              {recipe.steps.map((s) => (
-                <li key={s.step} className="flex gap-3">
+              {(recipe.steps || []).map((s, i) => (
+                <li key={s.step ?? i} className="flex gap-3">
                   <span className="step-num font-display text-terra text-lg leading-7 min-w-[1.5rem]">
-                    {s.step}
+                    {s.step ?? i + 1}
                   </span>
                   <div className="leading-relaxed text-sm">
                     <div>{MP.i18n.stepText(s, lang)}</div>
