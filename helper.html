@@ -94,9 +94,9 @@
           <div className="p-5">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="inline-flex items-center gap-2 bg-terra text-cream px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide">
-                  <span>{mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️"}</span>
-                  <span>{MP.i18n.meals[lang][mealType]}</span>
+                <div className="flex items-center gap-2 text-terra">
+                  <span className="text-2xl leading-none">{mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️"}</span>
+                  <span className="font-display text-xl">{MP.i18n.meals[lang][mealType]}</span>
                 </div>
                 <h2 className="font-display text-2xl leading-tight mt-1">{name}</h2>
                 {showEng && (
@@ -193,7 +193,7 @@
       );
     }
 
-    function ComingUpView({ plan, upcoming, recipesById, today }) {
+    function ComingUpView({ plan, upcoming, recipesById, today, lang, onOpen }) {
       // Build a flat list of every day from the current week's Monday forward
       // across the current plan + any future plans. The whole week is shown,
       // not just "from today" — the helper wants to glance at Mon–Sun.
@@ -265,10 +265,14 @@
                             const time = d[m + "_time"] || MP.schedule.defaultMealTime(m);
                             const servesNote = d[m + "_serves"] ? ` · ${d[m + "_serves"]}p` : "";
                             return (
-                              <li key={m} className="flex items-baseline justify-between gap-2">
-                                <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem]">{m}</span>
-                                <span className="flex-1">{r.name}</span>
-                                <span className="text-xs text-warm num shrink-0">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}{servesNote}</span>
+                              <li key={m}>
+                                <button
+                                  onClick={() => onOpen && onOpen({ recipe: r, mealType: m, date: d.date, mealTime: d[m+"_time"], mealServes: d[m+"_serves"] })}
+                                  className="w-full flex items-baseline justify-between gap-2 text-left hover:bg-terra/5 rounded-lg px-1 py-0.5 transition">
+                                  <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem]">{m}</span>
+                                  <span className="flex-1 underline decoration-terra/30 underline-offset-2">{r.name}</span>
+                                  <span className="text-xs text-warm num shrink-0">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}{servesNote}</span>
+                                </button>
                               </li>
                             );
                           })}
@@ -446,6 +450,7 @@
       const [plan, setPlan] = useState(null);
       const [upcoming, setUpcoming] = useState([]); // [plan, plan, ...] from today onward
       const [pantry, setPantry] = useState({});
+      const [study, setStudy] = useState(null); // { recipe, mealType, date, mealTime, mealServes }
       const [err, setErr] = useState(null);
 
       useEffect(() => { localStorage.setItem("mpHelperLang", lang); }, [lang]);
@@ -621,7 +626,8 @@
           )}
 
           {tab === "coming" && (
-            <ComingUpView plan={plan} upcoming={upcoming} recipesById={recipesById} today={today} />
+            <ComingUpView plan={plan} upcoming={upcoming} recipesById={recipesById} today={today} lang={lang}
+              onOpen={(info) => setStudy(info)} />
           )}
 
           {tab === "shop" && (
@@ -634,6 +640,31 @@
           <div id="flash" aria-live="polite"
             className="fixed left-1/2 -translate-x-1/2 bottom-5 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
           </div>
+
+          {study && (
+            <div className="fixed inset-0 z-40 bg-ink/60 flex items-start justify-center p-3 overflow-y-auto"
+              onClick={() => setStudy(null)}>
+              <div className="bg-cream w-full max-w-xl rounded-2xl shadow-xl mt-6 mb-10 overflow-hidden"
+                onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between px-4 py-3 border-b border-warm/10 sticky top-0 bg-cream z-10">
+                  <div className="font-display text-lg">
+                    {MP.date.dayName(study.date, lang)} · {MP.i18n.meals[lang][study.mealType]}
+                  </div>
+                  <button onClick={() => setStudy(null)} className="text-warm text-2xl leading-none">×</button>
+                </div>
+                <div className="p-2">
+                  <MealCard
+                    mealType={study.mealType}
+                    recipe={scaleRecipe(study.recipe, study.mealServes)}
+                    lang={lang} today={study.date}
+                    mealTime={study.mealTime}
+                    mealServes={study.mealServes}
+                    onVerify={verify}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </main>
       );
     }

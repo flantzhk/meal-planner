@@ -52,6 +52,12 @@
       getFeedback: (date) => req("GET", `/feedback?date=${encodeURIComponent(date)}`),
       getPantry: () => req("GET", "/pantry"),
       togglePantry: (item, have) => req("POST", "/pantry", { item, have }),
+      getSources: () => req("GET", "/sources"),
+      setSource: (item, source) => req("POST", "/sources", { item, source }),
+      getExtras: () => req("GET", "/extras"),
+      addExtra: (item, source) => req("POST", "/extras", { item, source }),
+      updateExtra: (id, patch) => req("PATCH", `/extras/${encodeURIComponent(id)}`, patch),
+      removeExtra: (id) => req("DELETE", `/extras/${encodeURIComponent(id)}`),
       health: () => req("GET", "/health"),
     };
   })();
@@ -251,8 +257,9 @@
 
   // Consolidate a list of ingredients (possibly same item, different recipes/units)
   // into a shopping list grouped by source/category.
-  MP.buildShoppingList = function buildShoppingList(recipes, weekplan) {
+  MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides) {
     const servesTarget = weekplan.serves || 4;
+    const overrides = sourceOverrides || {};
     const byKey = new Map(); // key: item|source → { item, source, category, total_canonical }
 
     for (const day of weekplan.days || []) {
@@ -265,9 +272,11 @@
         for (const ing of r.ingredients || []) {
           const scaled = MP.scale(ing, servesForThisMeal, r.serves_base || 4);
           const { family, value } = toCanonical(scaled.amount, scaled.unit);
-          const key = `${ing.item.toLowerCase()}|${ing.source || "other"}|${family}`;
+          const itemKey = ing.item.toLowerCase().trim();
+          const source = overrides[itemKey] || ing.source || "other";
+          const key = `${itemKey}|${source}|${family}`;
           const existing = byKey.get(key) || {
-            item: ing.item, source: ing.source || "other",
+            item: ing.item, source,
             category: ing.category || "other", family, total: 0,
           };
           existing.total += value;

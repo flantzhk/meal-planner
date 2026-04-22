@@ -134,8 +134,10 @@
       );
     }
 
-    function ShoppingList({ recipes, plan, lang, pantry, onToggle }) {
-      const groups = MP.buildShoppingList(recipes, plan);
+    function ShoppingList({ recipes, plan, lang, pantry, onToggle, sources, onSetSource, extras, onAddExtra, onToggleExtra, onRemoveExtra }) {
+      const groups = MP.buildShoppingList(recipes, plan, sources);
+      const [newItem, setNewItem] = useState("");
+      const [newSource, setNewSource] = useState("supermarket");
       const sourceLabels = {
         "wet-market": "Wet market", "supermarket": "Fusion / Marketplace",
         "hktvmall": "HKTVmall", "other": "Other",
@@ -153,6 +155,41 @@
             Week of <span className="num">{plan.week_start}</span> · Serves <span className="num">{plan.serves || 4}</span>
             <div className="mt-1 text-xs">Ticked items are in the pantry already — helper keeps this list current.</div>
           </div>
+
+          {onAddExtra && (
+            <div className="mb-5 p-3 rounded-xl bg-sand/40">
+              <div className="font-display text-base mb-2">➕ Extras (non-recipe)</div>
+              <form className="flex flex-wrap gap-2 items-center"
+                onSubmit={(e) => { e.preventDefault(); if (newItem.trim()) { onAddExtra(newItem, newSource); setNewItem(""); } }}>
+                <input value={newItem} onChange={(e) => setNewItem(e.target.value)}
+                  placeholder="e.g. toilet paper"
+                  className="flex-1 min-w-[10rem] rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+                <select value={newSource} onChange={(e) => setNewSource(e.target.value)}
+                  className="text-sm rounded-lg border border-warm/20 bg-white px-2 py-2">
+                  <option value="wet-market">🥬 Wet market</option>
+                  <option value="supermarket">🛒 Supermarket</option>
+                  <option value="hktvmall">📦 HKTVmall</option>
+                  <option value="other">Other</option>
+                </select>
+                <button type="submit" className="bg-terra text-cream px-4 py-2 rounded-lg text-sm">Add</button>
+              </form>
+              {extras && extras.length > 0 && (
+                <ul className="mt-3 space-y-1">
+                  {extras.map((x) => (
+                    <li key={x.id} className={`flex items-center gap-2 text-[15px] ${x.done ? "opacity-40 line-through" : ""}`}>
+                      <input type="checkbox" className="accent-sage w-4 h-4"
+                        checked={!!x.done}
+                        onChange={(e) => onToggleExtra(x.id, e.target.checked)} />
+                      <span className="flex-1">{x.item}</span>
+                      <span className="text-xs text-warm">{(sourceLabels[x.source] || x.source)}</span>
+                      <button onClick={() => onRemoveExtra(x.id)}
+                        className="text-xs text-warm/60 hover:text-terra">×</button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           {sourceOrder.map((src) => {
             const g = groups[src];
             if (!g) return null;
@@ -167,14 +204,24 @@
                         const k = key(it);
                         const has = !!pantry[k];
                         return (
-                          <li key={i} className={`flex gap-3 text-[15px] items-center ${has ? "opacity-40 line-through" : ""}`}>
+                          <li key={i} className={`flex flex-wrap gap-2 text-[15px] items-center py-1 ${has ? "opacity-40 line-through" : ""}`}>
                             <input type="checkbox" className="accent-sage w-4 h-4"
                               checked={has}
                               onChange={(e) => onToggle(k, e.target.checked)} />
                             <span className="num text-warm min-w-[5rem]">
                               {Number(it.amount.toFixed(2)).toString()} {it.unit}
                             </span>
-                            <span>{it.item}</span>
+                            <span className="flex-1 min-w-[6rem]">{it.item}</span>
+                            {onSetSource && (
+                              <select value={sources?.[k] || it.source || ""}
+                                onChange={(e) => onSetSource(it.item, e.target.value)}
+                                className="text-xs rounded border border-warm/20 bg-white px-2 py-1">
+                                <option value="wet-market">🥬 Wet market</option>
+                                <option value="supermarket">🛒 Supermarket</option>
+                                <option value="hktvmall">📦 HKTVmall</option>
+                                <option value="other">Other</option>
+                              </select>
+                            )}
                           </li>
                         );
                       })}
@@ -239,7 +286,7 @@
       );
     }
 
-    function RecipePreview({ recipe, meal, mealTime, mealServes, planServes, onChange, onUpdate }) {
+    function RecipePreview({ recipe, meal, mealTime, mealServes, planServes, onChange, onUpdate, pantry, onTogglePantry, sources, onSetSource }) {
       const img = MP.recipeImage(recipe);
       const effTime = mealTime || MP.schedule.defaultMealTime(meal);
       const effServes = mealServes || planServes || recipe.serves_base || 4;
@@ -306,13 +353,40 @@
             </a>
           )}
           <h4 className="font-display text-lg mt-5">Ingredients</h4>
-          <ul className="text-[15px]">
-            {recipe.ingredients.map((ing, i) => (
-              <li key={i} className="flex gap-3 py-0.5">
-                <span className="num text-warm min-w-[4.5rem]">{Number(ing.amount.toFixed(2))} {ing.unit}</span>
-                <span>{ing.item}</span>
-              </li>
-            ))}
+          {onSetSource && (
+            <p className="text-xs text-warm mb-2">Set where you buy each one — saved globally so every recipe using it will remember.</p>
+          )}
+          <ul className="text-[15px] space-y-1">
+            {recipe.ingredients.map((ing, i) => {
+              const k = (ing.item || "").toLowerCase().trim();
+              const savedSource = (sources && sources[k]) || ing.source || "";
+              const inPantry = pantry && !!pantry[k];
+              return (
+                <li key={i} className={`flex flex-wrap items-center gap-x-3 gap-y-1 py-1.5 px-2 rounded-lg ${inPantry ? "bg-sage/10" : ""}`}>
+                  <span className="num text-warm min-w-[4.5rem]">{Number(ing.amount.toFixed(2))} {ing.unit}</span>
+                  <span className={`flex-1 min-w-[6rem] ${inPantry ? "line-through text-warm" : ""}`}>{ing.item}</span>
+                  {onSetSource && (
+                    <select value={savedSource}
+                      onChange={(e) => onSetSource(ing.item, e.target.value)}
+                      className="text-xs rounded border border-warm/20 bg-white px-2 py-1">
+                      <option value="">— where? —</option>
+                      <option value="wet-market">🥬 Wet market</option>
+                      <option value="supermarket">🛒 Supermarket</option>
+                      <option value="hktvmall">📦 HKTVmall</option>
+                      <option value="other">Other</option>
+                    </select>
+                  )}
+                  {onTogglePantry && (
+                    <label className="text-xs text-warm flex items-center gap-1 cursor-pointer select-none">
+                      <input type="checkbox" checked={inPantry}
+                        onChange={(e) => onTogglePantry(ing.item, e.target.checked)}
+                        className="accent-sage" />
+                      In pantry
+                    </label>
+                  )}
+                </li>
+              );
+            })}
           </ul>
           <h4 className="font-display text-lg mt-5">Steps</h4>
           <ol className="space-y-3 mt-1">
@@ -500,6 +574,8 @@ function useNow() {
       const [plan, setPlan] = useState(null);
       const [eatenLog, setEatenLog] = useState({});
       const [pantry, setPantry] = useState({});
+      const [sources, setSources] = useState({});
+      const [extras, setExtras] = useState([]);
       const [err, setErr] = useState(null);
       const [picker, setPicker] = useState(null); // { dayIdx, meal }
       const [preview, setPreview] = useState(null); // { dayIdx, meal, recipe }
@@ -514,12 +590,16 @@ function useNow() {
       useEffect(() => {
         (async () => {
           try {
-            const [rs, wp, el, pa] = await Promise.all([
+            const [rs, wp, el, pa, sr, ex] = await Promise.all([
               MP.api.getRecipes(), MP.api.getWeekplan(), MP.api.getEatenLog(), MP.api.getPantry(),
+              MP.api.getSources().catch(() => ({})),
+              MP.api.getExtras().catch(() => ([])),
             ]);
             setRecipes(rs);
             setEatenLog(el || {});
             setPantry(pa || {});
+            setSources(sr || {});
+            setExtras(ex || []);
             if (wp) setPlan(wp);
             else setPlan(makeEmptyPlan());
           } catch (e) { setErr(e.message); }
@@ -535,6 +615,36 @@ function useNow() {
         });
         try { await MP.api.togglePantry(item, have); }
         catch (e) { setFlashMsg("Pantry save failed: " + e.message); }
+      }
+
+      async function addExtra(item, source) {
+        if (!item || !item.trim()) return;
+        try {
+          const list = await MP.api.addExtra(item.trim(), source || "supermarket");
+          setExtras(list);
+        } catch (e) { setFlashMsg("Add extra failed: " + e.message); }
+      }
+      async function toggleExtra(id, done) {
+        setExtras((xs) => xs.map((x) => x.id === id ? { ...x, done } : x));
+        try { await MP.api.updateExtra(id, { done }); }
+        catch (e) { setFlashMsg("Update extra failed: " + e.message); }
+      }
+      async function removeExtra(id) {
+        setExtras((xs) => xs.filter((x) => x.id !== id));
+        try { await MP.api.removeExtra(id); }
+        catch (e) { setFlashMsg("Remove extra failed: " + e.message); }
+      }
+
+      async function setIngredientSource(item, source) {
+        const k = (item || "").toLowerCase().trim();
+        setSources((s) => {
+          const next = { ...s };
+          if (source) next[k] = source;
+          else delete next[k];
+          return next;
+        });
+        try { await MP.api.setSource(item, source); }
+        catch (e) { setFlashMsg("Source save failed: " + e.message); }
       }
 
       function makeEmptyPlan() {
@@ -649,20 +759,19 @@ function useNow() {
       const todayRecipeSched = todayRecipe ? MP.schedule.forMeal(currentMeal, todayRecipe, { mealTime: todayDay && todayDay[currentMeal + "_time"] }) : null;
       const todayMealTime = todayDay ? (todayDay[currentMeal + "_time"] || MP.schedule.defaultMealTime(currentMeal)) : null;
       const tomorrowDay = todayDay ? plan.days.find((d) => d.date === MP.date.addDays(today, 1)) : null;
-      const nowMin = MP.date.hkNowMin();
 
       return (
-        <main className="max-w-[1400px] mx-auto px-6 pt-6 pb-16">
-          <header className="flex items-center justify-between gap-4 flex-wrap mb-6">
+        <main className="max-w-[1400px] mx-auto px-3 md:px-6 pt-4 md:pt-6 pb-16">
+          <header className="flex items-start justify-between gap-3 flex-wrap mb-4 md:mb-6">
             <div>
-              <h1 className="font-display text-3xl">Meal Planner</h1>
+              <h1 className="font-display text-2xl md:text-3xl">Meal Planner</h1>
               <div className="text-warm text-sm">
                 Week of <span className="num">{plan.week_start}</span>
                 <button onClick={() => shiftWeek(-1)} className="ml-3 text-terra">◀ prev</button>
                 <button onClick={() => shiftWeek(1)} className="ml-2 text-terra">next ▶</button>
               </div>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <label className="text-sm text-warm">Serves
                 <select value={plan.serves || 4} onChange={(e) => setPlan((p) => ({...p, serves: Number(e.target.value)}))}
                   className="ml-1 rounded-lg border border-warm/20 bg-white px-2 py-1">
@@ -670,12 +779,12 @@ function useNow() {
                 </select>
               </label>
               <a href="helper.html" target="_blank" rel="noopener"
-                className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">👁 Helper view</a>
-              <button onClick={() => setShowLibrary(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">📖 Recipes</button>
-              <button onClick={() => setShowShop(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">🛒 Shopping list</button>
+                className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">👁 <span className="hidden sm:inline">Helper view</span></a>
+              <button onClick={() => setShowLibrary(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">📖 <span className="hidden sm:inline">Recipes</span></button>
+              <button onClick={() => setShowShop(true)} className="bg-sand text-ink px-3 py-2 rounded-lg text-sm">🛒 <span className="hidden sm:inline">Shopping list</span></button>
               <button onClick={savePlan} disabled={saving}
-                className="bg-terra text-cream px-4 py-2 rounded-lg text-sm disabled:opacity-60">
-                {saving ? "Saving…" : "Save Week"}
+                className="bg-terra text-cream px-3 py-2 rounded-lg text-sm disabled:opacity-60">
+                {saving ? "Saving…" : "Save"}
               </button>
               <button onClick={() => setShowSettings(true)} className="bg-ink/80 text-cream px-3 py-2 rounded-lg text-sm">⚙︎</button>
             </div>
@@ -683,7 +792,7 @@ function useNow() {
 
           {flash && <div className="mb-4 text-sm text-terra">{flash}</div>}
 
-          <section className="mb-6 bg-white rounded-2xl p-5 shadow-sm ring-1 ring-terra/20 flex flex-wrap items-center justify-between gap-4">
+          <section className="mb-4 md:mb-6 bg-white rounded-2xl p-4 md:p-5 shadow-sm ring-1 ring-terra/20 flex flex-wrap items-center justify-between gap-3">
             <div>
               <div className="text-xs uppercase tracking-wide text-terra">Right now · {MP.date.dayName(today)}, {MP.date.prettyDate(today)} · 🕐 <span className="num">{clockStr}</span></div>
               <div className="font-display text-2xl mt-1">
@@ -708,7 +817,58 @@ function useNow() {
             )}
           </section>
 
-          <div className="overflow-x-auto">
+          {/* Mobile: vertical per-day card list */}
+          <div className="md:hidden space-y-3">
+            {plan.days.map((d, dayIdx) => {
+              const isToday = d.date === today;
+              const conflicts = MP.schedule.dayConflicts(d, recipesById);
+              return (
+                <div key={d.date} className={`rounded-2xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white/70 ring-black/5"}`}>
+                  <div className="flex items-baseline justify-between mb-2">
+                    <div className={`font-display text-lg ${isToday ? "text-terra" : ""}`}>
+                      {d.day}{isToday && " · Today"}
+                    </div>
+                    <div className="text-xs text-warm num">{d.date}</div>
+                  </div>
+                  <div className="space-y-1.5">
+                    {MEALS.map((meal) => {
+                      const r = d[meal] ? recipesById[d[meal]] : null;
+                      const inConflict = r && conflicts.some((pair) => pair.includes(meal));
+                      const sched = r ? MP.schedule.forMeal(meal, r, { mealTime: d[meal + "_time"] }) : null;
+                      const servesOverride = d[meal + "_serves"];
+                      const isNow = isToday && meal === currentMeal;
+                      return (
+                        <button key={meal}
+                          onClick={() => r ? setPreview({ dayIdx, meal, recipe: r }) : setPicker({ dayIdx, meal })}
+                          className={`w-full flex items-center gap-3 text-left rounded-xl p-2.5 transition ring-1 ${
+                            isNow ? "bg-cream ring-2 ring-terra" :
+                            r ? "bg-cream/60 ring-black/5" : "bg-sand/50 ring-sand"
+                          }`}>
+                          <span className={`text-xs uppercase tracking-wide min-w-[4.5rem] ${meal === currentMeal && isToday ? "text-terra font-semibold" : "text-warm"}`}>{meal}</span>
+                          {r ? (
+                            <div className="flex-1 min-w-0">
+                              <div className="font-display leading-tight truncate">{r.name}</div>
+                              <div className="text-xs text-warm flex items-center gap-2 mt-0.5">
+                                <span className="num">{sched.startTime}</span>
+                                {servesOverride && <span className="num bg-sand px-1.5 rounded">{servesOverride}p</span>}
+                                {inConflict && <span className="text-terra">⚠ stove clash</span>}
+                                {sched.flagEarly && !inConflict && <span className="text-amber-700">🌙 night before</span>}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex-1 text-warm text-sm">+ pick</div>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Desktop: week grid */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full border-separate border-spacing-3">
               <thead>
                 <tr>
@@ -799,7 +959,10 @@ function useNow() {
 
           <Modal open={showShop} onClose={() => setShowShop(false)} title="Shopping list">
             <ShoppingList recipes={recipes} plan={plan} lang={lang}
-              pantry={pantry} onToggle={togglePantryItem} />
+              pantry={pantry} onToggle={togglePantryItem}
+              sources={sources} onSetSource={setIngredientSource}
+              extras={extras} onAddExtra={addExtra}
+              onToggleExtra={toggleExtra} onRemoveExtra={removeExtra} />
           </Modal>
 
           <Modal open={!!preview} onClose={() => setPreview(null)}
@@ -807,6 +970,8 @@ function useNow() {
             {preview && (
               <RecipePreview
                 recipe={preview.recipe} meal={preview.meal}
+                pantry={pantry} onTogglePantry={togglePantryItem}
+                sources={sources} onSetSource={setIngredientSource}
                 mealTime={plan.days[preview.dayIdx][preview.meal + "_time"]}
                 mealServes={plan.days[preview.dayIdx][preview.meal + "_serves"]}
                 planServes={plan.serves || 4}

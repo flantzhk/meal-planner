@@ -183,6 +183,58 @@ async function getPantry(env) {
   return raw ? JSON.parse(raw) : {};
 }
 
+// ---------- extras ----------
+// Ad-hoc shopping items (toilet paper, etc.) that aren't tied to a recipe.
+// Stored as an array of { id, item, source, done }.
+
+async function getExtras(env) {
+  const raw = await env.MEAL_DATA.get("extras");
+  return raw ? JSON.parse(raw) : [];
+}
+
+async function addExtra(env, item, source) {
+  const extras = await getExtras(env);
+  const id = `e_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
+  extras.push({ id, item: String(item).trim(), source: source || "supermarket", done: false });
+  await env.MEAL_DATA.put("extras", JSON.stringify(extras));
+  return extras;
+}
+
+async function updateExtra(env, id, patch) {
+  const extras = await getExtras(env);
+  const i = extras.findIndex((x) => x.id === id);
+  if (i < 0) return extras;
+  extras[i] = { ...extras[i], ...patch, id };
+  await env.MEAL_DATA.put("extras", JSON.stringify(extras));
+  return extras;
+}
+
+async function removeExtra(env, id) {
+  const extras = await getExtras(env);
+  const filtered = extras.filter((x) => x.id !== id);
+  await env.MEAL_DATA.put("extras", JSON.stringify(filtered));
+  return filtered;
+}
+
+// ---------- sources ----------
+// Where Faith buys each ingredient. Stored as { "<item lowercased>": "wet-market" | "supermarket" | "hktvmall" }.
+// Writes are unauthenticated (same trust model as pantry/feedback).
+
+async function getSources(env) {
+  const raw = await env.MEAL_DATA.get("sources");
+  return raw ? JSON.parse(raw) : {};
+}
+
+async function setSource(env, item, source) {
+  const sources = await getSources(env);
+  const key = String(item || "").toLowerCase().trim();
+  if (!key) throw new Error("item required");
+  if (source) sources[key] = source;
+  else delete sources[key];
+  await env.MEAL_DATA.put("sources", JSON.stringify(sources));
+  return sources;
+}
+
 async function togglePantry(env, item, have) {
   const pantry = await getPantry(env);
   const key = String(item || "").toLowerCase().trim();
@@ -298,6 +350,41 @@ export default {
         if (!item) return err(400, "item required", origin);
         const pantry = await togglePantry(env, item, !!have);
         return json({ ok: true, count: Object.keys(pantry).length }, {}, origin);
+      }
+
+      // Extras (ad-hoc shopping items: toilet paper, etc.)
+      if (url.pathname === "/extras" && request.method === "GET") {
+        return json(await getExtras(env), {}, origin);
+      }
+      if (url.pathname === "/extras" && request.method === "POST") {
+        const { item, source } = await request.json();
+        if (!item) return err(400, "item required", origin);
+        const extras = await addExtra(env, item, source);
+        return json(extras, {}, origin);
+      }
+      const extraMatch = url.pathname.match(/^\/extras\/([^/]+)$/);
+      if (extraMatch) {
+        const id = extraMatch[1];
+        if (request.method === "PATCH" || request.method === "PUT") {
+          const patch = await request.json();
+          const extras = await updateExtra(env, id, patch);
+          return json(extras, {}, origin);
+        }
+        if (request.method === "DELETE") {
+          const extras = await removeExtra(env, id);
+          return json(extras, {}, origin);
+        }
+      }
+
+      // Sources (where Faith buys each ingredient)
+      if (url.pathname === "/sources" && request.method === "GET") {
+        return json(await getSources(env), {}, origin);
+      }
+      if (url.pathname === "/sources" && request.method === "POST") {
+        const { item, source } = await request.json();
+        if (!item) return err(400, "item required", origin);
+        const sources = await setSource(env, item, source || null);
+        return json({ ok: true, count: Object.keys(sources).length }, {}, origin);
       }
 
       return err(404, `no route: ${request.method} ${url.pathname}`, origin);
