@@ -206,13 +206,16 @@
     }
 
     function ComingUpView({ plan, upcoming, recipesById, today }) {
-      // Build a flat list of all days from today forward across current + future plans.
+      // Build a flat list of every day from the current week's Monday forward
+      // across the current plan + any future plans. The whole week is shown,
+      // not just "from today" — the helper wants to glance at Mon–Sun.
+      const weekFloor = MP.date.mondayOf(today);
       const allDays = [];
       const seen = new Set();
       const addPlan = (p) => {
         if (!p) return;
         for (const d of p.days || []) {
-          if (d.date < today) continue;
+          if (d.date < weekFloor) continue;
           if (seen.has(d.date)) continue;
           seen.add(d.date);
           allDays.push({ ...d, _planServes: p.serves || 4 });
@@ -247,10 +250,19 @@
                 <div className="space-y-3">
                   {groups[wk].map((d) => {
                     const isToday = d.date === today;
+                    const isPast = d.date < today;
                     return (
-                      <div key={d.date} className={`rounded-xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white/60 ring-black/5"}`}>
+                      <div key={d.date} className={`rounded-xl p-3 ring-1 ${
+                        isToday ? "bg-white ring-terra/40" :
+                        isPast ? "bg-white/30 ring-black/5 opacity-60" :
+                        "bg-white/60 ring-black/5"
+                      }`}>
                         <div className="flex items-baseline justify-between">
-                          <div className="font-display text-lg">{MP.date.dayName(d.date)}{isToday && " · Today"}</div>
+                          <div className="font-display text-lg">
+                            {MP.date.dayName(d.date)}
+                            {isToday && " · Today"}
+                            {isPast && " · Done"}
+                          </div>
                           <div className="text-xs text-warm num">{MP.date.prettyDate(d.date)}</div>
                         </div>
                         <ul className="mt-2 space-y-1 text-[15px]">
@@ -493,7 +505,7 @@
             </button>
             <button onClick={() => setTab("coming")}
               className={`flex-1 py-2 rounded-full transition ${tab === "coming" ? "bg-cream shadow" : "text-warm"}`}>
-              📅 Coming up
+              📅 This week
             </button>
             <button onClick={() => setTab("shop")}
               className={`flex-1 py-2 rounded-full transition ${tab === "shop" ? "bg-cream shadow" : "text-warm"}`}>
