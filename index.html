@@ -467,13 +467,14 @@
           )}
           {/* Change 1: text-[15px] -> text-sm */}
           <ul className="text-sm space-y-1">
-            {recipe.ingredients.map((ing, i) => {
+            {(recipe.ingredients || []).map((ing, i) => {
               const k = (ing.item || "").toLowerCase().trim();
               const savedSource = (sources && sources[k]) || ing.source || "";
               const inPantry = pantry && !!pantry[k];
+              const amt = ing.amount != null ? Number(Number(ing.amount).toFixed(2)) : "";
               return (
                 <li key={i} className={`flex flex-wrap items-center gap-x-3 gap-y-1 py-1.5 px-2 rounded-lg ${inPantry ? "bg-sage/10" : ""}`}>
-                  <span className="num text-warm min-w-[4.5rem]">{Number(ing.amount.toFixed(2))} {ing.unit}</span>
+                  <span className="num text-warm min-w-[4.5rem]">{amt} {ing.unit || ""}</span>
                   <span className={`flex-1 min-w-[6rem] ${inPantry ? "line-through text-warm" : ""}`}>{ing.item}</span>
                   {onSetSource && (
                     <select value={savedSource}

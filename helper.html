@@ -814,10 +814,14 @@
 
       const planServes = plan.serves || 4;
       function scaleRecipe(r, servesOverride) {
+        if (!r) return r;
         const s = servesOverride || planServes;
         return {
           ...r,
-          ingredients: r.ingredients.map((i) => MP.scale(i, s, r.serves_base || 4)),
+          ingredients: (r.ingredients || []).map((i) => {
+            try { return MP.scale(i, s, r.serves_base || 4); }
+            catch (e) { return i; }
+          }),
         };
       }
 
