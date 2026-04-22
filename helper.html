@@ -94,8 +94,9 @@
           <div className="p-5">
             <div className="flex items-start justify-between gap-3">
               <div>
-                <div className="uppercase tracking-wide text-xs text-warm">
-                  {MP.i18n.meals[lang][mealType]}
+                <div className="inline-flex items-center gap-2 bg-terra text-cream px-3 py-1 rounded-full text-sm font-semibold uppercase tracking-wide">
+                  <span>{mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️"}</span>
+                  <span>{MP.i18n.meals[lang][mealType]}</span>
                 </div>
                 <h2 className="font-display text-2xl leading-tight mt-1">{name}</h2>
                 {showEng && (
