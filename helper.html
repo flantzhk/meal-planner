@@ -823,15 +823,9 @@
           {/* Change 2: NowBar — always visible fixed bar */}
           <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
 
-          <header className="flex items-start justify-between gap-3 mb-4 mt-6">
-            <div>
-              <div className="uppercase tracking-wide text-xs text-warm">{t(lang, "today")}</div>
-              <h1 className="font-display text-3xl leading-tight">
-                {MP.date.dayName(today, lang)}, {MP.date.prettyDate(today, lang)}
-              </h1>
-              <div className="font-display text-2xl text-terra num mt-1">🕐 {clockStr}</div>
-            </div>
-            {/* Change 6: LangToggle removed from header */}
+          <header className="mb-5 mt-6">
+            <h1 className="font-display text-4xl leading-none">{MP.date.dayName(today, lang)}</h1>
+            <div className="text-sm text-warm mt-1 num">{MP.date.prettyDate(today, lang)}</div>
           </header>
 
           <nav className="flex gap-1 mb-6 bg-sand rounded-full p-1 text-sm">
