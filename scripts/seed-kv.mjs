@@ -40,7 +40,7 @@ if (!res.ok) {
 }
 console.log("OK:", await res.json());
 
-// Also seed a starter weekplan for the current Monday.
+// Seed a blank weekplan for the current Monday (no meals pre-assigned).
 function mondayStr() {
   const d = new Date();
   const dow = (d.getDay() + 6) % 7;
@@ -53,19 +53,19 @@ function addDays(s, n) {
   return d.toISOString().slice(0, 10);
 }
 const ws = mondayStr();
-const dayNames = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const dayNames = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
 const plan = {
   week_start: ws,
   shopping_day: "Monday",
   serves: 4,
   language: "en",
-  days: dayNames.map((name, i) => {
-    const date = addDays(ws, i);
-    const breakfast = i < 5 ? "scrambled-eggs-toast" : i === 5 ? "fluffy-pancakes" : "breakfast-burrito";
-    const lunches = ["pesto-pasta","chicken-tikka-wraps","fried-rice","grilled-cheese-tomato-soup","butter-chicken-rice","smash-burgers","easy-ramen"];
-    const dinners = ["crispy-chicken-thighs","flank-steak-salad","spaghetti-bolognese","roast-chicken-potatoes","jw-beef-short-ribs","fish-tacos","slow-roasted-pork-shoulder"];
-    return { day: name, date, breakfast, lunch: lunches[i], dinner: dinners[i] };
-  }),
+  days: dayNames.map((name, i) => ({
+    day: name,
+    date: addDays(ws, i),
+    breakfast: null,
+    lunch: null,
+    dinner: null,
+  })),
 };
 
 const planRes = await fetch(`${base}/weekplan`, {
@@ -77,4 +77,4 @@ if (!planRes.ok) {
   console.error("Weekplan seed FAILED:", planRes.status, await planRes.text());
   process.exit(1);
 }
-console.log(`OK: seeded weekplan starting ${ws}`);
+console.log(`OK: seeded blank weekplan starting ${ws}`);
