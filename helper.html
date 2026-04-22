@@ -103,13 +103,24 @@
       );
     }
 
-    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onVerify }) {
+    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onVerify, nowMin }) {
       const sched = MP.schedule.forMeal(mealType, recipe, { mealTime });
       const name = MP.i18n.recipeName(recipe, lang);
-      const servedAtLabel = MP.schedule.fmtTime(MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(mealType)));
+      const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(mealType));
+      const startMin = serveMin - (recipe.prep_time_mins || 0) - (recipe.cook_time_mins || 0);
+      const servedAtLabel = MP.schedule.fmtTime(serveMin);
       const showEng = !recipe.translations_verified && lang !== "en";
 
+      // "Up next" = first meal whose serve time is still in the future
+      const isUpNext = nowMin != null && nowMin < serveMin;
+
       return (
+        <div className="relative">
+          {isUpNext && (
+            <div className="absolute -top-3 left-4 z-10 bg-terra text-cream text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
+              Up next
+            </div>
+          )}
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
           {MP.recipeImage(recipe) && (
             <img src={MP.recipeImage(recipe)} alt={recipe.name}
@@ -199,6 +210,7 @@
             )}
           </div>
         </article>
+        </div>
       );
     }
 
@@ -844,22 +856,33 @@
               {/* Change 3: PrepTomorrow moved BEFORE meal cards */}
               <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
               <div className="space-y-5 mt-6">
-                {["breakfast", "lunch", "dinner"].map((meal) => {
-                  const id = todayDay[meal];
-                  if (!id) return null;
-                  const r = recipesById[id];
-                  if (!r) return null;
-                  const mealServes = todayDay[meal + "_serves"];
-                  return (
-                    <MealCard
-                      key={meal} mealType={meal} recipe={scaleRecipe(r, mealServes)}
-                      lang={lang} today={today}
-                      mealTime={todayDay[meal + "_time"]}
-                      mealServes={mealServes}
-                      onVerify={verify}
-                    />
-                  );
-                })}
+                {(() => {
+                  // Find the first meal whose serve time hasn't passed yet — that's "up next"
+                  const meals = ["breakfast", "lunch", "dinner"];
+                  const upNextMeal = meals.find((meal) => {
+                    const id = todayDay[meal];
+                    if (!id || !recipesById[id]) return false;
+                    const mt = todayDay[meal + "_time"] || MP.schedule.defaultMealTime(meal);
+                    return MP.schedule.parseHM(mt) > nowMin;
+                  });
+                  return meals.map((meal) => {
+                    const id = todayDay[meal];
+                    if (!id) return null;
+                    const r = recipesById[id];
+                    if (!r) return null;
+                    const mealServes = todayDay[meal + "_serves"];
+                    return (
+                      <MealCard
+                        key={meal} mealType={meal} recipe={scaleRecipe(r, mealServes)}
+                        lang={lang} today={today}
+                        mealTime={todayDay[meal + "_time"]}
+                        mealServes={mealServes}
+                        onVerify={verify}
+                        nowMin={meal === upNextMeal ? nowMin : null}
+                      />
+                    );
+                  });
+                })()}
               </div>
             </>
           )}
