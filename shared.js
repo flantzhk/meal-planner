@@ -43,6 +43,8 @@
       upsertRecipe: (id, r) => req("PUT", `/recipes/${encodeURIComponent(id)}`, r),
       deleteRecipe: (id) => req("DELETE", `/recipes/${encodeURIComponent(id)}`),
       getWeekplan: () => req("GET", "/weekplan"),
+      getWeekplanFor: (ws) => req("GET", `/weekplan?week_start=${encodeURIComponent(ws)}`),
+      getWeekplans: (from) => req("GET", `/weekplans${from ? `?from=${encodeURIComponent(from)}` : ""}`),
       putWeekplan: (p) => req("PUT", "/weekplan", p),
       getEatenLog: () => req("GET", "/eaten-log"),
       recordEaten: (recipe_id, date) => req("POST", "/eaten-log", { recipe_id, date }),
@@ -244,8 +246,9 @@
         if (!id) continue;
         const r = recipes.find((x) => x.id === id);
         if (!r) continue;
+        const servesForThisMeal = day[meal + "_serves"] || servesTarget;
         for (const ing of r.ingredients || []) {
-          const scaled = MP.scale(ing, servesTarget, r.serves_base || 4);
+          const scaled = MP.scale(ing, servesForThisMeal, r.serves_base || 4);
           const { family, value } = toCanonical(scaled.amount, scaled.unit);
           const key = `${ing.item.toLowerCase()}|${ing.source || "other"}|${family}`;
           const existing = byKey.get(key) || {
@@ -282,12 +285,30 @@
     return `${h}:${mm}${ampm}`;
   }
 
+  // Parse "HH:MM" (24h) into minutes-from-midnight. Returns null on bad input.
+  function parseHM(hm) {
+    if (!hm || typeof hm !== "string") return null;
+    const m = hm.match(/^(\d{1,2}):(\d{2})$/);
+    if (!m) return null;
+    const h = +m[1], mm = +m[2];
+    if (h < 0 || h > 23 || mm < 0 || mm > 59) return null;
+    return h * 60 + mm;
+  }
+  function toHM(min) {
+    const m = ((min % (24 * 60)) + 24 * 60) % (24 * 60);
+    return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  }
+
   MP.schedule = {
+    defaultMealTime(mealType) { return toHM(MEAL_TIME[mealType]); },
+    parseHM, toHM,
     // Returns { startTime: "4:50pm", startMin, flagEarly: bool, deps: [...] }
-    forMeal(mealType, recipe) {
+    // opts: { mealTime?: "HH:MM" override for when food is served }
+    forMeal(mealType, recipe, opts = {}) {
       const cook = recipe.cook_time_mins || 0;
       const prep = recipe.prep_time_mins || 0;
-      const startMin = MEAL_TIME[mealType] - cook - prep;
+      const servedAt = parseHM(opts.mealTime) ?? MEAL_TIME[mealType];
+      const startMin = servedAt - cook - prep;
       const deps = (recipe.dependencies || []).map((d) => ({
         type: d.type,
         hours_before: d.hours_before,
@@ -312,7 +333,7 @@
         if (!id) continue;
         const r = recipesById[id];
         if (!r) continue;
-        const sched = MP.schedule.forMeal(meal, r);
+        const sched = MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] });
         const active = r.active_time_mins || r.prep_time_mins || 20;
         slots.push({ meal, start: sched.startMin, end: sched.startMin + active });
       }

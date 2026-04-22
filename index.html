@@ -180,9 +180,62 @@
       );
     }
 
-    function RecipePreview({ recipe, meal, onChange }) {
+    function YoutubeEditor({ recipe }) {
+      const [editing, setEditing] = useState(false);
+      const [val, setVal] = useState(recipe.youtube_url || "");
+      const [busy, setBusy] = useState(false);
+      const [msg, setMsg] = useState("");
+      async function save() {
+        setBusy(true); setMsg("");
+        try {
+          await MP.api.upsertRecipe(recipe.id, { ...recipe, youtube_url: val || null });
+          recipe.youtube_url = val || null; // mutate for immediate image refresh in modal
+          setMsg("✓ Saved — image will update on next load.");
+          setEditing(false);
+        } catch (e) { setMsg("Failed: " + e.message); }
+        finally { setBusy(false); }
+      }
+      if (!editing) {
+        return (
+          <div className="flex items-center gap-2 flex-wrap">
+            {recipe.youtube_url ? (
+              <a href={recipe.youtube_url} target="_blank" rel="noopener"
+                className="inline-flex items-center gap-2 bg-terra text-cream px-4 py-2 rounded-full text-sm">
+                ▶ Watch video
+              </a>
+            ) : (
+              <span className="text-sm text-warm/70 italic">No video yet</span>
+            )}
+            <button onClick={() => setEditing(true)} className="text-xs underline text-warm">
+              {recipe.youtube_url ? "Change video" : "Paste YouTube link"}
+            </button>
+            {msg && <span className="text-xs text-warm">{msg}</span>}
+          </div>
+        );
+      }
+      return (
+        <div className="flex flex-wrap gap-2 items-center">
+          <input value={val} onChange={(e) => setVal(e.target.value)}
+            placeholder="https://www.youtube.com/watch?v=…"
+            className="flex-1 min-w-[18rem] rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+          <button onClick={save} disabled={busy}
+            className="bg-ink text-cream px-3 py-2 rounded-lg text-sm disabled:opacity-60">
+            {busy ? "Saving…" : "Save"}
+          </button>
+          <button onClick={() => { setVal(recipe.youtube_url || ""); setEditing(false); }}
+            className="text-warm px-2 text-sm">Cancel</button>
+          <div className="text-xs text-warm basis-full">
+            Pasting a link will also use its thumbnail as the recipe photo automatically.
+          </div>
+        </div>
+      );
+    }
+
+    function RecipePreview({ recipe, meal, mealTime, mealServes, planServes, onChange, onUpdate }) {
       const img = MP.recipeImage(recipe);
-      const sched = MP.schedule.forMeal(meal, recipe);
+      const effTime = mealTime || MP.schedule.defaultMealTime(meal);
+      const effServes = mealServes || planServes || recipe.serves_base || 4;
+      const sched = MP.schedule.forMeal(meal, recipe, { mealTime: effTime });
       return (
         <div>
           {img && (
@@ -199,7 +252,7 @@
               <div className="text-xs uppercase text-warm">{meal}</div>
               <h3 className="font-display text-2xl">{recipe.name}</h3>
               <div className="text-sm text-warm mt-1">
-                {recipe.cuisine} · serves <span className="num">{recipe.serves_base}</span> · prep <span className="num">{recipe.prep_time_mins}</span>m · cook <span className="num">{recipe.cook_time_mins}</span>m
+                {recipe.cuisine} · recipe base <span className="num">{recipe.serves_base}</span> · prep <span className="num">{recipe.prep_time_mins}</span>m · cook <span className="num">{recipe.cook_time_mins}</span>m
               </div>
             </div>
             <div className="text-right shrink-0">
@@ -207,7 +260,31 @@
               <div className="font-display text-xl num">{sched.startTime}</div>
             </div>
           </div>
-          {recipe.youtube_url && (
+          {onUpdate && (
+            <div className="mb-4 p-3 rounded-xl bg-sand/50 flex flex-wrap gap-4 items-end">
+              <label className="text-sm text-warm">
+                <div className="text-xs uppercase tracking-wide">Serve at</div>
+                <input type="time" value={effTime}
+                  onChange={(e) => onUpdate({ time: e.target.value, serves: effServes })}
+                  className="mt-1 rounded-lg border border-warm/20 bg-white px-2 py-1 num" />
+              </label>
+              <label className="text-sm text-warm">
+                <div className="text-xs uppercase tracking-wide">Eating</div>
+                <select value={effServes}
+                  onChange={(e) => onUpdate({ time: effTime, serves: Number(e.target.value) })}
+                  className="mt-1 rounded-lg border border-warm/20 bg-white px-2 py-1 num">
+                  {[1,2,3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} {n===1?"person":"people"}</option>)}
+                </select>
+              </label>
+              <div className="text-xs text-warm ml-auto">
+                Start {sched.startTime} · ingredients scale to {effServes}
+              </div>
+            </div>
+          )}
+          {onUpdate && (
+            <YoutubeEditor recipe={recipe} />
+          )}
+          {!onUpdate && recipe.youtube_url && (
             <a href={recipe.youtube_url} target="_blank" rel="noopener"
               className="inline-flex items-center gap-2 bg-terra text-cream px-4 py-2 rounded-full text-sm">
               ▶ Watch video
@@ -415,24 +492,51 @@
 
       function setSlot(dayIdx, meal, id) {
         setPlan((p) => {
-          const days = p.days.map((d, i) => i === dayIdx ? { ...d, [meal]: id } : d);
+          const days = p.days.map((d, i) => {
+            if (i !== dayIdx) return d;
+            const next = { ...d, [meal]: id };
+            if (!id) {
+              delete next[meal + "_time"];
+              delete next[meal + "_serves"];
+            }
+            return next;
+          });
+          return { ...p, days };
+        });
+      }
+      function setSlotMeta(dayIdx, meal, { time, serves }) {
+        setPlan((p) => {
+          const days = p.days.map((d, i) => {
+            if (i !== dayIdx) return d;
+            const next = { ...d };
+            if (time && time !== MP.schedule.defaultMealTime(meal)) next[meal + "_time"] = time;
+            else delete next[meal + "_time"];
+            if (serves && serves !== (p.serves || 4)) next[meal + "_serves"] = serves;
+            else delete next[meal + "_serves"];
+            return next;
+          });
           return { ...p, days };
         });
       }
 
-      function shiftWeek(delta) {
-        setPlan((p) => {
-          const newStart = MP.date.addDays(p.week_start, delta * 7);
-          const names = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-          return {
-            ...p,
-            week_start: newStart,
-            days: names.map((n, i) => {
-              const prior = p.days[i] || {};
-              return { ...prior, day: n, date: MP.date.addDays(newStart, i) };
-            }),
-          };
-        });
+      async function shiftWeek(delta) {
+        const newStart = MP.date.addDays(plan.week_start, delta * 7);
+        // Try to load a previously-saved plan for that week; fall back to empty scaffold.
+        let stored = null;
+        try { stored = await MP.api.getWeekplanFor(newStart); } catch (e) { /* offline */ }
+        if (stored && stored.week_start === newStart) {
+          setPlan(stored);
+          return;
+        }
+        const names = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+        setPlan((p) => ({
+          ...p,
+          week_start: newStart,
+          days: names.map((n, i) => ({
+            day: n, date: MP.date.addDays(newStart, i),
+            breakfast: null, lunch: null, dinner: null,
+          })),
+        }));
       }
 
       async function savePlan() {
@@ -470,7 +574,8 @@
       const currentMeal = MP.date.currentMeal();
       const todayDay = plan.days.find((d) => d.date === today);
       const todayRecipe = todayDay && todayDay[currentMeal] ? recipesById[todayDay[currentMeal]] : null;
-      const todayRecipeSched = todayRecipe ? MP.schedule.forMeal(currentMeal, todayRecipe) : null;
+      const todayRecipeSched = todayRecipe ? MP.schedule.forMeal(currentMeal, todayRecipe, { mealTime: todayDay && todayDay[currentMeal + "_time"] }) : null;
+      const todayMealTime = todayDay ? (todayDay[currentMeal + "_time"] || MP.schedule.defaultMealTime(currentMeal)) : null;
 
       return (
         <main className="max-w-[1400px] mx-auto px-6 pt-6 pb-16">
@@ -555,7 +660,8 @@
                       const r = d[meal] ? recipesById[d[meal]] : null;
                       const conflicts = MP.schedule.dayConflicts(d, recipesById);
                       const inConflict = r && conflicts.some((pair) => pair.includes(meal));
-                      const sched = r ? MP.schedule.forMeal(meal, r) : null;
+                      const sched = r ? MP.schedule.forMeal(meal, r, { mealTime: d[meal + "_time"] }) : null;
+                      const servesOverride = d[meal + "_serves"];
                       const isToday = d.date === today;
                       const isNow = isToday && meal === currentMeal;
                       return (
@@ -570,8 +676,11 @@
                                 <div className="font-display leading-tight text-[15px]">{r.name}</div>
                                 <div className="text-xs text-warm mt-1 flex items-center justify-between gap-2">
                                   <span className="num">{sched.startTime}</span>
-                                  {inConflict && <span title="Stove conflict" className="text-terra">⚠</span>}
-                                  {sched.flagEarly && <span title="Start previous day" className="text-amber-700">🌙</span>}
+                                  <span className="flex items-center gap-1">
+                                    {servesOverride && <span className="num text-warm bg-sand px-1.5 rounded" title="Custom serves">{servesOverride}p</span>}
+                                    {inConflict && <span title="Stove conflict" className="text-terra">⚠</span>}
+                                    {sched.flagEarly && <span title="Start previous day" className="text-amber-700">🌙</span>}
+                                  </span>
                                 </div>
                               </div>
                             ) : (
@@ -623,6 +732,10 @@
             {preview && (
               <RecipePreview
                 recipe={preview.recipe} meal={preview.meal}
+                mealTime={plan.days[preview.dayIdx][preview.meal + "_time"]}
+                mealServes={plan.days[preview.dayIdx][preview.meal + "_serves"]}
+                planServes={plan.serves || 4}
+                onUpdate={({ time, serves }) => setSlotMeta(preview.dayIdx, preview.meal, { time, serves })}
                 onChange={() => { const p = preview; setPreview(null); setPicker({ dayIdx: p.dayIdx, meal: p.meal }); }}
               />
             )}

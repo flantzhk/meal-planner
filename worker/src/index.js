@@ -70,16 +70,51 @@ async function getWeekplan(env) {
   return raw ? JSON.parse(raw) : null;
 }
 
-async function putWeekplan(env, plan) {
-  // Archive the previous current weekplan if its week_start differs.
-  const prevRaw = await env.MEAL_DATA.get("weekplan:current");
-  if (prevRaw) {
-    const prev = JSON.parse(prevRaw);
-    if (prev.week_start && prev.week_start !== plan.week_start) {
-      await env.MEAL_DATA.put(`weekplan:archive:${prev.week_start}`, prevRaw);
+async function getWeekplanFor(env, weekStart) {
+  const raw = await env.MEAL_DATA.get(`weekplan:ws:${weekStart}`);
+  return raw ? JSON.parse(raw) : null;
+}
+
+async function listWeekplans(env, fromDate) {
+  // Walk the keys under weekplan:ws: — KV list supports prefix.
+  const out = [];
+  let cursor;
+  do {
+    const page = await env.MEAL_DATA.list({ prefix: "weekplan:ws:", cursor });
+    for (const k of page.keys) {
+      const wk = k.name.slice("weekplan:ws:".length);
+      if (fromDate && wk < fromDate) continue;
+      out.push(wk);
     }
+    cursor = page.cursor;
+    if (page.list_complete) break;
+  } while (cursor);
+  out.sort();
+  return out;
+}
+
+async function putWeekplan(env, plan) {
+  const body = JSON.stringify(plan);
+  // Always store keyed by week_start so future/past weeks coexist.
+  await env.MEAL_DATA.put(`weekplan:ws:${plan.week_start}`, body);
+
+  // Figure out whether this plan covers "today" (HK). If so, it's the new current.
+  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
+  const todayStr = today.toISOString().slice(0, 10);
+  const startD = new Date(plan.week_start + "T00:00:00");
+  const endD = new Date(startD); endD.setDate(endD.getDate() + 7);
+  const coversToday = startD.toISOString().slice(0,10) <= todayStr && todayStr < endD.toISOString().slice(0,10);
+
+  if (coversToday) {
+    const prevRaw = await env.MEAL_DATA.get("weekplan:current");
+    if (prevRaw) {
+      const prev = JSON.parse(prevRaw);
+      if (prev.week_start && prev.week_start !== plan.week_start) {
+        await env.MEAL_DATA.put(`weekplan:archive:${prev.week_start}`, prevRaw);
+      }
+    }
+    await env.MEAL_DATA.put("weekplan:current", body);
   }
-  await env.MEAL_DATA.put("weekplan:current", JSON.stringify(plan));
 
   // Also write the plan's meals into the eaten-log so "last eaten" is up to date.
   const log = await getEatenLog(env);
@@ -207,7 +242,16 @@ export default {
 
       // Weekplan
       if (url.pathname === "/weekplan" && request.method === "GET") {
+        const ws = url.searchParams.get("week_start");
+        if (ws) return json(await getWeekplanFor(env, ws), {}, origin);
         return json(await getWeekplan(env), {}, origin);
+      }
+      if (url.pathname === "/weekplans" && request.method === "GET") {
+        const from = url.searchParams.get("from") || "";
+        const keys = await listWeekplans(env, from);
+        // Fetch each in parallel, return as array of plans.
+        const plans = await Promise.all(keys.map((k) => getWeekplanFor(env, k)));
+        return json(plans.filter(Boolean), {}, origin);
       }
       if (url.pathname === "/weekplan" && request.method === "PUT") {
         const why = requireAuth(request, env);

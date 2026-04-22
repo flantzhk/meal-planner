@@ -65,11 +65,12 @@
       );
     }
 
-    function MealCard({ mealType, recipe, lang, today, onFeedback, onVerify }) {
+    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onFeedback, onVerify }) {
       const [note, setNote] = useState("");
       const [showNote, setShowNote] = useState(false);
-      const sched = MP.schedule.forMeal(mealType, recipe);
+      const sched = MP.schedule.forMeal(mealType, recipe, { mealTime });
       const name = MP.i18n.recipeName(recipe, lang);
+      const servedAtLabel = MP.schedule.fmtTime(MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(mealType)));
       const showEng = !recipe.translations_verified && lang !== "en";
 
       return (
@@ -99,6 +100,10 @@
               <div className="text-right shrink-0">
                 <div className="text-xs text-warm">{t(lang, "start")}</div>
                 <div className="font-display text-2xl num">{sched.startTime}</div>
+                <div className="text-xs text-warm mt-0.5">Serve at <span className="num">{servedAtLabel}</span></div>
+                {mealServes && (
+                  <div className="text-xs text-warm mt-0.5">For <span className="num">{mealServes}</span> {mealServes === 1 ? "person" : "people"}</div>
+                )}
                 {sched.flagEarly && (
                   <div className="text-xs text-terra mt-1 max-w-[9rem]">
                     ⚠ {t(lang, "startEarly")}
@@ -200,6 +205,85 @@
       );
     }
 
+    function ComingUpView({ plan, upcoming, recipesById, today }) {
+      // Build a flat list of all days from today forward across current + future plans.
+      const allDays = [];
+      const seen = new Set();
+      const addPlan = (p) => {
+        if (!p) return;
+        for (const d of p.days || []) {
+          if (d.date < today) continue;
+          if (seen.has(d.date)) continue;
+          seen.add(d.date);
+          allDays.push({ ...d, _planServes: p.serves || 4 });
+        }
+      };
+      addPlan(plan);
+      for (const p of upcoming || []) addPlan(p);
+      allDays.sort((a, b) => a.date.localeCompare(b.date));
+
+      if (allDays.length === 0) {
+        return <p className="text-warm text-sm">Nothing planned yet.</p>;
+      }
+
+      // Group by week_start for section headings.
+      const groups = {};
+      for (const d of allDays) {
+        const wk = MP.date.mondayOf(d.date);
+        (groups[wk] = groups[wk] || []).push(d);
+      }
+      const weekKeys = Object.keys(groups).sort();
+      const todayMonday = MP.date.mondayOf(today);
+
+      return (
+        <div className="space-y-6">
+          {weekKeys.map((wk) => {
+            const label = wk === todayMonday ? "This week" :
+                          wk === MP.date.addDays(todayMonday, 7) ? "Next week" :
+                          `Week of ${MP.date.prettyDate(wk)}`;
+            return (
+              <section key={wk}>
+                <h3 className="font-display text-xl text-terra mb-2">{label}</h3>
+                <div className="space-y-3">
+                  {groups[wk].map((d) => {
+                    const isToday = d.date === today;
+                    return (
+                      <div key={d.date} className={`rounded-xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white/60 ring-black/5"}`}>
+                        <div className="flex items-baseline justify-between">
+                          <div className="font-display text-lg">{MP.date.dayName(d.date)}{isToday && " · Today"}</div>
+                          <div className="text-xs text-warm num">{MP.date.prettyDate(d.date)}</div>
+                        </div>
+                        <ul className="mt-2 space-y-1 text-[15px]">
+                          {["breakfast","lunch","dinner"].map((m) => {
+                            const r = d[m] ? recipesById[d[m]] : null;
+                            if (!r) return (
+                              <li key={m} className="flex justify-between text-warm/50 text-sm">
+                                <span className="uppercase tracking-wide text-xs">{m}</span>
+                                <span className="italic">— not planned</span>
+                              </li>
+                            );
+                            const time = d[m + "_time"] || MP.schedule.defaultMealTime(m);
+                            const servesNote = d[m + "_serves"] ? ` · ${d[m + "_serves"]}p` : "";
+                            return (
+                              <li key={m} className="flex items-baseline justify-between gap-2">
+                                <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem]">{m}</span>
+                                <span className="flex-1">{r.name}</span>
+                                <span className="text-xs text-warm num shrink-0">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}{servesNote}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    );
+                  })}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      );
+    }
+
     function ShoppingView({ recipes, plan, pantry, onToggle, lang }) {
       const groups = MP.buildShoppingList(recipes, plan);
       const sourceLabels = {
@@ -260,9 +344,10 @@
 
     function App() {
       const [lang, setLang] = useState(langStore());
-      const [tab, setTab] = useState("today"); // "today" | "shop"
+      const [tab, setTab] = useState("today"); // "today" | "coming" | "shop"
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
+      const [upcoming, setUpcoming] = useState([]); // [plan, plan, ...] from today onward
       const [pantry, setPantry] = useState({});
       const [err, setErr] = useState(null);
 
@@ -271,11 +356,15 @@
       useEffect(() => {
         (async () => {
           try {
-            const [rs, wp, pa] = await Promise.all([
+            const today = MP.date.hkToday();
+            const monday = MP.date.mondayOf(today);
+            const [rs, wp, pa, upc] = await Promise.all([
               MP.api.getRecipes(), MP.api.getWeekplan(), MP.api.getPantry(),
+              MP.api.getWeekplans(monday).catch(() => []),
             ]);
             setRecipes(rs);
             setPlan(wp);
+            setUpcoming(upc || []);
             setPantry(pa || {});
           } catch (e) { setErr(e.message); }
         })();
@@ -362,11 +451,12 @@
         );
       }
 
-      const serves = plan.serves || 4;
-      function scaleRecipe(r) {
+      const planServes = plan.serves || 4;
+      function scaleRecipe(r, servesOverride) {
+        const s = servesOverride || planServes;
         return {
           ...r,
-          ingredients: r.ingredients.map((i) => MP.scale(i, serves, r.serves_base || 4)),
+          ingredients: r.ingredients.map((i) => MP.scale(i, s, r.serves_base || 4)),
         };
       }
 
@@ -396,14 +486,18 @@
             <LangToggle lang={lang} onChange={setLang} />
           </header>
 
-          <nav className="flex gap-2 mb-6 bg-sand rounded-full p-1 text-sm">
+          <nav className="flex gap-1 mb-6 bg-sand rounded-full p-1 text-sm">
             <button onClick={() => setTab("today")}
               className={`flex-1 py-2 rounded-full transition ${tab === "today" ? "bg-cream shadow" : "text-warm"}`}>
-              🍳 Today's meals
+              🍳 Today
+            </button>
+            <button onClick={() => setTab("coming")}
+              className={`flex-1 py-2 rounded-full transition ${tab === "coming" ? "bg-cream shadow" : "text-warm"}`}>
+              📅 Coming up
             </button>
             <button onClick={() => setTab("shop")}
               className={`flex-1 py-2 rounded-full transition ${tab === "shop" ? "bg-cream shadow" : "text-warm"}`}>
-              🛒 Shopping list {needCount > 0 && <span className="ml-1 text-xs bg-terra text-cream rounded-full px-2 num">{needCount}</span>}
+              🛒 Shop {needCount > 0 && <span className="ml-1 text-xs bg-terra text-cream rounded-full px-2 num">{needCount}</span>}
             </button>
           </nav>
 
@@ -415,10 +509,13 @@
                   if (!id) return null;
                   const r = recipesById[id];
                   if (!r) return null;
+                  const mealServes = todayDay[meal + "_serves"];
                   return (
                     <MealCard
-                      key={meal} mealType={meal} recipe={scaleRecipe(r)}
+                      key={meal} mealType={meal} recipe={scaleRecipe(r, mealServes)}
                       lang={lang} today={today}
+                      mealTime={todayDay[meal + "_time"]}
+                      mealServes={mealServes}
                       onFeedback={feedback} onVerify={verify}
                     />
                   );
@@ -426,6 +523,10 @@
               </div>
               <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
             </>
+          )}
+
+          {tab === "coming" && (
+            <ComingUpView plan={plan} upcoming={upcoming} recipesById={recipesById} today={today} />
           )}
 
           {tab === "shop" && (
