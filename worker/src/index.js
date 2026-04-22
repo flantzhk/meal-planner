@@ -137,6 +137,27 @@ async function getFeedbackForWeek(env, dateStr) {
   return raw ? JSON.parse(raw) : [];
 }
 
+// ---------- pantry ----------
+// Items the helper has confirmed are already in the house.
+// Stored as { "<item lowercased>": "YYYY-MM-DD" } — date last confirmed.
+// Writes are unauthenticated (same trust model as feedback) because the
+// helper needs to toggle them and she doesn't have the Faith token.
+
+async function getPantry(env) {
+  const raw = await env.MEAL_DATA.get("pantry");
+  return raw ? JSON.parse(raw) : {};
+}
+
+async function togglePantry(env, item, have) {
+  const pantry = await getPantry(env);
+  const key = String(item || "").toLowerCase().trim();
+  if (!key) throw new Error("item required");
+  if (have) pantry[key] = new Date().toISOString().slice(0, 10);
+  else delete pantry[key];
+  await env.MEAL_DATA.put("pantry", JSON.stringify(pantry));
+  return pantry;
+}
+
 // ---------- router ----------
 
 export default {
@@ -222,6 +243,17 @@ export default {
       if (url.pathname === "/feedback" && request.method === "GET") {
         const date = url.searchParams.get("date") || new Date().toISOString().slice(0, 10);
         return json(await getFeedbackForWeek(env, date), {}, origin);
+      }
+
+      // Pantry (what helper already has in the house)
+      if (url.pathname === "/pantry" && request.method === "GET") {
+        return json(await getPantry(env), {}, origin);
+      }
+      if (url.pathname === "/pantry" && request.method === "POST") {
+        const { item, have } = await request.json();
+        if (!item) return err(400, "item required", origin);
+        const pantry = await togglePantry(env, item, !!have);
+        return json({ ok: true, count: Object.keys(pantry).length }, {}, origin);
       }
 
       return err(404, `no route: ${request.method} ${url.pathname}`, origin);

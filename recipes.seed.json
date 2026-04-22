@@ -15,12 +15,12 @@
     "youtube_url": "https://www.youtube.com/results?search_query=gordon+ramsay+scrambled+eggs",
     "dependencies": [],
     "ingredients": [
-      { "item": "eggs", "amount": 8, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "butter", "amount": 40, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "sourdough bread", "amount": 4, "unit": "whole", "category": "bakery", "source": "parknshop", "scales": "linear" },
+      { "item": "eggs", "amount": 8, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "butter", "amount": 40, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "sourdough bread", "amount": 4, "unit": "whole", "category": "bakery", "source": "supermarket", "scales": "linear" },
       { "item": "chives", "amount": 1, "unit": "tbsp", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "salt", "amount": 0.5, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "black pepper", "amount": 0.25, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "salt", "amount": 0.5, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "black pepper", "amount": 0.25, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Crack eggs into a cold, non-stick pan with butter. No whisking yet.", "instruction_tl": "Ibasag ang mga itlog sa malamig na kawali na may mantikilya. Huwag munang haluin.", "instruction_il": "Ibuska dagiti itlog iti nalamiis a paryok nga addaan mantikilya. Saan pay nga kiburen." },
@@ -49,14 +49,14 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+fluffy+pancakes",
     "dependencies": [],
     "ingredients": [
-      { "item": "all-purpose flour", "amount": 250, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "baking powder", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "sugar", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 0.5, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "milk", "amount": 300, "unit": "ml", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "eggs", "amount": 2, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "butter", "amount": 40, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "maple syrup", "amount": 100, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" }
+      { "item": "all-purpose flour", "amount": 250, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "baking powder", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "sugar", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 0.5, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "milk", "amount": 300, "unit": "ml", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "eggs", "amount": 2, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "butter", "amount": 40, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "maple syrup", "amount": 100, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" }
     ],
     "steps": [
       { "step": 1, "instruction": "Whisk flour, baking powder, sugar, and salt in a bowl.", "instruction_tl": "Paghaluin ang harina, baking powder, asukal, at asin sa mangkok.", "instruction_il": "Paglalaoken ti arina, baking powder, asukar, ken asin iti malukong." },
@@ -85,15 +85,15 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+breakfast+burrito",
     "dependencies": [],
     "ingredients": [
-      { "item": "flour tortillas (large)", "amount": 4, "unit": "whole", "category": "bakery", "source": "parknshop", "scales": "linear" },
-      { "item": "eggs", "amount": 8, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "bacon", "amount": 200, "unit": "g", "category": "meat", "source": "parknshop", "scales": "linear" },
+      { "item": "flour tortillas (large)", "amount": 4, "unit": "whole", "category": "bakery", "source": "supermarket", "scales": "linear" },
+      { "item": "eggs", "amount": 8, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "bacon", "amount": 200, "unit": "g", "category": "meat", "source": "supermarket", "scales": "linear" },
       { "item": "potatoes", "amount": 400, "unit": "g", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "cheddar cheese (shredded)", "amount": 150, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "cheddar cheese (shredded)", "amount": 150, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "salsa", "amount": 150, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "olive oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "salsa", "amount": 150, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "olive oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Dice potatoes small. Fry in oil with diced onion, 10 mins, until golden. Salt.", "instruction_tl": "Hiwain ng maliit ang patatas. Iprito sa langis kasama ng hiniwang sibuyas, 10 minuto, hanggang ginintuan. Asinan.", "instruction_il": "Tadtaden a babassit ti patatas. Iprito iti lana a kadua ti natadtad a sibuyas, 10 minuto, agingga nga nabalitok. Asinan." },
@@ -122,13 +122,13 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+pesto+pasta",
     "dependencies": [],
     "ingredients": [
-      { "item": "spaghetti", "amount": 400, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "spaghetti", "amount": 400, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "fresh basil", "amount": 60, "unit": "g", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "pine nuts", "amount": 50, "unit": "g", "category": "pantry", "source": "hktvmall", "scales": "linear" },
       { "item": "parmesan (grated)", "amount": 80, "unit": "g", "category": "dairy", "source": "hktvmall", "scales": "linear" },
       { "item": "garlic", "amount": 2, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "olive oil", "amount": 120, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "olive oil", "amount": 120, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "cherry tomatoes", "amount": 200, "unit": "g", "category": "produce", "source": "wet-market", "scales": "linear" }
     ],
     "steps": [
@@ -161,14 +161,14 @@
     ],
     "ingredients": [
       { "item": "boneless chicken thighs", "amount": 600, "unit": "g", "category": "meat", "source": "wet-market", "scales": "linear" },
-      { "item": "plain yogurt", "amount": 200, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "tikka masala paste", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "plain yogurt", "amount": 200, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "tikka masala paste", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "lemon", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "fixed" },
-      { "item": "flatbreads or naan", "amount": 4, "unit": "whole", "category": "bakery", "source": "parknshop", "scales": "linear" },
+      { "item": "flatbreads or naan", "amount": 4, "unit": "whole", "category": "bakery", "source": "supermarket", "scales": "linear" },
       { "item": "cucumber", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "red onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "fresh mint", "amount": 20, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Cube chicken. Mix with yogurt, tikka paste, lemon juice, salt. Marinate 2 hours (or overnight).", "instruction_tl": "Hiwain ng kubo ang manok. Ihalo sa yogurt, tikka paste, katas ng lemon, asin. I-marinate ng 2 oras (o magdamag).", "instruction_il": "Tadtaden a kubo ti manok. Ilaok iti yogurt, tikka paste, tubbog ti lemon, asin. I-marinate iti 2 oras (wenno nagpatpatnag)." },
@@ -197,15 +197,15 @@
     "youtube_url": "https://www.youtube.com/results?search_query=gordon+ramsay+fried+rice",
     "dependencies": [],
     "ingredients": [
-      { "item": "day-old cooked rice", "amount": 800, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "eggs", "amount": 3, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "day-old cooked rice", "amount": 800, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "eggs", "amount": 3, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "spring onions", "amount": 4, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "garlic", "amount": 3, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "ginger", "amount": 15, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "frozen peas", "amount": 150, "unit": "g", "category": "frozen", "source": "parknshop", "scales": "linear" },
-      { "item": "soy sauce", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "sesame oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "vegetable oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "frozen peas", "amount": 150, "unit": "g", "category": "frozen", "source": "supermarket", "scales": "linear" },
+      { "item": "soy sauce", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "sesame oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "vegetable oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Break up the cold rice with your hands so no clumps.", "instruction_tl": "Durugin ang malamig na kanin gamit ang kamay para walang bukol.", "instruction_il": "Rumekrekan ti nalamiis a kanen babaen ti ima tapno awan ti bukol." },
@@ -234,16 +234,16 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+grilled+cheese",
     "dependencies": [],
     "ingredients": [
-      { "item": "sourdough bread", "amount": 8, "unit": "whole", "category": "bakery", "source": "parknshop", "scales": "linear" },
-      { "item": "cheddar cheese", "amount": 200, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "sourdough bread", "amount": 8, "unit": "whole", "category": "bakery", "source": "supermarket", "scales": "linear" },
+      { "item": "cheddar cheese", "amount": 200, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "gruyère cheese", "amount": 100, "unit": "g", "category": "dairy", "source": "hktvmall", "scales": "linear" },
-      { "item": "butter", "amount": 80, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "canned tomatoes", "amount": 800, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "butter", "amount": 80, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "canned tomatoes", "amount": 800, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "garlic", "amount": 3, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "cream", "amount": 100, "unit": "ml", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "cream", "amount": 100, "unit": "ml", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "basil", "amount": 10, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Soup: sweat chopped onion and garlic in olive oil 5 mins. Add canned tomatoes. Simmer 15 mins.", "instruction_tl": "Sabaw: igisa ang sibuyas at bawang sa olive oil ng 5 minuto. Idagdag ang de-latang kamatis. Pakuluan ng 15 minuto.", "instruction_il": "Sabaw: igisa ti sibuyas ken bawang iti olive oil iti 5 minuto. Inayunan ti kamatis a de-lata. Pagburekan iti 15 minuto." },
@@ -273,16 +273,16 @@
     "dependencies": [],
     "ingredients": [
       { "item": "boneless chicken thighs", "amount": 700, "unit": "g", "category": "meat", "source": "wet-market", "scales": "linear" },
-      { "item": "plain yogurt", "amount": 100, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "garam masala", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "ginger-garlic paste", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "tomato passata", "amount": 500, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "cream", "amount": 200, "unit": "ml", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "basmati rice", "amount": 400, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "plain yogurt", "amount": 100, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "garam masala", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "ginger-garlic paste", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "tomato passata", "amount": 500, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "cream", "amount": 200, "unit": "ml", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "basmati rice", "amount": 400, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "fresh coriander", "amount": 15, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Cube chicken. Toss with yogurt, half the garam masala, half the ginger-garlic paste, salt. Rest 15 mins.", "instruction_tl": "Hiwain ng kubo ang manok. Ihalo sa yogurt, kalahating garam masala, kalahating ginger-garlic paste, asin. Pahingahin ng 15 minuto.", "instruction_il": "Tadtaden a kubo ti manok. Ilaok iti yogurt, kagudua a garam masala, kagudua a ginger-garlic paste, asin. Paginanaen iti 15 minuto." },
@@ -312,16 +312,16 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+smash+burger",
     "dependencies": [],
     "ingredients": [
-      { "item": "ground beef (80/20)", "amount": 600, "unit": "g", "category": "meat", "source": "parknshop", "scales": "linear" },
-      { "item": "burger buns", "amount": 4, "unit": "whole", "category": "bakery", "source": "parknshop", "scales": "linear" },
-      { "item": "american cheese slices", "amount": 8, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "ground beef (80/20)", "amount": 600, "unit": "g", "category": "meat", "source": "supermarket", "scales": "linear" },
+      { "item": "burger buns", "amount": 4, "unit": "whole", "category": "bakery", "source": "supermarket", "scales": "linear" },
+      { "item": "american cheese slices", "amount": 8, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "pickles", "amount": 100, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "mayonnaise", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "ketchup", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "mustard", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "butter", "amount": 30, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "pickles", "amount": 100, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "mayonnaise", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "ketchup", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "mustard", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "butter", "amount": 30, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Form beef into 8 loose balls (75g each). Don't pack tight.", "instruction_tl": "Hubugin ang karne sa 8 maluwag na bola (75g bawat isa). Huwag siksikin.", "instruction_il": "Aramiden ti karne iti 8 nalukneng a bola (75g iti tunggal maysa). Saan a ilinsadan." },
@@ -351,16 +351,16 @@
     "dependencies": [],
     "ingredients": [
       { "item": "fresh ramen noodles", "amount": 500, "unit": "g", "category": "pantry", "source": "hktvmall", "scales": "linear" },
-      { "item": "chicken stock", "amount": 1500, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "chicken stock", "amount": 1500, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "pork belly slices", "amount": 400, "unit": "g", "category": "meat", "source": "wet-market", "scales": "linear" },
-      { "item": "eggs", "amount": 4, "unit": "whole", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "soy sauce", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "eggs", "amount": 4, "unit": "whole", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "soy sauce", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "miso paste", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "hktvmall", "scales": "taper" },
       { "item": "garlic", "amount": 3, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "ginger", "amount": 20, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "spring onions", "amount": 4, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "nori sheets", "amount": 4, "unit": "whole", "category": "pantry", "source": "hktvmall", "scales": "linear" },
-      { "item": "sesame oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "sesame oil", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Boil eggs 6.5 mins for jammy yolks. Ice bath. Peel, halve.", "instruction_tl": "Pakuluan ang itlog ng 6.5 minuto para malambot ang pula. Ilusong sa malamig na tubig. Balatan, hatiin.", "instruction_il": "Pagburekan ti itlog iti 6.5 minuto tapno nalukneng ti nalabaga. Isawsaw iti nalamiis a danum. Ukisan, paggudu-guduen." },
@@ -396,9 +396,9 @@
       { "item": "broccoli", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "garlic", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "fresh thyme", "amount": 5, "unit": "sprigs", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "olive oil", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "olive oil", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Preheat oven to 220°C. Pat chicken skin very dry. Salt skin generously.", "instruction_tl": "Painitin ang oven sa 220°C. Patuyuing mabuti ang balat ng manok. Asinan ang balat nang sagana.", "instruction_il": "Pataken ti pugon iti 220°C. Punasan a namaga ti kudil ti manok. Asinan ti kudil iti nagadu." },
@@ -427,16 +427,16 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+flank+steak",
     "dependencies": [],
     "ingredients": [
-      { "item": "flank steak", "amount": 700, "unit": "g", "category": "meat", "source": "parknshop", "scales": "linear" },
+      { "item": "flank steak", "amount": 700, "unit": "g", "category": "meat", "source": "supermarket", "scales": "linear" },
       { "item": "mixed salad leaves", "amount": 200, "unit": "g", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "cherry tomatoes", "amount": 250, "unit": "g", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "cucumber", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "red onion", "amount": 0.5, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "feta cheese", "amount": 100, "unit": "g", "category": "dairy", "source": "hktvmall", "scales": "linear" },
-      { "item": "olive oil", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "olive oil", "amount": 4, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "lemon", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "fixed" },
-      { "item": "dijon mustard", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "dijon mustard", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Bring steak to room temp 20 mins. Pat dry. Salt and pepper heavily on both sides.", "instruction_tl": "Hayaang mainit-init ang steak ng 20 minuto. Patuyuin. Asinan at pamintahan ng husto sa magkabilang gilid.", "instruction_il": "Palubusan nga mapudot ti steak iti 20 minuto. Punasan a namaga. Asinan ken pamintaan iti nagadu iti agsumbangir." },
@@ -465,20 +465,20 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+bolognese",
     "dependencies": [],
     "ingredients": [
-      { "item": "ground beef", "amount": 500, "unit": "g", "category": "meat", "source": "parknshop", "scales": "linear" },
-      { "item": "pancetta or bacon", "amount": 100, "unit": "g", "category": "meat", "source": "parknshop", "scales": "linear" },
-      { "item": "spaghetti", "amount": 400, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "ground beef", "amount": 500, "unit": "g", "category": "meat", "source": "supermarket", "scales": "linear" },
+      { "item": "pancetta or bacon", "amount": 100, "unit": "g", "category": "meat", "source": "supermarket", "scales": "linear" },
+      { "item": "spaghetti", "amount": 400, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "carrot", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "celery stalk", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "garlic", "amount": 3, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "tomato paste", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "canned tomatoes", "amount": 400, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "red wine", "amount": 150, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "milk", "amount": 150, "unit": "ml", "category": "dairy", "source": "parknshop", "scales": "linear" },
+      { "item": "tomato paste", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "canned tomatoes", "amount": 400, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "red wine", "amount": 150, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "milk", "amount": 150, "unit": "ml", "category": "dairy", "source": "supermarket", "scales": "linear" },
       { "item": "parmesan (grated)", "amount": 60, "unit": "g", "category": "dairy", "source": "hktvmall", "scales": "linear" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Finely dice onion, carrot, celery. Mince garlic. Dice pancetta.", "instruction_tl": "Tadtarin ng pino ang sibuyas, karot, celery. Tadtarin ang bawang. Hiwain ang pancetta.", "instruction_il": "Tadtaden a napino ti sibuyas, karot, celery. Tadtaden ti bawang. Tadtaden ti pancetta." },
@@ -514,10 +514,10 @@
       { "item": "lemon", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "fixed" },
       { "item": "garlic", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "fresh thyme", "amount": 8, "unit": "sprigs", "category": "produce", "source": "wet-market", "scales": "taper" },
-      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Preheat oven 200°C. Pat chicken bone-dry. Season cavity with salt and pepper. Stuff with halved lemon, half the garlic, half the thyme.", "instruction_tl": "Painitin ang oven sa 200°C. Patuyuing mabuti ang manok. Timplahan ang loob ng asin at paminta. Lagyan ng hinating lemon, kalahating bawang, kalahating thyme.", "instruction_il": "Pataken ti pugon iti 200°C. Punasan a namaga ti manok. Timplaan ti uneg iti asin ken paminta. Kargaan ti naggudu-guduan a lemon, kagudua a bawang, kagudua a thyme." },
@@ -546,19 +546,19 @@
     "youtube_url": "https://www.youtube.com/results?search_query=joshua+weissman+braised+short+ribs",
     "dependencies": [],
     "ingredients": [
-      { "item": "beef short ribs", "amount": 1.5, "unit": "kg", "category": "meat", "source": "parknshop", "scales": "linear" },
-      { "item": "beef stock", "amount": 375, "unit": "ml", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "balsamic vinegar", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "crushed tomatoes", "amount": 400, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
+      { "item": "beef short ribs", "amount": 1.5, "unit": "kg", "category": "meat", "source": "supermarket", "scales": "linear" },
+      { "item": "beef stock", "amount": 375, "unit": "ml", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "balsamic vinegar", "amount": 1, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "crushed tomatoes", "amount": 400, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
       { "item": "garlic", "amount": 6, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "fresh rosemary", "amount": 2, "unit": "sprigs", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "onion", "amount": 1, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "potatoes", "amount": 1, "unit": "kg", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "cream", "amount": 125, "unit": "ml", "category": "dairy", "source": "parknshop", "scales": "linear" },
-      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "butter", "amount": 60, "unit": "g", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "cream", "amount": 125, "unit": "ml", "category": "dairy", "source": "supermarket", "scales": "linear" },
+      { "item": "salt", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "black pepper", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Season ribs with salt and pepper. Sear in hot olive oil until browned on all sides, 3-4 mins per side.", "instruction_tl": "Timplahan ng asin at paminta ang ribs. Iprito sa mainit na langis hanggang makulay, 3-4 minuto bawat gilid.", "instruction_il": "Timplaan ti ribs iti asin ken paminta. Iprito iti napudut a lana agingga a nakayumanggi, 3-4 minuto iti tunggal suli." },
@@ -594,11 +594,11 @@
       { "item": "lime", "amount": 2, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "fresh coriander", "amount": 20, "unit": "g", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "red onion", "amount": 0.5, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
-      { "item": "mayonnaise", "amount": 100, "unit": "g", "category": "pantry", "source": "parknshop", "scales": "linear" },
-      { "item": "chipotle or paprika", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "cumin", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "mayonnaise", "amount": 100, "unit": "g", "category": "pantry", "source": "supermarket", "scales": "linear" },
+      { "item": "chipotle or paprika", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "cumin", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 1, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Pat fish dry. Rub with oil, cumin, paprika, salt.", "instruction_tl": "Patuyuin ang isda. Pahiran ng langis, cumin, paprika, asin.", "instruction_il": "Punasan a namaga ti ikan. Sapsapuan iti lana, cumin, paprika, asin." },
@@ -629,16 +629,16 @@
       { "type": "defrost", "hours_before": 48 }
     ],
     "ingredients": [
-      { "item": "bone-in pork shoulder", "amount": 2, "unit": "kg", "category": "meat", "source": "parknshop", "scales": "linear" },
+      { "item": "bone-in pork shoulder", "amount": 2, "unit": "kg", "category": "meat", "source": "supermarket", "scales": "linear" },
       { "item": "garlic", "amount": 6, "unit": "cloves", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "fresh rosemary", "amount": 3, "unit": "sprigs", "category": "produce", "source": "wet-market", "scales": "taper" },
       { "item": "onion", "amount": 2, "unit": "whole", "category": "produce", "source": "wet-market", "scales": "linear" },
       { "item": "apple cider", "amount": 300, "unit": "ml", "category": "pantry", "source": "hktvmall", "scales": "linear" },
-      { "item": "brown sugar", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "smoked paprika", "amount": 2, "unit": "tsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
+      { "item": "brown sugar", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "smoked paprika", "amount": 2, "unit": "tsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
       { "item": "fennel seeds", "amount": 1, "unit": "tsp", "category": "pantry", "source": "hktvmall", "scales": "taper" },
-      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" },
-      { "item": "salt", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "parknshop", "scales": "taper" }
+      { "item": "olive oil", "amount": 2, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" },
+      { "item": "salt", "amount": 3, "unit": "tbsp", "category": "pantry", "source": "supermarket", "scales": "taper" }
     ],
     "steps": [
       { "step": 1, "instruction": "Pat pork very dry. Score the skin in a cross-hatch (don't cut into meat). Rub all over with salt, paprika, crushed fennel, brown sugar. Refrigerate uncovered 2+ hours.", "instruction_tl": "Patuyuing mabuti ang baboy. Hiwain ang balat sa cross-hatch (huwag abutin ang karne). Pahiran ng asin, paprika, durog na fennel, brown sugar. Ilagay sa ref na walang takip ng 2+ oras.", "instruction_il": "Punasan a namaga ti baboy. Iwa-iwaen ti kudil iti cross-hatch (saan a dumanon iti karne). Sapsapuan iti asin, paprika, narumek a fennel, brown sugar. Ikabil iti ref nga awan ti takkup iti 2+ oras." },

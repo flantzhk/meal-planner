@@ -48,6 +48,8 @@
       recordEaten: (recipe_id, date) => req("POST", "/eaten-log", { recipe_id, date }),
       postFeedback: (entry) => req("POST", "/feedback", entry),
       getFeedback: (date) => req("GET", `/feedback?date=${encodeURIComponent(date)}`),
+      getPantry: () => req("GET", "/pantry"),
+      togglePantry: (item, have) => req("POST", "/pantry", { item, have }),
       health: () => req("GET", "/health"),
     };
   })();
