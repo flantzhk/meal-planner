@@ -129,14 +129,14 @@
       const groups = MP.buildShoppingList(recipes, plan);
       const sourceLabels = {
         "wet-market": "Wet market", "parknshop": "PARKnSHOP",
-        "hktvmall": "HKTVmall", "city-super": "City'super", "other": "Other",
+        "hktvmall": "HKTVmall", "other": "Other",
       };
       const categoryLabels = {
         meat: "Meat & Seafood", produce: "Vegetables & Fruit",
         dairy: "Dairy & Eggs", pantry: "Pantry & Dry Goods",
         bakery: "Bread & Bakery", frozen: "Frozen", other: "Other",
       };
-      const sourceOrder = ["wet-market", "parknshop", "city-super", "hktvmall", "other"];
+      const sourceOrder = ["wet-market", "parknshop", "hktvmall", "other"];
       return (
         <div>
           <div className="text-sm text-warm mb-4">
