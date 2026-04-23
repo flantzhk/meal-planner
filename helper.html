@@ -43,6 +43,11 @@
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
     const t = (lang, key) => MP.i18n.t(lang, key);
+    const COMPONENTS = ["protein", "vegetable", "carb"];
+    const OPT_COMPONENTS = ["soup", "salad"];
+    const ALL_COMPONENTS = [...COMPONENTS, ...OPT_COMPONENTS];
+    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", soup: "🍲", salad: "🥗" };
+    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", soup: "Soup", salad: "Salad" };
 
     function langStore() {
       return localStorage.getItem("mpHelperLang") || "en";
@@ -103,52 +108,117 @@
       );
     }
 
-    function MealCard({ mealType, recipe, lang, today, mealTime, mealServes, onVerify, nowMin }) {
-      const sched = MP.schedule.forMeal(mealType, recipe, { mealTime });
+    // Renders a single recipe's image, ingredients and steps
+    function RecipeCard({ recipe, componentType, lang, onVerify }) {
       const name = MP.i18n.recipeName(recipe, lang);
+      const showEng = !recipe.translations_verified && lang !== "en";
+      const img = MP.recipeImage(recipe);
+      return (
+        <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
+          {img && (
+            <img src={img} alt={name} className="w-full h-44 object-cover"
+              onLoad={(e) => {
+                if (!MP.isYoutubePlaceholder(e.target)) return;
+                const s = e.target.src;
+                if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                e.target.style.display = "none";
+              }}
+              onError={(e) => {
+                const s = e.target.src;
+                if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                e.target.style.display = "none";
+              }} />
+          )}
+          <div className="p-5">
+            <div className="flex items-center gap-2 text-warm text-xs uppercase tracking-wide mb-1">
+              <span className="text-base">{COMPONENT_ICONS[componentType] || ""}</span>
+              <span>{COMPONENT_LABELS[componentType] || componentType}</span>
+            </div>
+            <h2 className="font-display text-2xl leading-tight">{name}</h2>
+            {showEng && <div className="text-sm text-warm/80 italic mt-0.5">{recipe.name}</div>}
+            {recipe.youtube_url && (
+              <a href={recipe.youtube_url} target="_blank" rel="noopener"
+                className="mt-3 inline-flex items-center gap-2 bg-terra text-cream px-4 py-2 rounded-full text-sm font-medium">
+                ▶ {t(lang, "watch")}
+              </a>
+            )}
+            <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
+            <ul className="mt-1 text-sm leading-relaxed">
+              {(recipe.ingredients || []).map((ing, i) => {
+                const amt = ing.amount != null ? Number(Number(ing.amount).toFixed(2)) : "";
+                return (
+                  <li key={i} className="flex gap-3 py-0.5">
+                    <span className="num text-warm min-w-[4.5rem]">{amt !== "" ? amt : ""} {ing.unit || ""}</span>
+                    <span>{ing.item || ""}</span>
+                  </li>
+                );
+              })}
+            </ul>
+            <h3 className="mt-5 font-display text-lg">{t(lang, "steps")}</h3>
+            <ol className="mt-1 space-y-3">
+              {(recipe.steps || []).map((s, i) => (
+                <li key={s.step ?? i} className="flex gap-3">
+                  <span className="step-num font-display text-terra text-lg leading-7 min-w-[1.5rem]">{s.step ?? i + 1}</span>
+                  <div className="leading-relaxed text-sm">
+                    <div>{MP.i18n.stepText(s, lang)}</div>
+                    {showEng && <div className="text-warm/70 italic text-sm mt-0.5">{s.instruction}</div>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            {!recipe.translations_verified && lang !== "en" && (
+              <button onClick={() => onVerify(recipe.id)} className="mt-4 text-xs underline text-warm/80">
+                ✓ {t(lang, "verify")}
+              </button>
+            )}
+          </div>
+        </article>
+      );
+    }
+
+    // Renders a full meal: timing header + one RecipeCard per component
+    function MealSection({ mealType, day, recipesById, planServes, lang, onVerify, nowMin }) {
+      const mealObj = MP.getMealObj(day, mealType);
+      const mealTime = day[mealType + "_time"];
+      const mealServes = day[mealType + "_serves"] || planServes;
+      const ids = MP.getMealRecipeIds(day, mealType);
+      if (!ids.length) return null;
+
       const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(mealType));
       const servedAtLabel = MP.schedule.fmtTime(serveMin);
-      const showEng = !recipe.translations_verified && lang !== "en";
+      let earliestStart = Infinity;
+      let hasOvernightDep = false;
+      for (const id of ids) {
+        const r = recipesById[id]; if (!r) continue;
+        const sched = MP.schedule.forMeal(mealType, r, { mealTime });
+        if (sched.startMin < earliestStart) earliestStart = sched.startMin;
+        if (sched.hasOvernightDep) hasOvernightDep = true;
+      }
+      const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
       const isUpNext = nowMin != null && nowMin < serveMin;
+      const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
 
       return (
-        <div className="relative">
+        <div className="relative space-y-3">
           {isUpNext && (
             <div className="absolute -top-3 left-4 z-10 bg-terra text-cream text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
               Up next
             </div>
           )}
-        <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
-          {MP.recipeImage(recipe) && (
-            <img src={MP.recipeImage(recipe)} alt={recipe.name}
-              className="w-full h-44 object-cover"
-              onLoad={(e) => {
-                if (!MP.isYoutubePlaceholder(e.target)) return;
-                const src = e.target.src;
-                if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
-                if (recipe.hero_image && src !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                e.target.style.display = "none";
-              }}
-              onError={(e) => {
-                const src = e.target.src;
-                if (src.includes("maxresdefault")) { e.target.src = src.replace("maxresdefault", "hqdefault"); return; }
-                if (recipe.hero_image && src !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                e.target.style.display = "none";
-              }} />
-          )}
-
-          {/* Timing instruction strip — spans full width, above the recipe name */}
-          {sched.flagEarly ? (
-            <div className="bg-terra text-cream px-5 py-3">
-              <div className="text-xs font-semibold uppercase tracking-widest mb-0.5 opacity-80">⚠ Start previous day</div>
-              <div className="text-sm font-medium">This needs to be started the day before — please confirm with Faith.</div>
-              <div className="text-xs opacity-80 mt-1 num">Serve at {servedAtLabel}{mealServes ? ` · For ${mealServes}` : ""}</div>
+          {/* Timing header */}
+          {hasOvernightDep ? (
+            <div className="bg-warm text-cream px-5 py-3 rounded-2xl">
+              <div className="text-xs font-semibold uppercase tracking-widest opacity-70">⚠ Needs overnight prep</div>
+              <div className="font-display text-xl mt-0.5">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
+              <div className="text-xs opacity-80 mt-1 num">Serve at {servedAtLabel}</div>
             </div>
           ) : (
-            <div className="bg-ink text-cream px-5 py-3 flex items-baseline justify-between">
+            <div className="bg-ink text-cream px-5 py-3 rounded-2xl flex items-baseline justify-between">
               <div>
-                <div className="text-xs font-semibold uppercase tracking-widest opacity-60 mb-0.5">When to cook</div>
-                <div className="font-display text-xl num leading-none">Start {sched.startTime}</div>
+                <div className="text-xs font-semibold uppercase tracking-widest opacity-60 mb-0.5">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
+                <div className="font-display text-xl num leading-none">Start {startLabel}</div>
               </div>
               <div className="text-right">
                 <div className="text-xs opacity-60 mb-0.5">Serve at</div>
@@ -156,71 +226,18 @@
               </div>
             </div>
           )}
-
-          <div className="p-5">
-            <div className="flex items-start gap-3">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 text-terra">
-                  <span className="text-2xl leading-none">{mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️"}</span>
-                  <span className="font-display text-xl">{MP.i18n.meals[lang][mealType]}</span>
-                </div>
-                <h2 className="font-display text-2xl leading-tight mt-1">{name}</h2>
-                {showEng && (
-                  <div className="text-sm text-warm/80 italic mt-0.5">{recipe.name}</div>
-                )}
-                {mealServes && (
-                  <div className="text-xs text-warm mt-1">For <span className="num">{mealServes}</span> {mealServes === 1 ? "person" : "people"}</div>
-                )}
-              </div>
-            </div>
-
-            {recipe.youtube_url && (
-              <a href={recipe.youtube_url} target="_blank" rel="noopener"
-                 className="mt-3 inline-flex items-center gap-2 bg-terra text-cream px-4 py-2 rounded-full text-sm font-medium">
-                ▶ {t(lang, "watch")}
-              </a>
-            )}
-
-            <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
-            <ul className="mt-1 text-sm leading-relaxed">
-              {(recipe.ingredients || []).map((ing, i) => {
-                const amt = ing.amount != null ? Number(Number(ing.amount).toFixed(2)) : "";
-                return (
-                  <li key={i} className="flex gap-3 py-0.5">
-                    <span className="num text-warm min-w-[4.5rem]">
-                      {amt !== "" ? amt : ""} {ing.unit || ""}
-                    </span>
-                    <span>{ing.item || ""}</span>
-                  </li>
-                );
-              })}
-            </ul>
-
-            <h3 className="mt-5 font-display text-lg">{t(lang, "steps")}</h3>
-            <ol className="mt-1 space-y-3">
-              {(recipe.steps || []).map((s, i) => (
-                <li key={s.step ?? i} className="flex gap-3">
-                  <span className="step-num font-display text-terra text-lg leading-7 min-w-[1.5rem]">
-                    {s.step ?? i + 1}
-                  </span>
-                  <div className="leading-relaxed text-sm">
-                    <div>{MP.i18n.stepText(s, lang)}</div>
-                    {showEng && (
-                      <div className="text-warm/70 italic text-sm mt-0.5">{s.instruction}</div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-
-            {!recipe.translations_verified && lang !== "en" && (
-              <button onClick={() => onVerify(recipe.id)}
-                className="mt-4 text-xs underline text-warm/80">
-                ✓ {t(lang, "verify")}
-              </button>
-            )}
-          </div>
-        </article>
+          {/* One card per component */}
+          {ALL_COMPONENTS.map((comp) => {
+            const id = mealObj[comp]; if (!id) return null;
+            const r = recipesById[id]; if (!r) return null;
+            const scaled = {
+              ...r,
+              ingredients: (r.ingredients || []).map((i) => {
+                try { return MP.scale(i, mealServes, r.serves_base || 4); } catch(e) { return i; }
+              }),
+            };
+            return <RecipeCard key={comp} componentType={comp} recipe={scaled} lang={lang} onVerify={onVerify} />;
+          })}
         </div>
       );
     }
@@ -229,16 +246,13 @@
       if (!tomorrowDay) return null;
       const items = [];
       for (const meal of ["breakfast", "lunch", "dinner"]) {
-        const id = tomorrowDay[meal];
-        if (!id) continue;
-        const r = recipesById[id];
-        if (!r) continue;
-        for (const d of r.dependencies || []) {
-          if (d.type === "defrost" && d.hours_before >= 12) {
-            items.push({ icon: "❄️", text: `Take ${r.name} out of the freezer today — for tomorrow's ${meal}.` });
-          }
-          if (d.type === "marinate" && d.hours_before >= 8) {
-            items.push({ icon: "🧴", text: `Start marinating the ${r.name} tonight — for tomorrow's ${meal}.` });
+        for (const id of MP.getMealRecipeIds(tomorrowDay, meal)) {
+          const r = recipesById[id]; if (!r) continue;
+          for (const d of r.dependencies || []) {
+            if (d.type === "defrost" && d.hours_before >= 12)
+              items.push({ icon: "❄️", text: `Take ${MP.i18n.recipeName(r, lang)} out of the freezer today — for tomorrow's ${meal}.` });
+            if (d.type === "marinate" && d.hours_before >= 8)
+              items.push({ icon: "🧴", text: `Start marinating the ${MP.i18n.recipeName(r, lang)} tonight — for tomorrow's ${meal}.` });
           }
         }
       }
@@ -322,31 +336,36 @@
                         </div>
                         <ul className="mt-2 space-y-1 text-sm">
                           {["breakfast","lunch","dinner"].map((m) => {
-                            const r = d[m] ? recipesById[d[m]] : null;
-                            if (!r) return (
+                            const ids = MP.getMealRecipeIds(d, m);
+                            if (!ids.length) return (
                               <li key={m} className="flex justify-between text-warm/50 text-sm">
                                 <span className="uppercase tracking-wide text-xs">{m}</span>
                                 <span className="italic">— not planned</span>
                               </li>
                             );
+                            const mealObj = MP.getMealObj(d, m);
+                            const names = ALL_COMPONENTS
+                              .filter((c) => mealObj[c])
+                              .map((c) => {
+                                const r = recipesById[mealObj[c]];
+                                return r ? `${COMPONENT_ICONS[c]} ${MP.i18n.recipeName(r, lang)}` : null;
+                              }).filter(Boolean);
                             const time = d[m + "_time"] || MP.schedule.defaultMealTime(m);
-                            const servesNote = d[m + "_serves"] ? ` · ${d[m + "_serves"]}p` : "";
-                            // Change 7: dependency icons
-                            const deps = r.dependencies || [];
-                            const hasLongDep = deps.some((dep) => dep.hours_before >= 12);
-                            const hasMarinate = deps.some((dep) => dep.type === "marinate" && dep.hours_before < 12);
+                            const allDeps = ids.flatMap((id) => (recipesById[id]?.dependencies || []));
+                            const hasLongDep = allDeps.some((dep) => dep.hours_before >= 12);
+                            const hasMarinate = allDeps.some((dep) => dep.type === "marinate" && dep.hours_before < 12);
                             return (
                               <li key={m}>
                                 <button
-                                  onClick={() => onOpen && onOpen({ recipe: r, mealType: m, date: d.date, mealTime: d[m+"_time"], mealServes: d[m+"_serves"] })}
-                                  className="w-full flex items-baseline justify-between gap-2 text-left hover:bg-terra/5 rounded-lg px-1 py-0.5 transition">
-                                  <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem]">{m}</span>
-                                  <span className="flex-1 underline decoration-terra/30 underline-offset-2">
-                                    {r.name}
-                                    {hasLongDep && <span className="ml-1 text-xs" title="Needs overnight prep">🌙</span>}
-                                    {hasMarinate && <span className="ml-1 text-xs" title="Needs marinating">🧂</span>}
+                                  onClick={() => onOpen && onOpen({ mealType: m, day: d })}
+                                  className="w-full flex items-start justify-between gap-2 text-left hover:bg-terra/5 rounded-lg px-1 py-1 transition">
+                                  <span className="uppercase tracking-wide text-xs text-warm min-w-[5.5rem] mt-0.5">{m}</span>
+                                  <span className="flex-1 text-sm leading-snug underline decoration-terra/30 underline-offset-2">
+                                    {names.join(" · ")}
+                                    {hasLongDep && <span className="ml-1 text-xs">🌙</span>}
+                                    {hasMarinate && <span className="ml-1 text-xs">🧂</span>}
                                   </span>
-                                  <span className="text-xs text-warm num shrink-0">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}{servesNote}</span>
+                                  <span className="text-xs text-warm num shrink-0 mt-0.5">{MP.schedule.fmtTime(MP.schedule.parseHM(time))}</span>
                                 </button>
                               </li>
                             );
@@ -666,76 +685,60 @@
 
     function UpNextBanner({ day, recipesById, nowMin, lang }) {
       if (!day) return null;
-      const meals = ["breakfast", "lunch", "dinner"];
       const options = [];
-      for (const m of meals) {
-        if (!day[m]) continue;
-        const r = recipesById[day[m]]; if (!r) continue;
+      for (const m of ["breakfast", "lunch", "dinner"]) {
+        const ids = MP.getMealRecipeIds(day, m); if (!ids.length) continue;
         const mealTime = day[m + "_time"];
         const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(m));
-        const sched = MP.schedule.forMeal(m, r, { mealTime });
-        options.push({ meal: m, recipe: r, serveMin, startMin: sched.startMin, flagEarly: sched.flagEarly });
+        let earliestStart = Infinity, hasOvernightDep = false;
+        for (const id of ids) {
+          const r = recipesById[id]; if (!r) continue;
+          const sched = MP.schedule.forMeal(m, r, { mealTime });
+          if (sched.startMin < earliestStart) earliestStart = sched.startMin;
+          if (sched.hasOvernightDep) hasOvernightDep = true;
+        }
+        const mealObj = MP.getMealObj(day, m);
+        const primaryId = mealObj.protein || ids[0];
+        options.push({ meal: m, recipe: recipesById[primaryId], serveMin, startMin: earliestStart, hasOvernightDep, count: ids.length });
       }
       const nextMeal = options.find((o) => o.serveMin > nowMin);
-      if (!nextMeal) {
-        return (
-          <div className="mb-5 px-5 py-4 rounded-2xl bg-sand/60 text-warm text-sm">
-            🌙 All meals served for today — you're done!
-          </div>
-        );
-      }
+      if (!nextMeal) return (
+        <div className="mb-5 px-5 py-4 rounded-2xl bg-sand/60 text-warm text-sm">🌙 All meals served for today — you're done!</div>
+      );
       const minsToStart = nextMeal.startMin - nowMin;
       const minsToServe = nextMeal.serveMin - nowMin;
       const emoji = nextMeal.meal === "breakfast" ? "🍳" : nextMeal.meal === "lunch" ? "🥗" : "🍽️";
-
-      // Overnight-prep meal: a completely different state — warm brown, not sage/terra
-      if (nextMeal.flagEarly) {
-        return (
-          <div className="mb-5 rounded-2xl overflow-hidden shadow-sm">
-            <div className="bg-warm text-cream px-5 py-3">
-              <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Needs overnight prep</div>
-              <div className="font-display text-2xl leading-tight mt-0.5">
-                {emoji} {MP.i18n.recipeName(nextMeal.recipe, lang)}
-              </div>
-            </div>
-            <div className="bg-white px-5 py-3">
-              <p className="text-sm text-ink">This meal needs preparation that should have started yesterday. Check with Faith before cooking.</p>
-              <p className="text-sm text-warm mt-1 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}</p>
-            </div>
+      const dishCount = nextMeal.count > 1 ? ` · ${nextMeal.count} dishes` : "";
+      if (nextMeal.hasOvernightDep) return (
+        <div className="mb-5 rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-warm text-cream px-5 py-3">
+            <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Needs overnight prep</div>
+            <div className="font-display text-2xl leading-tight mt-0.5">{emoji} {MP.i18n.meals[lang][nextMeal.meal]}{dishCount}</div>
           </div>
-        );
-      }
-
+          <div className="bg-white px-5 py-3">
+            <p className="text-sm text-ink">This meal needs preparation that should have started yesterday. Check with Faith before cooking.</p>
+            <p className="text-sm text-warm mt-1 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}</p>
+          </div>
+        </div>
+      );
       const overdue = minsToStart <= 0;
-      const action = overdue
-        ? "Start cooking now"
-        : minsToStart < 60
-          ? `Start cooking in ${minsToStart} min`
-          : `Start cooking at ${MP.schedule.fmtTime(nextMeal.startMin)}`;
+      const action = overdue ? "Start cooking now"
+        : minsToStart < 60 ? `Start cooking in ${minsToStart} min`
+        : `Start cooking at ${MP.schedule.fmtTime(nextMeal.startMin)}`;
       return (
         <div className={`mb-5 rounded-2xl overflow-hidden shadow-sm ${overdue ? "ring-2 ring-terra" : ""}`}>
-          {/* sage = on track, terra = overdue */}
           <div className={`px-5 py-3 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
-            <div className="text-xs font-semibold uppercase tracking-widest opacity-80">
-              {overdue ? "⚡ Cook now" : "Up next"}
-            </div>
-            <div className="font-display text-2xl leading-tight mt-0.5">
-              {emoji} {MP.i18n.recipeName(nextMeal.recipe, lang)}
-            </div>
+            <div className="text-xs font-semibold uppercase tracking-widest opacity-80">{overdue ? "⚡ Cook now" : "Up next"}</div>
+            <div className="font-display text-2xl leading-tight mt-0.5">{emoji} {MP.i18n.meals[lang][nextMeal.meal]}{dishCount}</div>
           </div>
           <div className="bg-white px-5 py-3 flex items-center justify-between gap-4">
             <div>
               <div className={`font-semibold text-base ${overdue ? "text-terra" : "text-ink"}`}>{action}</div>
-              <div className="text-sm text-warm mt-0.5 num">
-                Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}
-                {minsToServe > 0 && <span> · {minsToServe} min away</span>}
-              </div>
+              <div className="text-sm text-warm mt-0.5 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}{minsToServe > 0 && ` · ${minsToServe} min away`}</div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-warm uppercase tracking-wide mb-0.5">Start cooking at</div>
-              <div className={`num font-display text-3xl leading-none ${overdue ? "text-terra" : "text-sage"}`}>
-                {MP.schedule.fmtTime(nextMeal.startMin)}
-              </div>
+              <div className="text-xs text-warm uppercase tracking-wide mb-0.5">Start at</div>
+              <div className={`num font-display text-3xl leading-none ${overdue ? "text-terra" : "text-sage"}`}>{MP.schedule.fmtTime(nextMeal.startMin)}</div>
             </div>
           </div>
         </div>
@@ -907,33 +910,20 @@
               <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
               {/* Change 3: PrepTomorrow moved BEFORE meal cards */}
               <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
-              <div className="space-y-5 mt-6">
+              <div className="space-y-8 mt-6">
                 {(() => {
-                  // Find the first meal whose serve time hasn't passed yet — that's "up next"
                   const meals = ["breakfast", "lunch", "dinner"];
                   const upNextMeal = meals.find((meal) => {
-                    const id = todayDay[meal];
-                    if (!id || !recipesById[id]) return false;
+                    if (!MP.getMealRecipeIds(todayDay, meal).length) return false;
                     const mt = todayDay[meal + "_time"] || MP.schedule.defaultMealTime(meal);
                     return MP.schedule.parseHM(mt) > nowMin;
                   });
-                  return meals.map((meal) => {
-                    const id = todayDay[meal];
-                    if (!id) return null;
-                    const r = recipesById[id];
-                    if (!r) return null;
-                    const mealServes = todayDay[meal + "_serves"];
-                    return (
-                      <MealCard
-                        key={meal} mealType={meal} recipe={scaleRecipe(r, mealServes)}
-                        lang={lang} today={today}
-                        mealTime={todayDay[meal + "_time"]}
-                        mealServes={mealServes}
-                        onVerify={verify}
-                        nowMin={meal === upNextMeal ? nowMin : null}
-                      />
-                    );
-                  });
+                  return meals.map((meal) => (
+                    <MealSection key={meal} mealType={meal} day={todayDay}
+                      recipesById={recipesById} planServes={planServes}
+                      lang={lang} onVerify={verify}
+                      nowMin={meal === upNextMeal ? nowMin : null} />
+                  ));
                 })()}
               </div>
             </>
@@ -972,19 +962,15 @@
                 onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between px-4 py-3 border-b border-warm/10 sticky top-0 bg-cream z-10">
                   <div className="font-display text-lg">
-                    {MP.date.dayName(study.date, lang)} · {MP.i18n.meals[lang][study.mealType]}
+                    {MP.date.dayName(study.day.date, lang)} · {MP.i18n.meals[lang][study.mealType]}
                   </div>
                   <button onClick={() => setStudy(null)} className="text-warm text-2xl leading-none">×</button>
                 </div>
-                <div className="p-2">
-                  <MealCard
-                    mealType={study.mealType}
-                    recipe={scaleRecipe(study.recipe, study.mealServes)}
-                    lang={lang} today={study.date}
-                    mealTime={study.mealTime}
-                    mealServes={study.mealServes}
-                    onVerify={verify}
-                  />
+                <div className="p-4">
+                  <MealSection
+                    mealType={study.mealType} day={study.day}
+                    recipesById={recipesById} planServes={planServes}
+                    lang={lang} onVerify={verify} />
                 </div>
               </div>
             </div>
