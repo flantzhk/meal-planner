@@ -1102,10 +1102,8 @@
 
     function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent }) {
       const mealObj = getMealObj(day, meal);
-      const heroId = mealObj.protein || mealObj.vegetable || mealObj.carb;
-      const heroRecipe = heroId ? recipesById[heroId] : null;
-      const heroImg = heroRecipe ? MP.recipeImage(heroRecipe) : null;
-      const mealIsEmpty = !mealObj.protein && !mealObj.vegetable && !mealObj.carb;
+      const componentRecipes = COMPONENTS.map((c) => mealObj[c] ? recipesById[mealObj[c]] : null);
+      const mealIsEmpty = componentRecipes.every((r) => !r);
       const hasOvernightDep = ALL_COMPONENTS.some((c) => {
         const r = mealObj[c] ? recipesById[mealObj[c]] : null;
         return r && MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] }).hasOvernightDep;
@@ -1114,31 +1112,38 @@
 
       return (
         <div className={`rounded-xl overflow-hidden ring-1 flex flex-col h-[220px] ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
-          {/* Hero image — fixed 88px */}
-          <div className="relative h-[88px] shrink-0 bg-sand/50 overflow-hidden">
-            {heroImg ? (
-              <img src={heroImg} alt="" className="w-full h-full object-cover"
-                onLoad={(e) => {
-                  if (MP.isYoutubePlaceholder(e.target)) {
-                    const s = e.target.src;
-                    if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                    if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
-                    e.target.style.display = "none";
-                  }
-                }}
-                onError={(e) => {
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
-                  e.target.parentElement.innerHTML = `<div class="w-full h-full flex items-center justify-center"><span class="text-3xl opacity-20">${mealEmoji}</span></div>`;
-                }} />
-            ) : (
-              <div className="w-full h-full flex items-center justify-center">
-                <span className="text-3xl opacity-20">{mealEmoji}</span>
-              </div>
-            )}
+          {/* Three component images side by side — fixed 88px */}
+          <div className="relative h-[88px] shrink-0 flex overflow-hidden">
+            {componentRecipes.map((r, i) => {
+              const img = r ? MP.recipeImage(r) : null;
+              return (
+                <div key={i} className="flex-1 bg-sand/50 overflow-hidden relative">
+                  {img ? (
+                    <img src={img} alt="" className="w-full h-full object-cover"
+                      onLoad={(e) => {
+                        if (MP.isYoutubePlaceholder(e.target)) {
+                          const s = e.target.src;
+                          if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                          if (r.hero_image && s !== r.hero_image) { e.target.src = r.hero_image; return; }
+                          e.target.style.display = "none";
+                        }
+                      }}
+                      onError={(e) => {
+                        const s = e.target.src;
+                        if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                        if (r.hero_image && s !== r.hero_image) { e.target.src = r.hero_image; return; }
+                        e.target.style.display = "none";
+                      }} />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <span className="text-xl opacity-20">{COMPONENT_ICONS[COMPONENTS[i]]}</span>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
             {hasOvernightDep && (
-              <span className="absolute top-1.5 right-1.5 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙 prep</span>
+              <span className="absolute top-1.5 right-1.5 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙</span>
             )}
           </div>
 
