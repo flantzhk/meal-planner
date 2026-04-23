@@ -257,6 +257,22 @@
 
   // Consolidate a list of ingredients (possibly same item, different recipes/units)
   // into a shopping list grouped by source/category.
+  // Returns the meal object (new format) or a normalised {protein,vegetable,carb,soup,salad} object.
+  MP.getMealObj = function getMealObj(day, meal) {
+    const v = day[meal];
+    if (!v) return { protein: null, vegetable: null, carb: null, soup: null, salad: null };
+    if (typeof v === "string") return { protein: v, vegetable: null, carb: null, soup: null, salad: null };
+    return { protein: null, vegetable: null, carb: null, soup: null, salad: null, ...v };
+  };
+
+  // Returns array of all recipe IDs assigned to a meal slot.
+  MP.getMealRecipeIds = function getMealRecipeIds(day, meal) {
+    const v = day[meal];
+    if (!v) return [];
+    if (typeof v === "string") return [v];
+    return Object.values(v).filter((id) => id && typeof id === "string");
+  };
+
   MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides) {
     const servesTarget = weekplan.serves || 4;
     const overrides = sourceOverrides || {};
@@ -264,11 +280,12 @@
 
     for (const day of weekplan.days || []) {
       for (const meal of ["breakfast", "lunch", "dinner"]) {
-        const id = day[meal];
-        if (!id) continue;
+        const ids = MP.getMealRecipeIds(day, meal);
+        if (!ids.length) continue;
+        const servesForThisMeal = day[meal + "_serves"] || servesTarget;
+        for (const id of ids) {
         const r = recipes.find((x) => x.id === id);
         if (!r) continue;
-        const servesForThisMeal = day[meal + "_serves"] || servesTarget;
         for (const ing of r.ingredients || []) {
           const scaled = MP.scale(ing, servesForThisMeal, r.serves_base || 4);
           const { family, value } = toCanonical(scaled.amount, scaled.unit);
@@ -282,6 +299,7 @@
           existing.total += value;
           byKey.set(key, existing);
         }
+        } // end for id of ids
       }
     }
 
@@ -342,11 +360,15 @@
           ? "previous day morning"
           : `${d.hours_before}h before cooking`,
       }));
-      const flagEarly = startMin < HELPER_START_MIN || deps.some((d) => d.type === "defrost");
+      const hasOvernightDep = deps.some((d) =>
+        d.type === "defrost" || (d.type === "marinate" && d.hours_before >= 8)
+      );
+      const flagEarly = startMin < HELPER_START_MIN;
       return {
         startMin,
         startTime: fmtTime(startMin),
         flagEarly,
+        hasOvernightDep,
         deps,
       };
     },
@@ -359,73 +381,33 @@
     buildDayTasks(day, nextDay, recipesById, opts = {}) {
       const tasks = [];
       const meals = ["breakfast", "lunch", "dinner"];
-      // Today's meals
       for (const m of meals) {
-        const id = day[m]; if (!id) continue;
-        const r = recipesById[id]; if (!r) continue;
+        const ids = MP.getMealRecipeIds(day, m);
+        if (!ids.length) continue;
         const mealTime = day[m + "_time"];
-        const sched = MP.schedule.forMeal(m, r, { mealTime });
         const serveMin = parseHM(mealTime) ?? MEAL_TIME[m];
-        // Cook-start reminder
-        tasks.push({
-          at: Math.max(0, sched.startMin),
-          label: `Start cooking ${r.name}`,
-          kind: "cook",
-          meal: m,
-          recipeId: r.id,
-          priority: 2,
-          flagEarly: sched.flagEarly,
-        });
-        // Serve reminder
-        tasks.push({
-          at: serveMin,
-          label: `Serve ${r.name}`,
-          kind: "serve",
-          meal: m,
-          recipeId: r.id,
-          priority: 3,
-        });
-        // Dependencies that fall on the same day
-        for (const d of r.dependencies || []) {
-          if (d.type === "marinate") {
-            const at = sched.startMin - d.hours_before * 60;
-            tasks.push({
-              at: Math.max(0, at),
-              label: `Start marinating ${r.name}`,
-              kind: "marinate",
-              meal: m,
-              recipeId: r.id,
-              priority: 1,
-              flagEarly: at < 0,
-            });
+        for (const id of ids) {
+          const r = recipesById[id]; if (!r) continue;
+          const sched = MP.schedule.forMeal(m, r, { mealTime });
+          tasks.push({ at: Math.max(0, sched.startMin), label: `Start cooking ${r.name}`, kind: "cook", meal: m, recipeId: r.id, priority: 2, flagEarly: sched.flagEarly });
+          tasks.push({ at: serveMin, label: `Serve ${r.name}`, kind: "serve", meal: m, recipeId: r.id, priority: 3 });
+          for (const d of r.dependencies || []) {
+            if (d.type === "marinate") {
+              const at = sched.startMin - d.hours_before * 60;
+              tasks.push({ at: Math.max(0, at), label: `Start marinating ${r.name}`, kind: "marinate", meal: m, recipeId: r.id, priority: 1, flagEarly: at < 0 });
+            }
           }
         }
       }
-      // Tomorrow's recipes may need action today (defrost, long marinate)
       if (nextDay) {
         for (const m of meals) {
-          const id = nextDay[m]; if (!id) continue;
-          const r = recipesById[id]; if (!r) continue;
-          for (const d of r.dependencies || []) {
-            if (d.type === "defrost" && d.hours_before >= 12) {
-              tasks.push({
-                at: 8 * 60, // 08:00 today
-                label: `Take ${r.name} out of freezer (for tomorrow's ${m})`,
-                kind: "defrost",
-                meal: m,
-                recipeId: r.id,
-                priority: 0,
-              });
-            }
-            if (d.type === "marinate" && d.hours_before >= 12) {
-              tasks.push({
-                at: 20 * 60, // 08:00pm tonight — rough
-                label: `Start marinating ${r.name} tonight (for tomorrow's ${m})`,
-                kind: "marinate",
-                meal: m,
-                recipeId: r.id,
-                priority: 0,
-              });
+          for (const id of MP.getMealRecipeIds(nextDay, m)) {
+            const r = recipesById[id]; if (!r) continue;
+            for (const d of r.dependencies || []) {
+              if (d.type === "defrost" && d.hours_before >= 12)
+                tasks.push({ at: 8 * 60, label: `Take ${r.name} out of freezer (for tomorrow's ${m})`, kind: "defrost", meal: m, recipeId: r.id, priority: 0 });
+              if (d.type === "marinate" && d.hours_before >= 12)
+                tasks.push({ at: 20 * 60, label: `Start marinating ${r.name} tonight (for tomorrow's ${m})`, kind: "marinate", meal: m, recipeId: r.id, priority: 0 });
             }
           }
         }
@@ -433,17 +415,15 @@
       tasks.sort((a, b) => a.at - b.at || a.priority - b.priority);
       return tasks;
     },
-    // Detect overlapping active cook windows for a day's meals (stove conflict).
     dayConflicts(day, recipesById) {
       const slots = [];
       for (const meal of ["breakfast", "lunch", "dinner"]) {
-        const id = day[meal];
-        if (!id) continue;
-        const r = recipesById[id];
-        if (!r) continue;
-        const sched = MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] });
-        const active = r.active_time_mins || r.prep_time_mins || 20;
-        slots.push({ meal, start: sched.startMin, end: sched.startMin + active });
+        for (const id of MP.getMealRecipeIds(day, meal)) {
+          const r = recipesById[id]; if (!r) continue;
+          const sched = MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] });
+          const active = r.active_time_mins || r.prep_time_mins || 20;
+          slots.push({ meal, start: sched.startMin, end: sched.startMin + active });
+        }
       }
       const conflicts = [];
       for (let i = 0; i < slots.length; i++) {
