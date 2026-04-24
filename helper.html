@@ -42,7 +42,7 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const APP_VERSION = "v1.8 · 2026-04-24";
+    const APP_VERSION = "v1.9 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -277,40 +277,51 @@
       const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
       const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
 
-      // Hero image: protein first, then first available
-      const heroRecipe = recipesById[mealObj.protein] ||
-        ALL_COMPONENTS.map((c) => mealObj[c] && recipesById[mealObj[c]]).find(Boolean);
-      const heroImg = heroRecipe ? MP.recipeImage(heroRecipe) : null;
+      // Collect all components that have both a recipe and an image
+      const compImages = ALL_COMPONENTS.map((comp) => {
+        const id = mealObj[comp]; if (!id) return null;
+        const r = recipesById[id]; if (!r) return null;
+        const img = MP.recipeImage(r); if (!img) return null;
+        return { comp, recipe: r, img };
+      }).filter(Boolean);
 
       return (
         <div className="space-y-3">
-          {/* Banner hero image */}
-          {heroImg && (
-            <a href={heroRecipe.youtube_url || undefined} target="_blank" rel="noopener"
-              className={`block relative rounded-2xl overflow-hidden ${heroRecipe.youtube_url ? "group" : ""}`}>
-              <img src={heroImg} alt="" className="w-full h-44 object-cover"
-                onLoad={(e) => {
-                  if (!MP.isYoutubePlaceholder(e.target)) return;
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
-                  e.target.style.display = "none";
-                }}
-                onError={(e) => {
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
-                  e.target.parentElement.style.display = "none";
-                }} />
-              {heroRecipe.youtube_url && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition pointer-events-none">
-                  <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ Watch video</div>
-                </div>
-              )}
-              {heroRecipe.youtube_url && (
-                <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs font-bold px-2 py-1 rounded-lg">▶ Watch</div>
-              )}
-            </a>
+          {/* Per-component image strip */}
+          {compImages.length > 0 && (
+            <div className={`flex gap-1 rounded-2xl overflow-hidden`} style={{ height: "10rem" }}>
+              {compImages.map(({ comp, recipe, img }) => (
+                <a key={comp}
+                  href={recipe.youtube_url || undefined}
+                  target="_blank" rel="noopener"
+                  className="relative flex-1 overflow-hidden group"
+                  style={{ minWidth: 0 }}
+                  onClick={(e) => { if (!recipe.youtube_url) e.preventDefault(); }}>
+                  <img src={img} alt="" className="w-full h-full object-cover"
+                    onLoad={(e) => {
+                      if (!MP.isYoutubePlaceholder(e.target)) return;
+                      const s = e.target.src;
+                      if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                      if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                      e.target.closest("a").style.display = "none";
+                    }}
+                    onError={(e) => {
+                      const s = e.target.src;
+                      if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                      if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                      e.target.closest("a").style.display = "none";
+                    }} />
+                  {/* Label overlay */}
+                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-2 pt-6 pb-2 pointer-events-none">
+                    <div className="text-white text-[9px] font-bold uppercase tracking-widest opacity-70 leading-none">{COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}</div>
+                    <div className="text-white text-xs font-medium leading-tight truncate mt-0.5">{MP.i18n.recipeName(recipe, lang)}</div>
+                  </div>
+                  {recipe.youtube_url && (
+                    <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">▶</div>
+                  )}
+                </a>
+              ))}
+            </div>
           )}
           {/* Timing header */}
           {hasOvernightDep ? (
