@@ -1,499 +1,278 @@
-import { readFileSync, writeFileSync } from 'fs';
-import { fileURLToPath } from 'url';
-import { dirname, resolve } from 'path';
+#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const seedPath = path.resolve(scriptDir, "../recipes.seed.json");
+const recipes = JSON.parse(fs.readFileSync(seedPath, "utf8"));
 
-const SEED_PATH = resolve(__dirname, '../recipes.seed.json');
-
-// Hardcoded translation map: keyed by `${recipe.id}__step_${stepNum}`
 const TRANSLATIONS = {
-  // salt-and-pepper-squid
-  'salt-and-pepper-squid__step_1': {
-    tl: 'Durugin ang Szechuan peppercorns at black peppercorns sa mortar hanggang medium-fine — gusto mo ng texture, hindi pulbos.',
-    il: 'Digulen ti Szechuan peppercorns ken black peppercorns iti mortar agingga medium-fine — kayatmo ti texture, saan nga polvo.',
-  },
-  'salt-and-pepper-squid__step_2': {
-    tl: 'Hiwain ang mga squid tube sa rings. Balutan ng flaky salt at durog na paminta.',
-    il: 'Idadansen ti squid tubes nga aniyas. Balutan ti flaky salt ken naidiges nga paminta.',
-  },
-  'salt-and-pepper-squid__step_3': {
-    tl: 'Ihalo ang plain flour at cornflour sa isang patag na plato.',
-    il: 'Ikombina ti plain flour ken cornflour iti napatag nga plato.',
-  },
-  'salt-and-pepper-squid__step_4': {
-    tl: 'Talunin ang itlog sa isang mangkok. Ilublob ang mga squid ring sa itlog para mabuo ang balot.',
-    il: 'Batbaten ti itlog iti bowl. Iluto ti squid rings iti itlog tapno mabalotan.',
-  },
-  'salt-and-pepper-squid__step_5': {
-    tl: 'Balutan ang mga squid ring sa harina nang isa-isang batch. Alugin ang sobra at ilagay sa tray para hindi magdikit.',
-    il: 'Balotan ti squid rings iti pinagsamang harina. Iyugdog ti labas ken ilatag iti tray tapno saan nga agtitipon.',
-  },
-  'salt-and-pepper-squid__step_6': {
-    tl: 'Initin ang mantika sa 180°C. Iprito sa apat na batch nang mga 3 minuto hanggang gintuan at malutong. Patunawing sa rack.',
-    il: 'Initin ti lana iti 180°C. Iprito iti uppat nga batch iti nasurok 3 minuto agingga nagasan ken nalagtiit. Patulogen iti rack.',
-  },
-  'salt-and-pepper-squid__step_7': {
-    tl: 'Sa mainit na kawali, lagyan ng olive oil at bawang. Kapag nag-sizzle, ihagis ang pritong pusit at perehil. Haluin ng 30 segundo.',
-    il: 'Iti napudot nga kawali, iteddu ti olive oil ken ahos. No nagkuliab na, itirpon ti prito nga pusit ken parsley. Ikuting iti 30 segundo.',
-  },
-  'salt-and-pepper-squid__step_8': {
-    tl: 'Ihain agad kasama ang mga hiwa ng limon.',
-    il: 'Iserbi dagus nga adda limon a napipigsa.',
-  },
-
-  // garlic-soup-italian-style
-  'garlic-soup-italian-style__step_1': {
-    tl: 'Talupan at tadtarin ang sibuyas. Talupan ang mga bawang. Hugasan at tadtarin ang leek.',
-    il: 'Talupen ken tadtaren ti sibuyas. Talupen ti ahos. Hugasan ken tadtaren ti leek.',
-  },
-  'garlic-soup-italian-style__step_2': {
-    tl: 'Initin ang olive oil sa mabigat na kaldero sa katamtamang init. Ilagay ang sibuyas, leek at tuyong thyme. Lutuin nang dahan-dahan — huwag pabrownin. Ilagay ang bawang at ibaba ang init. Lutuin nang 15 minuto.',
-    il: 'Initin ti olive oil iti naug-uges nga kolon iti metiod nga init. Iteddu ti sibuyas, leek ken nalawaan nga thyme. Lutuem nang dallus — saan nga brown. Iteddu ti ahos ken ibaba ti init. Lutuem iti 15 minuto.',
-  },
-  'garlic-soup-italian-style__step_3': {
-    tl: 'Talupan at i-dice ang mga patatas. Ilagay sa kaldero kasama ang lahat ng chicken stock. Timplahan ng asin at paminta. Pakuluin nang dahan-dahan ng 25–30 minuto.',
-    il: 'Talupen ken i-dice ti patatas. Iteddu iti kolon a kaiwasan ti chicken stock. Timbangen ti asin ken paminta. Simutten nang dallus iti 25–30 minuto.',
-  },
-  'garlic-soup-italian-style__step_4': {
-    tl: 'Ilagay ang cream at i-blend nang maayos gamit ang stick blender o regular blender. Tikman at ayusin ang timpla.',
-    il: 'Iteddu ti cream ken blenderen nang nalinis gamit ti stick blender wenno regular blender. Tikman ken ayosen ti timbre.',
-  },
-  'garlic-soup-italian-style__step_5': {
-    tl: 'Para sa mga crouton, tadtarin ang tinapay at iprito sa olive oil sa mababang init hanggang umitim at maging malutong — ang mabagal na pagpiprito ay nagpapanatiling malutong sa sabaw.',
-    il: 'Para iti croutons, tadtaren ti tinapay ken iprito iti olive oil iti nalubos nga init agingga nagpuyot ken nalagtiit — ti nadalus nga prito ket agpanatili nga nalagtiit iti sopas.',
-  },
-  'garlic-soup-italian-style__step_6': {
-    tl: 'Ilagay ang sabaw sa mga mangkok na may mga crouton at tinadtad na perehil sa itaas.',
-    il: 'Iserbi ti sopas iti mga bowl nga adda croutons ken nadinagsen nga parsley iti ngato.',
-  },
-
-  // sheet-pan-greek-chicken
-  'sheet-pan-greek-chicken__step_1': {
-    tl: 'Painitin ang oven sa 220°C na may pinakamalaking tray sa loob — dapat napakainit bago ilagay ang pagkain.',
-    il: 'Iinit ti oven iti 220°C a kas adda ti pinaka dakkel nga tray iti uneg — masapul nga napudot unay sakbay ti agserrek ti kanen.',
-  },
-  'sheet-pan-greek-chicken__step_2': {
-    tl: 'Kurutin ang balat at kunin ang katas ng dalawang limon. Haluin kasama ang olive oil, bawang, oregano, Dijon, smoked paprika, asin at paminta para gumawa ng dressing. Itabi ang isang-katlo para sa mga gulay.',
-    il: 'Kurutin ti barat ken kuannen ti katas ti dua nga limon. Ikutin kaiwasan ti olive oil, ahos, oregano, Dijon, smoked paprika, asin ken paminta tapno agmano ti dressing. Itikag ti maysa-kadua-tulo para iti mga nateng.',
-  },
-  'sheet-pan-greek-chicken__step_3': {
-    tl: 'Ihalo lang ang manok at patatas sa dalawang-katlo ng dressing. Ayusin sa mainit na tray, manok na balat sa itaas at patatas na hiwa sa ibaba. Iluto ng 20–25 minuto hanggang magkulay ang gilid ng patatas.',
-    il: 'Ikuting laeng ti manok ken patatas iti dua-katlo ti dressing. Iaregar iti napudot nga tray, manok nga kublit iti ngato ken patatas nga naputol iti baba. Ilauto iti 20–25 minuto agingga nagpuyot ti gibus ti patatas.',
-  },
-  'sheet-pan-greek-chicken__step_4': {
-    tl: 'Habang niluluto iyon, ihalo ang pulang sibuyas, capsicum, broccoli, cherry tomato at olibo sa natitirang dressing.',
-    il: 'Bayat ti aglauto, ikuting ti nalabbaga nga sibuyas, capsicum, broccoli, cherry tomatoes ken olibo iti nabilin nga dressing.',
-  },
-  'sheet-pan-greek-chicken__step_5': {
-    tl: 'Ilabas ang tray sa oven. Ikalat ang mga gulay sa mga puwang sa paligid ng manok. Ibalik sa oven ng 30–35 minutong dagdag hanggang ang manok ay gintuan at umabot ng 75°C sa loob.',
-    il: 'Ipugas ti tray manipud iti oven. Ipugas ti mga nateng iti mga lukong a paliudan ti manok. Isubli iti oven iti 30–35 nga minuto pay agingga ti manok nga nagasan ken nagtungtong iti 75°C iti uneg.',
-  },
-  'sheet-pan-greek-chicken__step_6': {
-    tl: 'Ilabas sa oven. Ikalat ang feta sa lahat habang mainit pa. Tapusin ng perehil at dill bago ihain.',
-    il: 'Ipugas manipud iti oven. Ipugas ti feta iti amin a nag-iinit pay. Taposen ti parsley ken dill sakbay ti pag-serbi.',
-  },
-
-  // red-lentil-soup
-  'red-lentil-soup__step_1': {
-    tl: 'Initin ang olive oil sa malaking kaldero sa katamtamang init. Ilagay ang sibuyas at lutuin hanggang malambot at bahagyang gintuan, mga 6 minuto.',
-    il: 'Initin ti olive oil iti dakkel nga kolon iti metiod nga init. Iteddu ti sibuyas ken lutuem agingga nalemlemek ken bassit nga nagasan, nasurok iti 6 minuto.',
-  },
-  'red-lentil-soup__step_2': {
-    tl: 'Ilagay ang cumin at black pepper. Haluin ng 20 segundo hanggang mabango.',
-    il: 'Iteddu ti cumin ken black pepper. Ikuting iti 20 segundo agingga nabanglo.',
-  },
-  'red-lentil-soup__step_3': {
-    tl: 'Ilagay ang kudkurang karot at patatas. Haluin ng 1 minuto para mabuo ang balot ng pampalasa.',
-    il: 'Iteddu ti nakudkod nga karot ken patatas. Ikuting iti 1 minuto tapno mabalotan iti pampalasa.',
-  },
-  'red-lentil-soup__step_4': {
-    tl: 'Ilagay ang hinugasang lentil at stock. Timplahan ng asin. Pakuluan, tapos bawasan sa mahinang kumukulo ng 18–20 minuto hanggang malambot na ang mga lentil.',
-    il: 'Iteddu ti nahugas nga lentil ken stock. Timbangen ti asin. Pabukel, kalpasan ibaba iti nadalus nga agkulikulo iti 18–20 minuto agingga nalemlemek unay ti lentil.',
-  },
-  'red-lentil-soup__step_5': {
-    tl: 'Para sa mga crouton: tadtarin ang sourdough at iprito sa olive oil sa katamtamang init hanggang gintuan, 3–4 minuto. Sa huling 10 segundo, ilagay ang tinadtad na bawang at ihalo.',
-    il: 'Para iti croutons: i-cube ti sourdough ken iprito iti olive oil iti metiod nga init agingga nagasan, 3–4 minuto. Iti maudi nga 10 segundo, iteddu ti nadinagsen nga ahos ken ikutin.',
-  },
-  'red-lentil-soup__step_6': {
-    tl: 'I-blend ang sabaw hanggang maayos na makinis. Haluin ang sumac. Tikman at ayusin ang timpla.',
-    il: 'Blenderen ti sopas agingga nalemlemek. Isabet ti sumac. Tikman ken ayosen ti timbre.',
-  },
-  'red-lentil-soup__step_7': {
-    tl: 'Ihain sa mga mangkok na may perehil, garlic crouton, puwder ng sumac at mga kalahating limon para pigain.',
-    il: 'Iserbi iti mga bowl nga adda parsley, garlic croutons, bassit nga sumac ken kagudua nga limon para pirimitten.',
-  },
-
-  // cinderella-potatoes
-  'cinderella-potatoes__step_1': {
-    tl: 'Painitin ang oven sa 220°C. Pahiran ang mga patatas ng olive oil at asin. Turukan ang bawat patatas ng ilang beses. Iluto ng 55–65 minuto na iikot nang isang beses hanggang matuyo ang balat at malambot sa loob — ang kutsilyo ay dapat na madaling makapasok.',
-    il: 'Iinit ti oven iti 220°C. Suroten ti patatas ti olive oil ken asin. Dutduten ti tunggal patatas iti pigagay. Ilauto iti 55–65 minuto nga maika-isa nga agbalin agingga malawaan ti kublit ken naluto iti uneg — masapul nga nalaka nga agtutdo ti kutsilyo.',
-  },
-  'cinderella-potatoes__step_2': {
-    tl: 'Palamigin ng 10–15 minuto. Hiwaing ang tuktok na ¼ pulgada (itabi ang balat para maging meryenda). Kumuhanin ang laman na nag-iiwan ng ¼ pulgadang balat sa paligid.',
-    il: 'Palamisen iti 10–15 minuto. Putolen ti ngato nga ¼ pulgada (itikag ti kublit para makan). Kuanen ti uneg nga matikag ti ¼ pulgada nga kublit iti paliudan.',
-  },
-  'cinderella-potatoes__step_3': {
-    tl: 'Ilagay ang laman ng patatas sa ricer at ibuhos sa kawaling palayok. HUWAG gumamit ng blender.',
-    il: 'Ipan ti uneg ti patatas iti ricer iti saucepan. SAAN nga agusar ti blender.',
-  },
-  'cinderella-potatoes__step_4': {
-    tl: 'Sa katamtaman-mababang init, haluin ang potato purée kasama ang butter, cream, asin, paminta at kaunting nutmeg hanggang malambot at maayos. Alisin sa init at ihaluin ang mga chive. Tikman — dapat masarap na ito.',
-    il: 'Iti metiod-nalubos nga init, ikuting ti potato purée kaiwasan ti butter, cream, asin, paminta ken bassit nga nutmeg agingga nalinis ken nalemlemek. Ilikkar manipud iti init ken isabot ti chives. Tikman — masapul nga naan-anay nga naluto.',
-  },
-  'cinderella-potatoes__step_5': {
-    tl: 'Sa maliit na mangkok, haluin ang natitirang cream, pula ng itlog, Gruyère, paminta at nutmeg para gumawa ng maluwag na custard.',
-    il: 'Iti bassit nga bowl, ikkombina ti nabilin nga cream, pula ti itlog, Gruyère, paminta ken nutmeg agingga nabalin ti maluwag nga custard.',
-  },
-  'cinderella-potatoes__step_6': {
-    tl: 'Ilagay muli ang purée sa mga patatas na balat, medyo nakaambuloy. Gamitin ang likod ng kutsara para gumawa ng mababang kanal sa gitna. Maingat na ilagay ang custard sa kanal.',
-    il: 'Isao manen ti purée iti mga patatas nga kublit, bassit nga nakatakder. Gamitten ti likud ti kutsara tapno agmano ti nalubos nga aglayus iti tengnga. Nainget nga isao ti custard iti aglaayus.',
-  },
-  'cinderella-potatoes__step_7': {
-    tl: 'Iluto sa 180°C ng 12–15 minuto hanggang maayos na set ang custard at bahagyang gintuan. Kung hindi pa kayumanggi, i-grill ng mabilis ng 1–2 minuto — abangan nang mabuti.',
-    il: 'Ilauto iti 180°C iti 12–15 minuto agingga naset ti custard ken bassit nga nagasan. No saan pay nga nagpuyot, igrilen iti 1–2 minuto — agserserbi nang ado.',
-  },
-
-  // spiced-indian-roast-potatoes
-  'spiced-indian-roast-potatoes__step_1': {
-    tl: 'Painitin ang oven sa 200°C. Ilagay ang walang laman na roasting tray sa oven para mainit.',
-    il: 'Iinit ti oven iti 200°C. Iruot ti nalpes nga roasting tray iti oven tapno maiinit.',
-  },
-  'spiced-indian-roast-potatoes__step_2': {
-    tl: 'Pakuluan ang mga patatas sa tubig na may asin, turmeric at baking soda ng 10 minuto hanggang malambot. Patunawing sa colander at ihagis para maging magaspang ang mga gilid. Budburan ng cornstarch at ihagis muli.',
-    il: 'Bukelen ti patatas iti danum a kas adda asin, turmeric ken baking soda iti 10 minuto agingga nalemlemek. Patulogen iti colander ken ikuting tapno mabatok ti mga gibus. Budboran ti cornstarch ken ikuting manen.',
-  },
-  'spiced-indian-roast-potatoes__step_3': {
-    tl: 'Initin ang mantika sa maliit na kasirola sa katamtamang init. Ilagay ang bawang at sili, iprito hanggang bahagyang gintuan. Ilagay ang cumin at mustard seeds at hayaang mag-crackle. Salain ang mantika sa mangkok — itabi ang malutong na bawang at pampalasa.',
-    il: 'Initin ti lana iti bassit nga saucepan iti metiod nga init. Iteddu ti ahos ken sili, iprito agingga bassit nga nagasan. Iteddu ti cumin ken mustard seeds ken buyogen dagiti aglalagtiit. Salaan ti lana iti bowl — itikag ti nalagtiit nga ahos ken pampalasa.',
-  },
-  'spiced-indian-roast-potatoes__step_4': {
-    tl: 'Ibuhos ang mainit-mainit na mantika sa mainit na tray. Ikalat ang mga patatas sa isang patong at ihalo para mabuo ang balot. Iluto ng 40 minuto, i-ikot ng dalawang beses para pantay ang pagkakulay.',
-    il: 'Agusaren ti napalasa nga lana iti napudot nga roasting tray. Ipugas ti patatas iti maysa nga layer ken ikuting tapno mabalotan. Ilauto iti 40 minuto, agpabalin iti dua nga daras tapno naiyanay ti pagasan.',
-  },
-  'spiced-indian-roast-potatoes__step_5': {
-    tl: 'Kapag gintuan at malutong, ilabas sa oven. Tunawin ang butter sa mainit na mga patatas, buhusan ng lemon juice, at timplahan. Ilagay ang napanatiling malutong na bawang at pampalasa, tapos tapusin ng mint at kulantro.',
-    il: 'No nagasan ken nalagtiit na, ipugas manipud iti oven. Tunawem ti butter iti napudot nga patatas, agtulbok ti lemon juice, ken timbangen. Iteddu ti itikag nga nalagtiit nga ahos ken pampalasa, kalpasan taposen ti mint ken coriander.',
-  },
-
-  // potato-dauphinoise
-  'potato-dauphinoise__step_1': {
-    tl: 'Painitin ang oven sa 180°C.',
-    il: 'Iinit ti oven iti 180°C.',
-  },
-  'potato-dauphinoise__step_2': {
-    tl: 'Pagsamahin ang cream, gatas, nutmeg, asin at paminta sa isang pitsel.',
-    il: 'Ikkombina ti cream, gatas, nutmeg, asin ken paminta iti pitsel.',
-  },
-  'potato-dauphinoise__step_3': {
-    tl: 'Ilagay ang tinadtad na bawang sa malaking kasirola at ibuhos ang halo ng gatas at cream. Initin nang dahan-dahan.',
-    il: 'Iteddu ti nadinagsen nga ahos iti dakkel nga saucepan ken agus-usar ti pinagsamang gatas ken cream. Initin nang dallus.',
-  },
-  'potato-dauphinoise__step_4': {
-    tl: 'Talupan at hiwain ang mga patatas sa may 2mm na kapal gamit ang mandoline o matalas na kutsilyo. Ilagay ang mga hiwa direkta sa mainit na cream — huwag hugasan, ang starch ang nagpapakapal ng sarsa.',
-    il: 'Talupen ken hiwaten ti patatas iti nasurok iti 2mm ti kapal gamit ti mandoline wenno natiging nga kutsilyo. Iteddu ti mga hiwa direkta iti napudot nga cream — saan nga hugasan, ti starch ti agpakapal ti sarsa.',
-  },
-  'potato-dauphinoise__step_5': {
-    tl: 'Pakuluin nang dahan-dahan, haluin para hindi masunog ang ibaba. Pakuluin ng 8 minuto hanggang bahagyang malambot. Tikman at ayusin ang timpla.',
-    il: 'Simutten nang dallus, ikuting tapno saan nga masunog ti baba. Simutten iti 8 minuto agingga bassit nga nalemlemek. Tikman ken ayosen ti timbre.',
-  },
-  'potato-dauphinoise__step_6': {
-    tl: 'Ilipat ang kalahati ng mga patatas sa baking dish. Ikalat ang thyme at isang dakot ng keso. Ilagay ang natitirang patatas sa maayos na patong sa itaas. Ibuhos ang natitirang likido. Budburan ng natitirang keso.',
-    il: 'Illaog ti kagudua ti patatas iti baking dish. Ipugas ti thyme ken maysa nga aggem nga keso. Iteddu ti nabilin nga patatas iti naiorder nga ngato nga layer. Agus-usar ti nabilin nga likido. Ngatan ti nabilin nga keso.',
-  },
-  'potato-dauphinoise__step_7': {
-    tl: 'Takluban nang maluwag ng foil. Iluto ng 40 minuto. Alisin ang foil at iluto nang walang takip ng 25–30 minutong dagdag hanggang kumulo, gintuan at madaling mapasukan ng kutsilyo.',
-    il: 'Takuban nang maluwag ti foil. Ilauto iti 40 minuto. Ilikkar ti foil ken ilauto nga awanan takup iti 25–30 nga minuto pay agingga agkulikulo, nagasan ken nalaka nga masuot ti kutsilyo.',
-  },
-  'potato-dauphinoise__step_8': {
-    tl: 'Pahingahin na nakatakip ng foil at towel sa kusina ng 60 minuto — ang cream ay nagseset at ang mga patong ay magkakasama. Nananatiling mainit ang mga patatas.',
-    il: 'Painasen nga natakuban ti foil ken napkin iti 60 minuto — ti cream ket agset ken ti mga layer ket agtitinnulong. Nag-iinit pay ti patatas.',
-  },
-
-  // hot-honey-harissa-shrimp-flatbreads
-  'hot-honey-harissa-shrimp-flatbreads__step_1': {
-    tl: 'Pagsamahin ang olive oil, harissa, mainit na pulot-pukyutan, smoked paprika, lemon juice at asin. Ilagay ang mga hipon, haluin para mabuo ang balot, at mag-marinate ng 10–15 minuto.',
-    il: 'Ikkombina ti olive oil, harissa, napudot nga pugas, smoked paprika, lemon juice ken asin. Iteddu ti hipon, ikutin tapno mabalotan, ken marinaten iti 10–15 minuto.',
-  },
-  'hot-honey-harissa-shrimp-flatbreads__step_2': {
-    tl: 'Para sa tabbouleh: haluin ang lemon juice, olive oil, sumac at asin. Ilagay ang bulgur, perehil, kamatis, pipino at pulang sibuyas. Ihalo at itabi.',
-    il: 'Para iti tabbouleh: ikkombina ti lemon juice, olive oil, sumac ken asin. Iteddu ti bulgur, parsley, kamatis, pepino ken nalabbaga nga sibuyas. Ikuting ken itikag.',
-  },
-  'hot-honey-harissa-shrimp-flatbreads__step_3': {
-    tl: 'Para sa sarsa ng tahini: haluin ang tahini, lemon juice, malamig na tubig, bawang at cumin hanggang maayos. Dagdag ng tubig kung kailangan para maging tamang konsistensya sa pagbuhos.',
-    il: 'Para iti sarsa ti tahini: ikutin ti tahini, lemon juice, nalamiis nga danum, ahos ken cumin agingga nalemlemek. Iteddu ti adu nga danum no kasapulan tapno agbalin ti nainayad nga tiris.',
-  },
-  'hot-honey-harissa-shrimp-flatbreads__step_4': {
-    tl: 'Initin ang kawali sa katamtaman-mataas na init. Lutuin ang mga hipon ng 1–2 minuto bawat gilid hanggang bahagyang maputi at medyo nasunog.',
-    il: 'Initin ti kawali iti metiod-nangato nga init. Lutuem ti hipon iti 1–2 minuto iti tunggal gibus agingga bassit nga naalburador ken bassit nga nagkidom.',
-  },
-  'hot-honey-harissa-shrimp-flatbreads__step_5': {
-    tl: 'Initin ang mga flatbread sa tuyong kawali. Pahiran ng tahini sauce, ilagay ang tabbouleh, tapos ang mga hipon, manipis na hiwa ng pipino at sariwang dill.',
-    il: 'Initin ti flatbreads iti nalawaan nga kawali. Ilugit ti tahini sauce, ngatan ti tabbouleh, kalpasan ti hipon, manipis nga hiwa ti pepino ken sariwa nga dill.',
-  },
-
-  // spanish-garlic-shrimp
-  'spanish-garlic-shrimp__step_1': {
-    tl: 'Sa kawali sa mababang init, ilagay ang olive oil na may mga hiwa ng bawang at sili. Lutuin nang dahan-dahan ng 2 minuto hanggang mabango — huwag pabrownin ang bawang o magiging mapait ito.',
-    il: 'Iti kawali iti nalubos nga init, iteddu ti olive oil a kas adda mga hiwa ti ahos ken sili. Lutuem nang dallus iti 2 minuto agingga nabanglo — saan nga pabrownin ti ahos wenno agbalin nga naapgad.',
-  },
-  'spanish-garlic-shrimp__step_2': {
-    tl: 'Ilagay ang mga hipon sa isang patong. Budburan ng asin at smoked paprika. Lutuin ng 1–2 minuto bawat gilid hanggang bahagyang maputi.',
-    il: 'Iteddu ti hipon iti maysa nga layer. Budboran ti asin ken smoked paprika. Lutuem iti 1–2 minuto iti tunggal gibus agingga bassit nga naalburador.',
-  },
-  'spanish-garlic-shrimp__step_3': {
-    tl: 'Ilagay ang lemon juice at perehil. Ihalo at agad alisin sa init.',
-    il: 'Iteddu ti lemon juice ken parsley. Ikuting ken dagus ilikkar manipud iti init.',
-  },
-  'spanish-garlic-shrimp__step_4': {
-    tl: 'Ihain na mainit pa mula sa kawali kasama ang tinapay na malutong para ibabad.',
-    il: 'Iserbi nga napudot-napudot manipud iti kawali a kas adda nalagtiit nga tinapay para isalodong.',
-  },
-
-  // roasted-carrot-ginger-soup
-  'roasted-carrot-ginger-soup__step_1': {
-    tl: 'Painitin ang oven sa 200°C. Ilagay ang mga karot, sibuyas at bawang na hindi pa natalupan sa roasting tray. Buhusan ng olive oil, timplahan ng asin at iluto ng 25–30 minuto hanggang malambot at bahagyang nakaramelo.',
-    il: 'Iinit ti oven iti 200°C. Iruot ti karot, sibuyas ken saan pay nataltarupen nga ahos iti roasting tray. Agus-usar ti olive oil, timbangen ti asin ken ilauto iti 25–30 minuto agingga nalemlemek ken bassit nga nag-karamelo.',
-  },
-  'roasted-carrot-ginger-soup__step_2': {
-    tl: 'Pigutin ang inihaw na bawang mula sa balat nito. Ilipat ang lahat ng inihaw na gulay sa malaking palayok ng sabaw. Ilagay ang luya, turmeric, cumin, kulantro, paprika, nutmeg at dahon ng laurel.',
-    il: 'Pirimitten ti natuno nga ahos manipud iti kublit na. Illaog ti amin nga natuno nga nateng iti dakkel nga kolon ti sopas. Iteddu ti laya, turmeric, cumin, coriander, paprika, nutmeg ken dahon ti laurel.',
-  },
-  'roasted-carrot-ginger-soup__step_3': {
-    tl: 'Ibuhos ang stock at pakuluin nang dahan-dahan ng 25–30 minuto. Alisin ang dahon ng laurel.',
-    il: 'Agus-usar ti stock ken simutten nang dallus iti 25–30 minuto. Ilikkar ti dahon ti laurel.',
-  },
-  'roasted-carrot-ginger-soup__step_4': {
-    tl: 'I-blend hanggang makinis at malambot. Ibalik sa mababang init at haluin ang gatas ng niyog. Ayusin ang timpla. Dagdag ng lemon juice para sa sariwang lasa kung gusto.',
-    il: 'Blenderen agingga nalemlemek ken nalinis. Isubli iti nalubos nga init ken isabet ti gatang ti niyog. Ayosen ti timbre. Iteddu ti lemon juice para iti sariwa no kayat.',
-  },
-  'roasted-carrot-ginger-soup__step_5': {
-    tl: 'Ihain na mainit, may sariwang kulantro o perehil para pampalamutis.',
-    il: 'Iserbi nga napudot, nailalaban ti sariwa nga coriander wenno parsley.',
-  },
-
-  // mediterranean-salad
-  'mediterranean-salad__step_1': {
-    tl: 'Gumawa ng dressing: durugin ang bawang at mga anchovy hanggang maging paste. Ilagay ang lemon juice, dalawang uri ng suka, oregano at olive oil. Haluin nang mabuti.',
-    il: 'Mano ti dressing: digulen ti ahos ken anchovies agingga nabalin nga paste. Iteddu ti lemon juice, dua nga suka, oregano ken olive oil. Ikutin nang nainget.',
-  },
-  'mediterranean-salad__step_2': {
-    tl: 'Pakuluan ang mga patatas sa inasnan na tubig hanggang malambot. Palamigin at talupan.',
-    il: 'Bukelen ti patatas iti nasinaan nga danum agingga nalemlemek. Palamisen ken talupen.',
-  },
-  'mediterranean-salad__step_3': {
-    tl: 'Ilagay ang 4 kutsarang dressing sa malaking mangkok. Ilagay ang mga kamatis, kudkurang karot, kalahating artichoke hearts, rocket at tuna. Hiwain ang mga patatas at ilagay. Ihalo nang mabuti.',
-    il: 'Iteddu ti 4 nga kutsara ti dressing iti dakkel nga bowl. Iteddu ti kamatis, nakudkod nga karot, kagudua nga artichoke hearts, rocket ken tuna. Hiwaten ti patatas ken iteddu. Ikuting nang nainget.',
-  },
-  'mediterranean-salad__step_4': {
-    tl: 'Ilagay sa itaas ang pinunit na mozzarella, mga olibo, konting olive oil at sariwang basil na pinunit. Ihain na may mga anchovy sa gilid kung gusto.',
-    il: 'Ngatan ti napunit nga mozzarella, olibo, bassit nga olive oil ken sariwa nga napunit nga basil. Iserbi a kas adda anchovies iti gilir no kayat.',
-  },
-
-  // salmon-lemon-butter-cream
-  'salmon-lemon-butter-cream__step_1': {
-    tl: 'Alisin ang balat ng salmon kung gusto. Tadtarin nang pino ang mga shallot at dahon ng perehil.',
-    il: 'Ilikkar ti kublit ti salmon no kayat. Nadinagsen nga tadtaren ti shallots ken dahon ti parsley.',
-  },
-  'salmon-lemon-butter-cream__step_2': {
-    tl: 'Tunawin ang butter sa kawali sa katamtamang init. Ilagay ang salmon na tuktok naka-harap sa ibaba at lutuin hanggang bahagyang gintuan. I-flip nang dahan-dahan at lutuin hanggang ang butter ay maging kayumanggi.',
-    il: 'Tunawem ti butter iti kawali iti metiod nga init. Iruot ti salmon nga ngato iti baba ken lutuem agingga bassit nga nagasan. Balikiten nang dallus ken lutuem agingga ti butter ket nagpuyot.',
-  },
-  'salmon-lemon-butter-cream__step_3': {
-    tl: 'I-deglaze ng white wine, ilagay ang lemon juice at shallots. Ilagay ang cream. Timplahan. Lutuin ang isda sa sarsa ng mga 3 minuto hanggang sa iyong gusto ang luto.',
-    il: 'Deglazen ti white wine, iteddu ti lemon juice ken shallots. Iteddu ti cream. Timbangen. Ilauto ti ikan iti sarsa iti nasurok 3 minuto agingga ti kayat mo ti luto.',
-  },
-  'salmon-lemon-butter-cream__step_4': {
-    tl: 'Alisin nang maingat ang salmon at ilagay sa mainit na plato. Palapitan ang sarsa sa mataas na init hanggang lumapot. Haluin ang perehil at ibuhos sa isda.',
-    il: 'Ilikkar nang nainget ti salmon ken iruot iti napudot nga plato. Pakuransen ti sarsa iti nangato nga init agingga nalapot. Isabet ti parsley ken agus-usar iti ikan.',
-  },
-
-  // chicken-vegetable-stir-fry
-  'chicken-vegetable-stir-fry__step_1': {
-    tl: 'Initin ang mantika sa malaking wok o kawali sa katamtaman-mataas na init. Ilagay ang mga cubed na manok at igisa ng 5–7 minuto hanggang maluto.',
-    il: 'Initin ti lana iti dakkel nga wok wenno kawali iti metiod-nangato nga init. Iteddu ti cubed nga manok ken igisa iti 5–7 minuto agingga naluto.',
-  },
-  'chicken-vegetable-stir-fry__step_2': {
-    tl: 'Ilagay ang sibuyas, puting bahagi ng spring onion, bawang at luya. Lutuin ng 1–2 minuto hanggang mabango.',
-    il: 'Iteddu ti sibuyas, puraw nga parte ti spring onion, ahos ken laya. Lutuem iti 1–2 minuto agingga nabanglo.',
-  },
-  'chicken-vegetable-stir-fry__step_3': {
-    tl: 'Ilagay ang mga capsicum, karot at broccoli. Igisa ng 4–5 minuto hanggang malambot at malutong. Dagdag ng kaunting tubig kung kailangan para maluto ng singaw.',
-    il: 'Iteddu ti capsicum, karot ken broccoli. Igisa iti 4–5 minuto agingga nalemlemek-nalagtiit. Iteddu ti bassit nga danum no kasapulan tapno maluto iti pabor.',
-  },
-  'chicken-vegetable-stir-fry__step_4': {
-    tl: 'Ibalik ang manok sa kawali. Ilagay ang oyster sauce, toyo at sarsa ng sili. Haluin, tapos ilagay ang cornstarch slurry. Lutuin ng 2–3 minuto hanggang makintab.',
-    il: 'Isubli ti manok iti kawali. Iteddu ti oyster sauce, toyo ken sarsa ti sili. Ikuting, kalpasan iteddu ti cornstarch slurry. Lutuem iti 2–3 minuto agingga nag-gloss.',
-  },
-  'chicken-vegetable-stir-fry__step_5': {
-    tl: 'Tapusin ng sesame oil. Ihain sa kanin o pancit. Palamutian ng berdeng bahagi ng spring onion at sesame seeds.',
-    il: 'Taposen ti sesame oil. Iserbi iti bagas wenno pancit. Ilalaban ti berde nga parte ti spring onion ken sesame seeds.',
-  },
-
-  // chicken-stuffed-peppers
-  'chicken-stuffed-peppers__step_1': {
-    tl: 'Painitin ang oven sa 180°C. Initin ang olive oil at butter sa malaking kawali sa katamtamang init. Ilagay ang sibuyas na may kurot ng asin at lutuin hanggang malambot.',
-    il: 'Iinit ti oven iti 180°C. Initin ti olive oil ken butter iti dakkel nga kawali iti metiod nga init. Iteddu ti sibuyas a kas adda bassit nga asin ken lutuem agingga nalemlemek.',
-  },
-  'chicken-stuffed-peppers__step_2': {
-    tl: 'Ilagay ang bawang at oregano. Ilagay ang tomato paste at lutuin ng 1–2 minuto. Ilagay ang giniling na manok at sirain, lutuin hanggang maluto na may bahagyang pagkulay.',
-    il: 'Iteddu ti ahos ken oregano. Iteddu ti tomato paste ken lutuem iti 1–2 minuto. Iteddu ti nadinagsen nga manok ken buaten, lutuem agingga naluto a kas adda bassit nga nagpuyot.',
-  },
-  'chicken-stuffed-peppers__step_3': {
-    tl: 'Ibuhos ang passata. Pakuluin na walang takip ng 12–15 minuto hanggang lumapot. Alisin sa init at haluin ang kanin, Parmesan at perehil. Tikman at ayusin ang timpla.',
-    il: 'Agus-usar ti passata. Simutten nga awanan takup iti 12–15 minuto agingga nalapot. Ilikkar manipud iti init ken isabet ti bagas, Parmesan ken parsley. Tikman ken ayosen ti timbre.',
-  },
-  'chicken-stuffed-peppers__step_4': {
-    tl: 'Hiwain ang mga bell pepper sa kalahati nang haba mula sa tangkay. Alisin ang mga butil at gulugod. Timplahan ang loob ng asin at paminta.',
-    il: 'Hiwaten ti bell pepper iti kagudua iti taas-baba manipud iti tangkay. Ilikkar ti mga buto ken ribas. Timbangen ti uneg ti asin ken paminta.',
-  },
-  'chicken-stuffed-peppers__step_5': {
-    tl: 'Ilagay ang palaman sa mga kalahating bell pepper gamit ang kutsara. Budburan ng kudkurang mozzarella. Ibuhos ang 3 kutsarang tubig sa ilalim ng baking dish. Takluban nang mahigpit ng foil at iluto ng 20 minuto.',
-    il: 'Isao ti pamuno iti mga kagudua nga bell pepper. Ngatan ti nakudkod nga mozzarella. Agus-usar ti 3 nga kutsara nga danum iti baba ti baking dish. Takuban nang nainget ti foil ken ilauto iti 20 minuto.',
-  },
-  'chicken-stuffed-peppers__step_6': {
-    tl: 'Alisin ang foil at iluto na walang takip ng 10–15 minutong dagdag hanggang malambot ang mga bell pepper at matunaw at maging gintuan ang keso.',
-    il: 'Ilikkar ti foil ken ilauto nga awanan takup iti 10–15 nga minuto pay agingga nalemlemek ti bell pepper ken natunaw ken nagasan ti keso.',
-  },
-
-  // potato-rosti-bacon
-  'potato-rosti-bacon__step_1': {
-    tl: 'Kudkurin nang pino ang mga patatas. Pigain nang kamay ang pinakamaraming likido at ilagay sa mangkok.',
-    il: 'Kudkoden nang nainget ti patatas. Pirimitten ti adu nga likido gamit ti ima ken iruot iti bowl.',
-  },
-  'potato-rosti-bacon__step_2': {
-    tl: 'Ilagay ang pinong hiwang sibuyas, dinurog na bawang, thyme, rosemary. Timplahan ng asin at paminta. Haluin nang mabuti.',
-    il: 'Iteddu ti nadinagsen nga hiwa ti sibuyas, nadiges nga ahos, thyme, rosemary. Timbangen ti asin ken paminta. Ikuting nang nainget.',
-  },
-  'potato-rosti-bacon__step_3': {
-    tl: 'Tunawin ang clarified butter. Initin ang mabigat na kawali sa katamtamang init na may butter. Hatiin ang halo ng patatas sa apat na bahagi. Pindutin nang dahan-dahan sa kawali. Ibaba ang init at lutuin ng 10–12 minuto hanggang gintuan ang ibaba.',
-    il: 'Tunawem ti clarified butter. Initin ti naug-uges nga kawali iti metiod nga init a kas adda butter. Idibide ti pinagsamang patatas iti uppat nga parte. Pigsen nang dallus iti kawali. Ibaba ti init ken lutuem iti 10–12 minuto agingga nagpuyot ti baba.',
-  },
-  'potato-rosti-bacon__step_4': {
-    tl: 'I-flip at lutuin ang kabilang gilid ng 10–12 minuto hanggang gintuan.',
-    il: 'Balikiten ken lutuem ti sabali nga gibus iti 10–12 minuto agingga nagasan.',
-  },
-  'potato-rosti-bacon__step_5': {
-    tl: 'Lutuin ang bacon sa tuyong kawali hanggang malutong. Hiwain ang mga spring onion.',
-    il: 'Lutuem ti bacon iti nalawaan nga kawali agingga nalagtiit. Hiwaten ti spring onions.',
-  },
-  'potato-rosti-bacon__step_6': {
-    tl: 'Ihain ang rosti na may goat yogurt, malutong na bacon at spring onion sa itaas.',
-    il: 'Iruot ti rosti nga adda goat yogurt, nalagtiit nga bacon ken spring onion iti ngato.',
-  },
-
-  // chicken-cheese-toastie
-  'chicken-cheese-toastie__step_1': {
-    tl: 'Haluin ang malambot na butter kasama ang tinadtad na bawang at perehil para gumawa ng garlic butter.',
-    il: 'Ikuting ti nalemlemek nga butter kaiwasan ti nadinagsen nga ahos ken parsley tapno mangmano ti garlic butter.',
-  },
-  'chicken-cheese-toastie__step_2': {
-    tl: 'Patayain ang mga hita ng manok. I-grill sa kawali na may olive oil, asin at paminta hanggang maluto.',
-    il: 'Papatayan ti paa ti manok. Igrilen iti kawali a kas adda olive oil, asin ken paminta agingga naluto.',
-  },
-  'chicken-cheese-toastie__step_3': {
-    tl: 'Pahiran ng garlic butter ang isang gilid ng bawat hiwa ng tinapay. Pahiran ng cream cheese ang kabilang gilid. Ilagay ang Gruyère, mga lutong manok at dagdag na Gruyère. Lagyan ng pangalawang hiwa ng tinapay, garlic butter na nakaharap sa labas.',
-    il: 'Ilugit ti garlic butter iti maysa nga gibus ti tunggal hiwa ti tinapay. Ilugit ti cream cheese iti sabali nga gibus. Layer-en ti Gruyère, naluto nga manok ken ad-adu pa nga Gruyère. Ngatan ti maika-dua nga hiwa ti tinapay, garlic butter iti ruar.',
-  },
-  'chicken-cheese-toastie__step_4': {
-    tl: 'Ilagay ang mga sandwich na garlic-butter ang nasa ibaba sa malaking kawali sa mababang init na may takip. I-grill hanggang gintuan, 3–4 minuto bawat gilid. I-flip at lutuin ang kabilang gilid.',
-    il: 'Iruot ti mga sandwich nga garlic-butter iti baba iti dakkel nga kawali iti nalubos nga init a kas adda takup. Igrilen agingga nagasan, 3–4 minuto iti tunggal gibus. Balikiten ken lutuem ti sabali nga gibus.',
-  },
-  'chicken-cheese-toastie__step_5': {
-    tl: 'Hiwain sa tatsulok at ihain na mainit.',
-    il: 'Hiwaten iti tatsulok ken iserbi nga napudot.',
-  },
-
-  // steamed-fish-beurre-blanc
-  'steamed-fish-beurre-blanc__step_1': {
-    tl: 'Timplahan ang isda ng asin, paminta at konting olive oil.',
-    il: 'Timbangen ti ikan ti asin, paminta ken bassit nga olive oil.',
-  },
-  'steamed-fish-beurre-blanc__step_2': {
-    tl: 'Punuin ang palayok ng 2 pulgada ng tubig at pakuluan nang bahagya. Ilagay ang steaming basket sa ibabaw ng tubig. Ilagay ang isda sa basket. Takluban at singawan ng 8–10 minuto hanggang maputi at madurog.',
-    il: 'Punuen ti kolon iti 2 pulgada ti danum ken isubli iti simut. Iruot ti steaming basket iti ngato ti danum. Iruot ti ikan iti basket. Takuban ken paboruen iti 8–10 minuto agingga naalburador ken agburabor.',
-  },
-  'steamed-fish-beurre-blanc__step_3': {
-    tl: 'Habang niluluto ng singaw ang isda, pagsamahin ang white wine, lemon juice at shallots sa maliit na kasirola. Pakuluin hanggang mabawasan ng kalahati.',
-    il: 'Bayat ti agpabor ti ikan, ikkombina ti white wine, lemon juice ken shallots iti bassit nga saucepan. Simutten agingga makuransen iti kagudua.',
-  },
-  'steamed-fish-beurre-blanc__step_4': {
-    tl: 'Ibaba ang init sa mababa. Haluin ang mga cubed na malamig na butter nang isa-isa, laging naghahaluin para mag-emulsify ang sarsa. Huwag pakuluin.',
-    il: 'Ibaba ti init iti nalubos. Ikutin ti mga cubed nga nalamiis nga butter iti maymaysa, naiyan nga agikuting tapno mag-emulsify ti sarsa. Saan nga pabukel.',
-  },
-  'steamed-fish-beurre-blanc__step_5': {
-    tl: 'Haluin ang mga caper at dill. Timplahan ayon sa panlasa. Ibuhos nang sagana ang sarsa sa inisda ng singaw. Ihain agad.',
-    il: 'Isabet ti capers ken dill. Timbangen nga ayon ti tikod. Isao nang nabayag ti sarsa iti nalpabor nga ikan. Iserbi dagus.',
-  },
-
-  // pan-fried-halloumi-salad
-  'pan-fried-halloumi-salad__step_1': {
-    tl: 'Gumawa ng dressing: haluin ang olive oil, lemon juice, red wine vinegar, Dijon mustard, kudkurang bawang, asin at paminta sa malaking mangkok.',
-    il: 'Mano ti dressing: ikutin ti olive oil, lemon juice, red wine vinegar, Dijon mustard, nakudkod nga ahos, asin ken paminta iti dakkel nga bowl.',
-  },
-  'pan-fried-halloumi-salad__step_2': {
-    tl: 'Ilagay ang mga kamatis, pipino, pulang sibuyas, olibo, capsicum, basil at perehil sa mangkok. Ihalo nang mabuti. Itabi ang kaunting dressing para ibuhos sa katapusan.',
-    il: 'Iteddu ti kamatis, pepino, nalabbaga nga sibuyas, olibo, capsicum, basil ken parsley iti bowl. Ikuting nang nainget. Itikag ti bassit nga dressing para tiris iti maudi.',
-  },
-  'pan-fried-halloumi-salad__step_3': {
-    tl: 'I-toast ang mga pine nut sa tuyong kawali sa katamtamang init ng 1–2 minuto hanggang gintuan. Itabi.',
-    il: 'I-toast ti pine nuts iti nalawaan nga kawali iti metiod nga init iti 1–2 minuto agingga nagasan. Itikag.',
-  },
-  'pan-fried-halloumi-salad__step_4': {
-    tl: 'Patuyuin ang halloumi gamit ang tissue at hiwain sa makapal na piraso.',
-    il: 'Patuyuen ti halloumi gamit ti tisyu ken hiwaten iti nalukmeg nga piyeso.',
-  },
-  'pan-fried-halloumi-salad__step_5': {
-    tl: 'Lutuin ang halloumi sa tuyong kawali sa katamtamang init ng 1–2 minuto bawat gilid para malabas ang tubig. Dagdag ng kaunting olive oil at lutuin ng 30–60 segundo bawat gilid hanggang gintuan at malutong.',
-    il: 'Lutuem ti halloumi iti nalawaan nga kawali iti metiod nga init iti 1–2 minuto iti tunggal gibus tapno pumayas ti danum. Iteddu ti bassit nga olive oil ken lutuem iti 30–60 segundo iti tunggal gibus agingga nagasan ken nalagtiit.',
-  },
-  'pan-fried-halloumi-salad__step_6': {
-    tl: 'Ayusin ang salad sa mga plato. Ikalat ang mga pine nut sa itaas. Ilagay ang mainit na halloumi sa salad, buhusan ng natitirang dressing. Ihain agad.',
-    il: 'Iaregar ti ensalada iti mga plato. Ipugas ti pine nuts iti ngato. Iruot ti napudot nga halloumi iti ensalada, agus-usar ti nabilin nga dressing. Iserbi dagus.',
-  },
-
-  // potato-rosti-smoked-salmon
-  'potato-rosti-smoked-salmon__step_1': {
-    tl: 'Singawan ang mga patatas ng mga 20 minuto hanggang matigas sa gitna na may malambot na gilid. Palamigin nang bahagya, tapos talupan.',
-    il: 'Paboruen ti patatas iti nasurok iti 20 minuto agingga natibker iti tengnga a kas adda nalemlemek nga gibus. Palamisen nang bassit, kalpasan talupen.',
-  },
-  'potato-rosti-smoked-salmon__step_2': {
-    tl: 'Kudkurin ang mga patatas gamit ang magaspang na kudkuran. Ilagay sa mangkok.',
-    il: 'Kudkoden ti patatas gamit ti nabaskog nga kudkuran. Iruot iti bowl.',
-  },
-  'potato-rosti-smoked-salmon__step_3': {
-    tl: 'Ilagay ang pinong tinadtad na shallot, dinurog na bawang, pula ng itlog, tinadtad na thyme at rosemary. Timplahan ng asin at paminta. Ilagay ang natunaw na clarified butter. Haluin nang magkasama.',
-    il: 'Iteddu ti nadinagsen nga shallot, nadiges nga ahos, pula ti itlog, nadinagsen nga thyme ken rosemary. Timbangen ti asin ken paminta. Iteddu ti natunaw nga clarified butter. Ikkombina.',
-  },
-  'potato-rosti-smoked-salmon__step_4': {
-    tl: 'Initin ang bahagyang may mantikang non-stick na kawali sa katamtamang init. Gumamit ng cutter o hulma para hugisan ang mga bahagi ng halo. Lutuin hanggang gintuan ang ibaba, tapos i-flip at lutuin ang kabilang gilid hanggang katulad na gintuan.',
-    il: 'Initin ti bassit nga nalana nga non-stick nga kawali iti metiod nga init. Agusar ti cutter wenno mold tapno humugis ti mga parte ti pinagsamang. Lutuem agingga nagasan ti baba, kalpasan balikiten ken lutuem ti sabali nga gibus agingga naiyanay nga nagasan.',
-  },
-  'potato-rosti-smoked-salmon__step_5': {
-    tl: 'Ihain ang rosti na mainit na may sour cream, hiwa ng avocado at smoked salmon sa itaas.',
-    il: 'Iserbi ti rosti nga napudot nga adda sour cream, hiwa ti avocado ken smoked salmon iti ngato.',
-  },
+  "crispy-salmon-garlic-butter": [
+    { tl: "Tuuyin ang salmon. Timplahan ng asin at paminta ang magkabilang panig.", il: "Payusen ti salmon. Timplaan ti asin ken paminta ti dua a tabi." },
+    { tl: "Initin ang olive oil sa malaking kawali sa katamtamang mataas na init. Ilagay ang salmon na balat ang nasa ibaba. Pindutin nang bahagya. Lutuin ng 4–5 minuto hanggang malutong ang balat.", il: "Initin ti olive oil iti naragsak nga kawali iti medium-high. Ilatag ti salmon nga panit ti baba. Pigtaen nang naganad. Lutuen iti 4–5 minuto agingga nalagtiit ti panit." },
+    { tl: "Baligtarin ang salmon. Lutuin ng 2–3 minuto pa hanggang maluto na. Ilipat sa plato.", il: "Ibalintuwad ti salmon. Lutuen iti 2–3 minuto pay agingga naluto. Iyeg iti plato." },
+    { tl: "Bawasan ang init. Magdagdag ng mantikilya sa parehong kawali. Kapag natunaw na, dagdagan ng bawang at lutuin ng 1 minuto hanggang mabango.", il: "Babaan ti init. Iteddu ti butter iti daytoy met laeng nga kawali. No natunaw na, iteddu ti ahos ken lutuen iti 1 minuto agingga nabanglo." },
+    { tl: "Dagdagan ng katas ng limon at brown sugar. Haluin at lutuin ng 1–2 minuto hanggang bahagyang lumapot ang sarsa.", il: "Iteddu ti katas ti limon ken brown sugar. Ikuting ken lutuen iti 1–2 minuto agingga naganad ti lapot ti sarsa." },
+    { tl: "Ibuhos ang sarsa sa salmon. Lagyan ng parsley at hiwa ng limon. Ihain agad.", il: "Ibubo ti sarsa iti salmon. Laglaagen ti parsley ken ladisladan ti limon. Iserbi dagus." },
+  ],
+  "creamy-chicken-au-poivre": [
+    { tl: "Tuuyin ang manok. Timplahan ng asin at durog na paminta, pindutin ang mga ito.", il: "Payusen ti manok. Timplaan ti asin ken naidiges nga paminta, pigtaen tapno marinasan." },
+    { tl: "Initin ang olive oil sa malaking kawali sa katamtamang mataas na init. Ihaw ang manok ng 5–6 minuto bawat panig hanggang gintuan. Alisin at itabi.", il: "Initin ti olive oil iti naragsak nga kawali iti medium-high. Sear ti manok iti 5–6 minuto iti tunggal tabi agingga naalimbuyog. Iyeg ken isubli." },
+    { tl: "Bawasan ang init. Magdagdag ng mantikilya, pagkatapos lutuin ang shallot at bawang hanggang malambot, mga 2 minuto.", il: "Babaan ti init. Iteddu ti butter, ket lutuen ti shallot ken ahos agingga naimet, nasurok 2 minuto." },
+    { tl: "Alisin ang kawali sa apoy. Dagdagan ng Cognac. Ibalik sa apoy at hayaang mag-sizzle, kukutkutin ang mga brown na piraso.", il: "Iyeg ti kawali iti apoy. Iteddu ti Cognac. Isubli iti apoy ken palubongan ti sizzle, kiskisen ti napuyupoy nga piraso." },
+    { tl: "Dagdagan ng chicken stock, mustard, green peppercorns, at thyme. Pakuluan ng bahagya ng 2–3 minuto.", il: "Iteddu ti chicken stock, mustard, green peppercorns, ken thyme. Pakulakulaen iti 2–3 minuto." },
+    { tl: "Ibuhos ang cream. Haluin at hayaang bumaba ang dami hanggang mabalot ng sarsa ang kutsara.", il: "Ibubo ti cream. Ikuting ken palubongan nga bawasan agingga mabalot ti sarsa ti kutsara." },
+    { tl: "Ibalik ang manok sa kawali. Pakuluan ng 2 minuto na walang takip hanggang maluto at lumapot ang sarsa.", il: "Isubli ti manok iti kawali. Pakulakulaen iti 2 minuto nga awanan ti taklob agingga naluto ken nalapot ti sarsa." },
+    { tl: "Alisin ang thyme. Dagdagan ng katas ng limon at parsley. Tikman at ayusin ang timpla.", il: "Iyeg ti thyme. Iteddu ti katas ti limon ken parsley. Tikman ken urnosen ti timpla." },
+  ],
+  "chicken-kottu-roti": [
+    { tl: "Timplahan ang manok at iprito sa mantika hanggang gintuan at maluto. Tadtarin sa maliliit na piraso. Itabi.", il: "Timplaan ti manok ken iprito iti lana agingga naalimbuyog ken naluto. Tadtaren iti bassit nga piraso. Isubli." },
+    { tl: "Sa parehong kawali, iprito ang tomato paste ng 30 segundo. Dagdagan ng curry powder at turmeric, haluin ng 30 segundo.", il: "Iti daytoy met laeng nga kawali, iprito ti tomato paste iti 30 segundo. Iteddu ti curry powder ken turmeric, ikuting iti 30 segundo." },
+    { tl: "Ibuhos ang chicken stock at gata ng niyog. Pakuluan ng 2 minuto hanggang bahagyang lumapot. Ilipat sa mangkok — ito ang iyong curry gravy.", il: "Ibubo ti chicken stock ken gata ti niyog. Pakulakulaen iti 2 minuto agingga naganad ti lapot. Iyeg iti bowl — daytoy ti curry gravy mo." },
+    { tl: "Punasan ang kawali. Initin ang mantika at mantikilya sa mataas na init. Dagdagan ng sibuyas at curry leaves. Igisa ng 1 minuto.", il: "Punasan ti kawali. Initin ti lana ken butter iti nataas. Iteddu ti sibuyas ken curry leaves. Igisa iti 1 minuto." },
+    { tl: "Dagdagan ng leeks, repolyo, at karot. Igisa ng 3–4 minuto hanggang bahagyang malambot.", il: "Iteddu ti leeks, repolyo, ken karot. Igisa iti 3–4 minuto agingga naganad nga naimet." },
+    { tl: "Itabi ang mga gulay. Dagdagan ng sili at fennel sa mantika at iprito ng 30 segundo, pagkatapos ihalo.", il: "Iyeg ti dagum iti tabi. Iteddu ti sili ken fennel iti lana ken iprito iti 30 segundo, ket ikombina." },
+    { tl: "Itabi ang lahat. Basagin ang mga itlog sa bakanteng espasyo at haluin hanggang malambot. Ihalo sa mga gulay.", il: "Iyeg ti amin iti tabi. Basaen ti itlog iti bakante nga espasyo ken ikuting agingga naganad nga naluto. Ihalo iti dagum." },
+    { tl: "Dagdagan ang curry gravy at haluin para pagsamahin. Dagdagan ang tadtad na roti at manok.", il: "Iteddu ti curry gravy ken ikuting tapno maikombina. Iteddu ti natadtad nga roti ken manok." },
+    { tl: "Gamit ang dalawang spatula, tadtarin at pindutin ang halo nang maigting ng 2–3 minuto. Timplahan. Ihain na mainit kasama ang mga hiwa ng dayap.", il: "Basar ti dua nga spatula, tadtaren ken pigtaen ti pinagsamaan iti nabileg iti 2–3 minuto. Timplaan. Iserbi iti napudot nga adda ladisladan ti dayap." },
+  ],
+  "chicken-bacon-gruyere-casserole": [
+    { tl: "Painitin ang hurno sa 190°C. Pahiran ng mantika ang malaking baking dish.", il: "Painiten ti hurno iti 190°C. Lanaen ti naragsak nga baking dish." },
+    { tl: "Lutuin ang bacon hanggang malutong. Patuyuin at gumahin. Itabi.", il: "Lutuen ti bacon agingga nalagtiit. Patuyoen ken agumahen. Isubli." },
+    { tl: "Tunawin ang mantikilya sa kasirola. Haluin ang harina at lutuin ng 2 minuto. Unti-unting haluin ang chicken stock hanggang maayos at lumapot. Timplahan.", il: "Tunawen ti butter iti kasirola. Ikuting ti harina ken lutuen iti 2 minuto. Unti-unti nga ikuting ti chicken stock agingga nalamiis ken nalapot. Timplaan." },
+    { tl: "Sa malaking mangkok, ihalo ang hiniwang manok, sour cream, yogurt, dalawang uri ng keso, broccoli, spring onions, almonds, bacon, mustard, paprika, at cream sauce.", il: "Iti naragsak nga bowl, ikombina ti napirak nga manok, sour cream, yogurt, dua nga klase ti keso, broccoli, spring onions, almonds, bacon, mustard, paprika, ken cream sauce." },
+    { tl: "Ikalat sa baking dish.", il: "Iladawa iti baking dish." },
+    { tl: "Ihalo ang panko, Parmesan, at natunaw na mantikilya. Ikalat nang pantay sa ibabaw.", il: "Ikombina ti panko, Parmesan, ken natunaw nga butter. Ikalbo nang pantay iti ngato." },
+    { tl: "Takpan ng foil. Lutuin sa hurno ng 20 minuto. Alisin ang foil at lutuin pa ng 20–25 minuto hanggang gintuan at kumukulo.", il: "Takluban ti foil. Lutuen iti hurno iti 20 minuto. Iyeg ti foil ken lutuen pay iti 20–25 minuto agingga naalimbuyog ken agpupupo." },
+    { tl: "Pahintuin ng 10 minuto bago ihain.", il: "Pahunayen iti 10 minuto sakbay iserbi." },
+  ],
+  "sheet-pan-chicken-fajitas": [
+    { tl: "Painitin ang hurno sa 220°C. Ihalo ang lahat ng pampalasa sa maliliit na mangkok.", il: "Painiten ti hurno iti 220°C. Ikombina ti amin nga espesya iti bassit nga bowl." },
+    { tl: "Ilagay ang manok, paminta, at sibuyas sa malaking baking tray na may gilid. Budburan ng olive oil, dagdagan ang pinagsamang pampalasa, at ihalo nang mabuti para mabalutan.", il: "Ilatag ti manok, bell pepper, ken sibuyas iti naragsak nga baking tray. Ibubo ti olive oil, iteddu ti pinagsamaan nga espesya, ken isagad nang nabileg tapno mabalotan." },
+    { tl: "Ikalat sa iisang patong. Pahintuin ng 10 minuto sa temperatura ng kuwarto.", il: "Iladawa iti maysa nga patong. Pahunayen iti 10 minuto iti temperatura ti kuarto." },
+    { tl: "Lutuin sa hurno ng 18–20 minuto hanggang maluto ang manok.", il: "Lutuen iti hurno iti 18–20 minuto agingga naluto ti manok." },
+    { tl: "Ilipat sa grill/broil ng 2–3 minuto para sa bahagyang nasunog na mga gilid. Balutin ang mga tortilla sa foil at paintin sa hurno sa huling 5 minuto.", il: "Iyeg iti grill/broil iti 2–3 minuto para ti naganad nga napuyupoy nga kanto. Balotan ti tortillas iti foil ken painiten iti hurno iti maudi nga 5 minuto." },
+    { tl: "Pigain ang dayap sa lahat. Budburan ng cilantro. Ihain mula sa tray kasama ang mainit na tortilla.", il: "Piguiten ti dayap iti amin. Ikalbo ti cilantro. Iserbi manipud iti tray nga adda napudot nga tortillas." },
+  ],
+  "slow-roasted-lamb-shoulder": [
+    { tl: "Ihalo ang olive oil kasama ang luya, paprika, turmeric, saffron, bawang, asin, at paminta. Ihaplas sa buong tupa. Pahintuin ng 30 minuto sa temperatura ng kuwarto.", il: "Ikombina ti olive oil ken luya, paprika, turmeric, saffron, ahos, asin, ken paminta. Ihasgas iti amin a parte ti karnero. Pahunayen iti 30 minuto iti temperatura ti kuarto." },
+    { tl: "Painitin ang hurno sa 200°C.", il: "Painiten ti hurno iti 200°C." },
+    { tl: "Ikalat ang hiwa ng sibuyas at tubig sa roasting pan. Dagdagan ng thyme. Ilagay ang tupa sa ibabaw.", il: "Iladawa ti naladislad nga sibuyas ken danum iti roasting pan. Iteddu ti thyme. Ilatag ti karnero iti ngato." },
+    { tl: "Takpan nang mahigpit ng foil. Ilutong sa hurno ng 45 minuto.", il: "Takluban nang nabileg ti foil. Lutuen iti hurno iti 45 minuto." },
+    { tl: "Ibaba ang hurno sa 160°C. Alisin ang foil. Lutuin pa ng 2–2.5 oras, binabasto tuwing 30 minuto.", il: "Babaan ti hurno iti 160°C. Iyeg ti foil. Lutuen pay iti 2–2.5 oras, ibaste iti tunggal 30 minuto." },
+    { tl: "Luto na ang tupa kapag naghiwa-hiwalay ito kapag pinindot. Pahintuin ng 15 minuto at pagkatapos ay hilahin ang karne. Ihain kasama ang katas ng kawali.", il: "Naluto ti karnero no mapuor no pigtaen. Pahunayen iti 15 minuto ket agtataray ti karne. Iserbi nga adda katas ti kawali." },
+  ],
+  "lok-lak-cambodian-pepper-beef": [
+    { tl: "Ihalo ang baka kasama ang soy sauce, patis, asukal, cornflour, paminta, at bawang. Ibabad ng hindi bababa sa 2 oras.", il: "Ikombina ti baka ken soy sauce, patis, asukal, cornflour, paminta, ken ahos. I-marinate iti hindi bababa iti 2 oras." },
+    { tl: "Ihalo ang sawsawan: katas ng dayap, black pepper, asin, isang kurot ng asukal, at patis. Itabi.", il: "Ikombina ti sawsawan: katas ti dayap, black pepper, asin, maysa nga kurot ti asukal, ken patis. Isubli." },
+    { tl: "Initin ang mantika sa wok sa napakataas na init. Dagdagan ng luya, iprito ng 20 segundo.", il: "Initin ti lana iti wok iti nataas unay nga init. Iteddu ti luya, iprito iti 20 segundo." },
+    { tl: "Ilagay ang baka sa iisang patong. I-sear ng 30 segundo nang hindi gumagalaw. Ihalo, i-sear muli. Lutuin ng 2–3 minuto hanggang bahagyang may tsa.", il: "Ilatag ti baka iti maysa nga patong. Sear iti 30 segundo nga awanan galaw. Isagad, sear manen. Lutuen iti 2–3 minuto agingga naganad nga napuyupoy." },
+    { tl: "Dagdagan ng kalahating sibuyas. Ihalo ng 30 segundo. Dagdagan ng oyster sauce at ihalo para mabalutan. Alisin sa apoy.", il: "Iteddu ti kagudua ti sibuyas. Isagad iti 30 segundo. Iteddu ti oyster sauce ken isagad tapno mabalotan. Iyeg iti apoy." },
+    { tl: "Ayusin ang lettuce, natirang sibuyas, at kamatis sa mga plato. Ilagay ang baka sa ibabaw. Ihain kasama ang pinasingawang kanin at sawsawan.", il: "Urnosen ti lettuce, nabileg nga sibuyas, ken kamatis iti plato. Idulin ti baka iti ngato. Iserbi nga adda sinangao nga bagas ken sawsawan." },
+  ],
+  "osso-buco": [
+    { tl: "Painitin ang hurno sa 160°C.", il: "Painiten ti hurno iti 160°C." },
+    { tl: "Timplahan ang harina ng asin at paminta. Balutan ang mga veal shank sa lahat ng panig. I-sear sa olive oil hanggang gintuan sa lahat ng panig, mga 5 minuto bawat panig. Alisin at itabi.", il: "Timplaan ti harina ti asin ken paminta. Balotan ti veal shanks iti amin nga tabi. Sear iti olive oil agingga naalimbuyog iti amin a tabi, nasurok 5 minuto iti tunggal tabi. Iyeg ken isubli." },
+    { tl: "Igisa ang sibuyas, karot, kinchay, at bawang sa parehong palayok sa katamtamang init ng 3–4 minuto.", il: "Igisa ti sibuyas, karot, kintsay, ken ahos iti daytoy met laeng nga palayok iti medium nga init iti 3–4 minuto." },
+    { tl: "Dagdagan ng tomato paste, haluin ng 2 minuto. Dagdagan ng kamatis, alak, beef stock, dahon ng laurel, thyme, asin, at paminta.", il: "Iteddu ti tomato paste, ikuting iti 2 minuto. Iteddu ti kamatis, arak, beef stock, dahon ti laurel, thyme, asin, ken paminta." },
+    { tl: "Ibalik ang mga shank sa palayok — karamihan ay nakalubog. Takpan at i-braise sa hurno ng 2–2.5 oras hanggang malambot.", il: "Isubli ti shanks iti palayok — kaslang nailubong. Takluban ken i-braise iti hurno iti 2–2.5 oras agingga naimet unay." },
+    { tl: "Ihalo ang gremolata: tadtarin nang pino ang parsley, ihalo kasama ang gadgad na bawang at lemon zest.", il: "Ikombina ti gremolata: tadtaren nang naaramid ti parsley, ikombina ken nairindiis nga ahos ken lemon zest." },
+    { tl: "Ihain ang mga shank kasama ang braising sauce. Lagyan ang bawat isa ng isang kutsarang gremolata.", il: "Iserbi ti shanks nga adda braising sauce. Laglaagen ti tunggal maysa ti maysa nga kutsara ti gremolata." },
+  ],
+  "garlic-onion-beef-stir-fry": [
+    { tl: "Ihalo ang hiwa ng baka kasama ang soy sauce, oyster sauce, baking soda, asukal, at sesame oil. Ibabad ng hindi bababa sa 20 minuto.", il: "Ikombina ti naladislad nga baka ken soy sauce, oyster sauce, baking soda, asukal, ken sesame oil. I-marinate iti hindi bababa iti 20 minuto." },
+    { tl: "Ihalo ang sarsa: whiskin ang white wine, oyster sauce, cornflour, at sabaw hanggang makinis. Itabi.", il: "Ikombina ti sarsa: batbaten ti white wine, oyster sauce, cornflour, ken sabaw agingga nalamiis. Isubli." },
+    { tl: "Initin ang mantika sa wok sa mataas na init. Igisa ang sibuyas at maputing bahagi ng spring onion ng 30–60 segundo. Alisin at itabi.", il: "Initin ti lana iti wok iti nataas nga init. Igisa ti sibuyas ken puti nga parte ti spring onion iti 30–60 segundo. Iyeg ken isubli." },
+    { tl: "Dagdagan ng 1 kutsarang mantika. I-sear ang baka sa iisang patong ng 1 minuto nang hindi hinahalo. Ihalo at lutuin ng 1 minuto pa.", il: "Iteddu ti 1 kutsara nga lana. Sear ti baka iti maysa nga patong iti 1 minuto nga awanan galaw. Isagad ken lutuen pay iti 1 minuto." },
+    { tl: "Dagdagan ng bawang. Lagyan ng white wine. Ibuhos ang sarsa. Haluin at pakuluan ng 30 segundo hanggang lumapot.", il: "Iteddu ti ahos. Ibubo ti white wine. Ibubo ti sarsa. Ikuting ken pakulakulaen iti 30 segundo agingga nalapot." },
+    { tl: "Ibalik ang sibuyas sa kawali. Ihalo ng 30 segundo.", il: "Isubli ti sibuyas iti kawali. Isagad iti 30 segundo." },
+    { tl: "Budburan ng mga dulo ng spring onion, cilantro, at sesame seeds. Ihain kasama ang pinasingawang kanin.", il: "Ikalbo ti ngato ti spring onion, cilantro, ken sesame seeds. Iserbi nga adda sinangao nga bagas." },
+  ],
+  "whole-mediterranean-snapper": [
+    { tl: "Painitin ang hurno sa 200°C. Hugasan ang isda, tuuyin. Gumawa ng 3 pahiwatig na hiwa sa magkabilang panig.", il: "Painiten ti hurno iti 200°C. Banlagen ti isda, payusen. Gumawa ti 3 pahiwatig nga pag-isahan iti dua a tabi." },
+    { tl: "Timplahan ang loob ng isda ng asin at paminta. Lagyan ng mga hiwa ng limon, parsley, at olive oil.", il: "Timplaan ti uneg ti isda ti asin ken paminta. Punnuen ti ladisladan ti limon, parsley, ken olive oil." },
+    { tl: "Sa malaking roasting pan, pagsamahin ang mga kamatis, capers, anchovies, bawang, spring onions, fennel seeds, white wine, at kalahati ng olive oil. Timplahan at haluin.", il: "Iti naragsak nga roasting pan, ikombina ti kamatis, capers, anchovies, ahos, spring onions, fennel seeds, white wine, ken kagudua ti olive oil. Timplaan ken isagad." },
+    { tl: "Ilagay ang isda sa ibabaw ng pinagsamang kamatis. Budburan ng natirang olive oil sa lahat.", il: "Ilatag ti isda iti ngato ti pinagsamaan nga kamatis. Budbuden ti nabileg nga olive oil iti amin." },
+    { tl: "Iluto sa hurno ng 25–30 minuto hanggang madaling matangkal ang karne ng isda gamit ang tinidor.", il: "Lutuen iti hurno iti 25–30 minuto agingga nalnal dagus ti lasag ti isda ti simsimpa." },
+    { tl: "Budburan ng sariwang parsley sa ibabaw. Ihain mula sa kawali.", il: "Ikalbo ti sariwa nga parsley iti ngato. Iserbi manipud iti kawali." },
+  ],
+  "prime-roast-beef-reverse-seared": [
+    { tl: "Isang araw bago: timplahan ang baka ng asin sa lahat ng bahagi. Ilagay sa wire rack sa ibabaw ng tray. Ilagay sa ref nang walang takip magdamag para sa dry-brine.", il: "Aldaw sakbay: timplaan ti baka ti asin iti amin a parte. Ilatag iti wire rack iti ngato ti tray. Ired nang awanan taklob ti rabii tapno dry-brine." },
+    { tl: "Kinabukasan: ihalo ang mustard, gadgad na bawang, tadtad na rosemary, olive oil, asin, at paminta. Ihaplas sa buong baka.", il: "Sumsumangpet nga aldaw: ikombina ti mustard, nairindiis nga ahos, natadtad nga rosemary, olive oil, asin, ken paminta. Ihasgas iti amin a parte ti baka." },
+    { tl: "Ipasok ang meat thermometer probe sa pinakamakapal na bahagi. Painitin ang hurno sa 95°C.", il: "Isuksuk ti meat thermometer probe iti nabatog unay nga parte. Painiten ti hurno iti 95°C." },
+    { tl: "Iluto sa hurno ng 3–4 oras hanggang maabot ng panloob na temperatura ang 48°C para sa rare / 52–53°C para sa medium-rare.", il: "Lutuen iti hurno iti 3–4 oras agingga maabot ti uneg nga temperatura iti 48°C para rare / 52–53°C para medium-rare." },
+    { tl: "Alisin sa hurno. Pahintuin sa temperatura ng kuwarto ng 1–2 oras (hindi maluluto nang labis ang karne).", il: "Iyeg iti hurno. Pahunayen iti temperatura ti kuarto iti 1–2 oras (saan nga malabaan ti karne)." },
+    { tl: "Itaas ang hurno sa 230°C. Ibalik ang baka ng 15 minuto hanggang malalim na gintuan ang labas.", il: "Itaas ti hurno iti 230°C. Isubli ti baka iti 15 minuto agingga nallom nga naalimbuyog ti ruar." },
+    { tl: "Hiwain nang makapal laban sa buto at ihain agad.", il: "Ladislawen nang nabato kontra ti buto ken iserbi dagus." },
+  ],
+  "thai-green-curry-chicken": [
+    { tl: "Punitin ang mga kabute sa 4–6 piraso gamit ang kamay.", il: "Piriaten ti kabiti iti 4–6 piraso ti ima." },
+    { tl: "Initin ang coconut oil sa wok sa mataas na init. Dagdagan ng curry paste at haluin ng 30 segundo.", il: "Initin ti coconut oil iti wok iti nataas nga init. Iteddu ti curry paste ken ikuting iti 30 segundo." },
+    { tl: "Dagdagan ang mga tira ng manok, balutan sa paste, at lutuin ng 2 minuto sa mataas na init.", il: "Iteddu ti naladislad nga manok, balotan iti paste, ken lutuen iti 2 minuto iti nataas." },
+    { tl: "Dagdagan ng kabute at lutuin ng 1 minuto pa.", il: "Iteddu ti kabiti ken lutuen pay iti 1 minuto." },
+    { tl: "Ibuhos ang gata ng niyog, haluin para pagsamahin. Bawasan sa katamtamang init.", il: "Ibubo ti gata ti niyog, ikuting tapno maikombina. Babaan iti medium." },
+    { tl: "Dagdagan ng sugar snap peas at pakuluan ng 2 minuto.", il: "Iteddu ti sugar snap peas ken pakulakulaen iti 2 minuto." },
+    { tl: "Ihain sa ibabaw ng pinasingawang kanin. Gayakan ng hiwa ng sili, pritong shallot, at Thai basil.", il: "Iserbi iti ngato ti sinangao nga bagas. Laglagen ti naladislad nga sili, prito nga shallot, ken Thai basil." },
+  ],
+  "pistachio-crusted-rack-of-lamb": [
+    { tl: "Timplahan ang tupa nang sapat na asin at paminta. Pahintuin sa temperatura ng kuwarto ng 20 minuto. Painitin ang hurno sa 200°C.", il: "Timplaan ti karnero nang kinaimbag ti asin ken paminta. Pahunayen iti temperatura ti kuarto iti 20 minuto. Painiten ti hurno iti 200°C." },
+    { tl: "Gumawa ng crust: tadtarin ang mga pistachio hanggang magkalat. Ihalo kasama ang parsley, mint, bawang, lemon zest, 2 kutsarang olive oil, at kurot ng asin. Ilagay sa ref.", il: "Gumawa ti crust: tadtaren ti pistachio agingga nagkalat. Ikombina ken parsley, mint, ahos, lemon zest, 2 kutsara ti olive oil, ken kurot ti asin. Ired." },
+    { tl: "Initin ang natirang mantika sa oven-safe na kawali sa mataas na init. I-sear ang tupa na taba pababa ng 3 minuto hanggang gintuan. I-sear ang ibang panig nang maikli.", il: "Initin ti nabileg nga lana iti oven-safe nga kawali iti nataas. Sear ti karnero nga taba ti baba iti 3 minuto agingga naalimbuyog. Sear ti dadduma nga tabi nang naganad." },
+    { tl: "Ilipat sa roasting tray. Iluto sa hurno ng 8–10 minuto hanggang maabot ang 40°C ang panloob na temperatura.", il: "Iyeg iti roasting tray. Lutuen iti hurno iti 8–10 minuto agingga maabot ti 40°C ti uneg nga temperatura." },
+    { tl: "Alisin sa hurno. Pahiran ang karne ng Dijon mustard, pagkatapos ay pindutin nang matibay ang pistachio crust sa mustard.", il: "Iyeg iti hurno. Brush ti karne ti Dijon mustard, ket pigtaen nang nabileg ti pistachio crust iti mustard." },
+    { tl: "Ibalik sa hurno ng 5–8 minuto hanggang maabot ang 52°C para sa medium-rare.", il: "Isubli iti hurno iti 5–8 minuto agingga maabot ti 52°C para medium-rare." },
+    { tl: "Pahintuin sa ilalim ng foil ng 10 minuto.", il: "Pahunayen iti baba ti foil iti 10 minuto." },
+    { tl: "Ihalo ang yogurt sauce: Greek yogurt, 1 kutsarang olive oil, katas ng limon, tadtad na mint, at asin. Hiwain sa pagitan ng mga buto. Ihain kasama ang yogurt sauce.", il: "Ikombina ti yogurt sauce: Greek yogurt, 1 kutsara ti olive oil, katas ti limon, natadtad nga mint, ken asin. Ladislawen iti nagbaetan ti buto. Iserbi nga adda yogurt sauce." },
+  ],
+  "chili-garlic-shrimp-paprika": [
+    { tl: "Tuuyin ang mga hipon.", il: "Payusen ti hipon." },
+    { tl: "Initin ang olive oil sa malaking kawali sa katamtamang mataas hanggang magningning. Lutuin ang hipon ng ~45 segundo bawat panig hanggang bahagyang kayumanggi. Ilipat sa mainit na plato.", il: "Initin ti olive oil iti naragsak nga kawali iti medium-high agingga nagsilaw. Lutuen ti hipon iti ~45 segundo iti tunggal tabi agingga naganad nga naalimbuyog. Iyeg iti napudot nga plato." },
+    { tl: "Sa parehong kawali, dagdagan ng bawang at chili flakes sa katamtamang init. Lutuin hanggang bahagyang kumukulay ang bawang. Haluin ang smoked paprika.", il: "Iti daytoy met laeng nga kawali, iteddu ti ahos ken chili flakes iti medium nga init. Lutuen agingga naganad nga nagkolor ti ahos. Ikuting ti smoked paprika." },
+    { tl: "Lagyan ng white wine. Bawasan sa kalahati. Pigain ang katas ng limon.", il: "Ibubo ti white wine. Bawasan iti kagudua. Piguiten ti katas ti limon." },
+    { tl: "Ibalik ang hipon kasama ang kalahating parsley. Ihalo sa mataas na init ng 20 segundo.", il: "Isubli ti hipon nga adda kagudua ti parsley. Isagad iti nataas nga init iti 20 segundo." },
+    { tl: "Bawasan ang init sa napakababa. Dagdagan ang mga piraso ng mantikilya nang isa-isang kaunti, hinahalo nang patuloy hanggang makintab ang sarsa. Ibuhos sa hipon, gayakan ng parsley. Ihain kasama ang tinapay.", il: "Babaan ti init iti nabababa unay. Iteddu ti butter cubes iti bassit-bassit, ikuting nang awan pagnaan agingga nagsilaw ti sarsa. Ibubo iti hipon, laglagen ti parsley. Iserbi nga adda tinapay." },
+  ],
+  "thai-beef-salad": [
+    { tl: "Ihalo ang soy sauce, brown sugar, at durog na paminta. Dagdagan ang mga steak at ibabad ng hindi bababa sa 2 oras.", il: "Ikombina ti soy sauce, brown sugar, ken naidiges nga paminta. Iteddu ti steaks ken i-marinate iti hindi bababa iti 2 oras." },
+    { tl: "Ihalo ang dressing: patis, brown sugar, katas ng dayap, at tadtad na sili. Haluin hanggang matunaw ang asukal.", il: "Ikombina ti dressing: patis, brown sugar, katas ti dayap, ken natadtad nga sili. Ikuting agingga natunaw ti asukal." },
+    { tl: "Pagsamahin ang shallot, mga kamatis, pipino, sili, spring onion, mint, at cilantro sa mangkok. Dagdagan ang dressing at ihalo.", il: "Ikombina ti shallot, kamatis, pipino, sili, spring onion, mint, ken coriander iti bowl. Iteddu ti dressing ken isagad." },
+    { tl: "Initin ang mantika sa kawali sa mataas na init. I-sear ang mga steak ng 3–4 minuto bawat panig para sa medium-rare. Pahintuin ng 10 minuto.", il: "Initin ti lana iti kawali iti nataas. Sear ti steaks iti 3–4 minuto iti tunggal tabi para medium-rare. Pahunayen iti 10 minuto." },
+    { tl: "Hiwain nang manipis na laban sa guhit ng karne.", il: "Ladislawen nang nipis kontra ti guhit ti karne." },
+    { tl: "Ilagay ang hiniwang baka sa ibabaw ng ensalada. Budburan ng natirang dressing. Ihain.", il: "Ilatag ti naladislad nga baka iti ngato ti ensalada. Budbuden ti nabileg nga dressing. Iserbi." },
+  ],
+  "smoked-salmon-eggs-rosti": [
+    { tl: "Gadgarin ang mga patatas nang magaspang. Piguiin ang pinakamaraming tubig hanggang maaari gamit ang malinis na tuwalya.", il: "Rindiisen ti patatas nang bula-bula. Piguiten ti kaaduan a danum nga maaramid basar ti nalinis nga tuwalya." },
+    { tl: "Dagdagan ng shallot, bawang, thyme, pula ng itlog, at natunaw na clarified butter sa gadgad na patatas. Timplahan. Haluin nang mabuti.", il: "Iteddu ti shallot, ahos, thyme, pula ti itlog, ken natunaw nga clarified butter iti nairindiis nga patatas. Timplaan. Ikombina nang nabileg." },
+    { tl: "Hatiin sa 4 na bahagi. Initin ang clarified butter sa mabigat na kawali sa katamtamang init. Pindutin ang mga bahagi sa kawali. Lutuin ng 10–12 minuto bawat panig hanggang malalim na gintuan at malutong.", il: "Baluktuten iti 4 nga parte. Initin ti clarified butter iti nabatog nga kawali iti medium. Pigtaen ti parte iti kawali. Lutuen iti 10–12 minuto iti tunggal tabi agingga nallom nga naalimbuyog ken nalagtiit." },
+    { tl: "Habang niluluto ang rosti: initin ang kaunting mantika sa non-stick na kawali sa katamtamang init. Basagin ang mga itlog. Budburan ng tadtad na dill sa puti ng itlog. Dagdagan ng cream, takpan at lutuin hanggang bahagyang magkulay ang mga pula ng itlog.", il: "Bayat ti paglulutu ti rosti: initin ti bassit nga lana iti non-stick nga kawali iti medium. Basaen ti itlog. Budbuden ti natadtad nga dill iti puti ti itlog. Iteddu ti cream, takluban ken lutuen agingga naganad nga nagbaliw ti kolor ti pula ti itlog." },
+    { tl: "Ilagay ang smoked salmon sa bawat rosti. Pigain ang kaunting limon.", il: "Ilatag ti smoked salmon iti tunggal rosti. Piguiten ti bassit nga limon." },
+    { tl: "Ilagay ang piniritong itlog sa ibabaw ng salmon. Ibuhos ang cream mula sa kawali sa mga itlog. Lagyan ng mga tangkay ng dill. Ihain agad.", il: "Ilatag ti prito nga itlog iti ngato ti salmon. Idulin ti cream manipud iti kawali iti ngato ti itlog. Laglaagen ti tangkay ti dill. Iserbi dagus." },
+  ],
+  "mediterranean-shakshuka": [
+    { tl: "Initin ang 2 kutsarang olive oil sa malaking kawali sa katamtamang init. Lutuin ang mga hiwa ng chorizo ng 3–4 minuto hanggang caramelised. Alisin at itabi, nang naiwan ang mantika sa kawali.", il: "Initin ti 2 kutsara ti olive oil iti naragsak nga kawali iti medium. Lutuen ti naladislad nga chorizo iti 3–4 minuto agingga nakaramel. Iyeg ken isubli, nga nabilin ti lana iti kawali." },
+    { tl: "Dagdagan ng sibuyas at capsicum sa parehong kawali. Lutuin ng 5 minuto hanggang malambot.", il: "Iteddu ti sibuyas ken capsicum iti daytoy met laeng nga kawali. Lutuen iti 5 minuto agingga naimet." },
+    { tl: "Dagdagan ng bawang, paprika, cumin, at chili flakes. Haluin ng 30 segundo.", il: "Iteddu ti ahos, paprika, cumin, ken chili flakes. Ikuting iti 30 segundo." },
+    { tl: "Dagdagan ng tomato paste, lutuin ng 30 segundo. Ibalik ang chorizo, pagkatapos ay dagdagan ng dinurog na kamatis. Timplahan. Pakuluan ng bahagya ng 8–10 minuto hanggang lumapot ang sarsa.", il: "Iteddu ti tomato paste, lutuen iti 30 segundo. Isubli ti chorizo, ket iteddu ti naidiges nga kamatis. Timplaan. Pakulakulaen iti 8–10 minuto agingga nalapot ti sarsa." },
+    { tl: "Gumawa ng 8 maliliit na butas sa sarsa. Basagin ang isang itlog sa bawat isa. Takpan at lutuin sa mababang init ng 6–8 minuto hanggang matibay ang puti ngunit tumutulo pa rin ang pula.", il: "Gumawa ti 8 bassit nga butas iti sarsa. Basaen ti maysa nga itlog iti tunggal butas. Takluban ken lutuen iti nabababa iti 6–8 minuto agingga naluto ti puti ngem naluktot pay ti pula." },
+    { tl: "Budburan ng feta at cilantro sa ibabaw. Ihain mula sa kawali kasama ang tinapay.", il: "Ikalbo ti feta ken coriander iti ngato. Iserbi manipud iti kawali nga adda tinapay." },
+  ],
+  "perfect-scrambled-eggs": [
+    { tl: "Basagin ang mga itlog sa mangkok. Timplahan ng asin at paminta. Batiin gamit ang tinidor.", il: "Basaen ti itlog iti bowl. Timplaan ti asin ken paminta. Batbaten ti simsimpa." },
+    { tl: "I-toast ang tinapay. Lagyan ng maraming mantikilya habang mainit.", il: "I-toast ti tinapay. Butteraan nang naganad bayat napudot." },
+    { tl: "Sa non-stick na kawali sa katamtamang init, tunawin ang mantikilya hanggang bahagyang magsimulang mag-brown.", il: "Iti non-stick nga kawali iti medium nga init, tunawen ti butter agingga naganad nga nagsangaw ti nabusyaw." },
+    { tl: "Dagdagan ng cream cheese at haluin hanggang malapit nang matunaw.", il: "Iteddu ti cream cheese ken ikuting agingga naganad nga natunaw." },
+    { tl: "Ibuhos ang binasang itlog. Bawasan bahagya ang init. Gamit ang spatula, dahan-dahang itulak ang luto na itlog mula sa mga gilid patungo sa gitna sa mabagal na tiklop.", il: "Ibubo ti nabatbat nga itlog. Babaan ti bassit ti init. Basar ti spatula, naganad nga ited ti naluto nga itlog manipud iti kanto pateh iti tengnga iti naanas nga tiklop." },
+    { tl: "Kapag malapit nang maluto ang mga itlog ngunit bahagyang matubig pa, patayin ang apoy. Ang natitirang init ay magluluto sa kanila.", il: "No naganad nga naluto ti itlog ngem naganad pay nga naluktot, ipatay ti init. Ti nabilin nga init ti manglutu kadakuada." },
+    { tl: "Ilagay sa buttered na toast. Budburan ng chives. Ihain agad.", il: "Ilatag iti buttered nga toast. Budbuden ti chives. Iserbi dagus." },
+  ],
+  "chicken-liver-pate": [
+    { tl: "Tunawin ang isang-kapat ng mantikilya sa kawali sa mataas na init. Dagdagan ng shallot, bacon, bawang, at thyme. Lutuin nang maikling sandali.", il: "Tunawen ti kaykaysa ti kagudua ti butter iti kawali iti nataas nga init. Iteddu ti shallot, bacon, ahos, ken thyme. Lutuen nang naganad." },
+    { tl: "Dagdagan ng atay ng manok. Ihalo hanggang hindi na mapula ang labas.", il: "Iteddu ti atay ti manok. Isagad agingga saan nga mapula ti ruar." },
+    { tl: "Ibuhos ang brandy at hayaang maluto. Dagdagan ng natirang mantikilya, cream, at dahon ng laurel. Timplahan. Pakuluan sa katamtamang init ng 4–5 minuto.", il: "Ibubo ti brandy ken palubongan nga maluto. Iteddu ti nabileg nga butter, cream, ken dahon ti laurel. Timplaan. Pakulakulaen iti medium iti 4–5 minuto." },
+    { tl: "Alisin sa apoy, alisin ang dahon ng laurel. Palamigin ng 10 minuto.", il: "Iyeg iti apoy, iyeg ti dahon ti laurel. Palamisen iti 10 minuto." },
+    { tl: "I-blitz ang lahat sa blender sa mataas na bilis hanggang napakamakinis.", il: "I-blitz ti amin iti blender iti nataas nga bileg agingga nalamiis unay." },
+    { tl: "Idaan ang pâté sa pinong salaan patungo sa mangkok gamit ang maliit na sandok.", il: "Idaan ti pâté iti naaramid nga sieve pateh iti bowl basar ti bassit nga sandok." },
+    { tl: "Ihalo ang green peppercorns at haluin nang mabuti.", il: "Ihalo ti green peppercorns ken ikuting nang nabileg." },
+    { tl: "Ilagay sa mga ramekin. Ibuhos ang manipis na patong ng natunaw na mantikilya sa ibabaw para seal. Ilagay sa ref ng hindi bababa sa 2 oras bago ihain kasama ang tinapay.", il: "Idulin iti ramekins. Ibubo ti manipis nga patong ti natunaw nga butter iti ngato tapno ma-seal. Ired iti hindi bababa iti 2 oras sakbay iserbi nga adda tinapay." },
+  ],
+  "spaghetti-pancetta-spicy-tomato": [
+    { tl: "Pakuluan ang malaking palayok ng maalat na tubig. Lutuin ang spaghetti hanggang bahagyang mas matiggas pa sa al dente. Mag-iwan ng 1 tasang tubig ng pasta bago matuyo.", il: "Pakuluen ti naragsak nga palayok ti namasin nga danum. Lutuen ti spaghetti agingga naganad nga ngatngat pa. Magtiponda ti 1 kopa ti danum ti pasta sakbay iti agsala." },
+    { tl: "Lutuin ang pancetta sa tuyo na kawali sa katamtamang mataas hanggang malutong. Alisin gamit ang may butas na sandok. Iwanan ang taba sa kawali.", il: "Lutuen ti pancetta iti mabukel nga kawali iti medium-high agingga nalagtiit. Iyeg basar ti sandok nga may bukel. Ibilin ti taba iti kawali." },
+    { tl: "Dagdagan ng shallot sa taba ng pancetta. Lutuin ng 2–3 minuto hanggang malambot.", il: "Iteddu ti shallot iti taba ti pancetta. Lutuen iti 2–3 minuto agingga naimet." },
+    { tl: "Dagdagan ng bawang, sili, at oregano. Lutuin ng 30 segundo.", il: "Iteddu ti ahos, sili, ken oregano. Lutuen iti 30 segundo." },
+    { tl: "Lagyan ng white wine. Dagdagan ng passata at ibalik ang pancetta. Pakuluan nang bahagya ng 5–6 minuto.", il: "Ibubo ti white wine. Iteddu ti passata ken isubli ti pancetta. Pakulakulaen nang naganad iti 5–6 minuto." },
+    { tl: "Dagdagan ng pinatuyo na spaghetti sa sarsa. Ihalo, at dagdagan ng tubig ng pasta hanggang mabalot ng sarsa ang pasta.", il: "Iteddu ti nasala nga spaghetti iti sarsa. Isagad, iteddu ti danum ti pasta agingga mabalotan ti sarsa ti pasta." },
+    { tl: "Alisin sa apoy. Haluin ang Parmesan at parsley. Ihalo muli. Ihain agad.", il: "Iyeg iti apoy. Ikuting ti Parmesan ken parsley. Isagad manen. Iserbi dagus." },
+  ],
+  "ragu-alla-bolognese": [
+    { tl: "Tadtarin nang pino ang pancetta. Itabi.", il: "Tadtaren nang naimbag ti pancetta. Isubli." },
+    { tl: "Sa mabigat na palayok sa katamtamang init, lutuin ang pancetta hanggang matunaw ang taba. Dagdagan ng mantika, pagkatapos ay karot, kinchay, at sibuyas. Lutuin nang dahan-dahan hanggang malambot.", il: "Iti nabatog nga palayok iti medium nga init, lutuen ti pancetta agingga natunaw ti taba. Iteddu ti lana, ket karot, kintsay, ken sibuyas. Lutuen nang naganad agingga naimet." },
+    { tl: "Dagdagan ang baka, hinahiwa-hiwalay. Kayumanggihin nang mabuti.", il: "Iteddu ti baka, silawen. Kayumangihin nang nabileg." },
+    { tl: "Dagdagan ng tomato paste, haluin ng 1–2 minuto. Ibuhos ang white wine at hayaang sumingaw.", il: "Iteddu ti tomato paste, ikuting iti 1–2 minuto. Ibubo ti white wine ken palubongan nga sumingaw." },
+    { tl: "Dagdagan ng de-latang kamatis. Takpan at pakuluan sa pinakamababang init ng 2.5 oras, paminsan-minsan na hinahalo. Dagdagan ng kaunting beef stock kung masyadong matuyo.", il: "Iteddu ti kamatis na lattaan. Takluban ken pakulakulaen iti nabababa unay nga init iti 2.5 oras, adda panon nga ikuting. Iteddu ti bassit nga beef stock no nauga." },
+    { tl: "15 minuto bago matapos, haluin ang gatas. Timplahan ng asin at paminta.", il: "15 minuto sakbay maluto, ikuting ti gatas. Timplaan ti asin ken paminta." },
+    { tl: "Lutuin ang tagliatelle sa maalat na kumukulong tubig, 1 minuto bago ang sinasabi ng pakete.", il: "Lutuen ti tagliatelle iti namasin nga agpupo nga danum, 1 minuto bassit ngem ti pakete." },
+    { tl: "Initin ang ragù sa malaking kawali. Dagdagan ng pinatuyo na pasta at kaunting tubig ng pasta. Ihalo ng 1 minuto at ihain.", il: "Initin ti ragù iti naragsak nga kawali. Iteddu ti nasala nga pasta ken bassit nga danum ti pasta. Isagad iti 1 minuto ken iserbi." },
+  ],
+  "buttery-tomato-pasta": [
+    { tl: "Balatan ang pulang sibuyas at hiwain sa 3 makapal na piraso. Balatan ang mga bawang.", il: "Balataan ti nabara nga sibuyas ken ladislawen iti 3 nabatog nga piraso. Balataan ti ahos." },
+    { tl: "Tunawin ang mantikilya sa kasirola sa mababang init. Dagdagan ng mga hiwa ng sibuyas at bawang. Lutuin nang dahan-dahan ng 10–15 minuto bawat panig hanggang malambot at bahagyang nakaramel.", il: "Tunawen ti butter iti kasirola iti nabababa. Iteddu ti naladislad nga sibuyas ken ahos. Lutuen nang naganad iti 10–15 minuto iti tunggal tabi agingga naimet ken naganad nga nakaramel." },
+    { tl: "Hawakan ang bawat kamatis nang direkta sa gas na apoy ng 20 segundo hanggang magsugat ang balat. Itabi.", il: "Ilapu ti tunggal kamatis nang direkta iti gas nga apoy iti 20 segundo agingga agbu-bulsek ti panit. Isubli." },
+    { tl: "Balatan ang mga kamatis. Hiwain nang magaspang at ihalo sa pinagsamang mantikilya. Timplahan. Pakuluan sa napakababang init ng 20–30 minuto.", il: "Balataan ti kamatis. Ladislawen nang bula-bula ken iteddu iti pinagsamaan nga butter. Timplaan. Pakulakulaen iti nabababa unay iti 20–30 minuto." },
+    { tl: "Lutuin ang pasta sa maalat na kumukulong tubig, 2 minuto bago ang al dente.", il: "Lutuen ti pasta iti namasin nga agpupo nga danum, 2 minuto bassit ngem al dente." },
+    { tl: "I-blend ang sarsa ng kamatis hanggang makinis. Mag-iwan ng isang-katlo para ihain; panatilihin ang natirang bahagi sa kawali.", il: "I-blend ti sarsa ti kamatis agingga nalamiis. Magtiponda ti kakatlo para iserbi; ibilin ti nabileg iti kawali." },
+    { tl: "Patuyuin ang pasta at ihalo sa sarsa. Lutuin ng 2 minuto pa hanggang al dente.", il: "Salaen ti pasta ken iteddu iti sarsa. Lutuen iti 2 minuto pay agingga al dente." },
+    { tl: "Ihain sa mainit na mga plato. Ilagay ang naiwang sarsa sa ibabaw. Dagdagan ng sariwang basil at Parmesan.", il: "Iserbi iti napudot nga plato. Idulin ti natipon nga sarsa iti ngato. Iteddu ti sariwa nga basil ken Parmesan." },
+  ],
+  "gazpacho": [
+    { tl: "Alisin ang puso at tadtarin ang mga kamatis. Balatan at tadtarin ang pipino. Alisin ang buto at tadtarin ang bell pepper. Tadtarin ang sibuyas. Durugin ang bawang.", il: "Alisin ti uneg ken tadtaren ti kamatis. Balataan ken tadtaren ti pipino. Alisin ti binhi ken tadtaren ti bell pepper. Tadtaren ti sibuyas. Digulen ti ahos." },
+    { tl: "Ilagay ang lahat ng gulay sa blender. Dagdagan ng suka, olive oil, cumin, asin, paminta, at yelo.", il: "Ilatag ti amin nga dagum iti blender. Iteddu ti suka, olive oil, cumin, asin, paminta, ken yelo." },
+    { tl: "I-blend hanggang makinis. Tikman at ayusin ang asin.", il: "I-blend agingga nalamiis. Tikman ken urnosen ti asin." },
+    { tl: "Ilagay sa ref ng hindi bababa sa 2 oras para magsama ang mga lasa.", il: "Ired iti hindi bababa iti 2 oras tapno magsinnusubo ti lasana." },
+    { tl: "Ihain nang malamig sa mga mangkok. Lagyan ng tadtad na pipino, tadtad na kamatis, sariwang basil, at garlic croutons. Budburan ng olive oil.", il: "Iserbi nang nalames iti bowls. Laglaagen ti natadtad nga pipino, natadtad nga kamatis, sariwa nga basil, ken garlic croutons. Budbuden ti olive oil." },
+  ],
+  "caramelised-brussels-sprouts": [
+    { tl: "Pakuluan ang malaking palayok ng maalat na tubig. Gupitin ang mga dulo ng tangkay ng Brussels sprouts, alisin ang mga maluwag na dahon. Hiwain ang bawat isa sa kalahati nang pahaba.", il: "Pakuluen ti naragsak nga palayok ti namasin nga danum. Putungen ti ngato ti tangkay ti Brussels sprouts, iyeg ti maluwag nga bulong. Ladislawen ti tunggal maysa iti kagudua nang pahaba." },
+    { tl: "Pakuluan ang Brussels sprouts ng 5 minuto. Patuyuin nang mabuti.", il: "Pakuluen ti Brussels sprouts iti 5 minuto. Salaen nang nabileg." },
+    { tl: "Hiwain ang pancetta sa manipis na tira. Iprito sa mainit na kawali hanggang bahagyang maluto. Dagdagan ng sibuyas at haluin.", il: "Ladislawen ti pancetta iti manipis nga tira. Iprito iti napudot nga kawali agingga naganad nga naluto. Iteddu ti sibuyas ken ikuting." },
+    { tl: "Dagdagan ng pinatuyo na sprouts at mantikilya sa 3–4 piraso. Timplahan ng asin at paminta.", il: "Iteddu ti nasala nga sprouts ken butter iti 3–4 piraso. Timplaan ti asin ken paminta." },
+    { tl: "Pindutin ang mga sprouts na patag ang mukha. Haluing madalas hanggang gintuan-kayumanggi ang patag na panig. Huwag magsunog.", il: "Pigtaen ti sprouts nga patag ti baba. Ikuting nang adu-adu agingga naalimbuyog-kayumanggi ti patag nga parte. Saan nga pagallapoken." },
+    { tl: "Lagyan ng balsamic vinegar. Haluin nang mabuti at ihain agad.", il: "Ibubo ti balsamic vinegar. Ikuting nang nabileg ken iserbi dagus." },
+  ],
+  "baked-garlic-cauliflower": [
+    { tl: "Painitin ang hurno sa 200°C.", il: "Painiten ti hurno iti 200°C." },
+    { tl: "Sa Dutch oven (na may takip), initin ang olive oil sa katamtamang init. Dagdagan ng bawang at oregano, igisa nang maikling sandali. Dagdagan ng cream at tubig. Gadgarin ang nutmeg, timplahan. Haluin at patayin ang apoy.", il: "Iti Dutch oven (nga adda taklob), initin ti olive oil iti medium. Iteddu ti ahos ken oregano, igisa nang naganad. Iteddu ti cream ken danum. Rindiisen ti nutmeg, timplaan. Ikuting ken ipatay ti init." },
+    { tl: "Ilagay ang buong cauliflower na baligtad sa cream sauce, iikot para mabalutan, pagkatapos ay ituwid. Timplahan ang ibabaw ng asin at paminta, budburan ng olive oil, lagyan ng Parmesan at smoked paprika.", il: "Ilatag ti amin nga cauliflower nga nabalintuwad iti cream sauce, igulek tapno mabalotan, ket isubli iti taktako. Timplaan ti ngato ti asin ken paminta, budbuden ti olive oil, laglaagen ti Parmesan ken smoked paprika." },
+    { tl: "Takpan ng takip at lutuin sa hurno ng 45 minuto sa 200°C.", il: "Takluban ti taklob ken lutuen iti hurno iti 45 minuto iti 200°C." },
+    { tl: "Alisin sa hurno. Ilipat ang cauliflower sa plato. Haluin ang natirang cream sauce at ibuhos sa ibabaw. Hiwain sa 4 na piraso at ihain.", il: "Iyeg iti hurno. Iyeg ti cauliflower iti plato. Ikuting ti nabileg nga cream sauce ken budbuden iti ngato. Ladislawen iti 4 nga piraso ken iserbi." },
+  ],
+  "asian-stir-fried-vegetables": [
+    { tl: "Hiwain ang broccoli sa mga floret. Balatan at hiwain ang karot sa angled na mga piraso. Ihiwalay ang mga dahon at tangkay ng bok choy.", il: "Ladislawen ti broccoli iti florets. Balataan ken ladislawen ti karot iti angled nga piraso. Palamangan ti bulong ken tangkay ti bok choy." },
+    { tl: "Blanch ang karot ng 3–4 minuto, pagkatapos ay dagdagan ang broccoli ng 2–3 minuto. Palamigin sa malamig na tubig at patuyuin.", il: "Blanch ti karot iti 3–4 minuto, ket iteddu ti broccoli iti 2–3 minuto. Palamisen iti malamig nga danum ken salaen." },
+    { tl: "Hiwain ang sili sa manipis na tira. Hiwain ang bawang nang magaspang. Hiwain ang mga kabute nang pahaba.", il: "Ladislawen ti sili iti manipis nga tira. Ladislawen ti ahos nang bula-bula. Ladislawen ti kabiti nang pahaba." },
+    { tl: "Ihalo ang cornstarch sa kalahating tasa ng tubig, pagkatapos ay dagdagan ng oyster sauce, soy sauce, at sesame oil. Itabi.", il: "Ikombina ti cornstarch ti kagudua nga kopa ti danum, ket iteddu ti oyster sauce, soy sauce, ken sesame oil. Isubli." },
+    { tl: "Initin ang mantika nang dahan-dahan sa wok. Dagdagan ng bawang at sili — huwag kayumangihin. Dagdagan ng kabute at lutuin hanggang magkulay.", il: "Initin ti lana nang naganad iti wok. Iteddu ti ahos ken sili — saan nga kayumangihin. Iteddu ti kabiti ken lutuen agingga nagkolor." },
+    { tl: "Dagdagan ng mga tangkay ng bok choy, igisa ng 30 segundo. Dagdagan ng mga blanched na gulay at mga dahon ng bok choy, ihalo ng 30 segundo.", il: "Iteddu ti tangkay ti bok choy, igisa iti 30 segundo. Iteddu ti nablanched nga dagum ken bulong ti bok choy, isagad iti 30 segundo." },
+    { tl: "Itaas ang init sa mataas. Ibuhos ang sarsa at ihalo hanggang magningning at mabalutan ang lahat ng gulay. Ihain agad.", il: "Itaas ti init iti nataas. Ibubo ti sarsa ken isagad agingga nagsilaw ken mabalotan ti amin nga dagum. Iserbi dagus." },
+  ],
+  "avocado-guacamole": [
+    { tl: "Hiwain ang avocado sa kalahati, alisin ang buto, at kumuha ng karne sa mangkok.", il: "Ladislawen ti avocado iti kagudua, iyeg ti binhi, ken kumuha ti lasag iti bowl." },
+    { tl: "Durugin gamit ang tinidor ayon sa iyong kagustuhan.", il: "Durugen basar ti simsimpa iti kayatmo nga konsistensya." },
+    { tl: "Pigain ang katas ng dayap at dagdagan ng asin. Haluin para pagsamahin — pinapigilan nito ang pag-kayumanggi.", il: "Piguiten ti katas ti dayap ken iteddu ti asin. Ikuting tapno maikombina — daytoy ti umaduan ti nagkolor." },
+    { tl: "Balatan at alisin ang buto ng mga kamatis, tadtarin nang pino. Tadtarin nang pino ang shallot, sili, at bawang. Tadtarin ang cilantro.", il: "Balataan ken alisin ti binhi ti kamatis, tadtaren nang naambeg. Tadtaren nang naambeg ti shallot, sili, ken ahos. Tadtaren ti coriander." },
+    { tl: "Ihalo ang lahat ng gulay at halaman sa avocado. Tikman at ayusin ang asin, dayap, o sili.", il: "Ihalo ti amin nga dagum ken yerba iti avocado. Tikman ken urnosen ti asin, dayap, wenno sili." },
+    { tl: "Ihain agad kasama ang corn chips o kasama ng inihaw na karne.", il: "Iserbi dagus nga adda corn chips wenno kasabay ti inasado nga karne." },
+  ],
+  "rustic-meringue-pavlova": [
+    { tl: "Painitin ang hurno sa 130°C (fan). Gumuhit ng bilog na laki ng plato sa ilalim ng baking paper.", il: "Painiten ti hurno iti 130°C (fan). Gumuhit ti lapeg ti plato nga bilog iti baba ti baking paper." },
+    { tl: "Whiskin ang puti ng itlog sa mababang bilis hanggang mamagbula, pagkatapos ay dagdagan ang bilis. Dagdagan ang caster sugar nang dahan-dahan — mga 1 kutsarang bawat 15 segundo. Dagdagan ang vanilla at katas ng limon; whiskin ng 15 segundo pa. Ihalo ang cornstarch gamit ang kamay. Dapat matibay ang mga tuktok.", il: "Batbaten ti puti ti itlog iti nabababa agingga nagbula, ket itaas ti bileg. Iteddu ti caster sugar nang naganad — nasurok 1 kutsara iti tunggal 15 segundo. Iteddu ti vanilla ken katas ti limon; batbaten pay iti 15 segundo. Ihalo ti cornstarch ti ima. Masapul nga nabileg ti ngato." },
+    { tl: "Ilagay ang meringue sa bilog. Ikalat sa pabilog na may maliit na hukay sa gitna — panatilihing bahagyang mataas ang mga gilid kaysa sa gitna. Gumamit ng pataas na galaw para sa rustic na texture.", il: "Idulin ti meringue iti bilog. Iladawa iti bilog nga adda bassit nga bugas iti tengnga — ibilin ti kanto nga naganad nga nataas ngem ti tengnga. Basar ti pakangatngato nga galaw para rustic nga texture." },
+    { tl: "Lutuin sa hurno ng 60–80 minuto. Patayin ang hurno at iwanan ang meringue sa loob para lumamig ng 1–2 oras. Huwag buksan ang pinto.", il: "Lutuen iti hurno iti 60–80 minuto. Ipatay ti hurno ken ibilin ti meringue iti uneg tapno lumames iti 1–2 oras. Saan nga buyaen ti ridaw." },
+    { tl: "Whiskin ang cream hanggang malambot na mga tuktok.", il: "Batbaten ti cream agingga naimet nga ngato." },
+    { tl: "Ilipat ang pavlova sa plato. Ikalat ang whipped cream sa ibabaw. Ayusin ang mga prutas at budburan ng pulpa ng passion fruit sa lahat. Ihain.", il: "Iyeg ti pavlova iti plato. Iladawa ti whipped cream iti ngato. Urnosen ti prutas ken budbuden ti pulpa ti passion fruit iti amin. Iserbi." },
+  ],
+  "perfect-marinara-tomato-sauce": [
+    { tl: "Tadtarin nang pino ang sibuyas. Gadgarin o tadtarin ang bawang.", il: "Tadtaren nang naambeg ti sibuyas. Rindiisen wenno tadtaren ti ahos." },
+    { tl: "Initin ang olive oil sa kasirola sa katamtamang mababang init. Dagdagan ng sibuyas at lutuin nang dahan-dahan hanggang malambot.", il: "Initin ti olive oil iti kasirola iti medium-low. Iteddu ti sibuyas ken lutuen nang naganad agingga naimet." },
+    { tl: "Dagdagan ng bawang at oregano. Lutuin ng ilang minuto pa nang hindi nagbabago ng kulay.", il: "Iteddu ti ahos ken oregano. Lutuen ti dadduma pay nga minuto nga awanan agkolor." },
+    { tl: "Dagdagan ng de-latang kamatis, dinudurog habang isinasama. Takpan at pakuluan sa pinakamababang init ng 60–90 minuto, paminsan-minsan na hinahalo. Dagdagan ng kaunting tubig kung masyadong malapot.", il: "Iteddu ti kamatis na lattaan, silawen bayat iteddu. Takluban ken pakulakulaen iti nabababa unay iti 60–90 minuto, adda panon nga ikuting. Iteddu ti bassit nga danum no nalapot unay." },
+    { tl: "Timplahan ng asin at paminta. Tikman at ayusin.", il: "Timplaan ti asin ken paminta. Tikman ken urnosen." },
+    { tl: "Patayin ang apoy. Budburan ng dagdag na olive oil at dagdagan ng napunitang sariwang basil. Haluin at ihain, o ilagay sa ref ng hanggang 5 araw.", il: "Ipatay ti init. Budbuden ti dadduma pay nga olive oil ken iteddu ti napiraten nga sariwa nga basil. Ikuting ken iserbi, wenno ibilin iti ired iti agingga 5 nga aldaw." },
+  ],
 };
 
-// Read the seed file
-const recipes = JSON.parse(readFileSync(SEED_PATH, 'utf-8'));
-
-let updatedCount = 0;
-
+let patched = 0;
 for (const recipe of recipes) {
-  if (!recipe.steps) continue;
-  for (const step of recipe.steps) {
-    const key = `${recipe.id}__step_${step.step}`;
-    const translation = TRANSLATIONS[key];
-    if (translation) {
-      step.instruction_tl = translation.tl;
-      step.instruction_il = translation.il;
-      updatedCount++;
-    }
-  }
+  const trans = TRANSLATIONS[recipe.id];
+  if (!trans) continue;
+  recipe.steps = recipe.steps.map((step, i) => ({
+    ...step,
+    instruction_tl: trans[i]?.tl ?? step.instruction_tl ?? "",
+    instruction_il: trans[i]?.il ?? step.instruction_il ?? "",
+  }));
+  patched++;
 }
 
-writeFileSync(SEED_PATH, JSON.stringify(recipes, null, 2), 'utf-8');
-
-console.log(`Done. ${updatedCount} steps updated. File written to ${SEED_PATH}`);
+fs.writeFileSync(seedPath, JSON.stringify(recipes, null, 2));
+console.log(`Applied translations to ${patched} recipes. Total recipes: ${recipes.length}`);
