@@ -40,13 +40,14 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useState } = React;
-    const APP_VERSION = "v1.9 · 2026-04-24";
+    const APP_VERSION = "v2.1 · 2026-04-24";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
     const ALL_COMPONENTS = [...COMPONENTS, ...OPT_COMPONENTS];
-    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", soup: "🍲", salad: "🥗" };
-    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", soup: "Soup", salad: "Salad" };
+    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", soup: "🍲", salad: "🥗", dessert: "🍮", "meal-prep": "🫙" };
+    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", soup: "Soup", salad: "Salad", dessert: "Dessert", "meal-prep": "Meal Prep" };
+    const ALL_LIB_COMPONENTS = ["protein", "vegetable", "carb", "soup", "salad", "dessert", "meal-prep"];
     const getMealObj = (day, meal) => MP.getMealObj(day, meal);
     const getMealRecipeIds = (day, meal) => MP.getMealRecipeIds(day, meal);
 
@@ -578,17 +579,19 @@
       const [q, setQ] = useState("");
       const [cuisine, setCuisine] = useState("all");
       const [mealType, setMealType] = useState("all");
+      const [compFilter, setCompFilter] = useState("all");
       const today = MP.date.hkToday();
       const cuisines = useMemo(() => ["all", ...Array.from(new Set(recipes.map((r) => r.cuisine).filter(Boolean)))], [recipes]);
       const filtered = useMemo(() => {
         return recipes
           .filter((r) => mealType === "all" ? true : (r.meal_type || []).includes(mealType))
           .filter((r) => cuisine === "all" ? true : r.cuisine === cuisine)
+          .filter((r) => compFilter === "all" ? true : r.component_type === compFilter)
           .filter((r) => q ? r.name.toLowerCase().includes(q.toLowerCase()) : true);
-      }, [recipes, mealType, cuisine, q]);
+      }, [recipes, mealType, cuisine, compFilter, q]);
       return (
         <div>
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-2 mb-3">
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search…"
               className="flex-1 min-w-[10rem] rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
             <select value={mealType} onChange={(e) => setMealType(e.target.value)}
@@ -602,6 +605,18 @@
               className="rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm">
               {cuisines.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mb-4">
+            <button onClick={() => setCompFilter("all")}
+              className={`text-xs px-2.5 py-1 rounded-full ring-1 transition ${compFilter === "all" ? "bg-terra text-cream ring-terra" : "bg-white text-warm ring-warm/20"}`}>
+              All
+            </button>
+            {ALL_LIB_COMPONENTS.map((c) => (
+              <button key={c} onClick={() => setCompFilter(c)}
+                className={`text-xs px-2.5 py-1 rounded-full ring-1 transition ${compFilter === c ? "bg-terra text-cream ring-terra" : "bg-white text-warm ring-warm/20"}`}>
+                {COMPONENT_ICONS[c]} {COMPONENT_LABELS[c]}
+              </button>
+            ))}
           </div>
           <div className="flex items-center justify-between mb-3">
             <div className="text-xs text-warm num">{filtered.length} of {recipes.length} recipes</div>
@@ -792,6 +807,8 @@
                   <option value="carb">🍚 Carb</option>
                   <option value="soup">🍲 Soup</option>
                   <option value="salad">🥗 Salad</option>
+                  <option value="dessert">🍮 Dessert</option>
+                  <option value="meal-prep">🫙 Meal Prep</option>
                 </select>
               </div>
               <div>

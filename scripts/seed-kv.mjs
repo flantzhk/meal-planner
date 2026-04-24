@@ -7,6 +7,7 @@
 //   node scripts/seed-kv.mjs
 //
 // Safe to re-run: it overwrites the recipes list.
+// Pass --recipes-only to skip resetting the weekplan.
 
 import fs from "node:fs";
 import path from "node:path";
@@ -39,6 +40,11 @@ if (!res.ok) {
   process.exit(1);
 }
 console.log("OK:", await res.json());
+
+if (process.argv.includes("--recipes-only")) {
+  console.log("--recipes-only: skipping weekplan reset.");
+  process.exit(0);
+}
 
 // Seed a blank weekplan for the current Monday (no meals pre-assigned).
 function mondayStr() {

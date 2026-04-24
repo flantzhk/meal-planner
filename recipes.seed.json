@@ -119,63 +119,64 @@
       {
         "step": 1,
         "instruction": "Crush Szechuan peppercorns and black peppercorns in a mortar until medium-fine — you want texture, not powder.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Durugin ang Szechuan peppercorns at black peppercorns sa mortar hanggang medium-fine — gusto mo ng texture, hindi pulbos.",
+        "instruction_il": "Digulen ti Szechuan peppercorns ken black peppercorns iti mortar agingga medium-fine — kayatmo ti texture, saan nga polvo."
       },
       {
         "step": 2,
         "instruction": "Slice squid tubes into rings. Coat with flaky salt and the crushed pepper mixture.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Hiwain ang mga squid tube sa rings. Balutan ng flaky salt at durog na paminta.",
+        "instruction_il": "Idadansen ti squid tubes nga aniyas. Balutan ti flaky salt ken naidiges nga paminta."
       },
       {
         "step": 3,
         "instruction": "Mix plain flour and cornflour together on a flat plate.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihalo ang plain flour at cornflour sa isang patag na plato.",
+        "instruction_il": "Ikombina ti plain flour ken cornflour iti napatag nga plato."
       },
       {
         "step": 4,
         "instruction": "Beat the egg in a bowl. Toss squid rings in the egg to coat.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Talunin ang itlog sa isang mangkok. Ilublob ang mga squid ring sa itlog para mabuo ang balot.",
+        "instruction_il": "Batbaten ti itlog iti bowl. Iluto ti squid rings iti itlog tapno mabalotan."
       },
       {
         "step": 5,
         "instruction": "Coat squid rings in the flour mix in batches. Shake off any excess and place on a tray so they don't stick together.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Balutan ang mga squid ring sa harina nang isa-isang batch. Alugin ang sobra at ilagay sa tray para hindi magdikit.",
+        "instruction_il": "Balotan ti squid rings iti pinagsamang harina. Iyugdog ti labas ken ilatag iti tray tapno saan nga agtitipon."
       },
       {
         "step": 6,
         "instruction": "Heat oil to 180°C. Fry in four batches for about 3 minutes until golden and crispy. Drain on a rack.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang mantika sa 180°C. Iprito sa apat na batch nang mga 3 minuto hanggang gintuan at malutong. Patunawing sa rack.",
+        "instruction_il": "Initin ti lana iti 180°C. Iprito iti uppat nga batch iti nasurok 3 minuto agingga nagasan ken nalagtiit. Patulogen iti rack."
       },
       {
         "step": 7,
         "instruction": "In a hot pan, add olive oil and garlic. Once it sizzles, toss in the fried squid and parsley. Toss for 30 seconds.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Sa mainit na kawali, lagyan ng olive oil at bawang. Kapag nag-sizzle, ihagis ang pritong pusit at perehil. Haluin ng 30 segundo.",
+        "instruction_il": "Iti napudot nga kawali, iteddu ti olive oil ken ahos. No nagkuliab na, itirpon ti prito nga pusit ken parsley. Ikuting iti 30 segundo."
       },
       {
         "step": 8,
         "instruction": "Serve immediately with lemon wedges.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihain agad kasama ang mga hiwa ng limon.",
+        "instruction_il": "Iserbi dagus nga adda limon a napipigsa."
       }
     ],
     "estimated_cost_hkd": 100,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "seafood",
       "squid",
+      "seafood",
       "fried",
       "quick",
       "asian",
       "starter"
-    ]
+    ],
+    "component_type": "protein"
   },
   {
     "id": "garlic-soup-italian-style",
@@ -289,38 +290,38 @@
       {
         "step": 1,
         "instruction": "Peel and chop onion. Peel garlic cloves. Wash and chop leek.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Talupan at tadtarin ang sibuyas. Talupan ang mga bawang. Hugasan at tadtarin ang leek.",
+        "instruction_il": "Talupen ken tadtaren ti sibuyas. Talupen ti ahos. Hugasan ken tadtaren ti leek."
       },
       {
         "step": 2,
         "instruction": "Heat olive oil in a heavy pot over medium heat. Add onion, leek and dried thyme. Sweat gently — do not brown. Add garlic and turn to low. Cook gently for 15 minutes.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang olive oil sa mabigat na kaldero sa katamtamang init. Ilagay ang sibuyas, leek at tuyong thyme. Lutuin nang dahan-dahan — huwag pabrownin. Ilagay ang bawang at ibaba ang init. Lutuin nang 15 minuto.",
+        "instruction_il": "Initin ti olive oil iti naug-uges nga kolon iti metiod nga init. Iteddu ti sibuyas, leek ken nalawaan nga thyme. Lutuem nang dallus — saan nga brown. Iteddu ti ahos ken ibaba ti init. Lutuem iti 15 minuto."
       },
       {
         "step": 3,
         "instruction": "Peel and dice potatoes. Add to the pot with all the chicken stock. Season with salt and pepper. Simmer gently for 25–30 minutes.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Talupan at i-dice ang mga patatas. Ilagay sa kaldero kasama ang lahat ng chicken stock. Timplahan ng asin at paminta. Pakuluin nang dahan-dahan ng 25–30 minuto.",
+        "instruction_il": "Talupen ken i-dice ti patatas. Iteddu iti kolon a kaiwasan ti chicken stock. Timbangen ti asin ken paminta. Simutten nang dallus iti 25–30 minuto."
       },
       {
         "step": 4,
         "instruction": "Add cream and blend completely smooth using a stick blender or regular blender. Taste and adjust seasoning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang cream at i-blend nang maayos gamit ang stick blender o regular blender. Tikman at ayusin ang timpla.",
+        "instruction_il": "Iteddu ti cream ken blenderen nang nalinis gamit ti stick blender wenno regular blender. Tikman ken ayosen ti timbre."
       },
       {
         "step": 5,
         "instruction": "For croutons, dice bread and fry in olive oil on low heat until brown and crispy — slow frying keeps them crispy in the soup.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Para sa mga crouton, tadtarin ang tinapay at iprito sa olive oil sa mababang init hanggang umitim at maging malutong — ang mabagal na pagpiprito ay nagpapanatiling malutong sa sabaw.",
+        "instruction_il": "Para iti croutons, tadtaren ti tinapay ken iprito iti olive oil iti nalubos nga init agingga nagpuyot ken nalagtiit — ti nadalus nga prito ket agpanatili nga nalagtiit iti sopas."
       },
       {
         "step": 6,
         "instruction": "Serve soup in bowls with croutons and chopped parsley on top.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang sabaw sa mga mangkok na may mga crouton at tinadtad na perehil sa itaas.",
+        "instruction_il": "Iserbi ti sopas iti mga bowl nga adda croutons ken nadinagsen nga parsley iti ngato."
       }
     ],
     "estimated_cost_hkd": 65,
@@ -333,7 +334,8 @@
       "make-ahead",
       "comfort",
       "italian"
-    ]
+    ],
+    "component_type": "soup"
   },
   {
     "id": "sheet-pan-greek-chicken",
@@ -495,38 +497,38 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 220°C with your biggest tray inside — it should be very hot before the food goes in.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 220°C na may pinakamalaking tray sa loob — dapat napakainit bago ilagay ang pagkain.",
+        "instruction_il": "Iinit ti oven iti 220°C a kas adda ti pinaka dakkel nga tray iti uneg — masapul nga napudot unay sakbay ti agserrek ti kanen."
       },
       {
         "step": 2,
         "instruction": "Zest and juice both lemons. Whisk with olive oil, garlic, oregano, Dijon, smoked paprika, salt and pepper to make the dressing. Keep one-third aside for the vegetables.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Kurutin ang balat at kunin ang katas ng dalawang limon. Haluin kasama ang olive oil, bawang, oregano, Dijon, smoked paprika, asin at paminta para gumawa ng dressing. Itabi ang isang-katlo para sa mga gulay.",
+        "instruction_il": "Kurutin ti barat ken kuannen ti katas ti dua nga limon. Ikutin kaiwasan ti olive oil, ahos, oregano, Dijon, smoked paprika, asin ken paminta tapno agmano ti dressing. Itikag ti maysa-kadua-tulo para iti mga nateng."
       },
       {
         "step": 3,
         "instruction": "Toss only the chicken and potatoes in two-thirds of the dressing. Arrange on the hot tray, chicken skin-side up and potatoes cut-side down. Bake 20–25 minutes until potatoes have browned edges.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihalo lang ang manok at patatas sa dalawang-katlo ng dressing. Ayusin sa mainit na tray, manok na balat sa itaas at patatas na hiwa sa ibaba. Iluto ng 20–25 minuto hanggang magkulay ang gilid ng patatas.",
+        "instruction_il": "Ikuting laeng ti manok ken patatas iti dua-katlo ti dressing. Iaregar iti napudot nga tray, manok nga kublit iti ngato ken patatas nga naputol iti baba. Ilauto iti 20–25 minuto agingga nagpuyot ti gibus ti patatas."
       },
       {
         "step": 4,
         "instruction": "While that roasts, toss the red onion, capsicum, broccoli, cherry tomatoes and olives in the remaining dressing.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Habang niluluto iyon, ihalo ang pulang sibuyas, capsicum, broccoli, cherry tomato at olibo sa natitirang dressing.",
+        "instruction_il": "Bayat ti aglauto, ikuting ti nalabbaga nga sibuyas, capsicum, broccoli, cherry tomatoes ken olibo iti nabilin nga dressing."
       },
       {
         "step": 5,
         "instruction": "Remove tray from oven. Scatter the vegetables into the gaps around the chicken. Return to oven for 30–35 more minutes until chicken is golden and reaches 75°C inside.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilabas ang tray sa oven. Ikalat ang mga gulay sa mga puwang sa paligid ng manok. Ibalik sa oven ng 30–35 minutong dagdag hanggang ang manok ay gintuan at umabot ng 75°C sa loob.",
+        "instruction_il": "Ipugas ti tray manipud iti oven. Ipugas ti mga nateng iti mga lukong a paliudan ti manok. Isubli iti oven iti 30–35 nga minuto pay agingga ti manok nga nagasan ken nagtungtong iti 75°C iti uneg."
       },
       {
         "step": 6,
         "instruction": "Remove from oven. Scatter feta over everything while still hot. Finish with parsley and dill before serving.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilabas sa oven. Ikalat ang feta sa lahat habang mainit pa. Tapusin ng perehil at dill bago ihain.",
+        "instruction_il": "Ipugas manipud iti oven. Ipugas ti feta iti amin a nag-iinit pay. Taposen ti parsley ken dill sakbay ti pag-serbi."
       }
     ],
     "estimated_cost_hkd": 185,
@@ -535,11 +537,10 @@
     "tags": [
       "chicken",
       "sheet-pan",
-      "one-pan",
       "mediterranean",
-      "hearty",
       "roast"
-    ]
+    ],
+    "component_type": "protein"
   },
   {
     "id": "red-lentil-soup",
@@ -669,44 +670,44 @@
       {
         "step": 1,
         "instruction": "Heat olive oil in a large pot over medium heat. Add onion and cook until soft and lightly golden, about 6 minutes.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang olive oil sa malaking kaldero sa katamtamang init. Ilagay ang sibuyas at lutuin hanggang malambot at bahagyang gintuan, mga 6 minuto.",
+        "instruction_il": "Initin ti olive oil iti dakkel nga kolon iti metiod nga init. Iteddu ti sibuyas ken lutuem agingga nalemlemek ken bassit nga nagasan, nasurok iti 6 minuto."
       },
       {
         "step": 2,
         "instruction": "Add cumin and black pepper. Stir for 20 seconds until fragrant.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang cumin at black pepper. Haluin ng 20 segundo hanggang mabango.",
+        "instruction_il": "Iteddu ti cumin ken black pepper. Ikuting iti 20 segundo agingga nabanglo."
       },
       {
         "step": 3,
         "instruction": "Add grated carrot and potato. Stir for 1 minute to coat in spices.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang kudkurang karot at patatas. Haluin ng 1 minuto para mabuo ang balot ng pampalasa.",
+        "instruction_il": "Iteddu ti nakudkod nga karot ken patatas. Ikuting iti 1 minuto tapno mabalotan iti pampalasa."
       },
       {
         "step": 4,
         "instruction": "Add rinsed lentils and stock. Season with salt. Bring to a boil, then reduce to a gentle simmer for 18–20 minutes until lentils are very soft.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang hinugasang lentil at stock. Timplahan ng asin. Pakuluan, tapos bawasan sa mahinang kumukulo ng 18–20 minuto hanggang malambot na ang mga lentil.",
+        "instruction_il": "Iteddu ti nahugas nga lentil ken stock. Timbangen ti asin. Pabukel, kalpasan ibaba iti nadalus nga agkulikulo iti 18–20 minuto agingga nalemlemek unay ti lentil."
       },
       {
         "step": 5,
         "instruction": "For croutons: cube sourdough and fry in olive oil over medium heat until golden, 3–4 minutes. In the last 10 seconds, add minced garlic and toss through.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Para sa mga crouton: tadtarin ang sourdough at iprito sa olive oil sa katamtamang init hanggang gintuan, 3–4 minuto. Sa huling 10 segundo, ilagay ang tinadtad na bawang at ihalo.",
+        "instruction_il": "Para iti croutons: i-cube ti sourdough ken iprito iti olive oil iti metiod nga init agingga nagasan, 3–4 minuto. Iti maudi nga 10 segundo, iteddu ti nadinagsen nga ahos ken ikutin."
       },
       {
         "step": 6,
         "instruction": "Blend soup completely smooth. Stir in sumac. Taste and adjust seasoning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "I-blend ang sabaw hanggang maayos na makinis. Haluin ang sumac. Tikman at ayusin ang timpla.",
+        "instruction_il": "Blenderen ti sopas agingga nalemlemek. Isabet ti sumac. Tikman ken ayosen ti timbre."
       },
       {
         "step": 7,
         "instruction": "Serve in bowls topped with parsley, garlic croutons, a sprinkle of sumac and lemon halves to squeeze over.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihain sa mga mangkok na may perehil, garlic crouton, puwder ng sumac at mga kalahating limon para pigain.",
+        "instruction_il": "Iserbi iti mga bowl nga adda parsley, garlic croutons, bassit nga sumac ken kagudua nga limon para pirimitten."
       }
     ],
     "estimated_cost_hkd": 55,
@@ -716,10 +717,11 @@
       "soup",
       "vegetarian",
       "lentil",
-      "quick",
       "make-ahead",
-      "middle-eastern"
-    ]
+      "comfort",
+      "mediterranean"
+    ],
+    "component_type": "soup"
   },
   {
     "id": "cinderella-potatoes",
@@ -825,57 +827,58 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 220°C. Rub potatoes with olive oil and salt. Prick each potato a few times. Bake 55–65 minutes turning once until skins are dry and completely soft inside — a knife should slide in with zero resistance.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 220°C. Pahiran ang mga patatas ng olive oil at asin. Turukan ang bawat patatas ng ilang beses. Iluto ng 55–65 minuto na iikot nang isang beses hanggang matuyo ang balat at malambot sa loob — ang kutsilyo ay dapat na madaling makapasok.",
+        "instruction_il": "Iinit ti oven iti 220°C. Suroten ti patatas ti olive oil ken asin. Dutduten ti tunggal patatas iti pigagay. Ilauto iti 55–65 minuto nga maika-isa nga agbalin agingga malawaan ti kublit ken naluto iti uneg — masapul nga nalaka nga agtutdo ti kutsilyo."
       },
       {
         "step": 2,
         "instruction": "Cool 10–15 minutes. Slice off the top ¼ inch (save the skin to snack on). Scoop out flesh leaving a ¼ inch shell all around.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Palamigin ng 10–15 minuto. Hiwaing ang tuktok na ¼ pulgada (itabi ang balat para maging meryenda). Kumuhanin ang laman na nag-iiwan ng ¼ pulgadang balat sa paligid.",
+        "instruction_il": "Palamisen iti 10–15 minuto. Putolen ti ngato nga ¼ pulgada (itikag ti kublit para makan). Kuanen ti uneg nga matikag ti ¼ pulgada nga kublit iti paliudan."
       },
       {
         "step": 3,
         "instruction": "Pass potato flesh through a ricer into a saucepan. Do NOT use a blender.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang laman ng patatas sa ricer at ibuhos sa kawaling palayok. HUWAG gumamit ng blender.",
+        "instruction_il": "Ipan ti uneg ti patatas iti ricer iti saucepan. SAAN nga agusar ti blender."
       },
       {
         "step": 4,
         "instruction": "Over medium-low heat, stir potato purée with butter, cream, salt, pepper and a little nutmeg until silky and smooth. Remove from heat and fold in chives. Taste — it should already be delicious.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Sa katamtaman-mababang init, haluin ang potato purée kasama ang butter, cream, asin, paminta at kaunting nutmeg hanggang malambot at maayos. Alisin sa init at ihaluin ang mga chive. Tikman — dapat masarap na ito.",
+        "instruction_il": "Iti metiod-nalubos nga init, ikuting ti potato purée kaiwasan ti butter, cream, asin, paminta ken bassit nga nutmeg agingga nalinis ken nalemlemek. Ilikkar manipud iti init ken isabot ti chives. Tikman — masapul nga naan-anay nga naluto."
       },
       {
         "step": 5,
         "instruction": "In a small bowl mix the remaining cream, egg yolks, Gruyère, pepper and nutmeg into a loose savoury custard.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Sa maliit na mangkok, haluin ang natitirang cream, pula ng itlog, Gruyère, paminta at nutmeg para gumawa ng maluwag na custard.",
+        "instruction_il": "Iti bassit nga bowl, ikkombina ti nabilin nga cream, pula ti itlog, Gruyère, paminta ken nutmeg agingga nabalin ti maluwag nga custard."
       },
       {
         "step": 6,
         "instruction": "Spoon purée back into potato shells, mounding slightly. Use the back of a spoon to create a shallow channel down the centre. Carefully spoon the custard into the channel.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay muli ang purée sa mga patatas na balat, medyo nakaambuloy. Gamitin ang likod ng kutsara para gumawa ng mababang kanal sa gitna. Maingat na ilagay ang custard sa kanal.",
+        "instruction_il": "Isao manen ti purée iti mga patatas nga kublit, bassit nga nakatakder. Gamitten ti likud ti kutsara tapno agmano ti nalubos nga aglayus iti tengnga. Nainget nga isao ti custard iti aglaayus."
       },
       {
         "step": 7,
         "instruction": "Bake at 180°C for 12–15 minutes until custard is just set and lightly golden. If not browned, grill briefly for 1–2 minutes — watch closely.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Iluto sa 180°C ng 12–15 minuto hanggang maayos na set ang custard at bahagyang gintuan. Kung hindi pa kayumanggi, i-grill ng mabilis ng 1–2 minuto — abangan nang mabuti.",
+        "instruction_il": "Ilauto iti 180°C iti 12–15 minuto agingga naset ti custard ken bassit nga nagasan. No saan pay nga nagpuyot, igrilen iti 1–2 minuto — agserserbi nang ado."
       }
     ],
     "estimated_cost_hkd": 85,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "vegetarian",
       "potato",
-      "side-dish",
-      "french",
+      "vegetarian",
+      "roast",
       "make-ahead",
-      "comfort"
-    ]
+      "french",
+      "elegant"
+    ],
+    "component_type": "vegetable"
   },
   {
     "id": "spiced-indian-roast-potatoes",
@@ -1013,45 +1016,45 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 200°C. Place an empty roasting tray in the oven to preheat.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 200°C. Ilagay ang walang laman na roasting tray sa oven para mainit.",
+        "instruction_il": "Iinit ti oven iti 200°C. Iruot ti nalpes nga roasting tray iti oven tapno maiinit."
       },
       {
         "step": 2,
         "instruction": "Boil potatoes in water with salt, turmeric and baking soda for 10 minutes until just tender. Drain in a colander and toss to roughen the edges. Sprinkle with cornstarch and toss again.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pakuluan ang mga patatas sa tubig na may asin, turmeric at baking soda ng 10 minuto hanggang malambot. Patunawing sa colander at ihagis para maging magaspang ang mga gilid. Budburan ng cornstarch at ihagis muli.",
+        "instruction_il": "Bukelen ti patatas iti danum a kas adda asin, turmeric ken baking soda iti 10 minuto agingga nalemlemek. Patulogen iti colander ken ikuting tapno mabatok ti mga gibus. Budboran ti cornstarch ken ikuting manen."
       },
       {
         "step": 3,
         "instruction": "Heat oil in a small saucepan over medium heat. Add garlic and chili, fry until light golden. Add cumin and mustard seeds and let them crackle. Strain the oil into a bowl — keep the crispy garlic and spices aside.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang mantika sa maliit na kasirola sa katamtamang init. Ilagay ang bawang at sili, iprito hanggang bahagyang gintuan. Ilagay ang cumin at mustard seeds at hayaang mag-crackle. Salain ang mantika sa mangkok — itabi ang malutong na bawang at pampalasa.",
+        "instruction_il": "Initin ti lana iti bassit nga saucepan iti metiod nga init. Iteddu ti ahos ken sili, iprito agingga bassit nga nagasan. Iteddu ti cumin ken mustard seeds ken buyogen dagiti aglalagtiit. Salaan ti lana iti bowl — itikag ti nalagtiit nga ahos ken pampalasa."
       },
       {
         "step": 4,
         "instruction": "Pour the spiced oil onto the hot roasting tray. Spread potatoes in a single layer and toss to coat. Roast 40 minutes, turning twice for even browning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ibuhos ang mainit-mainit na mantika sa mainit na tray. Ikalat ang mga patatas sa isang patong at ihalo para mabuo ang balot. Iluto ng 40 minuto, i-ikot ng dalawang beses para pantay ang pagkakulay.",
+        "instruction_il": "Agusaren ti napalasa nga lana iti napudot nga roasting tray. Ipugas ti patatas iti maysa nga layer ken ikuting tapno mabalotan. Ilauto iti 40 minuto, agpabalin iti dua nga daras tapno naiyanay ti pagasan."
       },
       {
         "step": 5,
         "instruction": "Once golden and crisp, remove from oven. Melt butter over the hot potatoes, drizzle with lemon juice, and season. Add the reserved crispy garlic and spices, then finish with mint and coriander.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Kapag gintuan at malutong, ilabas sa oven. Tunawin ang butter sa mainit na mga patatas, buhusan ng lemon juice, at timplahan. Ilagay ang napanatiling malutong na bawang at pampalasa, tapos tapusin ng mint at kulantro.",
+        "instruction_il": "No nagasan ken nalagtiit na, ipugas manipud iti oven. Tunawem ti butter iti napudot nga patatas, agtulbok ti lemon juice, ken timbangen. Iteddu ti itikag nga nalagtiit nga ahos ken pampalasa, kalpasan taposen ti mint ken coriander."
       }
     ],
     "estimated_cost_hkd": 50,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "vegetarian",
       "potato",
-      "side-dish",
+      "vegetarian",
+      "roast",
       "indian",
-      "crispy",
-      "roast"
-    ]
+      "spicy"
+    ],
+    "component_type": "vegetable"
   },
   {
     "id": "potato-dauphinoise",
@@ -1149,64 +1152,65 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 180°C.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 180°C.",
+        "instruction_il": "Iinit ti oven iti 180°C."
       },
       {
         "step": 2,
         "instruction": "Combine cream, milk, nutmeg, salt and pepper in a jug.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pagsamahin ang cream, gatas, nutmeg, asin at paminta sa isang pitsel.",
+        "instruction_il": "Ikkombina ti cream, gatas, nutmeg, asin ken paminta iti pitsel."
       },
       {
         "step": 3,
         "instruction": "Add minced garlic to a large saucepan and pour in the milk and cream mixture. Warm gently.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang tinadtad na bawang sa malaking kasirola at ibuhos ang halo ng gatas at cream. Initin nang dahan-dahan.",
+        "instruction_il": "Iteddu ti nadinagsen nga ahos iti dakkel nga saucepan ken agus-usar ti pinagsamang gatas ken cream. Initin nang dallus."
       },
       {
         "step": 4,
         "instruction": "Peel and slice potatoes about 2mm thick using a mandoline or sharp knife. Add slices directly to the warm cream — do not rinse, the starch thickens the sauce.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Talupan at hiwain ang mga patatas sa may 2mm na kapal gamit ang mandoline o matalas na kutsilyo. Ilagay ang mga hiwa direkta sa mainit na cream — huwag hugasan, ang starch ang nagpapakapal ng sarsa.",
+        "instruction_il": "Talupen ken hiwaten ti patatas iti nasurok iti 2mm ti kapal gamit ti mandoline wenno natiging nga kutsilyo. Iteddu ti mga hiwa direkta iti napudot nga cream — saan nga hugasan, ti starch ti agpakapal ti sarsa."
       },
       {
         "step": 5,
         "instruction": "Bring to a gentle simmer, stirring so the bottom doesn't catch. Simmer 8 minutes until just tender. Taste and adjust seasoning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pakuluin nang dahan-dahan, haluin para hindi masunog ang ibaba. Pakuluin ng 8 minuto hanggang bahagyang malambot. Tikman at ayusin ang timpla.",
+        "instruction_il": "Simutten nang dallus, ikuting tapno saan nga masunog ti baba. Simutten iti 8 minuto agingga bassit nga nalemlemek. Tikman ken ayosen ti timbre."
       },
       {
         "step": 6,
         "instruction": "Transfer half the potatoes to a baking dish. Scatter thyme and a handful of cheese. Add remaining potatoes in a neat top layer. Pour over remaining liquid. Top with remaining cheese.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilipat ang kalahati ng mga patatas sa baking dish. Ikalat ang thyme at isang dakot ng keso. Ilagay ang natitirang patatas sa maayos na patong sa itaas. Ibuhos ang natitirang likido. Budburan ng natitirang keso.",
+        "instruction_il": "Illaog ti kagudua ti patatas iti baking dish. Ipugas ti thyme ken maysa nga aggem nga keso. Iteddu ti nabilin nga patatas iti naiorder nga ngato nga layer. Agus-usar ti nabilin nga likido. Ngatan ti nabilin nga keso."
       },
       {
         "step": 7,
         "instruction": "Cover loosely with foil. Bake 40 minutes. Remove foil and bake uncovered 25–30 more minutes until bubbling, golden and a knife slides through easily.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Takluban nang maluwag ng foil. Iluto ng 40 minuto. Alisin ang foil at iluto nang walang takip ng 25–30 minutong dagdag hanggang kumulo, gintuan at madaling mapasukan ng kutsilyo.",
+        "instruction_il": "Takuban nang maluwag ti foil. Ilauto iti 40 minuto. Ilikkar ti foil ken ilauto nga awanan takup iti 25–30 nga minuto pay agingga agkulikulo, nagasan ken nalaka nga masuot ti kutsilyo."
       },
       {
         "step": 8,
         "instruction": "Rest covered with foil and a kitchen towel for 60 minutes — the cream sets and layers hold together. Potatoes stay hot.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pahingahin na nakatakip ng foil at towel sa kusina ng 60 minuto — ang cream ay nagseset at ang mga patong ay magkakasama. Nananatiling mainit ang mga patatas.",
+        "instruction_il": "Painasen nga natakuban ti foil ken napkin iti 60 minuto — ti cream ket agset ken ti mga layer ket agtitinnulong. Nag-iinit pay ti patatas."
       }
     ],
     "estimated_cost_hkd": 120,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "vegetarian",
       "potato",
-      "side-dish",
+      "vegetarian",
+      "baked",
       "french",
+      "cream",
       "make-ahead",
-      "comfort",
-      "cream"
-    ]
+      "elegant"
+    ],
+    "component_type": "carb"
   },
   {
     "id": "hot-honey-harissa-shrimp-flatbreads",
@@ -1368,45 +1372,46 @@
       {
         "step": 1,
         "instruction": "Combine olive oil, harissa, hot honey, smoked paprika, lemon juice and salt. Add shrimp, toss to coat, and marinate 10–15 minutes.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pagsamahin ang olive oil, harissa, mainit na pulot-pukyutan, smoked paprika, lemon juice at asin. Ilagay ang mga hipon, haluin para mabuo ang balot, at mag-marinate ng 10–15 minuto.",
+        "instruction_il": "Ikkombina ti olive oil, harissa, napudot nga pugas, smoked paprika, lemon juice ken asin. Iteddu ti hipon, ikutin tapno mabalotan, ken marinaten iti 10–15 minuto."
       },
       {
         "step": 2,
         "instruction": "For tabbouleh: mix lemon juice, olive oil, sumac and salt. Add bulgur, parsley, tomatoes, cucumber and red onion. Toss and set aside.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Para sa tabbouleh: haluin ang lemon juice, olive oil, sumac at asin. Ilagay ang bulgur, perehil, kamatis, pipino at pulang sibuyas. Ihalo at itabi.",
+        "instruction_il": "Para iti tabbouleh: ikkombina ti lemon juice, olive oil, sumac ken asin. Iteddu ti bulgur, parsley, kamatis, pepino ken nalabbaga nga sibuyas. Ikuting ken itikag."
       },
       {
         "step": 3,
         "instruction": "For tahini sauce: whisk tahini, lemon juice, cold water, garlic and cumin until smooth. Add more water if needed for drizzling consistency.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Para sa sarsa ng tahini: haluin ang tahini, lemon juice, malamig na tubig, bawang at cumin hanggang maayos. Dagdag ng tubig kung kailangan para maging tamang konsistensya sa pagbuhos.",
+        "instruction_il": "Para iti sarsa ti tahini: ikutin ti tahini, lemon juice, nalamiis nga danum, ahos ken cumin agingga nalemlemek. Iteddu ti adu nga danum no kasapulan tapno agbalin ti nainayad nga tiris."
       },
       {
         "step": 4,
         "instruction": "Heat a frying pan over medium-high. Cook shrimp 1–2 minutes per side until just opaque and lightly charred.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang kawali sa katamtaman-mataas na init. Lutuin ang mga hipon ng 1–2 minuto bawat gilid hanggang bahagyang maputi at medyo nasunog.",
+        "instruction_il": "Initin ti kawali iti metiod-nangato nga init. Lutuem ti hipon iti 1–2 minuto iti tunggal gibus agingga bassit nga naalburador ken bassit nga nagkidom."
       },
       {
         "step": 5,
         "instruction": "Warm flatbreads in a dry pan. Spread with tahini sauce, top with tabbouleh, then shrimp, thin cucumber slices and fresh dill.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang mga flatbread sa tuyong kawali. Pahiran ng tahini sauce, ilagay ang tabbouleh, tapos ang mga hipon, manipis na hiwa ng pipino at sariwang dill.",
+        "instruction_il": "Initin ti flatbreads iti nalawaan nga kawali. Ilugit ti tahini sauce, ngatan ti tabbouleh, kalpasan ti hipon, manipis nga hiwa ti pepino ken sariwa nga dill."
       }
     ],
     "estimated_cost_hkd": 160,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "seafood",
       "shrimp",
+      "seafood",
       "flatbread",
-      "middle-eastern",
       "quick",
+      "middle-eastern",
       "spicy"
-    ]
+    ],
+    "component_type": "protein"
   },
   {
     "id": "spanish-garlic-shrimp",
@@ -1504,39 +1509,39 @@
       {
         "step": 1,
         "instruction": "In a frying pan over low heat, add olive oil with garlic slices and chili. Stew gently for 2 minutes until fragrant — do not brown the garlic or it turns bitter.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Sa kawali sa mababang init, ilagay ang olive oil na may mga hiwa ng bawang at sili. Lutuin nang dahan-dahan ng 2 minuto hanggang mabango — huwag pabrownin ang bawang o magiging mapait ito.",
+        "instruction_il": "Iti kawali iti nalubos nga init, iteddu ti olive oil a kas adda mga hiwa ti ahos ken sili. Lutuem nang dallus iti 2 minuto agingga nabanglo — saan nga pabrownin ti ahos wenno agbalin nga naapgad."
       },
       {
         "step": 2,
         "instruction": "Add prawns in a single layer. Sprinkle with salt and smoked paprika. Cook 1–2 minutes each side until just opaque.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang mga hipon sa isang patong. Budburan ng asin at smoked paprika. Lutuin ng 1–2 minuto bawat gilid hanggang bahagyang maputi.",
+        "instruction_il": "Iteddu ti hipon iti maysa nga layer. Budboran ti asin ken smoked paprika. Lutuem iti 1–2 minuto iti tunggal gibus agingga bassit nga naalburador."
       },
       {
         "step": 3,
         "instruction": "Add lemon juice and parsley. Toss and remove from heat immediately.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang lemon juice at perehil. Ihalo at agad alisin sa init.",
+        "instruction_il": "Iteddu ti lemon juice ken parsley. Ikuting ken dagus ilikkar manipud iti init."
       },
       {
         "step": 4,
         "instruction": "Serve sizzling hot straight from the pan with crusty bread for dunking.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihain na mainit pa mula sa kawali kasama ang tinapay na malutong para ibabad.",
+        "instruction_il": "Iserbi nga napudot-napudot manipud iti kawali a kas adda nalagtiit nga tinapay para isalodong."
       }
     ],
     "estimated_cost_hkd": 125,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "seafood",
       "shrimp",
+      "seafood",
       "quick",
       "spanish",
-      "starter",
       "garlic"
-    ]
+    ],
+    "component_type": "protein"
   },
   {
     "id": "roasted-carrot-ginger-soup",
@@ -1690,32 +1695,32 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 200°C. Place carrots, onion and unpeeled garlic on a roasting tray. Drizzle with olive oil, season with salt and roast 25–30 minutes until tender and lightly caramelised.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 200°C. Ilagay ang mga karot, sibuyas at bawang na hindi pa natalupan sa roasting tray. Buhusan ng olive oil, timplahan ng asin at iluto ng 25–30 minuto hanggang malambot at bahagyang nakaramelo.",
+        "instruction_il": "Iinit ti oven iti 200°C. Iruot ti karot, sibuyas ken saan pay nataltarupen nga ahos iti roasting tray. Agus-usar ti olive oil, timbangen ti asin ken ilauto iti 25–30 minuto agingga nalemlemek ken bassit nga nag-karamelo."
       },
       {
         "step": 2,
         "instruction": "Squeeze roasted garlic from its skin. Transfer all roasted vegetables to a large soup pot. Add ginger, turmeric, cumin, coriander, paprika, nutmeg and bay leaf.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pigutin ang inihaw na bawang mula sa balat nito. Ilipat ang lahat ng inihaw na gulay sa malaking palayok ng sabaw. Ilagay ang luya, turmeric, cumin, kulantro, paprika, nutmeg at dahon ng laurel.",
+        "instruction_il": "Pirimitten ti natuno nga ahos manipud iti kublit na. Illaog ti amin nga natuno nga nateng iti dakkel nga kolon ti sopas. Iteddu ti laya, turmeric, cumin, coriander, paprika, nutmeg ken dahon ti laurel."
       },
       {
         "step": 3,
         "instruction": "Pour in stock and simmer gently for 25–30 minutes. Remove the bay leaf.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ibuhos ang stock at pakuluin nang dahan-dahan ng 25–30 minuto. Alisin ang dahon ng laurel.",
+        "instruction_il": "Agus-usar ti stock ken simutten nang dallus iti 25–30 minuto. Ilikkar ti dahon ti laurel."
       },
       {
         "step": 4,
         "instruction": "Blend until smooth and silky. Return to low heat and stir in coconut milk. Adjust seasoning. Add lemon juice for freshness if desired.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "I-blend hanggang makinis at malambot. Ibalik sa mababang init at haluin ang gatas ng niyog. Ayusin ang timpla. Dagdag ng lemon juice para sa sariwang lasa kung gusto.",
+        "instruction_il": "Blenderen agingga nalemlemek ken nalinis. Isubli iti nalubos nga init ken isabet ti gatang ti niyog. Ayosen ti timbre. Iteddu ti lemon juice para iti sariwa no kayat."
       },
       {
         "step": 5,
         "instruction": "Serve hot, garnished with fresh coriander or parsley.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihain na mainit, may sariwang kulantro o perehil para pampalamutis.",
+        "instruction_il": "Iserbi nga napudot, nailalaban ti sariwa nga coriander wenno parsley."
       }
     ],
     "estimated_cost_hkd": 65,
@@ -1727,7 +1732,8 @@
       "carrot",
       "make-ahead",
       "comfort"
-    ]
+    ],
+    "component_type": "soup"
   },
   {
     "id": "mediterranean-salad",
@@ -1881,26 +1887,26 @@
       {
         "step": 1,
         "instruction": "Make the dressing: crush garlic and anchovies to a paste. Add lemon juice, both vinegars, oregano and olive oil. Whisk well.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Gumawa ng dressing: durugin ang bawang at mga anchovy hanggang maging paste. Ilagay ang lemon juice, dalawang uri ng suka, oregano at olive oil. Haluin nang mabuti.",
+        "instruction_il": "Mano ti dressing: digulen ti ahos ken anchovies agingga nabalin nga paste. Iteddu ti lemon juice, dua nga suka, oregano ken olive oil. Ikutin nang nainget."
       },
       {
         "step": 2,
         "instruction": "Boil potatoes in salted water until tender. Cool and peel.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pakuluan ang mga patatas sa inasnan na tubig hanggang malambot. Palamigin at talupan.",
+        "instruction_il": "Bukelen ti patatas iti nasinaan nga danum agingga nalemlemek. Palamisen ken talupen."
       },
       {
         "step": 3,
         "instruction": "Add 4 tablespoons of dressing to a large bowl. Add tomatoes, grated carrot, halved artichoke hearts, rocket and tuna. Slice potatoes and add them. Toss well.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang 4 kutsarang dressing sa malaking mangkok. Ilagay ang mga kamatis, kudkurang karot, kalahating artichoke hearts, rocket at tuna. Hiwain ang mga patatas at ilagay. Ihalo nang mabuti.",
+        "instruction_il": "Iteddu ti 4 nga kutsara ti dressing iti dakkel nga bowl. Iteddu ti kamatis, nakudkod nga karot, kagudua nga artichoke hearts, rocket ken tuna. Hiwaten ti patatas ken iteddu. Ikuting nang nainget."
       },
       {
         "step": 4,
         "instruction": "Top with torn mozzarella, olives, a drizzle of olive oil and freshly torn basil. Serve with optional anchovies on the side.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay sa itaas ang pinunit na mozzarella, mga olibo, konting olive oil at sariwang basil na pinunit. Ihain na may mga anchovy sa gilid kung gusto.",
+        "instruction_il": "Ngatan ti napunit nga mozzarella, olibo, bassit nga olive oil ken sariwa nga napunit nga basil. Iserbi a kas adda anchovies iti gilir no kayat."
       }
     ],
     "estimated_cost_hkd": 95,
@@ -1908,11 +1914,12 @@
     "avoid_for": [],
     "tags": [
       "salad",
-      "light",
+      "vegetarian",
       "mediterranean",
       "quick",
-      "tuna"
-    ]
+      "light"
+    ],
+    "component_type": "salad"
   },
   {
     "id": "salmon-lemon-butter-cream",
@@ -2010,38 +2017,41 @@
       {
         "step": 1,
         "instruction": "Remove skin from salmon if desired. Finely chop shallots and parsley leaves.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Alisin ang balat ng salmon kung gusto. Tadtarin nang pino ang mga shallot at dahon ng perehil.",
+        "instruction_il": "Ilikkar ti kublit ti salmon no kayat. Nadinagsen nga tadtaren ti shallots ken dahon ti parsley."
       },
       {
         "step": 2,
         "instruction": "Melt butter in a frying pan over medium heat. Place salmon top-side down and cook until lightly golden. Flip gently and cook until butter turns nutty brown.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Tunawin ang butter sa kawali sa katamtamang init. Ilagay ang salmon na tuktok naka-harap sa ibaba at lutuin hanggang bahagyang gintuan. I-flip nang dahan-dahan at lutuin hanggang ang butter ay maging kayumanggi.",
+        "instruction_il": "Tunawem ti butter iti kawali iti metiod nga init. Iruot ti salmon nga ngato iti baba ken lutuem agingga bassit nga nagasan. Balikiten nang dallus ken lutuem agingga ti butter ket nagpuyot."
       },
       {
         "step": 3,
         "instruction": "Deglaze with white wine, add lemon juice and shallots. Add cream. Season. Poach the fish in the sauce for about 3 minutes until cooked to your liking.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "I-deglaze ng white wine, ilagay ang lemon juice at shallots. Ilagay ang cream. Timplahan. Lutuin ang isda sa sarsa ng mga 3 minuto hanggang sa iyong gusto ang luto.",
+        "instruction_il": "Deglazen ti white wine, iteddu ti lemon juice ken shallots. Iteddu ti cream. Timbangen. Ilauto ti ikan iti sarsa iti nasurok 3 minuto agingga ti kayat mo ti luto."
       },
       {
         "step": 4,
         "instruction": "Remove salmon carefully and place on a warm plate. Reduce the sauce on high heat until thickened. Stir in parsley and pour over the fish.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Alisin nang maingat ang salmon at ilagay sa mainit na plato. Palapitan ang sarsa sa mataas na init hanggang lumapot. Haluin ang perehil at ibuhos sa isda.",
+        "instruction_il": "Ilikkar nang nainget ti salmon ken iruot iti napudot nga plato. Pakuransen ti sarsa iti nangato nga init agingga nalapot. Isabet ti parsley ken agus-usar iti ikan."
       }
     ],
     "estimated_cost_hkd": 210,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "fish",
       "salmon",
-      "french",
+      "fish",
+      "pan-fried",
       "quick",
+      "french",
+      "cream",
       "elegant"
-    ]
+    ],
+    "component_type": "protein"
   },
   {
     "id": "chicken-vegetable-stir-fry",
@@ -2203,32 +2213,32 @@
       {
         "step": 1,
         "instruction": "Heat oil in a large wok or frying pan over medium-high heat. Add chicken cubes and stir-fry 5–7 minutes until cooked through.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Initin ang mantika sa malaking wok o kawali sa katamtaman-mataas na init. Ilagay ang mga cubed na manok at igisa ng 5–7 minuto hanggang maluto.",
+        "instruction_il": "Initin ti lana iti dakkel nga wok wenno kawali iti metiod-nangato nga init. Iteddu ti cubed nga manok ken igisa iti 5–7 minuto agingga naluto."
       },
       {
         "step": 2,
         "instruction": "Add onion, white spring onion parts, garlic and ginger. Cook 1–2 minutes until fragrant.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang sibuyas, puting bahagi ng spring onion, bawang at luya. Lutuin ng 1–2 minuto hanggang mabango.",
+        "instruction_il": "Iteddu ti sibuyas, puraw nga parte ti spring onion, ahos ken laya. Lutuem iti 1–2 minuto agingga nabanglo."
       },
       {
         "step": 3,
         "instruction": "Add capsicums, carrots and broccoli. Stir-fry 4–5 minutes until tender-crisp. Add a splash of water if needed to steam through.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang mga capsicum, karot at broccoli. Igisa ng 4–5 minuto hanggang malambot at malutong. Dagdag ng kaunting tubig kung kailangan para maluto ng singaw.",
+        "instruction_il": "Iteddu ti capsicum, karot ken broccoli. Igisa iti 4–5 minuto agingga nalemlemek-nalagtiit. Iteddu ti bassit nga danum no kasapulan tapno maluto iti pabor."
       },
       {
         "step": 4,
         "instruction": "Return chicken to pan. Add oyster sauce, soy sauce and chili sauce. Mix, then add cornstarch slurry (cornstarch + water). Cook 2–3 minutes until glossy.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ibalik ang manok sa kawali. Ilagay ang oyster sauce, toyo at sarsa ng sili. Haluin, tapos ilagay ang cornstarch slurry. Lutuin ng 2–3 minuto hanggang makintab.",
+        "instruction_il": "Isubli ti manok iti kawali. Iteddu ti oyster sauce, toyo ken sarsa ti sili. Ikuting, kalpasan iteddu ti cornstarch slurry. Lutuem iti 2–3 minuto agingga nag-gloss."
       },
       {
         "step": 5,
         "instruction": "Finish with sesame oil. Serve over rice or noodles. Garnish with spring onion greens and sesame seeds.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Tapusin ng sesame oil. Ihain sa kanin o pancit. Palamutian ng berdeng bahagi ng spring onion at sesame seeds.",
+        "instruction_il": "Taposen ti sesame oil. Iserbi iti bagas wenno pancit. Ilalaban ti berde nga parte ti spring onion ken sesame seeds."
       }
     ],
     "estimated_cost_hkd": 95,
@@ -2239,8 +2249,9 @@
       "stir-fry",
       "asian",
       "quick",
-      "one-pan"
-    ]
+      "light"
+    ],
+    "component_type": "protein"
   },
   {
     "id": "chicken-stuffed-peppers",
@@ -2370,38 +2381,38 @@
       {
         "step": 1,
         "instruction": "Preheat oven to 180°C. Heat olive oil and butter in a large frying pan over medium heat. Add onion with a pinch of salt and cook until soft.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Painitin ang oven sa 180°C. Initin ang olive oil at butter sa malaking kawali sa katamtamang init. Ilagay ang sibuyas na may kurot ng asin at lutuin hanggang malambot.",
+        "instruction_il": "Iinit ti oven iti 180°C. Initin ti olive oil ken butter iti dakkel nga kawali iti metiod nga init. Iteddu ti sibuyas a kas adda bassit nga asin ken lutuem agingga nalemlemek."
       },
       {
         "step": 2,
         "instruction": "Add garlic and oregano. Add tomato paste and cook 1–2 minutes. Add chicken mince and break up, cooking until done with light browning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang bawang at oregano. Ilagay ang tomato paste at lutuin ng 1–2 minuto. Ilagay ang giniling na manok at sirain, lutuin hanggang maluto na may bahagyang pagkulay.",
+        "instruction_il": "Iteddu ti ahos ken oregano. Iteddu ti tomato paste ken lutuem iti 1–2 minuto. Iteddu ti nadinagsen nga manok ken buaten, lutuem agingga naluto a kas adda bassit nga nagpuyot."
       },
       {
         "step": 3,
         "instruction": "Pour in passata. Simmer uncovered 12–15 minutes until thick. Remove from heat and stir in rice, Parmesan and parsley. Taste and adjust seasoning.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ibuhos ang passata. Pakuluin na walang takip ng 12–15 minuto hanggang lumapot. Alisin sa init at haluin ang kanin, Parmesan at perehil. Tikman at ayusin ang timpla.",
+        "instruction_il": "Agus-usar ti passata. Simutten nga awanan takup iti 12–15 minuto agingga nalapot. Ilikkar manipud iti init ken isabet ti bagas, Parmesan ken parsley. Tikman ken ayosen ti timbre."
       },
       {
         "step": 4,
         "instruction": "Cut peppers in half lengthwise through the stem. Remove seeds and ribs. Season inside with salt and pepper.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Hiwain ang mga bell pepper sa kalahati nang haba mula sa tangkay. Alisin ang mga butil at gulugod. Timplahan ang loob ng asin at paminta.",
+        "instruction_il": "Hiwaten ti bell pepper iti kagudua iti taas-baba manipud iti tangkay. Ilikkar ti mga buto ken ribas. Timbangen ti uneg ti asin ken paminta."
       },
       {
         "step": 5,
         "instruction": "Spoon filling into pepper halves. Top with grated mozzarella. Pour 3 tbsp water into the baking dish base. Cover tightly with foil and bake 20 minutes.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang palaman sa mga kalahating bell pepper gamit ang kutsara. Budburan ng kudkurang mozzarella. Ibuhos ang 3 kutsarang tubig sa ilalim ng baking dish. Takluban nang mahigpit ng foil at iluto ng 20 minuto.",
+        "instruction_il": "Isao ti pamuno iti mga kagudua nga bell pepper. Ngatan ti nakudkod nga mozzarella. Agus-usar ti 3 nga kutsara nga danum iti baba ti baking dish. Takuban nang nainget ti foil ken ilauto iti 20 minuto."
       },
       {
         "step": 6,
         "instruction": "Remove foil and bake uncovered 10–15 more minutes until peppers are tender and cheese is melted and golden.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Alisin ang foil at iluto na walang takip ng 10–15 minutong dagdag hanggang malambot ang mga bell pepper at matunaw at maging gintuan ang keso.",
+        "instruction_il": "Ilikkar ti foil ken ilauto nga awanan takup iti 10–15 nga minuto pay agingga nalemlemek ti bell pepper ken natunaw ken nagasan ti keso."
       }
     ],
     "estimated_cost_hkd": 130,
@@ -2410,10 +2421,11 @@
     "tags": [
       "chicken",
       "italian",
-      "hearty",
+      "baked",
       "make-ahead",
-      "pepper"
-    ]
+      "hearty"
+    ],
+    "component_type": "protein"
   },
   {
     "id": "potato-rosti-bacon",
@@ -2520,51 +2532,52 @@
       {
         "step": 1,
         "instruction": "Grate potatoes finely. Hand-squeeze out as much liquid as possible and place in a bowl.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Kudkurin nang pino ang mga patatas. Pigain nang kamay ang pinakamaraming likido at ilagay sa mangkok.",
+        "instruction_il": "Kudkoden nang nainget ti patatas. Pirimitten ti adu nga likido gamit ti ima ken iruot iti bowl."
       },
       {
         "step": 2,
         "instruction": "Add finely sliced onion, crushed garlic, thyme, rosemary. Season with salt and pepper. Mix well.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang pinong hiwang sibuyas, dinurog na bawang, thyme, rosemary. Timplahan ng asin at paminta. Haluin nang mabuti.",
+        "instruction_il": "Iteddu ti nadinagsen nga hiwa ti sibuyas, nadiges nga ahos, thyme, rosemary. Timbangen ti asin ken paminta. Ikuting nang nainget."
       },
       {
         "step": 3,
         "instruction": "Melt clarified butter. Heat a heavy-bottomed pan over medium heat with the butter. Divide potato mixture into four portions. Press gently into the pan. Turn to low and cook 10–12 minutes until golden brown on the underside.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Tunawin ang clarified butter. Initin ang mabigat na kawali sa katamtamang init na may butter. Hatiin ang halo ng patatas sa apat na bahagi. Pindutin nang dahan-dahan sa kawali. Ibaba ang init at lutuin ng 10–12 minuto hanggang gintuan ang ibaba.",
+        "instruction_il": "Tunawem ti clarified butter. Initin ti naug-uges nga kawali iti metiod nga init a kas adda butter. Idibide ti pinagsamang patatas iti uppat nga parte. Pigsen nang dallus iti kawali. Ibaba ti init ken lutuem iti 10–12 minuto agingga nagpuyot ti baba."
       },
       {
         "step": 4,
         "instruction": "Flip and cook the other side 10–12 minutes until golden.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "I-flip at lutuin ang kabilang gilid ng 10–12 minuto hanggang gintuan.",
+        "instruction_il": "Balikiten ken lutuem ti sabali nga gibus iti 10–12 minuto agingga nagasan."
       },
       {
         "step": 5,
         "instruction": "Cook bacon in a dry pan until crispy. Slice spring onions.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Lutuin ang bacon sa tuyong kawali hanggang malutong. Hiwain ang mga spring onion.",
+        "instruction_il": "Lutuem ti bacon iti nalawaan nga kawali agingga nalagtiit. Hiwaten ti spring onions."
       },
       {
         "step": 6,
         "instruction": "Plate rosti topped with goat yogurt, crispy bacon and spring onion.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ihain ang rosti na may goat yogurt, malutong na bacon at spring onion sa itaas.",
+        "instruction_il": "Iruot ti rosti nga adda goat yogurt, nalagtiit nga bacon ken spring onion iti ngato."
       }
     ],
     "estimated_cost_hkd": 80,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
-      "pork",
       "potato",
-      "rosti",
       "bacon",
       "breakfast",
-      "comfort"
-    ]
+      "rosti",
+      "quick",
+      "pork"
+    ],
+    "component_type": "carb"
   },
   {
     "id": "chicken-cheese-toastie",
@@ -2663,32 +2676,32 @@
       {
         "step": 1,
         "instruction": "Mix soft butter with minced garlic and chopped parsley to make garlic butter.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Haluin ang malambot na butter kasama ang tinadtad na bawang at perehil para gumawa ng garlic butter.",
+        "instruction_il": "Ikuting ti nalemlemek nga butter kaiwasan ti nadinagsen nga ahos ken parsley tapno mangmano ti garlic butter."
       },
       {
         "step": 2,
         "instruction": "Flatten chicken thighs. Grill in a pan with olive oil, salt and pepper until cooked through.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Patayain ang mga hita ng manok. I-grill sa kawali na may olive oil, asin at paminta hanggang maluto.",
+        "instruction_il": "Papatayan ti paa ti manok. Igrilen iti kawali a kas adda olive oil, asin ken paminta agingga naluto."
       },
       {
         "step": 3,
         "instruction": "Spread garlic butter on one side of each bread slice. Spread cream cheese on the other side. Layer Gruyère, cooked chicken pieces and more Gruyère. Top with second bread slice, garlic butter side out.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Pahiran ng garlic butter ang isang gilid ng bawat hiwa ng tinapay. Pahiran ng cream cheese ang kabilang gilid. Ilagay ang Gruyère, mga lutong manok at dagdag na Gruyère. Lagyan ng pangalawang hiwa ng tinapay, garlic butter na nakaharap sa labas.",
+        "instruction_il": "Ilugit ti garlic butter iti maysa nga gibus ti tunggal hiwa ti tinapay. Ilugit ti cream cheese iti sabali nga gibus. Layer-en ti Gruyère, naluto nga manok ken ad-adu pa nga Gruyère. Ngatan ti maika-dua nga hiwa ti tinapay, garlic butter iti ruar."
       },
       {
         "step": 4,
         "instruction": "Place sandwiches garlic-butter-side down in a large frying pan on low heat under a lid. Grill until golden, 3–4 minutes per side. Flip and cook the other side.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang mga sandwich na garlic-butter ang nasa ibaba sa malaking kawali sa mababang init na may takip. I-grill hanggang gintuan, 3–4 minuto bawat gilid. I-flip at lutuin ang kabilang gilid.",
+        "instruction_il": "Iruot ti mga sandwich nga garlic-butter iti baba iti dakkel nga kawali iti nalubos nga init a kas adda takup. Igrilen agingga nagasan, 3–4 minuto iti tunggal gibus. Balikiten ken lutuem ti sabali nga gibus."
       },
       {
         "step": 5,
         "instruction": "Cut into triangles and serve hot.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Hiwain sa tatsulok at ihain na mainit.",
+        "instruction_il": "Hiwaten iti tatsulok ken iserbi nga napudot."
       }
     ],
     "estimated_cost_hkd": 90,
@@ -2696,13 +2709,13 @@
     "avoid_for": [],
     "tags": [
       "chicken",
+      "cheese",
       "sandwich",
       "toastie",
       "breakfast",
-      "quick",
-      "comfort",
-      "cheese"
-    ]
+      "quick"
+    ],
+    "component_type": "carb"
   },
   {
     "id": "steamed-fish-beurre-blanc",
@@ -2800,32 +2813,32 @@
       {
         "step": 1,
         "instruction": "Season fish with salt, pepper and a drizzle of olive oil.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Timplahan ang isda ng asin, paminta at konting olive oil.",
+        "instruction_il": "Timbangen ti ikan ti asin, paminta ken bassit nga olive oil."
       },
       {
         "step": 2,
         "instruction": "Fill a pot with 2 inches of water and bring to a simmer. Position a steaming basket above the water. Place fish in the basket. Cover and steam 8–10 minutes until opaque and flaking.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Punuin ang palayok ng 2 pulgada ng tubig at pakuluan nang bahagya. Ilagay ang steaming basket sa ibabaw ng tubig. Ilagay ang isda sa basket. Takluban at singawan ng 8–10 minuto hanggang maputi at madurog.",
+        "instruction_il": "Punuen ti kolon iti 2 pulgada ti danum ken isubli iti simut. Iruot ti steaming basket iti ngato ti danum. Iruot ti ikan iti basket. Takuban ken paboruen iti 8–10 minuto agingga naalburador ken agburabor."
       },
       {
         "step": 3,
         "instruction": "While fish steams, combine white wine, lemon juice and shallots in a small saucepan. Simmer until reduced by half.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Habang niluluto ng singaw ang isda, pagsamahin ang white wine, lemon juice at shallots sa maliit na kasirola. Pakuluin hanggang mabawasan ng kalahati.",
+        "instruction_il": "Bayat ti agpabor ti ikan, ikkombina ti white wine, lemon juice ken shallots iti bassit nga saucepan. Simutten agingga makuransen iti kagudua."
       },
       {
         "step": 4,
         "instruction": "Reduce heat to low. Whisk in chilled butter cubes one at a time, whisking constantly to emulsify the sauce. Do not let it boil.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ibaba ang init sa mababa. Haluin ang mga cubed na malamig na butter nang isa-isa, laging naghahaluin para mag-emulsify ang sarsa. Huwag pakuluin.",
+        "instruction_il": "Ibaba ti init iti nalubos. Ikutin ti mga cubed nga nalamiis nga butter iti maymaysa, naiyan nga agikuting tapno mag-emulsify ti sarsa. Saan nga pabukel."
       },
       {
         "step": 5,
         "instruction": "Stir in capers and dill. Season to taste. Spoon sauce generously over steamed fish. Serve immediately.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Haluin ang mga caper at dill. Timplahan ayon sa panlasa. Ibuhos nang sagana ang sarsa sa inisda ng singaw. Ihain agad.",
+        "instruction_il": "Isabet ti capers ken dill. Timbangen nga ayon ti tikod. Isao nang nabayag ti sarsa iti nalpabor nga ikan. Iserbi dagus."
       }
     ],
     "estimated_cost_hkd": 190,
@@ -2833,12 +2846,12 @@
     "avoid_for": [],
     "tags": [
       "fish",
+      "steamed",
       "french",
       "elegant",
-      "quick",
-      "light",
-      "steamed"
-    ]
+      "cream"
+    ],
+    "component_type": "protein"
   },
   {
     "id": "pan-fried-halloumi-salad",
@@ -2858,13 +2871,12 @@
     "hero_image": null,
     "youtube_url": "https://www.youtube.com/watch?v=cL1DoDcn8Tw",
     "tags": [
+      "halloumi",
       "vegetarian",
+      "mediterranean",
       "salad",
       "quick",
-      "light",
-      "mediterranean",
-      "cheese",
-      "halloumi"
+      "light"
     ],
     "dependencies": [],
     "ingredients": [
@@ -2993,43 +3005,44 @@
       {
         "step": 1,
         "instruction": "Make the dressing: whisk olive oil, lemon juice, red wine vinegar, Dijon mustard, grated garlic, salt and pepper in a large bowl.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Gumawa ng dressing: haluin ang olive oil, lemon juice, red wine vinegar, Dijon mustard, kudkurang bawang, asin at paminta sa malaking mangkok.",
+        "instruction_il": "Mano ti dressing: ikutin ti olive oil, lemon juice, red wine vinegar, Dijon mustard, nakudkod nga ahos, asin ken paminta iti dakkel nga bowl."
       },
       {
         "step": 2,
         "instruction": "Add tomatoes, cucumber, red onion, olives, capsicum, basil and parsley to the bowl. Toss well. Set aside some dressing for drizzling at the end.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ilagay ang mga kamatis, pipino, pulang sibuyas, olibo, capsicum, basil at perehil sa mangkok. Ihalo nang mabuti. Itabi ang kaunting dressing para ibuhos sa katapusan.",
+        "instruction_il": "Iteddu ti kamatis, pepino, nalabbaga nga sibuyas, olibo, capsicum, basil ken parsley iti bowl. Ikuting nang nainget. Itikag ti bassit nga dressing para tiris iti maudi."
       },
       {
         "step": 3,
         "instruction": "Toast pine nuts in a dry pan over medium heat 1–2 minutes until golden. Set aside.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "I-toast ang mga pine nut sa tuyong kawali sa katamtamang init ng 1–2 minuto hanggang gintuan. Itabi.",
+        "instruction_il": "I-toast ti pine nuts iti nalawaan nga kawali iti metiod nga init iti 1–2 minuto agingga nagasan. Itikag."
       },
       {
         "step": 4,
         "instruction": "Pat halloumi dry with paper towel and slice into thick pieces.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Patuyuin ang halloumi gamit ang tissue at hiwain sa makapal na piraso.",
+        "instruction_il": "Patuyuen ti halloumi gamit ti tisyu ken hiwaten iti nalukmeg nga piyeso."
       },
       {
         "step": 5,
         "instruction": "Cook halloumi in a dry pan over medium heat 1–2 minutes per side to release moisture. Add a little olive oil and cook 30–60 seconds per side until golden and crisp.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Lutuin ang halloumi sa tuyong kawali sa katamtamang init ng 1–2 minuto bawat gilid para malabas ang tubig. Dagdag ng kaunting olive oil at lutuin ng 30–60 segundo bawat gilid hanggang gintuan at malutong.",
+        "instruction_il": "Lutuem ti halloumi iti nalawaan nga kawali iti metiod nga init iti 1–2 minuto iti tunggal gibus tapno pumayas ti danum. Iteddu ti bassit nga olive oil ken lutuem iti 30–60 segundo iti tunggal gibus agingga nagasan ken nalagtiit."
       },
       {
         "step": 6,
         "instruction": "Arrange salad on plates. Scatter pine nuts over top. Place warm halloumi on the salad, drizzle with remaining dressing. Serve immediately.",
-        "instruction_tl": "",
-        "instruction_il": ""
+        "instruction_tl": "Ayusin ang salad sa mga plato. Ikalat ang mga pine nut sa itaas. Ilagay ang mainit na halloumi sa salad, buhusan ng natitirang dressing. Ihain agad.",
+        "instruction_il": "Iaregar ti ensalada iti mga plato. Ipugas ti pine nuts iti ngato. Iruot ti napudot nga halloumi iti ensalada, agus-usar ti nabilin nga dressing. Iserbi dagus."
       }
     ],
     "estimated_cost_hkd": 125,
     "loved_by": [],
-    "avoid_for": []
+    "avoid_for": [],
+    "component_type": "protein"
   },
   {
     "id": "potato-rosti-smoked-salmon",
@@ -3050,12 +3063,11 @@
     "hero_image": null,
     "youtube_url": "https://www.youtube.com/watch?v=cuzozTlu3PU",
     "tags": [
-      "fish",
       "salmon",
-      "potato",
+      "fish",
       "rosti",
       "breakfast",
-      "light",
+      "potato",
       "elegant"
     ],
     "dependencies": [],
@@ -3153,36 +3165,4789 @@
       {
         "step": 1,
         "instruction": "Steam potatoes for about 20 minutes until firm in the centre with soft edges. Cool slightly, then peel.",
+        "instruction_tl": "Singawan ang mga patatas ng mga 20 minuto hanggang matigas sa gitna na may malambot na gilid. Palamigin nang bahagya, tapos talupan.",
+        "instruction_il": "Paboruen ti patatas iti nasurok iti 20 minuto agingga natibker iti tengnga a kas adda nalemlemek nga gibus. Palamisen nang bassit, kalpasan talupen."
+      },
+      {
+        "step": 2,
+        "instruction": "Grate potatoes using a coarse grater. Place in a bowl.",
+        "instruction_tl": "Kudkurin ang mga patatas gamit ang magaspang na kudkuran. Ilagay sa mangkok.",
+        "instruction_il": "Kudkoden ti patatas gamit ti nabaskog nga kudkuran. Iruot iti bowl."
+      },
+      {
+        "step": 3,
+        "instruction": "Add finely chopped shallot, crushed garlic, egg yolk, chopped thyme and rosemary. Season with salt and pepper. Add melted clarified butter. Mix together.",
+        "instruction_tl": "Ilagay ang pinong tinadtad na shallot, dinurog na bawang, pula ng itlog, tinadtad na thyme at rosemary. Timplahan ng asin at paminta. Ilagay ang natunaw na clarified butter. Haluin nang magkasama.",
+        "instruction_il": "Iteddu ti nadinagsen nga shallot, nadiges nga ahos, pula ti itlog, nadinagsen nga thyme ken rosemary. Timbangen ti asin ken paminta. Iteddu ti natunaw nga clarified butter. Ikkombina."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat a lightly oiled non-stick pan over medium heat. Use a cutter or mould to shape portions of the mixture. Cook until golden on the bottom, then flip and cook the other side until equally golden.",
+        "instruction_tl": "Initin ang bahagyang may mantikang non-stick na kawali sa katamtamang init. Gumamit ng cutter o hulma para hugisan ang mga bahagi ng halo. Lutuin hanggang gintuan ang ibaba, tapos i-flip at lutuin ang kabilang gilid hanggang katulad na gintuan.",
+        "instruction_il": "Initin ti bassit nga nalana nga non-stick nga kawali iti metiod nga init. Agusar ti cutter wenno mold tapno humugis ti mga parte ti pinagsamang. Lutuem agingga nagasan ti baba, kalpasan balikiten ken lutuem ti sabali nga gibus agingga naiyanay nga nagasan."
+      },
+      {
+        "step": 5,
+        "instruction": "Serve rosti hot topped with sour cream, sliced avocado and smoked salmon.",
+        "instruction_tl": "Ihain ang rosti na mainit na may sour cream, hiwa ng avocado at smoked salmon sa itaas.",
+        "instruction_il": "Iserbi ti rosti nga napudot nga adda sour cream, hiwa ti avocado ken smoked salmon iti ngato."
+      }
+    ],
+    "estimated_cost_hkd": 180,
+    "loved_by": [],
+    "avoid_for": [],
+    "component_type": "protein"
+  },
+  {
+    "id": "crispy-salmon-garlic-butter",
+    "name": "Crispy Salmon with Garlic Butter Sauce",
+    "name_tl": "Malutong na Salmon na may Sarsa ng Mantikilya at Bawang",
+    "name_il": "Nalagtiit nga Salmon nga adda Sarsa ti Mantequilla ken Ahos",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "French",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 15,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=JrKI8Nn4fqs",
+    "dependencies": [],
+    "estimated_cost_hkd": 180,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "salmon",
+      "fish",
+      "pan-fried",
+      "quick",
+      "french",
+      "cream"
+    ],
+    "ingredients": [
+      {
+        "item": "salmon fillet, skin-on",
+        "amount": 700,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 40,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves, crushed",
+        "amount": 5,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "lemon juice",
+        "amount": 60,
+        "unit": "ml",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "brown sugar",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh parsley, chopped",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "dried dill",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon, sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "salt and black pepper",
+        "amount": 1,
+        "unit": "pinch",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Pat salmon dry. Season both sides with salt and pepper.",
         "instruction_tl": "",
         "instruction_il": ""
       },
       {
         "step": 2,
-        "instruction": "Grate potatoes using a coarse grater. Place in a bowl.",
+        "instruction": "Heat olive oil in a large pan over medium-high. Place salmon skin-side down. Press gently. Cook 4–5 minutes until skin is very crispy.",
         "instruction_tl": "",
         "instruction_il": ""
       },
       {
         "step": 3,
-        "instruction": "Add finely chopped shallot, crushed garlic, egg yolk, chopped thyme and rosemary. Season with salt and pepper. Add melted clarified butter. Mix together.",
+        "instruction": "Flip salmon. Cook 2–3 more minutes until just cooked through. Remove to a plate.",
         "instruction_tl": "",
         "instruction_il": ""
       },
       {
         "step": 4,
-        "instruction": "Heat a lightly oiled non-stick pan over medium heat. Use a cutter or mould to shape portions of the mixture. Cook until golden on the bottom, then flip and cook the other side until equally golden.",
+        "instruction": "Lower heat. Add butter to the same pan. Once melted, add garlic and cook 1 minute until fragrant.",
         "instruction_tl": "",
         "instruction_il": ""
       },
       {
         "step": 5,
-        "instruction": "Serve rosti hot topped with sour cream, sliced avocado and smoked salmon.",
+        "instruction": "Add lemon juice and brown sugar. Stir and cook 1–2 minutes until sauce thickens slightly.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Pour sauce over salmon. Top with parsley and lemon slices. Serve immediately.",
         "instruction_tl": "",
         "instruction_il": ""
       }
+    ]
+  },
+  {
+    "id": "creamy-chicken-au-poivre",
+    "name": "30-Minute Creamy Chicken au Poivre",
+    "name_tl": "Creamy na Manok au Poivre sa 30 Minuto",
+    "name_il": "Creamy nga Manok au Poivre iti 30 Minuto",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
     ],
-    "estimated_cost_hkd": 180,
+    "cuisine": "French",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 25,
+    "active_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=VbYfnCj7zps",
+    "dependencies": [],
+    "estimated_cost_hkd": 160,
     "loved_by": [],
-    "avoid_for": []
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "quick",
+      "french",
+      "cream",
+      "elegant"
+    ],
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken thighs",
+        "amount": 700,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "black peppercorns, coarsely crushed",
+        "amount": 3,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "green peppercorns, brined",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "shallot, finely chopped",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic clove, minced",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "Cognac or brandy",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "heavy cream",
+        "amount": 180,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chicken stock",
+        "amount": 125,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "Dijon mustard",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh thyme sprigs",
+        "amount": 3,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon juice",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh parsley, chopped",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Pat chicken dry. Season with salt and crushed peppercorns, pressing them in.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Heat olive oil in a large pan over medium-high. Sear chicken 5–6 minutes per side until deep golden. Remove and set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Lower heat. Add butter, then cook shallot and garlic until soft, about 2 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Take pan off heat. Add Cognac. Return to heat and let it sizzle, scraping up any brown bits.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Add chicken stock, mustard, green peppercorns, and thyme. Simmer 2–3 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Pour in cream. Stir and let it reduce until the sauce coats a spoon.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Return chicken to the pan. Simmer 2 minutes uncovered until cooked through and sauce thickens.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Discard thyme. Add a squeeze of lemon and parsley. Taste and adjust seasoning.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "chicken-kottu-roti",
+    "name": "Chicken Kottu Roti",
+    "name_tl": "Chicken Kottu Roti",
+    "name_il": "Chicken Kottu Roti",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Sri Lankan",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 25,
+    "active_time_mins": 35,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=jAoHEB1_mb8",
+    "dependencies": [],
+    "estimated_cost_hkd": 130,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "stir-fry",
+      "asian",
+      "hearty",
+      "spicy"
+    ],
+    "ingredients": [
+      {
+        "item": "chicken thighs, boneless",
+        "amount": 700,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cooked roti, shredded",
+        "amount": 300,
+        "unit": "g",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "eggs",
+        "amount": 3,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "onion, sliced",
+        "amount": 1,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "curry leaves",
+        "amount": 0.25,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "leeks, sliced",
+        "amount": 100,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cabbage, shredded",
+        "amount": 150,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "carrots, julienned",
+        "amount": 100,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "Sri Lankan curry powder",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "roasted chili powder",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "ground fennel seeds",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "turmeric powder",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "coconut milk",
+        "amount": 120,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chicken stock",
+        "amount": 180,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "tomato paste",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "lime wedges",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Season chicken and pan-fry in oil until golden and cooked through. Chop into small pieces. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "In the same pan, fry tomato paste 30 seconds. Add curry powder and turmeric, stir 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Pour in chicken stock and coconut milk. Simmer 2 minutes until slightly thickened. Transfer to a bowl — this is your curry gravy.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Wipe pan. Heat oil and butter over high. Add onion and curry leaves. Stir-fry 1 minute.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Add leeks, cabbage, and carrots. Stir-fry 3–4 minutes until just tender.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Push veggies aside. Add chili and fennel into the oil and fry 30 seconds, then mix through.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Push everything aside. Crack eggs into the empty space and scramble until just set. Fold into the vegetables.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Add the curry gravy and stir to combine. Add chopped roti and chicken.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 9,
+        "instruction": "Using two spatulas, chop and press the mixture vigorously for 2–3 minutes. Season. Serve hot with lime wedges.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "chicken-bacon-gruyere-casserole",
+    "name": "Chicken & Bacon Casserole with Gruyère",
+    "name_tl": "Casserole ng Manok at Bacon na may Gruyère",
+    "name_il": "Casserole ti Manok ken Bacon nga adda Gruyère",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "French",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 45,
+    "active_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=ABB86704IcE",
+    "dependencies": [],
+    "estimated_cost_hkd": 200,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "bacon",
+      "french",
+      "make-ahead",
+      "hearty",
+      "baked"
+    ],
+    "ingredients": [
+      {
+        "item": "cooked chicken, shredded",
+        "amount": 600,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "streaky bacon rashers",
+        "amount": 6,
+        "unit": "rashers",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "broccoli florets, blanched",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "Gruyère cheese, grated",
+        "amount": 115,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "sharp cheddar cheese, grated",
+        "amount": 115,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "sour cream",
+        "amount": 120,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "plain Greek yogurt",
+        "amount": 120,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "spring onions, sliced",
+        "amount": 70,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "slivered almonds, toasted",
+        "amount": 50,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "Dijon mustard",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter",
+        "amount": 45,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "plain flour",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "chicken stock",
+        "amount": 480,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "panko breadcrumbs",
+        "amount": 50,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "Parmesan, grated",
+        "amount": 50,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter, melted (for topping)",
+        "amount": 60,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 190°C. Grease a large baking dish.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Cook bacon until crispy. Drain and crumble. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Melt butter in a saucepan. Stir in flour and cook 2 minutes. Gradually whisk in chicken stock until smooth and thickened. Season.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "In a large bowl, mix shredded chicken, sour cream, yogurt, both cheeses, broccoli, spring onions, almonds, bacon, mustard, paprika, and cream sauce.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Spread into the baking dish.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Mix panko, Parmesan, and melted butter. Scatter evenly over the top.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Cover with foil. Bake 20 minutes. Remove foil and bake another 20–25 minutes until golden and bubbling.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Rest 10 minutes before serving.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "sheet-pan-chicken-fajitas",
+    "name": "Sheet Pan Chicken Fajitas",
+    "name_tl": "Chicken Fajitas sa Sheet Pan",
+    "name_il": "Chicken Fajitas iti Sheet Pan",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Mexican",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 23,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=0mJmevlGdXk",
+    "dependencies": [],
+    "estimated_cost_hkd": 140,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "sheet-pan",
+      "quick",
+      "mexican",
+      "spicy"
+    ],
+    "ingredients": [
+      {
+        "item": "boneless skinless chicken breast, cut into strips",
+        "amount": 600,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "bell peppers, mixed colours, cut into strips",
+        "amount": 3,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "medium onion, sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "chili powder",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "ground cumin",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic powder",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "small flour tortillas",
+        "amount": 8,
+        "unit": "whole",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lime",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh cilantro",
+        "amount": 1,
+        "unit": "handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 220°C. Mix all spices together in a small bowl.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Put chicken, peppers, and onion on a large rimmed baking tray. Drizzle with olive oil, add the spice mix, and toss well to coat.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Spread in a single layer. Rest 10 minutes at room temperature.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Bake 18–20 minutes until chicken is cooked through.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Switch to grill/broil for 2–3 minutes for lightly charred edges. Wrap tortillas in foil and warm in oven for the last 5 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Squeeze lime juice over everything. Scatter cilantro. Serve from the tray with warm tortillas.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "slow-roasted-lamb-shoulder",
+    "name": "Slow-Roasted Lamb Shoulder",
+    "name_tl": "Marahang Inihurnong Balikat ng Tupa",
+    "name_il": "Nalayus nga Inirnu nga Abaga ti Karnero",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 195,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=s0x5qka5qhA",
+    "dependencies": [],
+    "estimated_cost_hkd": 320,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "lamb",
+      "roast",
+      "make-ahead",
+      "hearty",
+      "mediterranean",
+      "elegant"
+    ],
+    "ingredients": [
+      {
+        "item": "lamb shoulder, bone-in",
+        "amount": 1.8,
+        "unit": "kg",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "large onions, finely sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves, grated",
+        "amount": 2,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "ground ginger",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "turmeric",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "saffron threads",
+        "amount": 1,
+        "unit": "pinch",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh thyme sprigs",
+        "amount": 3,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "water",
+        "amount": 180,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Mix olive oil with ginger, paprika, turmeric, saffron, garlic, salt, and pepper. Rub all over the lamb. Rest 30 minutes at room temperature.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Preheat oven to 200°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Spread sliced onions and water in a roasting pan. Add thyme. Place lamb on top.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Cover tightly with foil. Roast 45 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Lower oven to 160°C. Remove foil. Roast 2–2.5 hours more, basting every 30 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Lamb is done when it falls apart when pressed. Rest 15 minutes then pull apart. Serve with pan juices.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "lok-lak-cambodian-pepper-beef",
+    "name": "Lok Lak Cambodian Pepper Beef",
+    "name_tl": "Lok Lak na Kambodyanong Baka sa Paminta",
+    "name_il": "Lok Lak Cambodiano nga Karne iti Paminta",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 10,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=KSNG7aVSKIM",
+    "dependencies": [
+      {
+        "type": "marinate",
+        "hours_before": 2
+      }
+    ],
+    "estimated_cost_hkd": 210,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "stir-fry",
+      "asian",
+      "quick",
+      "light"
+    ],
+    "ingredients": [
+      {
+        "item": "sirloin steak, cut into 2.5cm cubes",
+        "amount": 600,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "dark soy sauce",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "light soy sauce",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fish sauce",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "brown sugar",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "cornflour",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "freshly cracked black pepper",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves, finely grated",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "oyster sauce",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh ginger, sliced",
+        "amount": 3,
+        "unit": "slices",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "red onion, thinly sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "ripe tomatoes, sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter lettuce leaves",
+        "amount": 1,
+        "unit": "head",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "lime juice",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "jasmine rice, steamed",
+        "amount": 320,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "neutral oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Mix beef with soy sauces, fish sauce, sugar, cornflour, pepper, and garlic. Marinate at least 2 hours.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Mix dipping sauce: lime juice, black pepper, salt, a pinch of sugar, and fish sauce. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a wok over very high heat. Add ginger, fry 20 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add beef in a single layer. Sear undisturbed 30 seconds. Toss, sear again. Cook 2–3 minutes total until lightly charred.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Add half the onion. Toss 30 seconds. Add oyster sauce and toss to coat. Remove from heat.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Arrange lettuce, remaining onion, and tomato on plates. Spoon beef over the top. Serve with steamed rice and dipping sauce.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "osso-buco",
+    "name": "Osso Buco",
+    "name_tl": "Osso Buco",
+    "name_il": "Osso Buco",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "Italian",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 150,
+    "active_time_mins": 40,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=iui7kLThhSQ",
+    "dependencies": [],
+    "estimated_cost_hkd": 380,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "braised",
+      "italian",
+      "make-ahead",
+      "hearty",
+      "elegant"
+    ],
+    "ingredients": [
+      {
+        "item": "veal or beef shanks, cross-cut",
+        "amount": 4,
+        "unit": "whole",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "plain flour, for dredging",
+        "amount": 1,
+        "unit": "cup",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "large yellow onion, diced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "large carrot, diced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "celery stalks, diced",
+        "amount": 2,
+        "unit": "stalks",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves",
+        "amount": 6,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "tomato paste",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh tomatoes, roughly chopped",
+        "amount": 400,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "dry red wine",
+        "amount": 480,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "beef stock",
+        "amount": 960,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "bay leaves",
+        "amount": 2,
+        "unit": "whole",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh thyme sprigs",
+        "amount": 10,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh parsley",
+        "amount": 1,
+        "unit": "handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic clove, grated (gremolata)",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon zest (gremolata)",
+        "amount": 1,
+        "unit": "lemon",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 160°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Season flour with salt and pepper. Coat veal shanks all over. Sear in olive oil until golden on all sides, about 5 minutes per side. Remove and set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Sauté onion, carrot, celery, and garlic in the same pot over medium heat for 3–4 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add tomato paste, stir 2 minutes. Add tomatoes, wine, beef stock, bay leaves, thyme, salt and pepper.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Return shanks to the pot — mostly submerged. Cover and braise in oven 2–2.5 hours until very tender.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Mix gremolata: finely chop parsley, mix with grated garlic and lemon zest.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Serve shanks with braising sauce. Top each with a spoonful of gremolata.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "garlic-onion-beef-stir-fry",
+    "name": "Garlic Onion Beef Stir-Fry",
+    "name_tl": "Ginisang Baka na may Bawang at Sibuyas",
+    "name_il": "Stir-Fry ti Karne nga adda Ahos ken Sibuyas",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 10,
+    "active_time_mins": 25,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=z_9cNA6vPt4",
+    "dependencies": [
+      {
+        "type": "marinate",
+        "hours_before": 1
+      }
+    ],
+    "estimated_cost_hkd": 170,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "stir-fry",
+      "asian",
+      "quick",
+      "garlic"
+    ],
+    "ingredients": [
+      {
+        "item": "beef flank or sirloin, thinly sliced",
+        "amount": 600,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "soy sauce (marinade)",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "oyster sauce (marinade)",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "baking soda (marinade)",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "brown sugar",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "sesame oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "onion, sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "spring onions, cut into 5cm pieces",
+        "amount": 4,
+        "unit": "stalks",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves, minced",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh coriander",
+        "amount": 1,
+        "unit": "handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "toasted sesame seeds",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "dry white wine",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "oyster sauce (sauce)",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "cornflour",
+        "amount": 4,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "beef or chicken stock",
+        "amount": 120,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Mix sliced beef with soy sauce, oyster sauce, baking soda, sugar, sesame oil. Marinate at least 20 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Mix sauce: whisk white wine, oyster sauce, cornflour, and stock until smooth. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Heat oil in a wok over high heat. Stir-fry onion and white spring onion parts 30–60 seconds. Remove and set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add 1 tbsp oil. Sear beef in a single layer 1 minute without stirring. Toss and cook 1 more minute.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Add garlic. Deglaze with white wine. Pour in sauce. Stir and simmer 30 seconds until thickened.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Return onions to pan. Toss together 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Scatter spring onion tops, coriander, and sesame seeds. Serve with steamed rice.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "whole-mediterranean-snapper",
+    "name": "Whole Mediterranean Snapper with Tomatoes",
+    "name_tl": "Buong Mediterranean na Snapper na may Kamatis",
+    "name_il": "Buo nga Mediterranean Snapper nga adda Kamatis",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 30,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=MPS49M64B0c",
+    "dependencies": [],
+    "estimated_cost_hkd": 280,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "fish",
+      "mediterranean",
+      "roast",
+      "elegant",
+      "light"
+    ],
+    "ingredients": [
+      {
+        "item": "whole snapper, cleaned and scaled",
+        "amount": 2,
+        "unit": "whole",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cherry tomatoes, halved",
+        "amount": 720,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "capers",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "anchovies, finely chopped",
+        "amount": 6,
+        "unit": "fillets",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lemon, thinly sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "spring onions, sliced",
+        "amount": 4,
+        "unit": "stalks",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves, thinly sliced",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "dry white wine",
+        "amount": 240,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "fennel seeds",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "fresh parsley, roughly chopped",
+        "amount": 2,
+        "unit": "handfuls",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "olive oil",
+        "amount": 240,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Heat oven to 200°C. Rinse fish, pat dry. Score both sides with 3 diagonal slashes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Season inside the cavity with salt and pepper. Stuff with lemon slices, parsley, and olive oil.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "In a large roasting pan, combine tomatoes, capers, anchovies, garlic, spring onions, fennel seeds, white wine, and half the olive oil. Season and toss.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Lay fish on top of the tomato mix. Drizzle remaining olive oil over everything.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Roast 25–30 minutes until flesh flakes easily with a fork.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Scatter fresh parsley over the top. Serve straight from the pan.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "prime-roast-beef-reverse-seared",
+    "name": "Prime Roast Beef — Reverse Seared",
+    "name_tl": "Prime Roast Beef — Reverse Seared",
+    "name_il": "Prime Roast Beef — Reverse Seared",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "European",
+    "serves_base": 6,
+    "prep_time_mins": 15,
+    "cook_time_mins": 255,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=CK9u1mpoN58",
+    "dependencies": [
+      {
+        "type": "marinate",
+        "hours_before": 24
+      }
+    ],
+    "estimated_cost_hkd": 650,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "roast",
+      "make-ahead",
+      "elegant",
+      "hearty"
+    ],
+    "ingredients": [
+      {
+        "item": "beef rib roast, 3-bone approx 3kg",
+        "amount": 3,
+        "unit": "kg",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "sea salt",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "freshly cracked black pepper",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "Dijon mustard",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves, finely grated",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "rosemary, leaves chopped",
+        "amount": 2,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Day before: season beef all over with salt. Place on a wire rack over a tray. Refrigerate uncovered overnight to dry-brine.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Next day: mix mustard, grated garlic, chopped rosemary, olive oil, salt, and pepper. Rub all over the beef.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Insert a meat thermometer probe into the thickest part. Preheat oven to 95°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Roast 3–4 hours until internal temp reaches 48°C for rare / 52–53°C for medium-rare.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Remove from oven. Rest at room temperature 1–2 hours (meat will not overcook).",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Crank oven to 230°C. Return beef for 15 minutes until outside is deep golden.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Slice thickly against the bone and serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "thai-green-curry-chicken",
+    "name": "Thai Green Curry Chicken",
+    "name_tl": "Thai Green Curry na Manok",
+    "name_il": "Thai Green Curry nga Manok",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Thai",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 20,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=1AnbsfpR3cU",
+    "dependencies": [],
+    "estimated_cost_hkd": 200,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "thai",
+      "asian",
+      "curry",
+      "quick"
+    ],
+    "ingredients": [
+      {
+        "item": "chicken thighs, boneless, sliced into strips",
+        "amount": 600,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "Thai green curry paste",
+        "amount": 220,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "coconut oil",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "sugar snap peas",
+        "amount": 80,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "shiitake mushrooms, torn",
+        "amount": 100,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "coconut milk",
+        "amount": 400,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh Thai basil",
+        "amount": 1,
+        "unit": "handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "red chili, sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fried shallots",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "jasmine rice, steamed, to serve",
+        "amount": 320,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Tear mushrooms into 4–6 pieces by hand.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Heat coconut oil in a wok over high heat. Add curry paste and stir 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Add chicken strips, coat in paste, and cook 2 minutes on high.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add mushrooms and cook 1 minute more.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Pour in coconut milk, stir to combine. Reduce to medium.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Add sugar snap peas and simmer 2 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Serve over steamed rice. Garnish with sliced chili, fried shallots, and Thai basil.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "pistachio-crusted-rack-of-lamb",
+    "name": "Pistachio Crusted Rack of Lamb",
+    "name_tl": "Rack ng Karnero na may Pistachyo",
+    "name_il": "Rack ti Karnero nga adda Pistachio",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "dinner"
+    ],
+    "cuisine": "French",
+    "serves_base": 4,
+    "prep_time_mins": 25,
+    "cook_time_mins": 25,
+    "active_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=kvBDcIQIV4c",
+    "dependencies": [],
+    "estimated_cost_hkd": 680,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "lamb",
+      "roast",
+      "elegant",
+      "french"
+    ],
+    "ingredients": [
+      {
+        "item": "rack of lamb, frenched",
+        "amount": 2,
+        "unit": "racks",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "shelled pistachios",
+        "amount": 110,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "panko breadcrumbs",
+        "amount": 20,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh parsley, chopped",
+        "amount": 1,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh mint leaves, chopped",
+        "amount": 0.5,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic clove, minced",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon zest",
+        "amount": 1,
+        "unit": "lemon",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "Dijon mustard",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "Greek yogurt",
+        "amount": 180,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lemon juice",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Season lamb generously with salt and pepper. Rest at room temperature 20 minutes. Preheat oven to 200°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Make crust: pulse pistachios until chunky. Mix with parsley, mint, garlic, lemon zest, 2 tbsp olive oil, and a pinch of salt. Refrigerate.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Heat remaining oil in an oven-safe pan over high. Sear lamb fat-side down 3 minutes until golden. Sear other sides briefly.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Transfer to roasting tray. Roast 8–10 minutes until internal temp reaches 40°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Remove from oven. Brush meat with Dijon mustard, then firmly press pistachio crust onto the mustard.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Return to oven 5–8 minutes until internal temp reaches 52°C for medium-rare.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Rest under foil 10 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Mix yogurt sauce: Greek yogurt, 1 tbsp olive oil, lemon juice, chopped mint, and salt. Slice between bones. Serve with yogurt sauce.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "chili-garlic-shrimp-paprika",
+    "name": "Chili & Garlic Shrimp with Smoked Paprika",
+    "name_tl": "Hipon na may Chili, Bawang at Usok na Paprika",
+    "name_il": "Hipon nga adda Chili, Ahos ken Usok nga Paprika",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Spanish",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 10,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=6L6R42XtTjU",
+    "dependencies": [],
+    "estimated_cost_hkd": 220,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "shrimp",
+      "seafood",
+      "quick",
+      "spanish",
+      "spicy",
+      "garlic"
+    ],
+    "ingredients": [
+      {
+        "item": "large shrimp, peeled and deveined",
+        "amount": 24,
+        "unit": "whole",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves, finely chopped",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "chili flakes",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "extra virgin olive oil",
+        "amount": 120,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "dry white wine",
+        "amount": 240,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 3,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter, soft, cubed",
+        "amount": 120,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh flat-leaf parsley, chopped",
+        "amount": 8,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "lemon",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "crusty bread, to serve",
+        "amount": 1,
+        "unit": "loaf",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Pat shrimp dry.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Heat olive oil in a large pan over medium-high until shimmering. Cook shrimp ~45 seconds per side until just browned. Transfer to a warm plate.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "In the same pan, add garlic and chili flakes over medium heat. Cook until garlic just colours. Stir in smoked paprika.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Deglaze with white wine. Reduce by half. Squeeze in lemon juice.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Return shrimp with half the parsley. Toss over high heat 20 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Reduce heat to very low. Add butter cubes a few at a time, stirring constantly until sauce is glossy. Pour over shrimp, garnish with parsley. Serve with crusty bread.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "thai-beef-salad",
+    "name": "Thai Beef Salad",
+    "name_tl": "Thai Beef Salad",
+    "name_il": "Thai Beef Salad",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Thai",
+    "serves_base": 4,
+    "prep_time_mins": 130,
+    "cook_time_mins": 10,
+    "active_time_mins": 25,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=SCtq2RY5qM8",
+    "dependencies": [
+      {
+        "type": "marinate",
+        "hours_before": 2
+      }
+    ],
+    "estimated_cost_hkd": 260,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "thai",
+      "asian",
+      "salad",
+      "light"
+    ],
+    "ingredients": [
+      {
+        "item": "beef steaks, rib eye or sirloin",
+        "amount": 4,
+        "unit": "steaks",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "soy sauce (marinade)",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "brown sugar (marinade)",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "shallot, thinly sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cherry tomatoes",
+        "amount": 240,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "small cucumbers, sliced",
+        "amount": 4,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red chili, finely sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "spring onion, sliced",
+        "amount": 0.5,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh mint leaves",
+        "amount": 1,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh coriander leaves",
+        "amount": 0.5,
+        "unit": "cup",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fish sauce (dressing)",
+        "amount": 6,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "brown sugar (dressing)",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "lime juice",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red chili, chopped (dressing)",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Mix soy sauce, brown sugar, and cracked pepper. Add steaks and marinate at least 2 hours.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Mix dressing: fish sauce, brown sugar, lime juice, and chopped chili. Stir until sugar dissolves.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Combine shallot, tomatoes, cucumber, chili, spring onion, mint, and coriander in a bowl. Add dressing and toss.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Heat oil in pan over high. Sear steaks 3–4 minutes per side for medium-rare. Rest 10 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Slice thinly across the grain.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Lay sliced beef on top of the salad. Drizzle with remaining dressing. Serve.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "smoked-salmon-eggs-rosti",
+    "name": "Smoked Salmon, Eggs & Crispy Rösti",
+    "name_tl": "Smoked Salmon, Itlog at Malutong na Rösti",
+    "name_il": "Smoked Salmon, Itlog ken Nalagtiit nga Rösti",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "European",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 25,
+    "active_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=rWdFTnDdvAg",
+    "dependencies": [],
+    "estimated_cost_hkd": 260,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "salmon",
+      "egg",
+      "breakfast",
+      "rosti",
+      "potato",
+      "elegant"
+    ],
+    "ingredients": [
+      {
+        "item": "waxy potatoes",
+        "amount": 1000,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "clarified butter",
+        "amount": 75,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "shallot, finely sliced",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic clove, crushed",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh thyme, chopped",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "egg yolk",
+        "amount": 1,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "eggs",
+        "amount": 4,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "smoked salmon",
+        "amount": 200,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cream",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh dill",
+        "amount": 4,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Grate potatoes coarsely. Squeeze out as much liquid as possible with a clean towel.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Add shallot, garlic, thyme, egg yolk, and melted clarified butter to the grated potato. Season. Mix well.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Divide into 4 portions. Heat clarified butter in a heavy pan over medium. Press portions into the pan. Cook 10–12 minutes per side until deep golden and crispy.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "While rosti cook: heat a little oil in a non-stick pan over medium. Crack eggs in. Sprinkle chopped dill over whites. Add cream, cover with a lid and cook until yolks just change colour.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Lay smoked salmon over each rosti. Add a squeeze of lemon.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Place a fried egg on top of the salmon. Spoon cream from the pan over the eggs. Top with dill sprigs. Serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "mediterranean-shakshuka",
+    "name": "Mediterranean Shakshuka",
+    "name_tl": "Mediterranean na Shakshuka",
+    "name_il": "Mediterranean nga Shakshuka",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "breakfast",
+      "lunch"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 25,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=drSrAx9YM-U",
+    "dependencies": [],
+    "estimated_cost_hkd": 130,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "egg",
+      "mediterranean",
+      "quick",
+      "spicy",
+      "comfort"
+    ],
+    "ingredients": [
+      {
+        "item": "spicy cured chorizo, sliced",
+        "amount": 400,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "olive oil",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "red onion, finely sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red capsicum, sliced",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves, finely chopped",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "ground cumin",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chili flakes",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "crushed tomatoes, canned",
+        "amount": 800,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "tomato paste",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "eggs",
+        "amount": 8,
+        "unit": "large",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "feta cheese, crumbled",
+        "amount": 200,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh coriander, chopped",
+        "amount": 1,
+        "unit": "handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "crusty bread or pita, to serve",
+        "amount": 1,
+        "unit": "loaf",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Heat 2 tbsp olive oil in a large frying pan over medium. Cook chorizo slices 3–4 minutes until caramelised. Remove and set aside, leaving oil in pan.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Add onion and capsicum to same pan. Cook 5 minutes until softened.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Add garlic, paprika, cumin, and chili flakes. Stir 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add tomato paste, cook 30 seconds. Return chorizo, then add crushed tomatoes. Season. Simmer 8–10 minutes until sauce thickens.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Make 8 small wells in the sauce. Crack one egg into each. Cover and cook on low 6–8 minutes until whites are set but yolks still runny.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Scatter feta and coriander over the top. Serve directly from the pan with bread.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "perfect-scrambled-eggs",
+    "name": "Perfect Scrambled Eggs",
+    "name_tl": "Perpektong Scrambled Eggs",
+    "name_il": "Perpekto nga Scrambled Eggs",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "European",
+    "serves_base": 4,
+    "prep_time_mins": 5,
+    "cook_time_mins": 6,
+    "active_time_mins": 10,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=pJWqrEQUPGU",
+    "dependencies": [],
+    "estimated_cost_hkd": 60,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "egg",
+      "breakfast",
+      "quick",
+      "vegetarian"
+    ],
+    "ingredients": [
+      {
+        "item": "eggs",
+        "amount": 8,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cream cheese",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "sourdough or toast bread",
+        "amount": 4,
+        "unit": "slices",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh chives, chopped",
+        "amount": 1,
+        "unit": "small bunch",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Crack eggs into a bowl. Season with salt and pepper. Beat with a fork.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Toast the bread. Butter generously while hot.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "In a non-stick pan over medium heat, melt butter until it just starts to turn lightly brown.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add cream cheese and stir until almost melted.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Pour in beaten eggs. Reduce heat slightly. Using a spatula, gently push cooked egg from the edges toward the centre in slow folds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "When eggs are almost done but still slightly runny, turn off heat. Residual heat will finish them.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Pile onto buttered toast. Sprinkle with chives. Serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "chicken-liver-pate",
+    "name": "Chicken Liver Pâté",
+    "name_tl": "Pâté ng Atay ng Manok",
+    "name_il": "Pâté ti Atay ti Manok",
+    "translations_verified": false,
+    "component_type": "protein",
+    "meal_type": [
+      "breakfast",
+      "lunch"
+    ],
+    "cuisine": "French",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 10,
+    "active_time_mins": 25,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=kMwgF-GmdI0",
+    "dependencies": [
+      {
+        "type": "marinate",
+        "hours_before": 2
+      }
+    ],
+    "estimated_cost_hkd": 130,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "chicken",
+      "make-ahead",
+      "french",
+      "starter",
+      "elegant"
+    ],
+    "ingredients": [
+      {
+        "item": "chicken livers, trimmed",
+        "amount": 400,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "shallot, thinly sliced",
+        "amount": 2,
+        "unit": "large",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "bacon rashers",
+        "amount": 2,
+        "unit": "rashers",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic clove, smashed",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "bay leaf",
+        "amount": 1,
+        "unit": "leaf",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "dried thyme",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "salted butter",
+        "amount": 200,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "heavy cream",
+        "amount": 60,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "brandy",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "green peppercorns in brine, drained",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "crusty bread or crackers, to serve",
+        "amount": 1,
+        "unit": "loaf",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Melt a quarter of the butter in a frying pan over high heat. Add shallot, bacon, garlic, and thyme. Cook briefly.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Add chicken livers. Toss until outside is no longer pink.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Pour in brandy and let it cook off. Add remaining butter, cream, and bay leaf. Season. Simmer on medium 4–5 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Remove from heat, discard bay leaf. Cool 10 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Blitz everything in a blender at high speed until very smooth.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Push pâté through a fine sieve into a bowl using a small ladle.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Fold in green peppercorns and mix well.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Spoon into ramekins. Pour a thin layer of melted butter over top to seal. Refrigerate at least 2 hours before serving with crusty bread.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "spaghetti-pancetta-spicy-tomato",
+    "name": "Spaghetti with Crispy Pancetta & Spicy Tomato Sauce",
+    "name_tl": "Spaghetti na may Malutong na Pancetta at Maanghang na Sarsa ng Kamatis",
+    "name_il": "Spaghetti nga adda Nalagtiit nga Pancetta ken Maanas nga Sarsa ti Kamatis",
+    "translations_verified": false,
+    "component_type": "carb",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Italian",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 20,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=a5qeZvhLpYM",
+    "dependencies": [],
+    "estimated_cost_hkd": 160,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "pasta",
+      "pork",
+      "italian",
+      "quick",
+      "spicy"
+    ],
+    "ingredients": [
+      {
+        "item": "spaghetti",
+        "amount": 480,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "pancetta, cut into lardons",
+        "amount": 170,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "olive oil",
+        "amount": 80,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "shallot, finely chopped",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves, sliced",
+        "amount": 2,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "bird's eye chili, finely chopped",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "dry white wine",
+        "amount": 180,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "dried oregano",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "passata (tomato puree)",
+        "amount": 240,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "Parmesan, finely grated",
+        "amount": 90,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh flat-leaf parsley, chopped",
+        "amount": 1,
+        "unit": "large handful",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Bring a large pot of well-salted water to a boil. Cook spaghetti until just under al dente. Reserve 1 cup pasta water before draining.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Cook pancetta in a dry frying pan over medium-high until crispy. Remove with a slotted spoon. Leave fat in pan.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Add shallot to the pancetta fat. Cook 2–3 minutes until softened.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add garlic, chili, and oregano. Cook 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Deglaze with white wine. Add passata and return pancetta. Simmer gently 5–6 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Add drained spaghetti to the sauce. Toss, adding splashes of pasta water until sauce coats the pasta.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Remove from heat. Stir in Parmesan and parsley. Toss again. Serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "ragu-alla-bolognese",
+    "name": "Ragù Alla Bolognese",
+    "name_tl": "Ragù Alla Bolognese",
+    "name_il": "Ragù Alla Bolognese",
+    "translations_verified": false,
+    "component_type": "carb",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Italian",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 165,
+    "active_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=_ZxtF01NdT0",
+    "dependencies": [],
+    "estimated_cost_hkd": 160,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "pasta",
+      "beef",
+      "italian",
+      "make-ahead",
+      "hearty",
+      "comfort"
+    ],
+    "ingredients": [
+      {
+        "item": "beef mince (15-20% fat)",
+        "amount": 300,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "pancetta, unsmoked",
+        "amount": 150,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "carrot, finely diced",
+        "amount": 50,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "celery, finely diced",
+        "amount": 50,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "onion, finely diced",
+        "amount": 50,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "extra virgin olive oil",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "tomato paste",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "canned whole peeled tomatoes",
+        "amount": 300,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "white wine",
+        "amount": 180,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "whole milk",
+        "amount": 240,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "beef stock",
+        "amount": 250,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "tagliatelle pasta, dry",
+        "amount": 425,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Finely dice the pancetta. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "In a heavy pot over medium heat, cook pancetta until fat renders. Add oil, then carrot, celery, and onion. Cook gently until soft.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Add beef, breaking it up. Brown well.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add tomato paste, stir 1–2 minutes. Pour in white wine and let it evaporate.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Add canned tomatoes. Cover and simmer on lowest heat for 2.5 hours, stirring occasionally. Add a splash of beef stock if it dries out.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "15 minutes before done, stir in the milk. Season with salt and pepper.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Cook tagliatelle in salted boiling water, 1 minute less than packet says.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Heat ragù in a large pan. Add drained pasta and a splash of pasta water. Toss 1 minute and serve.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "buttery-tomato-pasta",
+    "name": "Buttery Tomato Pasta",
+    "name_tl": "Pasta na may Mantikilya at Kamatis",
+    "name_il": "Pasta nga adda Mantequilla ken Kamatis",
+    "translations_verified": false,
+    "component_type": "carb",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Italian",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 50,
+    "active_time_mins": 25,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=39X2t2y9jsA",
+    "dependencies": [],
+    "estimated_cost_hkd": 75,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "pasta",
+      "vegetarian",
+      "quick",
+      "italian",
+      "comfort"
+    ],
+    "ingredients": [
+      {
+        "item": "ripe Roma tomatoes",
+        "amount": 900,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red onion",
+        "amount": 1,
+        "unit": "large",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves",
+        "amount": 2,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter",
+        "amount": 85,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "bucatini or spaghetti",
+        "amount": 300,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh basil leaves",
+        "amount": 10,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "Parmesan cheese, grated",
+        "amount": 40,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Peel red onion and cut into 3 thick slices. Peel garlic cloves.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Melt butter in a saucepan on low. Add onion slices and garlic. Stew gently 10–15 minutes per side until soft and lightly caramelised.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Hold each tomato directly over a gas flame for 20 seconds until skin blisters. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Peel tomatoes. Roughly slice and add to butter mixture. Season. Simmer on very low 20–30 minutes.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Cook pasta in salted boiling water, 2 minutes less than al dente.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Blend the tomato sauce until smooth. Reserve one-third for serving; keep the rest in the pan.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Drain pasta and add to the sauce. Cook together 2 more minutes until al dente.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 8,
+        "instruction": "Serve on warm plates. Spoon reserved sauce over top. Add fresh basil and Parmesan.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "gazpacho",
+    "name": "Gazpacho Cold Soup",
+    "name_tl": "Gazpacho — Malamig na Sopas",
+    "name_il": "Gazpacho — Nalmes nga Sopas",
+    "translations_verified": false,
+    "component_type": "soup",
+    "meal_type": [
+      "lunch"
+    ],
+    "cuisine": "Spanish",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 0,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=nvqxXo-uGDk",
+    "dependencies": [],
+    "estimated_cost_hkd": 55,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "soup",
+      "vegetarian",
+      "make-ahead",
+      "spanish",
+      "light"
+    ],
+    "ingredients": [
+      {
+        "item": "ripe tomatoes",
+        "amount": 700,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cucumber",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red bell pepper",
+        "amount": 60,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "red onion, small half",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic clove",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "sherry wine vinegar",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "cumin powder",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "extra virgin olive oil",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "ice",
+        "amount": 360,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh basil",
+        "amount": 10,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic croutons",
+        "amount": 1,
+        "unit": "cup",
+        "category": "bakery",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Core and chop tomatoes. Peel and chop cucumber. Deseed and chop bell pepper. Chop onion. Crush garlic.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Put all vegetables in a blender. Add vinegar, olive oil, cumin, salt, pepper, and ice.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Blend until smooth. Taste and adjust salt.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Refrigerate at least 2 hours to let flavours meld.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Serve cold in bowls. Top with diced cucumber, diced tomato, fresh basil, and garlic croutons. Drizzle with olive oil.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "caramelised-brussels-sprouts",
+    "name": "Caramelised Brussels Sprouts with Pancetta",
+    "name_tl": "Caramelised Brussels Sprouts na may Pancetta",
+    "name_il": "Caramelised Brussels Sprouts nga adda Pancetta",
+    "translations_verified": false,
+    "component_type": "vegetable",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "European",
+    "serves_base": 4,
+    "prep_time_mins": 5,
+    "cook_time_mins": 15,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=CwJ_-vQPGB0",
+    "dependencies": [],
+    "estimated_cost_hkd": 80,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "quick",
+      "light",
+      "pork"
+    ],
+    "ingredients": [
+      {
+        "item": "Brussels sprouts",
+        "amount": 500,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "pancetta or bacon",
+        "amount": 100,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "red onion, finely sliced",
+        "amount": 1,
+        "unit": "medium",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "balsamic vinegar",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "butter",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Bring a large pot of salted water to a boil. Trim stem tips off sprouts, remove any loose leaves. Cut each in half lengthwise.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Boil Brussels sprouts 5 minutes. Drain well.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Slice pancetta into thin strips. Fry in a hot pan until slightly cooked. Add onion and stir.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add drained sprouts and butter in 3–4 pieces. Season with salt and pepper.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Press sprouts flat-side down. Stir frequently until flat sides are golden-brown. Do not burn.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Deglaze with balsamic vinegar. Stir well and serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "baked-garlic-cauliflower",
+    "name": "Baked Garlic Cauliflower",
+    "name_tl": "Inihurnong Cauliflower na may Bawang",
+    "name_il": "Inirnu nga Cauliflower nga adda Ahos",
+    "translations_verified": false,
+    "component_type": "vegetable",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "prep_time_mins": 10,
+    "cook_time_mins": 50,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=N1RSbpQR0-0",
+    "dependencies": [],
+    "estimated_cost_hkd": 70,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "vegetarian",
+      "baked",
+      "mediterranean",
+      "comfort"
+    ],
+    "ingredients": [
+      {
+        "item": "whole cauliflower",
+        "amount": 1,
+        "unit": "head",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "cream",
+        "amount": 300,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "water",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "dried oregano",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves, chopped",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "nutmeg, grated",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "Parmesan cheese, grated",
+        "amount": 60,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 200°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "In a Dutch oven (with lid), heat olive oil on medium. Add garlic and oregano, sweat briefly. Add cream and water. Grate in nutmeg, season. Stir and turn off heat.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Place whole cauliflower upside-down in the cream sauce, rotate to coat, then turn it upright. Season top with salt and pepper, drizzle with olive oil, sprinkle with Parmesan and smoked paprika.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Cover with lid and bake 45 minutes at 200°C.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Remove from oven. Transfer cauliflower to a serving plate. Stir remaining cream sauce and drizzle over top. Cut into 4 wedges and serve.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "asian-stir-fried-vegetables",
+    "name": "Asian Stir-Fried Vegetables",
+    "name_tl": "Asian na Ginisang Gulay",
+    "name_il": "Asian nga Stir-Fried nga Nateng",
+    "translations_verified": false,
+    "component_type": "vegetable",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "prep_time_mins": 20,
+    "cook_time_mins": 10,
+    "active_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=Ak5GEd2z1FI",
+    "dependencies": [],
+    "estimated_cost_hkd": 60,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "vegetarian",
+      "stir-fry",
+      "quick",
+      "asian",
+      "light"
+    ],
+    "ingredients": [
+      {
+        "item": "bok choy",
+        "amount": 2,
+        "unit": "heads",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "carrots",
+        "amount": 2,
+        "unit": "medium",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "king oyster mushrooms",
+        "amount": 150,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "broccoli",
+        "amount": 2,
+        "unit": "heads",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "red chili",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "cornstarch",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "oyster sauce",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "soy sauce",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "sesame oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Cut broccoli into florets. Peel and slice carrot into angled wedges. Separate bok choy leaves and stems.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Blanch carrots 3–4 minutes, then add broccoli for 2–3 minutes. Cool under cold water and drain.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Slice chili into thin strips. Coarsely slice garlic. Slice mushrooms lengthwise.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Mix cornstarch with half a cup of water, then add oyster sauce, soy sauce, and sesame oil. Set aside.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Heat oil gently in a wok. Add garlic and chili — don't brown them. Add mushrooms and cook until coloured.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Add bok choy stems, stir-fry 30 seconds. Add blanched vegetables and bok choy leaves, toss 30 seconds.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 7,
+        "instruction": "Turn heat to high. Pour in sauce and toss until all vegetables are glossy and coated. Serve immediately.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "avocado-guacamole",
+    "name": "Avocado Guacamole",
+    "name_tl": "Guacamole na Avocado",
+    "name_il": "Guacamole nga Avocado",
+    "translations_verified": false,
+    "component_type": "salad",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Mexican",
+    "serves_base": 4,
+    "prep_time_mins": 15,
+    "cook_time_mins": 0,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=s8MHdr5UoHE",
+    "dependencies": [],
+    "estimated_cost_hkd": 85,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetarian",
+      "mexican",
+      "quick",
+      "light",
+      "salad"
+    ],
+    "ingredients": [
+      {
+        "item": "ripe avocados",
+        "amount": 3,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lime",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "shallot or half onion",
+        "amount": 1,
+        "unit": "shallot",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh coriander",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "Roma tomatoes",
+        "amount": 3,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic cloves",
+        "amount": 2,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "serrano or jalapeño pepper",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Halve avocados, remove seeds, and scoop flesh into a bowl.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Mash with a fork to your preferred consistency.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Squeeze in lime juice and add salt. Stir to combine — this prevents browning.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Skin and deseed tomatoes, dice finely. Finely dice shallot, chilli, and garlic. Chop coriander.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Fold all vegetables and herbs into the avocado. Taste and adjust salt, lime, or chilli.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Serve immediately with corn chips or alongside grilled meat.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "rustic-meringue-pavlova",
+    "name": "Rustic Meringue Pavlova",
+    "name_tl": "Rustic na Meringue Pavlova",
+    "name_il": "Rustic nga Meringue Pavlova",
+    "translations_verified": false,
+    "component_type": "dessert",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "European",
+    "serves_base": 6,
+    "prep_time_mins": 20,
+    "cook_time_mins": 80,
+    "active_time_mins": 25,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=hwpWpqSH82w",
+    "dependencies": [],
+    "estimated_cost_hkd": 90,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetarian",
+      "elegant",
+      "make-ahead",
+      "dessert"
+    ],
+    "ingredients": [
+      {
+        "item": "egg whites, large",
+        "amount": 4,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "caster sugar",
+        "amount": 225,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cornstarch",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "cream of tartar",
+        "amount": 0.75,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "vanilla extract",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon juice",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "whipping cream",
+        "amount": 240,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "passion fruit",
+        "amount": 3,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "strawberries and mixed berries",
+        "amount": 300,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 130°C (fan). Draw a dinner-plate-sized circle on the underside of baking paper.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Whisk egg whites on low until foamy, then increase speed. Add caster sugar slowly — about 1 tbsp every 15 seconds. Add vanilla and lemon juice; whisk 15 seconds more. Fold in cornstarch by hand. Peaks should be firm.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Spoon meringue onto the circle. Spread into a round with a slight crater in the middle — keep edges a little higher than the centre. Use upward strokes for a rustic texture.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Bake 60–80 minutes. Turn off oven and leave meringue inside to cool 1–2 hours. Do not open the door.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Whip cream to soft peaks.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Transfer pavlova to a serving plate. Spread whipped cream over the top. Arrange fruit and drizzle passion fruit pulp over everything. Serve.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
+  },
+  {
+    "id": "perfect-marinara-tomato-sauce",
+    "name": "Perfect Marinara Tomato Sauce",
+    "name_tl": "Perpektong Marinara na Sarsa ng Kamatis",
+    "name_il": "Perpekto nga Marinara nga Sarsa ti Kamatis",
+    "translations_verified": false,
+    "component_type": "meal-prep",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Italian",
+    "serves_base": 4,
+    "prep_time_mins": 5,
+    "cook_time_mins": 90,
+    "active_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=-Gonz0Zr6U8",
+    "dependencies": [],
+    "estimated_cost_hkd": 35,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetarian",
+      "make-ahead",
+      "italian",
+      "sauce"
+    ],
+    "ingredients": [
+      {
+        "item": "canned whole peeled tomatoes",
+        "amount": 800,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "brown onion, half",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "garlic cloves",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh oregano or dried",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "extra virgin olive oil",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh basil leaves",
+        "amount": 10,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Finely chop the onion. Grate or mince the garlic.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 2,
+        "instruction": "Heat olive oil in a saucepan on medium-low. Add onion and cook gently until soft.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 3,
+        "instruction": "Add garlic and oregano. Cook a few more minutes without browning.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 4,
+        "instruction": "Add canned tomatoes, crushing them as you go. Cover and simmer on lowest heat for 60–90 minutes, stirring occasionally. Add a splash of water if too thick.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 5,
+        "instruction": "Season with salt and pepper. Taste and adjust.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      },
+      {
+        "step": 6,
+        "instruction": "Turn off heat. Drizzle in extra olive oil and add torn fresh basil. Stir and serve, or store in the fridge for up to 5 days.",
+        "instruction_tl": "",
+        "instruction_il": ""
+      }
+    ]
   }
 ]
