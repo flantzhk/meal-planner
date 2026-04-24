@@ -787,20 +787,28 @@
     }
 
     function useClock() {
-      const [tick, setTick] = useState(() => new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" })));
+      const getHKParts = () => {
+        const now = new Date();
+        const fmt = new Intl.DateTimeFormat("en-GB", {
+          timeZone: "Asia/Hong_Kong",
+          hour: "2-digit", minute: "2-digit", second: "2-digit",
+          day: "numeric", month: "short", weekday: "short",
+          hour12: false,
+        });
+        return Object.fromEntries(fmt.formatToParts(now).map((p) => [p.type, p.value]));
+      };
+      const [parts, setParts] = useState(getHKParts);
       useEffect(() => {
-        const id = setInterval(() => {
-          setTick(new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" })));
-        }, 1000);
+        const id = setInterval(() => setParts(getHKParts()), 1000);
         return () => clearInterval(id);
       }, []);
-      const pad = (n) => String(n).padStart(2, "0");
+      const sec = parseInt(parts.second || "0");
       return {
-        h: pad(tick.getHours()),
-        m: pad(tick.getMinutes()),
-        s: pad(tick.getSeconds()),
-        blink: tick.getSeconds() % 2 === 0,
-        dateStr: tick.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }),
+        h: parts.hour || "00",
+        m: parts.minute || "00",
+        s: parts.second || "00",
+        blink: sec % 2 === 0,
+        dateStr: `${parts.weekday || ""}, ${parts.day || ""} ${parts.month || ""}`,
       };
     }
 

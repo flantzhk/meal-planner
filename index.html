@@ -1528,32 +1528,6 @@
             }}
           />
 
-          {/* Today hero */}
-          <section className="mb-4 md:mb-6 bg-white rounded-2xl p-4 md:p-5 shadow-sm ring-1 ring-terra/20 flex flex-wrap items-center justify-between gap-3">
-            <div>
-              <div className="text-xs uppercase tracking-wide text-terra">Right now · {MP.date.dayName(today)}, {MP.date.prettyDate(today)} · 🕐 <span className="num">{clockStr}</span></div>
-              <div className="font-display text-2xl mt-1">
-                {currentMeal === "breakfast" ? "🍳 Breakfast" : currentMeal === "lunch" ? "🥗 Lunch" : "🍽️ Dinner"}
-                {todayComponentCount > 0
-                  ? <span className="text-ink"> — {todayComponentCount} dish{todayComponentCount > 1 ? "es" : ""} planned</span>
-                  : <span className="text-warm/60"> — not planned</span>}
-              </div>
-              {todayRecipe && todayRecipeSched && (
-                <div className="text-sm text-warm mt-1">
-                  Start at <span className="num font-semibold">{todayRecipeSched.startTime}</span>
-                </div>
-              )}
-            </div>
-            {todayDay && (
-              <button onClick={() => {
-                const dayIdx = plan.days.findIndex((d) => d.date === today);
-                setPicker({ dayIdx, meal: currentMeal, component: "protein" });
-              }} className="bg-terra text-cream px-4 py-2 rounded-lg text-sm">
-                {todayComponentCount > 0 ? "Edit today's meal" : "Plan today's meal"}
-              </button>
-            )}
-          </section>
-
           {todayDay && <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />}
 
           {/* Mobile: vertical per-day card list */}
