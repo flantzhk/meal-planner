@@ -42,6 +42,7 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
+    const APP_VERSION = "v1.5 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -109,13 +110,13 @@
     }
 
     // Renders a single recipe's image, ingredients and steps
-    function RecipeCard({ recipe, componentType, lang, onVerify }) {
+    function RecipeCard({ recipe, componentType, lang, onVerify, noImage }) {
       const name = MP.i18n.recipeName(recipe, lang);
       const showEng = !recipe.translations_verified && lang !== "en";
       const img = MP.recipeImage(recipe);
       return (
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
-          {img && (
+          {!noImage && img && (
             <img src={img} alt={name} className="w-full h-44 object-cover"
               onLoad={(e) => {
                 if (!MP.isYoutubePlaceholder(e.target)) return;
@@ -178,7 +179,65 @@
       );
     }
 
-    // Renders a full meal: timing header + one RecipeCard per component
+    // Accordion item: summary row that expands to show full RecipeCard
+    function ComponentAccordion({ comp, recipe, mealServes, lang, onVerify, defaultOpen }) {
+      const [open, setOpen] = useState(defaultOpen || false);
+      const name = MP.i18n.recipeName(recipe, lang);
+      const img = MP.recipeImage(recipe);
+      const scaled = {
+        ...recipe,
+        ingredients: (recipe.ingredients || []).map((i) => {
+          try { return MP.scale(i, mealServes, recipe.serves_base || 4); } catch(e) { return i; }
+        }),
+      };
+      return (
+        <div className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
+          {/* Summary row — always visible, tap to toggle */}
+          <button
+            onClick={() => setOpen((o) => !o)}
+            className="w-full flex items-center gap-3 px-4 py-3 text-left"
+          >
+            {img ? (
+              <img src={img} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0"
+                onLoad={(e) => {
+                  if (!MP.isYoutubePlaceholder(e.target)) return;
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                  e.target.style.display = "none";
+                }}
+                onError={(e) => {
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                  e.target.style.display = "none";
+                }} />
+            ) : (
+              <div className="w-12 h-12 rounded-xl bg-sand/60 flex items-center justify-center text-2xl shrink-0">
+                {COMPONENT_ICONS[comp]}
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] font-semibold uppercase tracking-wide text-warm/70">
+                {COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}
+              </div>
+              <div className="font-display text-base leading-snug truncate">{name}</div>
+            </div>
+            <span className="text-warm/50 text-lg shrink-0 transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>
+              ›
+            </span>
+          </button>
+          {/* Expanded content */}
+          {open && (
+            <div className="border-t border-sand">
+              <RecipeCard recipe={scaled} componentType={comp} lang={lang} onVerify={onVerify} noImage />
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Renders a full meal: timing header + summary + accordion per component
     function MealSection({ mealType, day, recipesById, planServes, lang, onVerify, nowMin }) {
       const mealObj = MP.getMealObj(day, mealType);
       const mealTime = day[mealType + "_time"];
@@ -197,16 +256,19 @@
         if (sched.hasOvernightDep) hasOvernightDep = true;
       }
       const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
-      const isUpNext = nowMin != null && nowMin < serveMin;
       const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
 
+      // Summary chips: one per component that has a recipe
+      const summaryChips = ALL_COMPONENTS
+        .map((comp) => {
+          const id = mealObj[comp]; if (!id) return null;
+          const r = recipesById[id]; if (!r) return null;
+          return { comp, name: MP.i18n.recipeName(r, lang) };
+        })
+        .filter(Boolean);
+
       return (
-        <div className="relative space-y-3">
-          {isUpNext && (
-            <div className="absolute -top-3 left-4 z-10 bg-terra text-cream text-[11px] font-semibold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
-              Up next
-            </div>
-          )}
+        <div className="space-y-3">
           {/* Timing header */}
           {hasOvernightDep ? (
             <div className="bg-warm text-cream px-5 py-3 rounded-2xl">
@@ -226,17 +288,28 @@
               </div>
             </div>
           )}
-          {/* One card per component */}
-          {ALL_COMPONENTS.map((comp) => {
+          {/* Summary chips */}
+          {summaryChips.length > 0 && (
+            <div className="flex flex-wrap gap-2 px-1">
+              {summaryChips.map(({ comp, name }) => (
+                <span key={comp} className="inline-flex items-center gap-1 bg-sand text-ink text-sm px-3 py-1 rounded-full">
+                  <span>{COMPONENT_ICONS[comp]}</span>
+                  <span className="font-medium">{name}</span>
+                </span>
+              ))}
+            </div>
+          )}
+          {/* Accordion per component */}
+          {ALL_COMPONENTS.map((comp, i) => {
             const id = mealObj[comp]; if (!id) return null;
             const r = recipesById[id]; if (!r) return null;
-            const scaled = {
-              ...r,
-              ingredients: (r.ingredients || []).map((i) => {
-                try { return MP.scale(i, mealServes, r.serves_base || 4); } catch(e) { return i; }
-              }),
-            };
-            return <RecipeCard key={comp} componentType={comp} recipe={scaled} lang={lang} onVerify={onVerify} />;
+            return (
+              <ComponentAccordion
+                key={comp} comp={comp} recipe={r}
+                mealServes={mealServes} lang={lang} onVerify={onVerify}
+                defaultOpen={i === 0 && summaryChips.length === 1}
+              />
+            );
           })}
         </div>
       );
@@ -642,39 +715,62 @@
     function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
       const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
       if (tasks.length === 0) return null;
-      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook", serve: "🍽️ Serve" };
+
+      // Group tasks by timestamp
+      const groups = [];
+      for (const tk of tasks) {
+        const last = groups[groups.length - 1];
+        if (last && last.at === tk.at) { last.items.push(tk); }
+        else { groups.push({ at: tk.at, items: [tk] }); }
+      }
+
+      const kindIcon = { defrost: "❄️", marinate: "🧂", cook: "🔥", serve: "🍽️" };
       const kindClass = {
-        defrost: "bg-sky-100 text-sky-900",
-        marinate: "bg-amber-100 text-amber-900",
-        cook: "bg-terra/20 text-terra",
-        serve: "bg-sage/20 text-sage",
+        defrost: "text-sky-700",
+        marinate: "text-amber-700",
+        cook: "text-terra",
+        serve: "text-sage",
       };
+
+      // Find which group is "up next"
+      const upNextGroupIdx = groups.findIndex((g) => g.at > nowMin);
+
       return (
         <section className="bg-white rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
-          <h3 className="font-display text-lg mb-3">⏱ Today's schedule</h3>
-          <ol className="space-y-2">
-            {tasks.map((tk, i) => {
-              const past = tk.at <= nowMin;
-              const upNext = !past && tasks.slice(0, i).every((x) => x.at <= nowMin);
+          <h3 className="font-display text-lg mb-4">⏱ Today's schedule</h3>
+          <ol className="space-y-0">
+            {groups.map((group, gi) => {
+              const allPast = group.at <= nowMin;
+              const isUpNext = gi === upNextGroupIdx;
               return (
-                <li key={i}
-                  className={`flex items-start gap-3 p-2 rounded-lg ${
-                    upNext ? "bg-terra/10 ring-1 ring-terra" :
-                    past ? "opacity-40" : ""
-                  }`}>
-                  <div className="num text-warm min-w-[4.5rem] pt-0.5">
-                    {MP.schedule.fmtTime(tk.at)}
-                  </div>
-                  <div className="flex-1">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[tk.kind]}`}>
-                      {kindLabel[tk.kind]}
-                    </span>
-                    <span className={past ? "line-through" : ""}>{tk.label}</span>
-                    {tk.flagEarly && !past && (
-                      <div className="text-xs text-terra mt-0.5">⚠ Start earlier than usual</div>
+                <li key={gi} className={`flex gap-4 ${allPast ? "opacity-40" : ""}`}>
+                  {/* Time column */}
+                  <div className="flex flex-col items-center">
+                    <div className={`num text-sm font-semibold min-w-[3.5rem] text-right pt-0.5 ${isUpNext ? "text-terra" : "text-warm"}`}>
+                      {MP.schedule.fmtTime(group.at)}
+                    </div>
+                    {/* Connector line */}
+                    {gi < groups.length - 1 && (
+                      <div className="w-px flex-1 bg-sand mt-1.5 mb-0" style={{ minHeight: "1.5rem" }} />
                     )}
                   </div>
-                  {upNext && <span className="text-xs text-terra font-semibold self-center">← next</span>}
+                  {/* Tasks column */}
+                  <div className={`flex-1 pb-4 ${isUpNext ? "rounded-xl bg-terra/8 ring-1 ring-terra/30 px-3 py-2 -mx-1 mb-3" : ""}`}>
+                    {isUpNext && (
+                      <div className="text-[10px] font-bold uppercase tracking-widest text-terra mb-1">Up next</div>
+                    )}
+                    <ul className="space-y-1">
+                      {group.items.map((tk, ti) => (
+                        <li key={ti} className="flex items-start gap-2 text-sm">
+                          <span className={`${kindClass[tk.kind]} mt-0.5 shrink-0`}>{kindIcon[tk.kind]}</span>
+                          <span className={allPast ? "line-through text-warm" : ""}>{tk.label}</span>
+                          {tk.flagEarly && !allPast && (
+                            <span className="text-[11px] text-terra ml-1 shrink-0">⚠ early</span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </li>
               );
             })}
@@ -742,6 +838,71 @@
             </div>
           </div>
         </div>
+      );
+    }
+
+    // Today tab: meal sub-nav (Breakfast / Lunch / Dinner) + MealSection per selected meal
+    function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify }) {
+      const MEAL_LIST = ["breakfast", "lunch", "dinner"];
+      const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
+      const MEAL_LABEL = { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner" };
+
+      // Auto-select the "up next" meal, or the first meal that has recipes
+      const upNextMeal = MEAL_LIST.find((m) => {
+        if (!MP.getMealRecipeIds(todayDay, m).length) return false;
+        const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
+        return MP.schedule.parseHM(mt) > nowMin;
+      });
+      const firstWithRecipes = MEAL_LIST.find((m) => MP.getMealRecipeIds(todayDay, m).length > 0);
+      const [activeMeal, setActiveMeal] = useState(upNextMeal || firstWithRecipes || "breakfast");
+
+      return (
+        <>
+          <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+          <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+          <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
+
+          {/* Meal sub-navigation */}
+          <div className="flex gap-2 mt-5 mb-4">
+            {MEAL_LIST.map((meal) => {
+              const hasRecipes = MP.getMealRecipeIds(todayDay, meal).length > 0;
+              const isActive = activeMeal === meal;
+              const isUpNext = meal === upNextMeal;
+              return (
+                <button
+                  key={meal}
+                  onClick={() => setActiveMeal(meal)}
+                  disabled={!hasRecipes}
+                  className={`flex-1 py-2.5 px-1 rounded-2xl text-sm font-medium transition relative
+                    ${isActive ? "bg-ink text-cream shadow" : hasRecipes ? "bg-sand text-ink" : "bg-sand/40 text-warm/40 cursor-default"}`}
+                >
+                  <div>{MEAL_EMOJI[meal]}</div>
+                  <div className="text-xs mt-0.5">{MEAL_LABEL[meal]}</div>
+                  {isUpNext && !isActive && (
+                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-terra text-cream text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
+                      Next
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Active meal section */}
+          <MealSection
+            key={activeMeal}
+            mealType={activeMeal}
+            day={todayDay}
+            recipesById={recipesById}
+            planServes={planServes}
+            lang={lang}
+            onVerify={onVerify}
+            nowMin={activeMeal === upNextMeal ? nowMin : null}
+          />
+          {!MP.getMealRecipeIds(todayDay, activeMeal).length && (
+            <div className="text-center text-warm/60 text-sm py-10">No meal planned for {MEAL_LABEL[activeMeal].toLowerCase()}.</div>
+          )}
+        </>
       );
     }
 
@@ -905,28 +1066,11 @@
           </nav>
 
           {tab === "today" && (
-            <>
-              <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-              <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-              {/* Change 3: PrepTomorrow moved BEFORE meal cards */}
-              <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
-              <div className="space-y-8 mt-6">
-                {(() => {
-                  const meals = ["breakfast", "lunch", "dinner"];
-                  const upNextMeal = meals.find((meal) => {
-                    if (!MP.getMealRecipeIds(todayDay, meal).length) return false;
-                    const mt = todayDay[meal + "_time"] || MP.schedule.defaultMealTime(meal);
-                    return MP.schedule.parseHM(mt) > nowMin;
-                  });
-                  return meals.map((meal) => (
-                    <MealSection key={meal} mealType={meal} day={todayDay}
-                      recipesById={recipesById} planServes={planServes}
-                      lang={lang} onVerify={verify}
-                      nowMin={meal === upNextMeal ? nowMin : null} />
-                  ));
-                })()}
-              </div>
-            </>
+            <TodayView
+              todayDay={todayDay} tomorrowDay={tomorrowDay}
+              recipesById={recipesById} planServes={planServes}
+              nowMin={nowMin} lang={lang} onVerify={verify}
+            />
           )}
 
           {tab === "coming" && (
@@ -950,8 +1094,9 @@
             className="fixed left-1/2 -translate-x-1/2 bottom-20 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
           </div>
 
-          {/* Change 6: Fixed footer with LangToggle */}
-          <div className="fixed bottom-0 left-0 right-0 z-30 bg-cream/95 backdrop-blur border-t border-warm/10 px-4 py-2 flex justify-center">
+          {/* Fixed footer with LangToggle + version */}
+          <div className="fixed bottom-0 left-0 right-0 z-30 bg-cream/95 backdrop-blur border-t border-warm/10 px-4 py-2 flex items-center justify-between">
+            <span className="text-[11px] text-warm/40 select-none">{APP_VERSION}</span>
             <LangToggle lang={lang} onChange={setLang} />
           </div>
 
