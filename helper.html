@@ -42,7 +42,7 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const APP_VERSION = "v1.6 · 2026-04-24";
+    const APP_VERSION = "v1.8 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -339,7 +339,7 @@
               <ComponentAccordion
                 key={comp} comp={comp} recipe={r}
                 mealServes={mealServes} lang={lang} onVerify={onVerify}
-                defaultOpen={i === 0 && summaryChips.length === 1}
+                defaultOpen={false}
               />
             );
           })}
@@ -487,6 +487,25 @@
       );
     }
 
+    function ItemRow({ it, has, onTick, srcLabel }) {
+      const amt = it.amount != null ? Number(Number(it.amount).toFixed(2)) : "";
+      return (
+        <li className={`flex items-center gap-3 text-sm px-4 py-3 transition ${has ? "bg-sage/5" : "bg-white"}`}>
+          <button
+            aria-label={has ? "Unmark" : "Mark as bought"}
+            onClick={onTick}
+            className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${
+              has ? "bg-sage border-sage text-white" : "border-warm/30 bg-white"
+            }`}>
+            {has && <span className="text-sm font-bold leading-none">✓</span>}
+          </button>
+          <span className="num text-warm/70 min-w-[4.5rem] text-xs">{amt} {it.unit || ""}</span>
+          <span className={`flex-1 ${has ? "line-through text-warm/50" : ""}`}>{it.item}</span>
+          {srcLabel && <span className="text-xs text-warm/50 shrink-0">{srcLabel}</span>}
+        </li>
+      );
+    }
+
     function ShoppingView({ recipes, plan, pantry, onToggle, lang, sources, extras, onToggleExtra }) {
       const groups = MP.buildShoppingList(recipes, plan, sources);
       const [filter, setFilter] = useState(() => sessionStorage.getItem("mpShopFilter") || "all");
@@ -547,26 +566,6 @@
             }
           }
         }
-      }
-
-      // Shared item row renderer
-      function ItemRow({ it, has, onTick, srcLabel }) {
-        const amt = it.amount != null ? Number(Number(it.amount).toFixed(2)) : "";
-        return (
-          <li className={`flex items-center gap-3 text-sm px-4 py-3 transition ${has ? "bg-sage/5" : "bg-white"}`}>
-            <button
-              aria-label={has ? "Unmark" : "Mark as bought"}
-              onClick={onTick}
-              className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${
-                has ? "bg-sage border-sage text-white" : "border-warm/30 bg-white"
-              }`}>
-              {has && <span className="text-sm font-bold leading-none">✓</span>}
-            </button>
-            <span className="num text-warm/70 min-w-[4.5rem] text-xs">{amt} {it.unit || ""}</span>
-            <span className={`flex-1 ${has ? "line-through text-warm/50" : ""}`}>{it.item}</span>
-            {srcLabel && <span className="text-xs text-warm/50 shrink-0">{srcLabel}</span>}
-          </li>
-        );
       }
 
       return (
