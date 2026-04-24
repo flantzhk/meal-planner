@@ -42,7 +42,7 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const APP_VERSION = "v1.9 · 2026-04-24";
+    const APP_VERSION = "v2.0 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -73,7 +73,7 @@
 
     // Change 2: NowBar — fixed slim bar always visible at top
     function NowBar({ day, nextDay, recipesById, nowMin, lang }) {
-      const { h, m, s, blink, dateStr } = useClock();
+      const { h, m, s, ampm, blink, dateStr } = useClock();
       let content = null;
       let overdue = false;
 
@@ -105,7 +105,7 @@
           <div>
             <div className="text-[10px] font-semibold uppercase tracking-widest opacity-50 leading-none mb-0.5">Current time · {dateStr}</div>
             <div className="num font-display text-xl leading-none tracking-tight">
-              {h}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{m}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{s}
+              {h}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{m}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{s}<span className="text-sm ml-1 opacity-70">{ampm}</span>
             </div>
           </div>
           {/* Right: cooking action */}
@@ -799,11 +799,11 @@
     function useClock() {
       const getHKParts = () => {
         const now = new Date();
-        const fmt = new Intl.DateTimeFormat("en-GB", {
+        const fmt = new Intl.DateTimeFormat("en-US", {
           timeZone: "Asia/Hong_Kong",
-          hour: "2-digit", minute: "2-digit", second: "2-digit",
+          hour: "numeric", minute: "2-digit", second: "2-digit",
           day: "numeric", month: "short", weekday: "short",
-          hour12: false,
+          hour12: true,
         });
         return Object.fromEntries(fmt.formatToParts(now).map((p) => [p.type, p.value]));
       };
@@ -814,9 +814,10 @@
       }, []);
       const sec = parseInt(parts.second || "0");
       return {
-        h: parts.hour || "00",
+        h: parts.hour || "12",
         m: parts.minute || "00",
         s: parts.second || "00",
+        ampm: parts.dayPeriod || "",
         blink: sec % 2 === 0,
         dateStr: `${parts.weekday || ""}, ${parts.day || ""} ${parts.month || ""}`,
       };
@@ -825,6 +826,8 @@
     function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
       const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
       if (tasks.length === 0) return null;
+
+      const [open, setOpen] = useState(false);
 
       // Group tasks by timestamp
       const groups = [];
@@ -844,47 +847,63 @@
 
       // Find which group is "up next"
       const upNextGroupIdx = groups.findIndex((g) => g.at > nowMin);
+      const upNext = upNextGroupIdx >= 0 ? groups[upNextGroupIdx] : null;
+      const upNextLabel = upNext
+        ? `${MP.schedule.fmtTime(upNext.at)} — ${upNext.items.map((t) => t.label).join(", ")}`
+        : "All done for today";
 
       return (
-        <section className="bg-white rounded-2xl p-4 mb-6 shadow-sm ring-1 ring-black/5">
-          <h3 className="font-display text-lg mb-4">⏱ Today's schedule</h3>
-          <ol className="space-y-0">
-            {groups.map((group, gi) => {
-              const allPast = group.at <= nowMin;
-              const isUpNext = gi === upNextGroupIdx;
-              return (
-                <li key={gi} className={`flex gap-4 ${allPast ? "opacity-40" : ""}`}>
-                  {/* Time column */}
-                  <div className="flex flex-col items-center">
-                    <div className={`num text-sm font-semibold min-w-[3.5rem] text-right pt-0.5 ${isUpNext ? "text-terra" : "text-warm"}`}>
-                      {MP.schedule.fmtTime(group.at)}
-                    </div>
-                    {/* Connector line */}
-                    {gi < groups.length - 1 && (
-                      <div className="w-px flex-1 bg-sand mt-1.5 mb-0" style={{ minHeight: "1.5rem" }} />
-                    )}
-                  </div>
-                  {/* Tasks column */}
-                  <div className={`flex-1 pb-4 ${isUpNext ? "rounded-xl bg-terra/8 ring-1 ring-terra/30 px-3 py-2 -mx-1 mb-3" : ""}`}>
-                    {isUpNext && (
-                      <div className="text-[10px] font-bold uppercase tracking-widest text-terra mb-1">Up next</div>
-                    )}
-                    <ul className="space-y-1">
-                      {group.items.map((tk, ti) => (
-                        <li key={ti} className="flex items-start gap-2 text-sm">
-                          <span className={`${kindClass[tk.kind]} mt-0.5 shrink-0`}>{kindIcon[tk.kind]}</span>
-                          <span className={allPast ? "line-through text-warm" : ""}>{tk.label}</span>
-                          {tk.flagEarly && !allPast && (
-                            <span className="text-[11px] text-terra ml-1 shrink-0">⚠ early</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+        <section className="bg-white rounded-2xl mb-6 shadow-sm ring-1 ring-black/5 overflow-hidden">
+          <button
+            onClick={() => setOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3.5 text-left"
+          >
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-warm/60 mb-0.5">⏱ Today's schedule</div>
+              <div className={`text-sm font-medium ${upNext ? "text-terra" : "text-warm"}`}>{upNextLabel}</div>
+            </div>
+            <span className={`text-warm/40 text-xl transition-transform shrink-0 ml-3 ${open ? "rotate-180" : ""}`}>⌄</span>
+          </button>
+          {open && (
+            <div className="border-t border-sand px-4 pb-4 pt-3">
+              <ol className="space-y-0">
+                {groups.map((group, gi) => {
+                  const allPast = group.at <= nowMin;
+                  const isUpNext = gi === upNextGroupIdx;
+                  return (
+                    <li key={gi} className={`flex gap-4 ${allPast ? "opacity-40" : ""}`}>
+                      {/* Time column */}
+                      <div className="flex flex-col items-center">
+                        <div className={`num text-sm font-semibold min-w-[3.5rem] text-right pt-0.5 ${isUpNext ? "text-terra" : "text-warm"}`}>
+                          {MP.schedule.fmtTime(group.at)}
+                        </div>
+                        {gi < groups.length - 1 && (
+                          <div className="w-px flex-1 bg-sand mt-1.5 mb-0" style={{ minHeight: "1.5rem" }} />
+                        )}
+                      </div>
+                      {/* Tasks column */}
+                      <div className={`flex-1 pb-4 ${isUpNext ? "rounded-xl bg-terra/8 ring-1 ring-terra/30 px-3 py-2 -mx-1 mb-3" : ""}`}>
+                        {isUpNext && (
+                          <div className="text-[10px] font-bold uppercase tracking-widest text-terra mb-1">Up next</div>
+                        )}
+                        <ul className="space-y-1">
+                          {group.items.map((tk, ti) => (
+                            <li key={ti} className="flex items-start gap-2 text-sm">
+                              <span className={`${kindClass[tk.kind]} mt-0.5 shrink-0`}>{kindIcon[tk.kind]}</span>
+                              <span className={allPast ? "line-through text-warm" : ""}>{tk.label}</span>
+                              {tk.flagEarly && !allPast && (
+                                <span className="text-[11px] text-terra ml-1 shrink-0">⚠ early</span>
+                              )}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </div>
+          )}
         </section>
       );
     }
@@ -951,54 +970,14 @@
       );
     }
 
-    // Today tab: meal sub-nav (Breakfast / Lunch / Dinner) + MealSection per selected meal
-    function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify }) {
-      const MEAL_LIST = ["breakfast", "lunch", "dinner"];
-      const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
+    // Today meal view — shows schedule + one meal (meal controlled by App via bottom nav)
+    function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify, activeMeal, upNextMeal }) {
       const MEAL_LABEL = { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner" };
-
-      // Auto-select the "up next" meal, or the first meal that has recipes
-      const upNextMeal = MEAL_LIST.find((m) => {
-        if (!MP.getMealRecipeIds(todayDay, m).length) return false;
-        const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
-        return MP.schedule.parseHM(mt) > nowMin;
-      });
-      const firstWithRecipes = MEAL_LIST.find((m) => MP.getMealRecipeIds(todayDay, m).length > 0);
-      const [activeMeal, setActiveMeal] = useState(upNextMeal || firstWithRecipes || "breakfast");
-
       return (
         <>
           <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
           <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
           <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
-
-          {/* Meal sub-navigation */}
-          <div className="flex gap-2 mt-5 mb-4">
-            {MEAL_LIST.map((meal) => {
-              const hasRecipes = MP.getMealRecipeIds(todayDay, meal).length > 0;
-              const isActive = activeMeal === meal;
-              const isUpNext = meal === upNextMeal;
-              return (
-                <button
-                  key={meal}
-                  onClick={() => setActiveMeal(meal)}
-                  disabled={!hasRecipes}
-                  className={`flex-1 py-2.5 px-1 rounded-2xl text-sm font-medium transition relative
-                    ${isActive ? "bg-ink text-cream shadow" : hasRecipes ? "bg-sand text-ink" : "bg-sand/40 text-warm/40 cursor-default"}`}
-                >
-                  <div>{MEAL_EMOJI[meal]}</div>
-                  <div className="text-xs mt-0.5">{MEAL_LABEL[meal]}</div>
-                  {isUpNext && !isActive && (
-                    <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 bg-terra text-cream text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full">
-                      Next
-                    </span>
-                  )}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Active meal section */}
           <MealSection
             key={activeMeal}
             mealType={activeMeal}
@@ -1018,7 +997,7 @@
 
     function App() {
       const [lang, setLang] = useState(langStore());
-      const [tab, setTab] = useState("today"); // "today" | "coming" | "shop"
+      const [tab, setTab] = useState(MP.date.currentMeal()); // "breakfast"|"lunch"|"dinner"|"coming"|"shop"
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
       const [upcoming, setUpcoming] = useState([]);
@@ -1150,36 +1129,32 @@
         };
       }
 
+      const MEAL_TABS = ["breakfast", "lunch", "dinner"];
+      const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
+      const upNextMeal = todayDay ? MEAL_TABS.find((m) => {
+        if (!MP.getMealRecipeIds(todayDay, m).length) return false;
+        const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
+        return MP.schedule.parseHM(mt) > nowMin;
+      }) : null;
+      const isMealTab = MEAL_TABS.includes(tab);
+      const headerTitle = isMealTab ? t(lang, "cookToday") : tab === "coming" ? t(lang, "thisWeek") : t(lang, "shopping");
+
       return (
         <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
-          {/* Change 2: NowBar — always visible fixed bar */}
           <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
 
           <header className="mb-5 mt-6">
+            <div className="text-xs font-semibold uppercase tracking-widest text-warm/50 mb-1">{headerTitle}</div>
             <h1 className="font-display text-4xl leading-none">{MP.date.dayName(today, lang)}</h1>
             <div className="text-sm text-warm mt-1 num">{MP.date.prettyDate(today, lang)}</div>
           </header>
 
-          <nav className="flex gap-1 mb-6 bg-sand rounded-full p-1 text-sm">
-            <button onClick={() => setTab("today")}
-              className={`flex-1 py-2 rounded-full transition ${tab === "today" ? "bg-cream shadow" : "text-warm"}`}>
-              🍳 Today
-            </button>
-            <button onClick={() => setTab("coming")}
-              className={`flex-1 py-2 rounded-full transition ${tab === "coming" ? "bg-cream shadow" : "text-warm"}`}>
-              📅 This week
-            </button>
-            <button onClick={() => setTab("shop")}
-              className={`flex-1 py-2 rounded-full transition ${tab === "shop" ? "bg-cream shadow" : "text-warm"}`}>
-              🛒 Shop {needCount > 0 && <span className="ml-1 text-xs bg-terra text-cream rounded-full px-2 num">{needCount}</span>}
-            </button>
-          </nav>
-
-          {tab === "today" && (
+          {isMealTab && (
             <TodayView
               todayDay={todayDay} tomorrowDay={tomorrowDay}
               recipesById={recipesById} planServes={planServes}
               nowMin={nowMin} lang={lang} onVerify={verify}
+              activeMeal={tab} upNextMeal={upNextMeal}
             />
           )}
 
@@ -1201,13 +1176,47 @@
           )}
 
           <div id="flash" aria-live="polite"
-            className="fixed left-1/2 -translate-x-1/2 bottom-20 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
+            className="fixed left-1/2 -translate-x-1/2 bottom-24 bg-ink text-cream px-4 py-2 rounded-full text-sm shadow-lg opacity-0 pointer-events-none transition">
           </div>
 
-          {/* Fixed footer with LangToggle + version */}
-          <div className="fixed bottom-0 left-0 right-0 z-30 bg-cream/95 backdrop-blur border-t border-warm/10 px-4 py-2 flex items-center justify-between">
-            <span className="text-[11px] text-warm/40 select-none">{APP_VERSION}</span>
-            <LangToggle lang={lang} onChange={setLang} />
+          {/* Bottom navigation */}
+          <nav className="fixed bottom-0 left-0 right-0 z-30 bg-cream/97 backdrop-blur border-t border-warm/10 flex">
+            {MEAL_TABS.map((meal) => {
+              const isActive = tab === meal;
+              const isUpNext = meal === upNextMeal;
+              const hasRecipes = todayDay && MP.getMealRecipeIds(todayDay, meal).length > 0;
+              return (
+                <button key={meal} onClick={() => setTab(meal)}
+                  className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition
+                    ${isActive ? "text-terra" : hasRecipes ? "text-warm" : "text-warm/30"}`}>
+                  {isUpNext && !isActive && (
+                    <span className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-terra" />
+                  )}
+                  <span className="text-lg leading-none">{MEAL_EMOJI[meal]}</span>
+                  <span className="text-[10px] font-medium">{MP.i18n.meals[lang][meal]}</span>
+                  {isActive && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
+                </button>
+              );
+            })}
+            <button onClick={() => setTab("coming")}
+              className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition ${tab === "coming" ? "text-terra" : "text-warm"}`}>
+              <span className="text-lg leading-none">📅</span>
+              <span className="text-[10px] font-medium">{t(lang, "thisWeek")}</span>
+              {tab === "coming" && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
+            </button>
+            <button onClick={() => setTab("shop")}
+              className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition ${tab === "shop" ? "text-terra" : "text-warm"}`}>
+              <span className="text-lg leading-none">🛒</span>
+              <span className="text-[10px] font-medium relative">
+                {t(lang, "shopping")}
+                {needCount > 0 && <span className="absolute -top-2 -right-3 bg-terra text-cream text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{needCount}</span>}
+              </span>
+              {tab === "shop" && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
+            </button>
+            <div className="flex flex-col items-center justify-center px-2 py-2.5 border-l border-warm/10">
+              <LangToggle lang={lang} onChange={setLang} />
+            </div>
+          </nav>
           </div>
 
           {study && (

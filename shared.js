@@ -165,6 +165,7 @@
     },
     ui: {
       en: { start: "Start", steps: "Steps", ingredients: "Ingredients",
+            cookToday: "What to Cook Today", thisWeek: "This Week",
             prepTomorrow: "Prep for tomorrow", today: "Today",
             watch: "Watch video", loved: "Loved", disliked: "Didn't like",
             comment: "Note", save: "Save", verify: "Translation OK?",
@@ -176,6 +177,7 @@
             conflict: "Stove conflict with adjacent meal",
             startEarly: "Start previous day — confirm with Faith" },
       tl: { start: "Simula", steps: "Mga hakbang", ingredients: "Mga sangkap",
+            cookToday: "Ano ang Iluluto Ngayon", thisWeek: "Linggong Ito",
             prepTomorrow: "Paghahanda para bukas", today: "Ngayon",
             watch: "Panoorin ang video", loved: "Gusto", disliked: "Hindi gusto",
             comment: "Puna", save: "I-save", verify: "Tama ba ang salin?",
@@ -187,6 +189,7 @@
             conflict: "Magkabanggaan sa kalan",
             startEarly: "Simulan kagabi — kumpirmahin kay Faith" },
       il: { start: "Irugi", steps: "Dagiti addang", ingredients: "Dagiti sangkap",
+            cookToday: "Ania ti Iluto Ita", thisWeek: "Daytoy a Lawas",
             prepTomorrow: "Panagisagana para inton bigat", today: "Ita",
             watch: "Buyaen ti video", loved: "Naimas", disliked: "Haan a naimas",
             comment: "Palawag", save: "Isalbar", verify: "Husto ti patarus?",
