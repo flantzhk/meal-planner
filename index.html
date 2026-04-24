@@ -40,7 +40,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useState } = React;
-    const APP_VERSION = "v1.5 · 2026-04-24";
+    const APP_VERSION = "v1.6 · 2026-04-24";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -1045,57 +1045,85 @@
 
     function TodayTimeline({ day, nextDay, recipesById, nowMin }) {
       const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
-      if (tasks.length === 0) {
-        return (
-          <div className="bg-white rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
-            <h2 className="font-display text-xl mb-1">⏱ Today's schedule</h2>
-            <p className="text-sm text-warm">Nothing planned for today yet.</p>
-          </div>
-        );
+
+      // Group by timestamp
+      const groups = [];
+      for (const tk of tasks) {
+        const last = groups[groups.length - 1];
+        if (last && last.at === tk.at) last.items.push(tk);
+        else groups.push({ at: tk.at, items: [tk] });
       }
-      const kindLabel = { defrost: "❄️ Defrost", marinate: "🧂 Marinate", cook: "🔥 Cook", serve: "🍽️ Serve" };
-      const kindClass = {
-        defrost: "bg-sky-100 text-sky-900",
-        marinate: "bg-amber-100 text-amber-900",
-        cook: "bg-terra/20 text-terra",
-        serve: "bg-sage/20 text-sage",
-      };
+
+      const upNextGroup = groups.find((g) => g.at > nowMin);
+      const upNextLabel = upNextGroup
+        ? `Next: ${MP.schedule.fmtTime(upNextGroup.at)} — ${upNextGroup.items.map((t) => t.label).join(", ")}`
+        : tasks.length ? "All done for today" : "Nothing planned";
+
+      const [open, setOpen] = useState(false);
+
+      const kindIcon = { defrost: "❄️", marinate: "🧂", cook: "🔥", serve: "🍽️" };
+      const kindClass = { defrost: "text-sky-700", marinate: "text-amber-700", cook: "text-terra", serve: "text-sage" };
+      const upNextGroupIdx = groups.findIndex((g) => g.at > nowMin);
+
       return (
-        <div className="bg-white rounded-2xl p-5 shadow-sm ring-1 ring-black/5">
-          <h2 className="font-display text-xl mb-3">⏱ Today's schedule</h2>
-          <ol className="space-y-2">
-            {tasks.map((t, i) => {
-              const past = t.at <= nowMin;
-              const upNext = !past && tasks.slice(0, i).every((x) => x.at <= nowMin);
-              return (
-                <li key={i}
-                  className={`flex items-start gap-3 p-2 rounded-lg ${
-                    upNext ? "bg-terra/10 ring-1 ring-terra" :
-                    past ? "opacity-40" : ""
-                  }`}>
-                  <div className="num text-warm min-w-[5rem] pt-0.5">
-                    {MP.schedule.fmtTime(t.at)}
-                  </div>
-                  <div className="flex-1">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${kindClass[t.kind]}`}>
-                      {kindLabel[t.kind]}
-                    </span>
-                    <span className={past ? "line-through" : ""}>{t.label}</span>
-                    {t.flagEarly && !past && (
-                      <div className="text-xs text-terra mt-0.5">⚠ Start earlier than usual</div>
-                    )}
-                  </div>
-                  {upNext && <span className="text-xs text-terra font-semibold self-center">← next</span>}
-                </li>
-              );
-            })}
-          </ol>
-          <p className="text-xs text-warm mt-4 leading-relaxed">
-            Send to Leni:{" "}
-            <a href="https://flantzhk.github.io/meal-planner/helper.html"
-               target="_blank" rel="noopener"
-               className="underline break-all">flantzhk.github.io/meal-planner/helper.html</a>
-          </p>
+        <div className="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden mb-4 md:mb-6">
+          {/* Toggle header */}
+          <button
+            onClick={() => setOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-5 py-3.5 text-left"
+          >
+            <div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-warm/60 mb-0.5">⏱ Today's cooking & meal schedule</div>
+              <div className={`text-sm font-medium ${upNextGroup ? "text-terra" : "text-warm"}`}>{upNextLabel}</div>
+            </div>
+            <span className="text-warm/40 text-xl transition-transform shrink-0 ml-3"
+              style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)" }}>›</span>
+          </button>
+
+          {/* Collapsible body */}
+          {open && (
+            <div className="border-t border-sand px-5 pb-5 pt-4">
+              {groups.length === 0 ? (
+                <p className="text-sm text-warm">Nothing planned for today yet.</p>
+              ) : (
+                <ol className="space-y-0">
+                  {groups.map((group, gi) => {
+                    const allPast = group.at <= nowMin;
+                    const isUpNext = gi === upNextGroupIdx;
+                    return (
+                      <li key={gi} className={`flex gap-4 ${allPast ? "opacity-40" : ""}`}>
+                        <div className="flex flex-col items-end">
+                          <div className={`num text-sm font-semibold min-w-[3.5rem] text-right pt-0.5 ${isUpNext ? "text-terra" : "text-warm"}`}>
+                            {MP.schedule.fmtTime(group.at)}
+                          </div>
+                          {gi < groups.length - 1 && (
+                            <div className="w-px flex-1 bg-sand mt-1.5" style={{ minHeight: "1.25rem" }} />
+                          )}
+                        </div>
+                        <div className={`flex-1 pb-3 ${isUpNext ? "rounded-xl bg-terra/8 ring-1 ring-terra/30 px-3 py-2 -mx-1 mb-2" : ""}`}>
+                          {isUpNext && <div className="text-[10px] font-bold uppercase tracking-widest text-terra mb-1">Up next</div>}
+                          <ul className="space-y-1">
+                            {group.items.map((tk, ti) => (
+                              <li key={ti} className="flex items-start gap-2 text-sm">
+                                <span className={`${kindClass[tk.kind]} mt-0.5 shrink-0`}>{kindIcon[tk.kind]}</span>
+                                <span className={allPast ? "line-through text-warm" : ""}>{tk.label}</span>
+                                {tk.flagEarly && !allPast && <span className="text-[11px] text-terra ml-1 shrink-0">⚠ early</span>}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+              )}
+              <p className="text-xs text-warm mt-3 leading-relaxed">
+                Helper view:{" "}
+                <a href="https://flantzhk.github.io/meal-planner/helper.html" target="_blank" rel="noopener"
+                  className="underline">flantzhk.github.io/meal-planner/helper.html</a>
+              </p>
+            </div>
+          )}
         </div>
       );
     }
@@ -1526,6 +1554,8 @@
             )}
           </section>
 
+          {todayDay && <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />}
+
           {/* Mobile: vertical per-day card list */}
           <div className="md:hidden space-y-3">
             {plan.days.map((d, dayIdx) => {
@@ -1610,11 +1640,6 @@
             </table>
           </div>
 
-          {todayDay && (
-            <section className="mt-10">
-              <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />
-            </section>
-          )}
 
           <Modal open={!!picker} onClose={() => setPicker(null)}
             title={picker ? `${plan.days[picker.dayIdx].day} — ${picker.meal}` : ""}>

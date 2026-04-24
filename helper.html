@@ -42,7 +42,7 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const APP_VERSION = "v1.5 · 2026-04-24";
+    const APP_VERSION = "v1.6 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["soup", "salad"];
@@ -73,6 +73,7 @@
 
     // Change 2: NowBar — fixed slim bar always visible at top
     function NowBar({ day, nextDay, recipesById, nowMin, lang }) {
+      const { h, m, s, blink, dateStr } = useClock();
       let content = null;
       let overdue = false;
 
@@ -82,29 +83,33 @@
         if (upcoming) {
           const minsToStart = upcoming.at - nowMin;
           overdue = minsToStart <= 0;
-          const startMsg = overdue
+          content = overdue
             ? "⚡ Cook now"
             : minsToStart < 60
-              ? `Start cooking in ${minsToStart} min`
-              : `Start cooking at ${MP.schedule.fmtTime(upcoming.at)}`;
-          content = startMsg;
+              ? `Start in ${minsToStart} min`
+              : `Start at ${MP.schedule.fmtTime(upcoming.at)}`;
         } else {
-          content = "🌙 All done for today";
+          content = "🌙 All done";
         }
       } else {
-        content = "🌙 All done for today";
+        content = "🌙 All done";
       }
-
-      const nowClock = MP.date.hkNowClock(lang);
 
       return (
         <div
-          className={`fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 text-sm ${
+          className={`fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-4 ${
             overdue ? "bg-terra text-cream" : "bg-ink text-cream"
           }`}
-          style={{ height: "44px" }}>
-          <span className="num font-semibold">{nowClock}</span>
-          <span>{content}</span>
+          style={{ height: "56px" }}>
+          {/* Left: live clock */}
+          <div>
+            <div className="text-[10px] font-semibold uppercase tracking-widest opacity-50 leading-none mb-0.5">Current time · {dateStr}</div>
+            <div className="num font-display text-xl leading-none tracking-tight">
+              {h}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{m}<span style={{ opacity: blink ? 1 : 0.25 }}>:</span>{s}
+            </div>
+          </div>
+          {/* Right: cooking action */}
+          <div className={`text-sm font-medium ${overdue ? "text-cream" : "text-cream/80"}`}>{content}</div>
         </div>
       );
     }
@@ -117,20 +122,28 @@
       return (
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
           {!noImage && img && (
-            <img src={img} alt={name} className="w-full h-44 object-cover"
-              onLoad={(e) => {
-                if (!MP.isYoutubePlaceholder(e.target)) return;
-                const s = e.target.src;
-                if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                e.target.style.display = "none";
-              }}
-              onError={(e) => {
-                const s = e.target.src;
-                if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                e.target.style.display = "none";
-              }} />
+            <a href={recipe.youtube_url || undefined} target="_blank" rel="noopener"
+              className={recipe.youtube_url ? "block relative group" : "block"}>
+              <img src={img} alt={name} className="w-full h-44 object-cover"
+                onLoad={(e) => {
+                  if (!MP.isYoutubePlaceholder(e.target)) return;
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                  e.target.style.display = "none";
+                }}
+                onError={(e) => {
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                  e.target.style.display = "none";
+                }} />
+              {recipe.youtube_url && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition">
+                  <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ Watch video</div>
+                </div>
+              )}
+            </a>
           )}
           <div className="p-5">
             <div className="flex items-center gap-2 text-warm text-xs uppercase tracking-wide mb-1">
@@ -198,20 +211,26 @@
             className="w-full flex items-center gap-3 px-4 py-3 text-left"
           >
             {img ? (
-              <img src={img} alt="" className="w-12 h-12 rounded-xl object-cover shrink-0"
-                onLoad={(e) => {
-                  if (!MP.isYoutubePlaceholder(e.target)) return;
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                  e.target.style.display = "none";
-                }}
-                onError={(e) => {
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                  e.target.style.display = "none";
-                }} />
+              <div className="relative shrink-0 w-12 h-12"
+                onClick={(e) => { if (recipe.youtube_url) { e.stopPropagation(); window.open(recipe.youtube_url, "_blank", "noopener"); } }}>
+                <img src={img} alt="" className="w-12 h-12 rounded-xl object-cover"
+                  onLoad={(e) => {
+                    if (!MP.isYoutubePlaceholder(e.target)) return;
+                    const s = e.target.src;
+                    if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                    if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                    e.target.style.display = "none";
+                  }}
+                  onError={(e) => {
+                    const s = e.target.src;
+                    if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                    if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
+                    e.target.style.display = "none";
+                  }} />
+                {recipe.youtube_url && (
+                  <div className="absolute bottom-0.5 right-0.5 bg-black/60 text-white text-[9px] leading-none px-1 py-0.5 rounded font-bold">▶</div>
+                )}
+              </div>
             ) : (
               <div className="w-12 h-12 rounded-xl bg-sand/60 flex items-center justify-center text-2xl shrink-0">
                 {COMPONENT_ICONS[comp]}
@@ -258,17 +277,41 @@
       const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
       const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
 
-      // Summary chips: one per component that has a recipe
-      const summaryChips = ALL_COMPONENTS
-        .map((comp) => {
-          const id = mealObj[comp]; if (!id) return null;
-          const r = recipesById[id]; if (!r) return null;
-          return { comp, name: MP.i18n.recipeName(r, lang) };
-        })
-        .filter(Boolean);
+      // Hero image: protein first, then first available
+      const heroRecipe = recipesById[mealObj.protein] ||
+        ALL_COMPONENTS.map((c) => mealObj[c] && recipesById[mealObj[c]]).find(Boolean);
+      const heroImg = heroRecipe ? MP.recipeImage(heroRecipe) : null;
 
       return (
         <div className="space-y-3">
+          {/* Banner hero image */}
+          {heroImg && (
+            <a href={heroRecipe.youtube_url || undefined} target="_blank" rel="noopener"
+              className={`block relative rounded-2xl overflow-hidden ${heroRecipe.youtube_url ? "group" : ""}`}>
+              <img src={heroImg} alt="" className="w-full h-44 object-cover"
+                onLoad={(e) => {
+                  if (!MP.isYoutubePlaceholder(e.target)) return;
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
+                  e.target.style.display = "none";
+                }}
+                onError={(e) => {
+                  const s = e.target.src;
+                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
+                  if (heroRecipe.hero_image && s !== heroRecipe.hero_image) { e.target.src = heroRecipe.hero_image; return; }
+                  e.target.parentElement.style.display = "none";
+                }} />
+              {heroRecipe.youtube_url && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition pointer-events-none">
+                  <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ Watch video</div>
+                </div>
+              )}
+              {heroRecipe.youtube_url && (
+                <div className="absolute bottom-2 right-2 bg-black/60 text-white text-xs font-bold px-2 py-1 rounded-lg">▶ Watch</div>
+              )}
+            </a>
+          )}
           {/* Timing header */}
           {hasOvernightDep ? (
             <div className="bg-warm text-cream px-5 py-3 rounded-2xl">
@@ -286,17 +329,6 @@
                 <div className="text-xs opacity-60 mb-0.5">Serve at</div>
                 <div className="font-display text-xl num leading-none">{servedAtLabel}</div>
               </div>
-            </div>
-          )}
-          {/* Summary chips */}
-          {summaryChips.length > 0 && (
-            <div className="flex flex-wrap gap-2 px-1">
-              {summaryChips.map(({ comp, name }) => (
-                <span key={comp} className="inline-flex items-center gap-1 bg-sand text-ink text-sm px-3 py-1 rounded-full">
-                  <span>{COMPONENT_ICONS[comp]}</span>
-                  <span className="font-medium">{name}</span>
-                </span>
-              ))}
             </div>
           )}
           {/* Accordion per component */}
@@ -457,9 +489,7 @@
 
     function ShoppingView({ recipes, plan, pantry, onToggle, lang, sources, extras, onToggleExtra }) {
       const groups = MP.buildShoppingList(recipes, plan, sources);
-      // Change 8: persist filter to sessionStorage
       const [filter, setFilter] = useState(() => sessionStorage.getItem("mpShopFilter") || "all");
-      // Change 4: search state
       const [search, setSearch] = useState("");
 
       const sourceLabels = {
@@ -474,29 +504,35 @@
       const sourceOrder = ["wet-market", "supermarket", "hktvmall", "other"];
       const key = (it) => (it.item || "").toLowerCase().trim();
 
-      // Change 8: persist filter on change
       function updateFilter(val) {
         setFilter(val);
         sessionStorage.setItem("mpShopFilter", val);
       }
 
+      // Counts per store
       const counts = {};
       for (const src of sourceOrder) {
         const g = groups[src];
         if (!g) continue;
-        let remaining = 0, total = 0;
+        let bought = 0, total = 0;
         for (const items of Object.values(g)) for (const it of items) {
-          total++; if (!pantry[key(it)]) remaining++;
+          total++; if (pantry[key(it)]) bought++;
         }
-        counts[src] = { remaining, total };
+        counts[src] = { bought, total, remaining: total - bought };
       }
       const extrasRemaining = (extras || []).filter((x) => !x.done).length;
       const extrasTotal = (extras || []).length;
+      const extrasBought = extrasTotal - extrasRemaining;
+
+      // Overall totals
+      const overallTotal = Object.values(counts).reduce((s, c) => s + c.total, 0) + extrasTotal;
+      const overallBought = Object.values(counts).reduce((s, c) => s + c.bought, 0) + extrasBought;
+      const overallRemaining = overallTotal - overallBought;
 
       const showSource = (src) => filter === "all" || filter === src;
       const showExtras = extrasTotal > 0 && (filter === "all" || filter === "extras");
 
-      // Change 4: search — flatten all items across all sources
+      // Search
       const searchActive = search.trim().length > 0;
       let searchResults = [];
       if (searchActive) {
@@ -506,21 +542,76 @@
           if (!g) continue;
           for (const [cat, items] of Object.entries(g)) {
             for (const it of items) {
-              if ((it.item || "").toLowerCase().includes(q)) {
+              if ((it.item || "").toLowerCase().includes(q))
                 searchResults.push({ ...it, _src: src, _cat: cat });
-              }
             }
           }
         }
       }
 
+      // Shared item row renderer
+      function ItemRow({ it, has, onTick, srcLabel }) {
+        const amt = it.amount != null ? Number(Number(it.amount).toFixed(2)) : "";
+        return (
+          <li className={`flex items-center gap-3 text-sm px-4 py-3 transition ${has ? "bg-sage/5" : "bg-white"}`}>
+            <button
+              aria-label={has ? "Unmark" : "Mark as bought"}
+              onClick={onTick}
+              className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${
+                has ? "bg-sage border-sage text-white" : "border-warm/30 bg-white"
+              }`}>
+              {has && <span className="text-sm font-bold leading-none">✓</span>}
+            </button>
+            <span className="num text-warm/70 min-w-[4.5rem] text-xs">{amt} {it.unit || ""}</span>
+            <span className={`flex-1 ${has ? "line-through text-warm/50" : ""}`}>{it.item}</span>
+            {srcLabel && <span className="text-xs text-warm/50 shrink-0">{srcLabel}</span>}
+          </li>
+        );
+      }
+
       return (
         <div>
-          <p className="text-sm text-warm mb-3">
-            Tick ✓ items you already have at home. They'll move to the bottom.
-          </p>
+          {/* Summary card */}
+          {!searchActive && overallTotal > 0 && (
+            <div className="bg-white rounded-2xl p-4 mb-4 shadow-sm ring-1 ring-black/5">
+              <div className="flex items-baseline justify-between mb-3">
+                <h3 className="font-display text-lg">Shopping summary</h3>
+                <span className="num text-sm text-warm">{overallBought} of {overallTotal} done</span>
+              </div>
+              {/* Progress bar */}
+              <div className="h-2 bg-sand rounded-full overflow-hidden mb-3">
+                <div
+                  className="h-full bg-sage rounded-full transition-all"
+                  style={{ width: overallTotal ? `${(overallBought / overallTotal) * 100}%` : "0%" }}
+                />
+              </div>
+              {/* Per-store breakdown */}
+              <ul className="space-y-1.5">
+                {sourceOrder.map((src) => {
+                  const c = counts[src]; if (!c || c.total === 0) return null;
+                  const allDone = c.remaining === 0;
+                  return (
+                    <li key={src} className="flex items-center justify-between text-sm">
+                      <span className={allDone ? "text-sage" : "text-ink"}>{sourceLabels[src]}</span>
+                      <span className={`num text-xs ${allDone ? "text-sage font-semibold" : "text-warm"}`}>
+                        {allDone ? "✓ all done" : `${c.bought} of ${c.total} · ${c.remaining} left`}
+                      </span>
+                    </li>
+                  );
+                })}
+                {extrasTotal > 0 && (
+                  <li className="flex items-center justify-between text-sm">
+                    <span className={extrasRemaining === 0 ? "text-sage" : "text-ink"}>➕ Extras</span>
+                    <span className={`num text-xs ${extrasRemaining === 0 ? "text-sage font-semibold" : "text-warm"}`}>
+                      {extrasRemaining === 0 ? "✓ all done" : `${extrasBought} of ${extrasTotal} · ${extrasRemaining} left`}
+                    </span>
+                  </li>
+                )}
+              </ul>
+            </div>
+          )}
 
-          {/* Change 4: Search input */}
+          {/* Search */}
           <div className="relative mb-3">
             <input value={search} onChange={e => setSearch(e.target.value)}
               placeholder="Search items…"
@@ -528,110 +619,92 @@
             {search && <button onClick={() => setSearch("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-warm">×</button>}
           </div>
 
-          {/* Filter nav — hidden during search */}
+          {/* Store filter nav */}
           {!searchActive && (
-            <nav className="sticky top-11 z-10 -mx-4 px-4 py-2 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-3">
-              {/* Change 1: unified active state for All button */}
+            <nav className="sticky top-11 z-10 -mx-4 px-4 py-2 mb-4 bg-cream/95 backdrop-blur border-b border-warm/10 flex flex-wrap gap-2">
               <button onClick={() => updateFilter("all")}
-                className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "all" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                className={`px-3 py-1.5 rounded-full text-sm ${filter === "all" ? "bg-ink text-cream" : "bg-white text-warm ring-1 ring-warm/20"}`}>
                 All
               </button>
               {sourceOrder.map((src) => {
                 if (!counts[src]) return null;
                 const active = filter === src;
-                const { remaining, total } = counts[src];
+                const { remaining } = counts[src];
                 return (
                   <button key={src} onClick={() => updateFilter(src)}
-                    className={`px-3 py-1.5 rounded-full text-sm ring-1 ${active ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                    className={`px-3 py-1.5 rounded-full text-sm ${active ? "bg-ink text-cream" : "bg-white text-warm ring-1 ring-warm/20"}`}>
                     {sourceLabels[src]}
-                    <span className={`ml-1.5 num text-xs ${active ? "text-terra/70" : "text-warm"}`}>{remaining}/{total}</span>
+                    {remaining > 0 && <span className="ml-1.5 num text-xs opacity-70">{remaining}</span>}
+                    {remaining === 0 && counts[src].total > 0 && <span className="ml-1.5 text-sage text-xs">✓</span>}
                   </button>
                 );
               })}
               {extrasTotal > 0 && (
                 <button onClick={() => updateFilter("extras")}
-                  className={`px-3 py-1.5 rounded-full text-sm ring-1 ${filter === "extras" ? "ring-2 ring-terra text-terra bg-white" : "bg-white text-warm ring-1 ring-warm/20"}`}>
-                  ➕ Extras <span className={`ml-1.5 num text-xs ${filter === "extras" ? "text-terra/70" : "text-warm"}`}>{extrasRemaining}/{extrasTotal}</span>
+                  className={`px-3 py-1.5 rounded-full text-sm ${filter === "extras" ? "bg-ink text-cream" : "bg-white text-warm ring-1 ring-warm/20"}`}>
+                  ➕ Extras {extrasRemaining > 0 && <span className="ml-1 num text-xs opacity-70">{extrasRemaining}</span>}
+                  {extrasRemaining === 0 && extrasTotal > 0 && <span className="ml-1 text-sage text-xs">✓</span>}
                 </button>
               )}
             </nav>
           )}
 
-          {/* Change 4: Search results */}
+          {/* Search results */}
           {searchActive && (
             <div className="mb-6">
-              <div className="text-xs text-warm uppercase tracking-wide mb-2">Results for '{search}'</div>
-              {searchResults.length === 0 && (
-                <p className="text-sm text-warm/60 italic">No items found.</p>
-              )}
-              <ul className="space-y-1">
+              <div className="text-xs text-warm uppercase tracking-wide mb-2">Results for "{search}"</div>
+              {searchResults.length === 0 && <p className="text-sm text-warm/60 italic">No items found.</p>}
+              <ul className="rounded-2xl overflow-hidden divide-y divide-sand space-y-0 shadow-sm ring-1 ring-black/5">
                 {searchResults.map((it, i) => {
                   const has = !!pantry[key(it)];
-                  return (
-                    <li key={i} className={`flex items-center gap-3 text-sm p-4 rounded-lg bg-white`}>
-                      <button
-                        aria-label={has ? "Mark as need to buy" : "Mark as already have"}
-                        onClick={() => onToggle(key(it), !has)}
-                        className={`shrink-0 w-7 h-7 rounded-full border-2 flex items-center justify-center transition ${
-                          has ? "bg-sage border-sage text-white" : "border-warm/40 bg-white"
-                        }`}>
-                        {has && <span className="text-sm font-bold leading-none">✓</span>}
-                      </button>
-                      <span className="num text-warm min-w-[5rem]">
-                        {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
-                      </span>
-                      <span className="flex-1">{it.item}</span>
-                      <span className="text-xs text-warm/60">{sourceLabels[it._src] || it._src}</span>
-                    </li>
-                  );
+                  return <ItemRow key={i} it={it} has={has}
+                    onTick={() => onToggle(key(it), !has)}
+                    srcLabel={sourceLabels[it._src]} />;
                 })}
               </ul>
             </div>
           )}
 
-          {/* Normal view — hidden during search */}
+          {/* Normal view */}
           {!searchActive && (
             <>
               {showExtras && (
                 <section className="mb-6">
-                  <h3 className="font-display text-lg text-sage">➕ Extras</h3>
-                  {/* Change 5: extras with Got it pill */}
+                  <h3 className="font-display text-lg mb-2">➕ Extras</h3>
                   {(() => {
                     const unchecked = (extras || []).filter((x) => !x.done);
                     const checked = (extras || []).filter((x) => x.done);
                     return (
-                      <>
-                        <ul className="mt-2 space-y-1">
-                          {unchecked.map((x) => (
-                            <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white">
-                              <button
-                                onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
-                                className="shrink-0 w-7 h-7 rounded-full border-2 border-warm/40 bg-white flex items-center justify-center transition">
-                              </button>
-                              <span className="flex-1">{x.item}</span>
-                              <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
-                            </li>
-                          ))}
-                        </ul>
+                      <div className="rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 divide-y divide-sand">
+                        {unchecked.map((x) => (
+                          <li key={x.id} className="list-none flex items-center gap-3 text-sm px-4 py-3 bg-white">
+                            <button onClick={() => onToggleExtra && onToggleExtra(x.id, true)}
+                              className="shrink-0 w-7 h-7 rounded-full border-2 border-warm/30 bg-white flex items-center justify-center" />
+                            <span className="flex-1">{x.item}</span>
+                            <span className="text-xs text-warm/50">{sourceLabels[x.source] || x.source}</span>
+                          </li>
+                        ))}
                         {checked.length > 0 && (
-                          <details className="mt-2">
-                            <summary className="text-xs text-warm cursor-pointer">Already have ({checked.length})</summary>
-                            <ul className="mt-1 space-y-1">
-                              {checked.map((x) => (
-                                <li key={x.id} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
-                                  <button
-                                    onClick={() => onToggleExtra && onToggleExtra(x.id, !x.done)}
-                                    className="shrink-0 w-7 h-7 rounded-full border-2 bg-sage border-sage text-white flex items-center justify-center transition">
-                                    <span className="text-sm font-bold leading-none">✓</span>
-                                  </button>
-                                  <span className="flex-1">{x.item}</span>
-                                  <span className="text-xs text-warm">{sourceLabels[x.source] || x.source}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </details>
+                          <>
+                            <div className="px-4 py-2 bg-sage/10 text-xs font-semibold text-sage uppercase tracking-wide">
+                              Got ✓ — {checked.length} item{checked.length > 1 ? "s" : ""}
+                            </div>
+                            {checked.map((x) => (
+                              <li key={x.id} className="list-none flex items-center gap-3 text-sm px-4 py-3 bg-sage/5">
+                                <button onClick={() => onToggleExtra && onToggleExtra(x.id, false)}
+                                  className="shrink-0 w-7 h-7 rounded-full border-2 bg-sage border-sage text-white flex items-center justify-center">
+                                  <span className="text-sm font-bold leading-none">✓</span>
+                                </button>
+                                <span className="flex-1 line-through text-warm/50">{x.item}</span>
+                                <span className="text-xs text-warm/50">{sourceLabels[x.source] || x.source}</span>
+                              </li>
+                            ))}
+                          </>
                         )}
-                      </>
+                        {unchecked.length === 0 && checked.length === 0 && (
+                          <li className="list-none text-sm text-warm/50 px-4 py-3 bg-white">No extras added.</li>
+                        )}
+                      </div>
                     );
                   })()}
                 </section>
@@ -639,61 +712,62 @@
 
               {sourceOrder.map((src) => {
                 const g = groups[src];
-                if (!g) return null;
-                if (!showSource(src)) return null;
+                if (!g || !showSource(src)) return null;
+                // Collect all items across categories, split bought/needed
+                const allNeeded = [], allBought = [], catMap = {};
+                for (const [cat, items] of Object.entries(g)) {
+                  for (const it of items) {
+                    const has = !!pantry[key(it)];
+                    const entry = { ...it, _cat: cat };
+                    if (has) allBought.push(entry); else allNeeded.push(entry);
+                  }
+                  catMap[cat] = true;
+                }
+                if (allNeeded.length === 0 && allBought.length === 0) return null;
                 return (
                   <section key={src} className="mb-6">
-                    <h3 className="font-display text-lg text-terra">{sourceLabels[src] || src}</h3>
-                    {Object.entries(g).map(([cat, items]) => {
-                      const unchecked = items.filter((it) => !pantry[key(it)]);
-                      const checked = items.filter((it) => !!pantry[key(it)]);
-                      return (
-                        <div key={cat} className="mt-2">
-                          <div className="uppercase tracking-wide text-xs text-warm mb-1">{categoryLabels[cat] || cat}</div>
-                          {/* Change 5: unchecked items with Got it pill */}
-                          <ul className="space-y-1">
-                            {unchecked.map((it, i) => {
-                              const has = false;
-                              return (
-                                <li key={i} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white">
-                                  <button
-                                    aria-label="Mark as already have"
-                                    onClick={() => onToggle(key(it), true)}
-                                    className="shrink-0 w-7 h-7 rounded-full border-2 border-warm/40 bg-white flex items-center justify-center transition">
-                                  </button>
-                                  <span className="num text-warm min-w-[5rem]">
-                                    {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
-                                  </span>
-                                  <span>{it.item}</span>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                          {/* Change 5: checked items in collapsed details at bottom */}
-                          {checked.length > 0 && (
-                            <details>
-                              <summary className="text-xs text-warm cursor-pointer mt-2">Already have ({checked.length})</summary>
-                              <ul className="mt-1 space-y-1">
-                                {checked.map((it, i) => (
-                                  <li key={i} className="flex items-center gap-3 text-sm p-4 rounded-lg bg-white opacity-50">
-                                    <button
-                                      aria-label="Mark as need to buy"
-                                      onClick={() => onToggle(key(it), false)}
-                                      className="shrink-0 w-7 h-7 rounded-full border-2 bg-sage border-sage text-white flex items-center justify-center transition">
-                                      <span className="text-sm font-bold leading-none">✓</span>
-                                    </button>
-                                    <span className="num text-warm min-w-[5rem]">
-                                      {it.amount != null ? Number(Number(it.amount).toFixed(2)) : ""} {it.unit || ""}
-                                    </span>
-                                    <span>{it.item}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            </details>
-                          )}
+                    <div className="flex items-baseline justify-between mb-2">
+                      <h3 className="font-display text-lg">{sourceLabels[src] || src}</h3>
+                      {allBought.length > 0 && (
+                        <span className="text-xs text-sage num">{allBought.length} of {allNeeded.length + allBought.length} got</span>
+                      )}
+                    </div>
+                    <div className="rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5 divide-y divide-sand">
+                      {/* Items still needed — grouped by category */}
+                      {Object.keys(catMap).map((cat) => {
+                        const needed = allNeeded.filter((it) => it._cat === cat);
+                        if (needed.length === 0) return null;
+                        return (
+                          <React.Fragment key={cat}>
+                            <div className="px-4 py-2 bg-sand/50 text-xs font-semibold uppercase tracking-wide text-warm">
+                              {categoryLabels[cat] || cat}
+                            </div>
+                            {needed.map((it, i) => (
+                              <ItemRow key={i} it={it} has={false}
+                                onTick={() => onToggle(key(it), true)} />
+                            ))}
+                          </React.Fragment>
+                        );
+                      })}
+                      {/* Got section — always visible when there are bought items */}
+                      {allBought.length > 0 && (
+                        <>
+                          <div className="px-4 py-2 bg-sage/10 text-xs font-semibold text-sage uppercase tracking-wide">
+                            Got ✓ — {allBought.length} item{allBought.length > 1 ? "s" : ""}
+                          </div>
+                          {allBought.map((it, i) => (
+                            <ItemRow key={i} it={it} has={true}
+                              onTick={() => onToggle(key(it), false)} />
+                          ))}
+                        </>
+                      )}
+                      {/* All done state */}
+                      {allNeeded.length === 0 && allBought.length > 0 && (
+                        <div className="px-4 py-3 bg-sage/5 text-sm text-sage font-medium text-center">
+                          ✓ All done at {sourceLabels[src]}
                         </div>
-                      );
-                    })}
+                      )}
+                    </div>
                   </section>
                 );
               })}
@@ -706,10 +780,28 @@
     function useNow() {
       const [now, setNow] = useState(() => MP.date.hkNowMin());
       useEffect(() => {
-        const id = setInterval(() => setNow(MP.date.hkNowMin()), 30 * 1000);
+        const id = setInterval(() => setNow(MP.date.hkNowMin()), 1000);
         return () => clearInterval(id);
       }, []);
       return now;
+    }
+
+    function useClock() {
+      const [tick, setTick] = useState(() => new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" })));
+      useEffect(() => {
+        const id = setInterval(() => {
+          setTick(new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" })));
+        }, 1000);
+        return () => clearInterval(id);
+      }, []);
+      const pad = (n) => String(n).padStart(2, "0");
+      return {
+        h: pad(tick.getHours()),
+        m: pad(tick.getMinutes()),
+        s: pad(tick.getSeconds()),
+        blink: tick.getSeconds() % 2 === 0,
+        dateStr: tick.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }),
+      };
     }
 
     function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
@@ -1041,7 +1133,7 @@
       }
 
       return (
-        <main className="max-w-xl mx-auto px-4 pt-11 pb-24">
+        <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
           {/* Change 2: NowBar — always visible fixed bar */}
           <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
 
