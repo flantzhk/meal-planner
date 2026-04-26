@@ -7949,5 +7949,2323 @@
         "instruction_il": "Ipatay ti init. Budbuden ti dadduma pay nga olive oil ken iteddu ti napiraten nga sariwa nga basil. Ikuting ken iserbi, wenno ibilin iti ired iti agingga 5 nga aldaw."
       }
     ]
+  },
+  {
+    "id": "steamed-white-rice",
+    "name": "Steamed White Rice",
+    "name_tl": "Pinasingawang Puting Kanin",
+    "name_il": "Nasisinaw nga Puraw nga Bagas",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "active_time_mins": 5,
+    "prep_time_mins": 2,
+    "cook_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=syx4yrqdnxU",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "jasmine rice",
+        "amount": 360,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "water",
+        "amount": 480,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "salt",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Rinse the rice in cold water 2–3 times until the water runs mostly clear.",
+        "instruction_tl": "Banlawan ang bigas sa malamig na tubig ng 2–3 beses hanggang luminis ang tubig.",
+        "instruction_il": "Bagsaken ti bagas iti nalaka nga danum 2–3 nga beses agingga nalinaw ti danum."
+      },
+      {
+        "step": 2,
+        "instruction": "Add the rinsed rice to a pot with water and salt. Bring to a boil over high heat.",
+        "instruction_tl": "Ilagay ang nabanlaw na bigas sa palayok kasama ang tubig at asin. Pakuluan sa mataas na apoy.",
+        "instruction_il": "Iteddu ti nabagsak nga bagas iti palyok nga adda danum ken asin. Paaputiren iti nangato nga init."
+      },
+      {
+        "step": 3,
+        "instruction": "Once boiling, reduce heat to the lowest setting. Cover tightly with a lid.",
+        "instruction_tl": "Kapag kumulo na, bawasan ang apoy sa pinakamababa. Takpan nang mahigpit.",
+        "instruction_il": "No nagaputo na, bawasan ti init iti pinaka-baba. Takpan ti natebbelen."
+      },
+      {
+        "step": 4,
+        "instruction": "Cook for 18 minutes. Do not lift the lid during this time.",
+        "instruction_tl": "Lutuin ng 18 minuto. Huwag buksan ang takip sa buong panahon na ito.",
+        "instruction_il": "Lutuan iti 18 minuto. Saan nga ibukod ti takder iti daytoy nga oras."
+      },
+      {
+        "step": 5,
+        "instruction": "Remove from heat. Let steam for 5 more minutes with the lid still on, then fluff with a fork and serve.",
+        "instruction_tl": "Alisin sa apoy. Hayaang masingaw pa ng 5 minuto na may takip, saka gamitin ang tinidor para gawing malambot at ihain.",
+        "instruction_il": "Ikkaten iti init. Pabayagen nga agsisinaw iti 5 minuto nga adda takder, sa gamitten ti tenedor tapno mapalsek ken iserbi."
+      }
+    ],
+    "estimated_cost_hkd": 20,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "rice",
+      "side",
+      "basic",
+      "asian",
+      "staple"
+    ]
+  },
+  {
+    "id": "mashed-potatoes",
+    "name": "Mashed Potatoes",
+    "name_tl": "Dinurog na Patatas",
+    "name_il": "Nadig-dig nga Patatas",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 15,
+    "prep_time_mins": 10,
+    "cook_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=zcCzUm5J-x4",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "potatoes (Russet or Yukon Gold)",
+        "amount": 1000,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 60,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "whole milk or cream",
+        "amount": 120,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "white pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Peel and cut potatoes into even chunks. Place in a pot, cover with cold salted water.",
+        "instruction_tl": "Balatan at hiwain ang patatas sa pantay na mga piraso. Ilagay sa palayok, takpan ng malamig na may-asin na tubig.",
+        "instruction_il": "Balayan ken pirdasen ti patatas iti pantay nga piraso. Ilatag iti palyok, takpan ti nalaka nga nasinan nga danum."
+      },
+      {
+        "step": 2,
+        "instruction": "Bring to a boil, then simmer for 15–18 minutes until a fork slides in easily.",
+        "instruction_tl": "Pakuluan, saka ibaba ang apoy at lutuin ng 15–18 minuto hanggang madali nang tumalab ang tinidor.",
+        "instruction_il": "Paaputiren, sa ibaba ti init ken lutuan iti 15–18 minuto agingga nalaka nga sumrek ti tenedor."
+      },
+      {
+        "step": 3,
+        "instruction": "Drain the potatoes. Return to the pot over low heat for 1 minute to dry out any excess moisture.",
+        "instruction_tl": "Patausing ang tubig ng patatas. Ibalik sa palayok sa mababang apoy ng 1 minuto para matuyo ang labis na tubig.",
+        "instruction_il": "Ilabas ti danum ti patatas. Isubli iti palyok iti baba nga init iti 1 minuto tapno mauga ti labes nga kaggawa."
+      },
+      {
+        "step": 4,
+        "instruction": "Mash the potatoes with a masher or fork. Add butter and warm milk gradually, stirring until smooth and creamy.",
+        "instruction_tl": "Durugin ang patatas gamit ang masher o tinidor. Idagdag ang mantikilya at mainit na gatas nang paunti-unti, haluin hanggang maging maayos at malambot.",
+        "instruction_il": "Dig-digen ti patatas babaen ti masher wenno tenedor. Iteddu ti butter ken nalidayaw nga gatas iti bassit-bassit, ikuting agingga nagninas ken napalsek."
+      },
+      {
+        "step": 5,
+        "instruction": "Season with salt and white pepper. Taste and adjust. Serve immediately.",
+        "instruction_tl": "Timplahan ng asin at puting paminta. Tikman at ayusin. Ihain agad.",
+        "instruction_il": "Timplaan ti asin ken puraw nga paminta. Tikman ken urnosen. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 40,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "potato",
+      "side",
+      "basic",
+      "western",
+      "comfort"
+    ]
+  },
+  {
+    "id": "egg-fried-rice",
+    "name": "Egg Fried Rice",
+    "name_tl": "Sinangag na Kanin na may Itlog",
+    "name_il": "Sinangad nga Bagas nga adda Itlog",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 5,
+    "cook_time_mins": 10,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=a7NtNxzROpI",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "cooked rice (day-old preferred)",
+        "amount": 600,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "eggs",
+        "amount": 3,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "soy sauce",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sesame oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "spring onions",
+        "amount": 3,
+        "unit": "stalks",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "white pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Break up any clumps in the cold cooked rice with your hands. Mince the garlic. Slice spring onions, keeping green and white parts separate.",
+        "instruction_tl": "Sirain ang mga bukol sa malamig na luto na kanin gamit ang iyong mga kamay. Tadtarin ang bawang. Hiwain ang sibuyas dahon, paghiwain ang berde at puting bahagi.",
+        "instruction_il": "Saraken ti nagtitipon iti nalamiis nga nalutu nga bagas babaen ti ima. Tadtaren ti ahos. Haplaen ti kutsay, pabukodan ti berde ken puraw nga parte."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat wok or large pan over very high heat until smoking. Add oil.",
+        "instruction_tl": "Initin ang wok o malaking kawali sa napakataas na apoy hanggang mag-usok. Lagyan ng mantika.",
+        "instruction_il": "Initin ti wok wenno dakkel nga kawali iti napung-ngeg nga init agingga agusiuk. Iteddu ti lana."
+      },
+      {
+        "step": 3,
+        "instruction": "Add garlic and white parts of spring onion. Stir-fry for 30 seconds.",
+        "instruction_tl": "Ilagay ang bawang at puting bahagi ng sibuyas dahon. Igisa ng 30 segundo.",
+        "instruction_il": "Iteddu ti ahos ken puraw nga parte ti kutsay. Ginisaen iti 30 segundo."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the rice. Spread and press it into the pan. Let it sit for 1 minute to get a little crispy, then toss.",
+        "instruction_tl": "Ilagay ang kanin. Ikalat at pindutin sa kawali. Hayaan ng 1 minuto para lumutong nang kaunti, saka haluin.",
+        "instruction_il": "Iteddu ti bagas. Ibansag ken pin-nuten iti kawali. Pabayagen iti 1 minuto tapno umanninit, sa kumitten."
+      },
+      {
+        "step": 5,
+        "instruction": "Push the rice to the side. Crack eggs into the empty space, scramble quickly, then fold into the rice.",
+        "instruction_tl": "Itakilid ang kanin. Basagin ang mga itlog sa bakanteng espasyo, haluin nang mabilis, saka pagsamahin sa kanin.",
+        "instruction_il": "Itabay ti bagas. Pukkoten ti itlog iti naluktan nga lugar, ikketen dagus, sa ikombina iti bagas."
+      },
+      {
+        "step": 6,
+        "instruction": "Add soy sauce, sesame oil, and white pepper. Toss everything together. Top with green spring onions and serve.",
+        "instruction_tl": "Ilagay ang toyo, sesame oil, at puting paminta. Haluin ang lahat. Budburan ng berdeng sibuyas dahon at ihain.",
+        "instruction_il": "Iteddu ti soy sauce, sesame oil, ken puraw nga paminta. Ikuting ti amin. Budbuden ti berde nga kutsay ken iserbi."
+      }
+    ],
+    "estimated_cost_hkd": 30,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "rice",
+      "eggs",
+      "quick",
+      "asian",
+      "staple",
+      "leftover-friendly"
+    ]
+  },
+  {
+    "id": "steak-garlic-ghee",
+    "name": "Steak with Garlic Ghee",
+    "name_tl": "Steak na may Bawang at Ghee",
+    "name_il": "Steak nga adda Ahos ken Ghee",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 15,
+    "prep_time_mins": 5,
+    "cook_time_mins": 12,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=l9hUGbg0Ljo",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "beef steak (ribeye or sirloin)",
+        "amount": 400,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "ghee",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "fresh rosemary or thyme",
+        "amount": 2,
+        "unit": "sprigs",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "flaky sea salt",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "black pepper freshly cracked",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Take the steak out of the fridge 30 minutes before cooking. Pat dry with paper towel. Season generously with salt and pepper on both sides.",
+        "instruction_tl": "Ilabas ang steak sa ref 30 minuto bago magluto. Patuyuin gamit ang papel na twalya. Timplahan nang maluwag ng asin at paminta sa magkabilang panig.",
+        "instruction_il": "Ilabas ti steak iti ired 30 minuto sakbay ti paglutuan. Patuyen babaen ti papel. Timplaan iti naluag ti asin ken paminta iti dua nga aglawlaw."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat a cast-iron or heavy pan over very high heat until smoking hot.",
+        "instruction_tl": "Initin ang cast-iron o mabigat na kawali sa napakataas na apoy hanggang mag-usok.",
+        "instruction_il": "Initin ti cast-iron wenno nabug-at nga kawali iti napung-ngeg nga init agingga agusiuk."
+      },
+      {
+        "step": 3,
+        "instruction": "Add 1 tbsp ghee. Place the steak in the pan — do not move it. Sear for 2–3 minutes until a dark crust forms.",
+        "instruction_tl": "Lagyan ng 1 tbsp ghee. Ilagay ang steak sa kawali — huwag ipalit. I-sear ng 2–3 minuto hanggang mabuo ang maitim na crust.",
+        "instruction_il": "Iteddu ti 1 tbsp ghee. Ilatag ti steak iti kawali — saan nga iguwar. Searen iti 2–3 minuto agingga mabangon ti nangisit nga crust."
+      },
+      {
+        "step": 4,
+        "instruction": "Flip the steak. Add remaining ghee, crushed garlic cloves, and herbs. Tilt the pan and continuously spoon the hot ghee over the steak for 2–3 minutes.",
+        "instruction_tl": "Baligtarin ang steak. Idagdag ang natitira na ghee, dinurog na bawang, at mga halamang gamot. Ikilig ang kawali at patuloy na isilubok ang mainit na ghee sa steak ng 2–3 minuto.",
+        "instruction_il": "Ikabaliw ti steak. Iteddu ti natitirad nga ghee, nadidigel nga ahos, ken raman. Ilawen ti kawali ken agpipigsa nga iteddu ti napudot nga ghee iti steak iti 2–3 minuto."
+      },
+      {
+        "step": 5,
+        "instruction": "For medium-rare: internal temperature should reach 55–57°C. Remove from pan and rest on a board for 5 minutes before slicing.",
+        "instruction_tl": "Para sa medium-rare: ang panloob na temperatura ay dapat maabot ng 55–57°C. Alisin sa kawali at hayaan sa board ng 5 minuto bago hiwain.",
+        "instruction_il": "Para iti medium-rare: ti temperatura iti uneg makarabot iti 55–57°C. Ikkaten iti kawali ken papayawen iti tabla iti 5 minuto sakbay ti aghaplit."
+      },
+      {
+        "step": 6,
+        "instruction": "Slice against the grain. Spoon any pan juices over the top and serve.",
+        "instruction_tl": "Hiwain laban sa hibla ng karne. Ibuhos ang anumang katas ng kawali sa ibabaw at ihain.",
+        "instruction_il": "Haplaen kontra iti agpayso. Idagdag ti aniaman nga katas ti kawali iti ngato ken iserbi."
+      }
+    ],
+    "estimated_cost_hkd": 200,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "steak",
+      "beef",
+      "protein",
+      "western",
+      "quick"
+    ]
+  },
+  {
+    "id": "stir-fried-bok-choy",
+    "name": "Stir-Fried Bok Choy",
+    "name_tl": "Ginisang Bok Choy",
+    "name_il": "Ginisa nga Bok Choy",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "active_time_mins": 5,
+    "prep_time_mins": 5,
+    "cook_time_mins": 5,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=gt8PTLNP980",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "baby bok choy",
+        "amount": 600,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic",
+        "amount": 4,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "oyster sauce",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "soy sauce",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Halve the bok choy lengthwise. Rinse well and shake off excess water. Mince the garlic.",
+        "instruction_tl": "Hatiin ang bok choy sa haba. Banlawan nang mabuti at alugin ang labis na tubig. Tadtarin ang bawang.",
+        "instruction_il": "Bucodin ti bok choy iti ngatngato. Bagsaken nang nasayaat ken iyugdog ti labes nga danum. Tadtaren ti ahos."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat a wok or large pan over high heat. Add oil and heat until shimmering.",
+        "instruction_tl": "Initin ang wok o malaking kawali sa mataas na apoy. Lagyan ng mantika at initin hanggang magniningning.",
+        "instruction_il": "Initin ti wok wenno dakkel nga kawali iti nangato nga init. Iteddu ti lana ken initin agingga agnapinget."
+      },
+      {
+        "step": 3,
+        "instruction": "Add garlic and fry for 20 seconds until fragrant. Do not let it brown.",
+        "instruction_tl": "Ilagay ang bawang at iprito ng 20 segundo hanggang mabango. Huwag hayaang magkulay kayumanggi.",
+        "instruction_il": "Iteddu ti ahos ken iprito iti 20 segundo agingga amangto. Saan nga pabayagen nga agginggaw."
+      },
+      {
+        "step": 4,
+        "instruction": "Add the bok choy cut-side down. Toss and stir-fry for 2–3 minutes until the leaves wilt and the stems are just tender.",
+        "instruction_tl": "Ilagay ang bok choy na nakaharap ang hiwa pababa. Haluin at igisa ng 2–3 minuto hanggang malanta ang mga dahon at maging malambot ang mga tangkay.",
+        "instruction_il": "Iteddu ti bok choy nga naisungad ti tinadtad pababa. Ikuting ken ginisaen iti 2–3 minuto agingga naglaay ti bulong ken nagninas ti tangkay."
+      },
+      {
+        "step": 5,
+        "instruction": "Drizzle over oyster sauce and soy sauce. Toss to coat. Season with salt if needed and serve immediately.",
+        "instruction_tl": "Buhusan ng oyster sauce at toyo. Haluin para mabuo ang balot. Timplahan ng asin kung kailangan at ihain agad.",
+        "instruction_il": "Budbuden ti oyster sauce ken soy sauce. Ikuting tapno mabalotan. Timplaan ti asin no kasapulan ken iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 30,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "bok choy",
+      "asian",
+      "quick",
+      "side",
+      "healthy"
+    ]
+  },
+  {
+    "id": "honey-glazed-carrots",
+    "name": "Honey Glazed Carrots",
+    "name_tl": "Karot na may Pulot",
+    "name_il": "Karot nga adda Dugis",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 5,
+    "cook_time_mins": 15,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=KzzviM5B4X8",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "carrots",
+        "amount": 600,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "honey",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "fresh thyme or parsley to garnish",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Peel the carrots and cut into even batons or rounds about 1 cm thick.",
+        "instruction_tl": "Balatan ang mga karot at hiwain sa pantay na mga piraso na may kapal na 1 cm.",
+        "instruction_il": "Balayan ti karoten ken haplaen iti pantay nga piraso nga may kapal nga 1 cm."
+      },
+      {
+        "step": 2,
+        "instruction": "Place carrots in a single layer in a pan with a little water (just enough to cover the bottom). Cook over medium-high heat until water evaporates and carrots begin to soften, about 8 minutes.",
+        "instruction_tl": "Ilagay ang mga karot sa iisang patong sa kawali na may kaunting tubig (sapat lang para matakpan ang ilalim). Lutuin sa katamtamang mataas na apoy hanggang sumingaw ang tubig at lumambot ang mga karot, mga 8 minuto.",
+        "instruction_il": "Ilatag ti karoten iti maysa nga patong iti kawali nga adda bassit nga danum. Lutuan iti kasango-angut nga nangato nga init agingga malawan ti danum ken agninas ti karoten, nasurok 8 minuto."
+      },
+      {
+        "step": 3,
+        "instruction": "Add butter and honey. Toss to coat and cook for another 3–4 minutes, stirring often, until the carrots are glazed and lightly caramelised.",
+        "instruction_tl": "Ilagay ang mantikilya at pulot. Haluin para mabuo ang balot at lutuin ng 3–4 minuto pa, madalas na hinahalo, hanggang maging glazed at bahagyang caramelised ang mga karot.",
+        "instruction_il": "Iteddu ti butter ken dugis. Ikuting tapno mabalotan ken lutuan iti 3–4 minuto pay, nasurok-surok nga ikuting, agingga naglaso ken bassit nga nakaramelisa ti karoten."
+      },
+      {
+        "step": 4,
+        "instruction": "Season with salt. Garnish with fresh thyme or parsley and serve.",
+        "instruction_tl": "Timplahan ng asin. Garnisan ng sariwang thyme o perehil at ihain.",
+        "instruction_il": "Timplaan ti asin. Garnisan ti sariwa nga thyme wenno parsley ken iserbi."
+      }
+    ],
+    "estimated_cost_hkd": 25,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "carrot",
+      "side",
+      "western",
+      "sweet",
+      "healthy"
+    ]
+  },
+  {
+    "id": "roasted-mixed-vegetables",
+    "name": "Roasted Mixed Vegetables",
+    "name_tl": "Inihaw na Halo-halong Gulay",
+    "name_il": "Narosbad nga Nagadu nga Nateng",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 10,
+    "cook_time_mins": 30,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=opMsfLXZn74",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "zucchini",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "bell peppers (mixed colours)",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "broccoli florets",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "cherry tomatoes",
+        "amount": 150,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "red onion",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "olive oil",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic powder",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "dried oregano",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt and pepper",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 220°C. Line a large baking tray with parchment paper.",
+        "instruction_tl": "Painitin ang oven sa 220°C. Lagyan ang malaking baking tray ng parchment paper.",
+        "instruction_il": "Painitanen ti oven iti 220°C. Lagyan ti dakkel nga baking tray ti parchment paper."
+      },
+      {
+        "step": 2,
+        "instruction": "Chop all vegetables into similar-sized chunks. Place on the tray — do not crowd them or they will steam instead of roast.",
+        "instruction_tl": "Tadtarin ang lahat ng gulay sa magkakatulad na laki. Ilagay sa tray — huwag i-siksik para hindi masingaw at malutong ang pagkaluto.",
+        "instruction_il": "Tadtaren ti amin nga nateng iti agpapada nga kadakkel. Ilatag iti tray — saan nga pisiggemen ta masinsinaw a saan a marosbad."
+      },
+      {
+        "step": 3,
+        "instruction": "Drizzle with olive oil. Sprinkle garlic powder, oregano, salt and pepper. Toss well to coat evenly.",
+        "instruction_tl": "Buhusan ng olive oil. Budburan ng garlic powder, oregano, asin at paminta. Haluin nang mabuti para matakpan nang pantay.",
+        "instruction_il": "Budbuden ti olive oil. Budbuden ti garlic powder, oregano, asin ken paminta. Ikuting nang nasayaat tapno mabalotan iti pantay."
+      },
+      {
+        "step": 4,
+        "instruction": "Roast for 25–30 minutes, turning once halfway through, until edges are golden and slightly charred.",
+        "instruction_tl": "I-roast ng 25–30 minuto, isang beses ibalik sa kalagitnaan, hanggang maging gintuan at bahagyang nangingitim ang mga gilid.",
+        "instruction_il": "Rosbaden iti 25–30 minuto, maysa nga beses ikabaliwen iti kattengna, agingga nagasan ken bassit nga nangisit ti abay."
+      },
+      {
+        "step": 5,
+        "instruction": "Taste, adjust seasoning, and serve hot.",
+        "instruction_tl": "Tikman, ayusin ang pampalasa, at ihain ng mainit.",
+        "instruction_il": "Tikman, urnosen ti aromas, ken iserbi iti napudot."
+      }
+    ],
+    "estimated_cost_hkd": 40,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "side",
+      "western",
+      "healthy",
+      "oven"
+    ]
+  },
+  {
+    "id": "sauteed-spinach-garlic",
+    "name": "Sautéed Spinach with Garlic",
+    "name_tl": "Ginisang Spinach na may Bawang",
+    "name_il": "Ginisa nga Spinach nga adda Ahos",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 5,
+    "prep_time_mins": 2,
+    "cook_time_mins": 5,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=K0r9hr4hjDI",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "baby spinach",
+        "amount": 300,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "olive oil",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "lemon",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "salt and pepper",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Thinly slice the garlic.",
+        "instruction_tl": "Manipis na hiwain ang bawang.",
+        "instruction_il": "Manipis nga haplaen ti ahos."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat olive oil in a large pan over medium heat. Add garlic and cook for 1 minute until just golden — watch closely so it doesn't burn.",
+        "instruction_tl": "Initin ang olive oil sa malaking kawali sa katamtamang apoy. Ilagay ang bawang at lutuin ng 1 minuto hanggang bahagyang gintuan — bantayan nang maigi para hindi masunog.",
+        "instruction_il": "Initin ti olive oil iti dakkel nga kawali iti kasango-angut nga init. Iteddu ti ahos ken lutuan iti 1 minuto agingga bassit nga nagasan — bantayan nang nasayaat tapno saan nga masunog."
+      },
+      {
+        "step": 3,
+        "instruction": "Add spinach in batches — it will wilt down quickly. Toss and cook for 2 minutes until just wilted.",
+        "instruction_tl": "Ilagay ang spinach nang paunti-unti — mabilis itong malanta. Haluin at lutuin ng 2 minuto hanggang malanta lang.",
+        "instruction_il": "Iteddu ti spinach iti bassit-bassit — dagus nga aglaay. Ikuting ken lutuan iti 2 minuto agingga aglaay laengen."
+      },
+      {
+        "step": 4,
+        "instruction": "Squeeze lemon juice over the top. Season with salt and pepper. Serve immediately.",
+        "instruction_tl": "Pisilin ang katas ng limon sa ibabaw. Timplahan ng asin at paminta. Ihain agad.",
+        "instruction_il": "Pisilaen ti katas ti limon iti ngato. Timplaan ti asin ken paminta. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 25,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "vegetable",
+      "spinach",
+      "side",
+      "quick",
+      "healthy",
+      "western"
+    ]
+  },
+  {
+    "id": "pancakes",
+    "name": "Pancakes",
+    "name_tl": "Pancakes",
+    "name_il": "Pancakes",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 20,
+    "prep_time_mins": 5,
+    "cook_time_mins": 20,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=vkcHmpKxFwg",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "plain flour",
+        "amount": 200,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "baking powder",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sugar",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "eggs",
+        "amount": 2,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "whole milk",
+        "amount": 250,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter melted",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "vanilla extract",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "butter for cooking",
+        "amount": 20,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "maple syrup to serve",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Mix flour, baking powder, sugar, and salt in a large bowl.",
+        "instruction_tl": "Haluin ang harina, baking powder, asukal, at asin sa malaking mangkok.",
+        "instruction_il": "Ikombina ti harina, baking powder, asukar, ken asin iti dakkel nga planggana."
+      },
+      {
+        "step": 2,
+        "instruction": "In a separate bowl, whisk together eggs, milk, melted butter, and vanilla.",
+        "instruction_tl": "Sa ibang mangkok, talunin ang mga itlog, gatas, natunaw na mantikilya, at vanilla.",
+        "instruction_il": "Iti sabali nga planggana, batbaten ti itlog, gatas, natunaw nga butter, ken vanilla."
+      },
+      {
+        "step": 3,
+        "instruction": "Pour the wet ingredients into the dry. Stir gently until just combined — a few lumps are fine. Do not overmix.",
+        "instruction_tl": "Ibuhos ang mga basang sangkap sa mga tuyong sangkap. Haluin nang marahan hanggang pinagsama na lamang — okay ang ilang bukol. Huwag sobrang haluin.",
+        "instruction_il": "Ibutos ti nabasa nga ingredient iti natay nga ingredient. Ikketen nang naulimek agingga nakombina laengen — nasayaat ti bassit nga bugbugtong. Saan nga agsobra ti pag-ikut."
+      },
+      {
+        "step": 4,
+        "instruction": "Heat a non-stick pan over medium heat. Add a small knob of butter and let it melt.",
+        "instruction_tl": "Initin ang non-stick na kawali sa katamtamang apoy. Lagyan ng maliit na piraso ng mantikilya at hayaang matunaw.",
+        "instruction_il": "Initin ti non-stick nga kawali iti kasango-angut nga init. Iteddu ti bassit nga piraso ti butter ken pabayagen nga matunaw."
+      },
+      {
+        "step": 5,
+        "instruction": "Pour about 60ml of batter per pancake. Cook until bubbles appear on the surface and the edges look set, about 2 minutes. Flip and cook 1 minute more.",
+        "instruction_tl": "Ibuhos ng humigit-kumulang 60ml ng batter bawat pancake. Lutuin hanggang lumabas ang mga bula sa ibabaw at tumigas ang mga gilid, mga 2 minuto. Baligtarin at lutuin ng 1 minuto pa.",
+        "instruction_il": "Ibutos ti nasurok iti 60ml ti batter bawat pancake. Lutuan agingga agturbo ti bubbles iti naweng ken nagtigged ti abay, nasurok 2 minuto. Ikabaliwen ken lutuan iti 1 minuto pay."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve with maple syrup and fresh fruit.",
+        "instruction_tl": "Ihain kasama ang maple syrup at sariwang prutas.",
+        "instruction_il": "Iserbi nga adda maple syrup ken sariwa nga prutas."
+      }
+    ],
+    "estimated_cost_hkd": 40,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "sweet",
+      "western",
+      "family-friendly"
+    ]
+  },
+  {
+    "id": "french-toast",
+    "name": "French Toast",
+    "name_tl": "French Toast",
+    "name_il": "French Toast",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 5,
+    "cook_time_mins": 10,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=UPz7aUqELXk",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "thick-cut bread (brioche or white)",
+        "amount": 8,
+        "unit": "slices",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "eggs",
+        "amount": 3,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "whole milk",
+        "amount": 120,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cinnamon",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "vanilla extract",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sugar",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "butter for cooking",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "maple syrup or icing sugar to serve",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Whisk together eggs, milk, cinnamon, vanilla, and sugar in a shallow bowl.",
+        "instruction_tl": "Talunin ang mga itlog, gatas, kanela, vanilla, at asukal sa mababaw na mangkok.",
+        "instruction_il": "Batbaten ti itlog, gatas, kanela, vanilla, ken asukar iti napatag nga planggana."
+      },
+      {
+        "step": 2,
+        "instruction": "Dip each bread slice into the egg mixture, letting it soak for 15–20 seconds per side.",
+        "instruction_tl": "Ilubog ang bawat hiwa ng tinapay sa pinagsamang itlog, hayaang makasoak ng 15–20 segundo bawat panig.",
+        "instruction_il": "Ilubog ti tunggal hiwa ti tinapay iti inabono nga itlog, pabayagen nga maisoak iti 15–20 segundo bawat aglawlaw."
+      },
+      {
+        "step": 3,
+        "instruction": "Melt butter in a non-stick pan over medium heat. Cook the soaked bread for 2–3 minutes per side until golden brown.",
+        "instruction_tl": "Tunawing ang mantikilya sa non-stick na kawali sa katamtamang apoy. Lutuin ang nababad na tinapay ng 2–3 minuto bawat panig hanggang maging gintuan.",
+        "instruction_il": "Tunawengen ti butter iti non-stick nga kawali iti kasango-angut nga init. Lutuan ti nababad nga tinapay iti 2–3 minuto bawat aglawlaw agingga nagasan."
+      },
+      {
+        "step": 4,
+        "instruction": "Serve hot with maple syrup and fresh berries or sliced banana.",
+        "instruction_tl": "Ihain ng mainit kasama ang maple syrup at sariwang mga berry o hiwa ng saging.",
+        "instruction_il": "Iserbi iti napudot nga adda maple syrup ken sariwa nga berries wenno nahaplit nga saging."
+      }
+    ],
+    "estimated_cost_hkd": 35,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "sweet",
+      "western",
+      "eggs",
+      "family-friendly"
+    ]
+  },
+  {
+    "id": "fried-eggs",
+    "name": "Fried Eggs",
+    "name_tl": "Piniritong Itlog",
+    "name_il": "Naprito nga Itlog",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 5,
+    "prep_time_mins": 1,
+    "cook_time_mins": 5,
+    "hero_image": "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=-W1dpRkthrI",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "eggs",
+        "amount": 4,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter or oil",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt and pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Heat a non-stick pan over medium-low heat. Add butter or oil and let it melt gently.",
+        "instruction_tl": "Initin ang non-stick na kawali sa katamtamang mababang apoy. Lagyan ng mantikilya o mantika at hayaang matunaw nang dahan-dahan.",
+        "instruction_il": "Initin ti non-stick nga kawali iti kasango-angut nga baba nga init. Iteddu ti butter wenno lana ken pabayagen nga matunaw nang nalaka."
+      },
+      {
+        "step": 2,
+        "instruction": "Crack eggs one at a time into a small bowl first, then gently slide into the pan. This prevents broken yolks.",
+        "instruction_tl": "Basagin ang mga itlog isa-isa sa maliit na mangkok muna, saka dahan-dahang ipasok sa kawali. Pinipigilan nito ang pagbasag ng pula.",
+        "instruction_il": "Pukkoten ti itlog maysa-maysa iti bassit nga planggana pay, sa naulimek nga ipasok iti kawali. Pagbabagian daytoy ti mabik-ag nga puso."
+      },
+      {
+        "step": 3,
+        "instruction": "For sunny side up: cook 2–3 minutes without flipping until whites are set but yolk is still runny. For over-easy: flip after 2 minutes and cook 30 more seconds.",
+        "instruction_tl": "Para sa sunny side up: lutuin ng 2–3 minuto nang hindi binabaligtad hanggang matibay ang puti ngunit basa pa ang pula. Para sa over-easy: baligtarin pagkatapos ng 2 minuto at lutuin ng 30 segundo pa.",
+        "instruction_il": "Para iti sunny side up: lutuan iti 2–3 minuto nga saan nga ikabaliwen agingga nagtigged ti puraw ngem sasa pay ti puso. Para iti over-easy: ikabaliwen kalpasan ti 2 minuto ken lutuan iti 30 segundo pay."
+      },
+      {
+        "step": 4,
+        "instruction": "Season with salt and pepper. Serve immediately.",
+        "instruction_tl": "Timplahan ng asin at paminta. Ihain agad.",
+        "instruction_il": "Timplaan ti asin ken paminta. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 20,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "eggs",
+      "quick",
+      "basic",
+      "protein"
+    ]
+  },
+  {
+    "id": "boiled-eggs",
+    "name": "Boiled Eggs",
+    "name_tl": "Nilagang Itlog",
+    "name_il": "Nalutu nga Itlog",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 2,
+    "prep_time_mins": 0,
+    "cook_time_mins": 12,
+    "hero_image": "https://images.unsplash.com/photo-1607690424560-35d967d6ad7f?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=mcXzPF4-LFw",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "eggs",
+        "amount": 4,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "water",
+        "amount": 1,
+        "unit": "litre",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Bring a pot of water to a full boil over high heat.",
+        "instruction_tl": "Pakuluan ang palayok ng tubig sa mataas na apoy.",
+        "instruction_il": "Paaputiren ti palyok ti danum iti nangato nga init."
+      },
+      {
+        "step": 2,
+        "instruction": "Gently lower eggs into the boiling water using a spoon. Set a timer.",
+        "instruction_tl": "Dahan-dahang ibaba ang mga itlog sa kumukulong tubig gamit ang kutsara. I-set ang timer.",
+        "instruction_il": "Naulimek nga ibaba ti itlog iti nagaputo nga danum babaen ti kutsara. I-set ti timer."
+      },
+      {
+        "step": 3,
+        "instruction": "Soft boiled (runny yolk): 6 minutes. Jammy (slightly soft yolk): 8 minutes. Hard boiled (fully set): 11–12 minutes.",
+        "instruction_tl": "Malambot na nilaga (basa ang pula): 6 minuto. Jammy (bahagyang malambot na pula): 8 minuto. Tigas na nilaga (ganap na nagsete): 11–12 minuto.",
+        "instruction_il": "Nagninas nga nalutu (sasa nga puso): 6 minuto. Jammy (bassit nga nagninas nga puso): 8 minuto. Natibkel nga nalutu (kumpleto nga nagtigged): 11–12 minuto."
+      },
+      {
+        "step": 4,
+        "instruction": "Once done, transfer eggs immediately to a bowl of ice water for 1 minute to stop cooking. Peel and serve.",
+        "instruction_tl": "Kapag tapos na, ilipat agad ang mga itlog sa mangkok ng malamig na tubig ng 1 minuto para ihinto ang pagluluto. Balatan at ihain.",
+        "instruction_il": "No naluto na, iluktan dagus ti itlog iti planggana ti nalamiis nga danum iti 1 minuto tapno ipatay ti lutuan. Balayan ken iserbi."
+      }
+    ],
+    "estimated_cost_hkd": 20,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "eggs",
+      "basic",
+      "quick",
+      "protein"
+    ]
+  },
+  {
+    "id": "omelette",
+    "name": "Omelette",
+    "name_tl": "Torta",
+    "name_il": "Torta",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 5,
+    "prep_time_mins": 2,
+    "cook_time_mins": 5,
+    "hero_image": "https://images.unsplash.com/photo-1510693206972-df098062cb71?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=_Wb5Crj917I",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "eggs",
+        "amount": 4,
+        "unit": "whole",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 15,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt and pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "fresh chives or herbs to garnish",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Crack eggs into a bowl. Season with salt and pepper. Beat vigorously with a fork until fully combined and slightly frothy.",
+        "instruction_tl": "Basagin ang mga itlog sa mangkok. Timplahan ng asin at paminta. Talunin nang malakas gamit ang tinidor hanggang ganap na pinagsama at bahagyang bula.",
+        "instruction_il": "Pukkoten ti itlog iti planggana. Timplaan ti asin ken paminta. Batbaten nang napigsa babaen ti tenedor agingga kumpleto nga nakombina ken bassit nga nagbubble."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat a small non-stick pan over medium-high heat. Add butter and let it foam.",
+        "instruction_tl": "Initin ang maliit na non-stick na kawali sa katamtamang mataas na apoy. Lagyan ng mantikilya at hayaang mag-foam.",
+        "instruction_il": "Initin ti bassit nga non-stick nga kawali iti kasango-angut nga nangato nga init. Iteddu ti butter ken pabayagen nga agburbur."
+      },
+      {
+        "step": 3,
+        "instruction": "Pour in the eggs. Immediately stir in small circles with a spatula while shaking the pan — this creates the classic fine texture.",
+        "instruction_tl": "Ibuhos ang mga itlog. Agad na haluin sa maliliit na bilog gamit ang spatula habang inalog-alog ang kawali — ito ang nagbibigay ng classic na pinong texture.",
+        "instruction_il": "Ibutos ti itlog. Dagus nga ikuting iti bassit nga aniyas babaen ti spatula sidin ti pannakapalpal ti kawali — daytoy ti mangted ti klasiko nga pinong texture."
+      },
+      {
+        "step": 4,
+        "instruction": "When eggs are just set but still slightly glossy on top, remove from heat. Tilt the pan and fold the omelette onto a plate.",
+        "instruction_tl": "Kapag medyo nagsete na ang mga itlog ngunit bahagyang makintab pa sa itaas, alisin sa apoy. Ikilig ang kawali at tiklupin ang omelette sa plato.",
+        "instruction_il": "No nagtigged bassit ti itlog ngem bassit pay nga nagnapinget iti ngato, ikkaten iti init. Ilawen ti kawali ken dikolen ti omelette iti plato."
+      },
+      {
+        "step": 5,
+        "instruction": "Garnish with fresh chives. Serve immediately.",
+        "instruction_tl": "Garnisan ng sariwang chives. Ihain agad.",
+        "instruction_il": "Garnisan ti sariwa nga kutsay. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 25,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "eggs",
+      "french",
+      "quick",
+      "protein"
+    ]
+  },
+  {
+    "id": "avocado-toast",
+    "name": "Avocado Toast",
+    "name_tl": "Toast na may Abokado",
+    "name_il": "Toast nga adda Abokado",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 5,
+    "prep_time_mins": 5,
+    "cook_time_mins": 3,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=dP6btliLGy4",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "ripe avocado",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "sourdough or thick bread",
+        "amount": 4,
+        "unit": "slices",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lemon",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "salt and pepper",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chilli flakes",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "olive oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Toast the bread until golden and crispy.",
+        "instruction_tl": "I-toast ang tinapay hanggang maging gintuan at malutong.",
+        "instruction_il": "Toasten ti tinapay agingga nagasan ken nalagtiit."
+      },
+      {
+        "step": 2,
+        "instruction": "Halve the avocados, remove the stone, and scoop the flesh into a bowl. Mash with a fork — leave some texture, don't make it smooth.",
+        "instruction_tl": "Hatiin ang mga abokado, alisin ang bato, at kumuha ng laman papunta sa mangkok. Durugin gamit ang tinidor — mag-iwan ng kaunting texture, huwag gawing makinis.",
+        "instruction_il": "Bucodin ti abokado, ikkaten ti bato, ken kuwaen ti uneg iti planggana. Dig-digen babaen ti tenedor — bayagen ti bassit nga texture, saan nga patainken."
+      },
+      {
+        "step": 3,
+        "instruction": "Add a squeeze of lemon juice, salt, pepper, and chilli flakes. Mix gently.",
+        "instruction_tl": "Dagdagan ng piga ng limon, asin, paminta, at chilli flakes. Haluin nang dahan-dahan.",
+        "instruction_il": "Iteddu ti pisil ti limon, asin, paminta, ken chilli flakes. Ikuting nang naulimek."
+      },
+      {
+        "step": 4,
+        "instruction": "Spoon avocado generously onto toast. Drizzle with olive oil. Add extra chilli flakes if desired.",
+        "instruction_tl": "Ibuhos nang maluwag ang abokado sa toast. Budburan ng olive oil. Dagdagan ng chilli flakes kung gusto.",
+        "instruction_il": "Iteddu nang naluag ti abokado iti toast. Budbuden ti olive oil. Dagdagan ti chilli flakes no kayat."
+      }
+    ],
+    "estimated_cost_hkd": 50,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "avocado",
+      "healthy",
+      "quick",
+      "western"
+    ]
+  },
+  {
+    "id": "breakfast-sausages",
+    "name": "Breakfast Sausages",
+    "name_tl": "Sausages para sa Almusal",
+    "name_il": "Sausages para iti Agangaldaw",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 15,
+    "prep_time_mins": 0,
+    "cook_time_mins": 15,
+    "hero_image": "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=_exyYrM36nU",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "pork or chicken breakfast sausages",
+        "amount": 8,
+        "unit": "pieces",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "If sausages are linked, separate them. Prick each sausage 2–3 times with a fork to prevent bursting.",
+        "instruction_tl": "Kung nakakabit ang mga sausage, ihiwalay ang mga ito. Tusukin ang bawat sausage ng 2–3 beses gamit ang tinidor para hindi pumutok.",
+        "instruction_il": "No nakawayas ti sausage, bukbukoden ti tunggal maysa. Tuklawen ti tunggal sausage iti 2–3 nga beses babaen ti tenedor tapno saan nga pumutok."
+      },
+      {
+        "step": 2,
+        "instruction": "Heat a pan over medium heat. Add a small drizzle of oil.",
+        "instruction_tl": "Initin ang kawali sa katamtamang apoy. Lagyan ng kaunting mantika.",
+        "instruction_il": "Initin ti kawali iti kasango-angut nga init. Iteddu ti bassit nga lana."
+      },
+      {
+        "step": 3,
+        "instruction": "Add sausages. Do not crowd the pan. Cook, turning regularly every 2–3 minutes, for 12–15 minutes total until evenly browned all over.",
+        "instruction_tl": "Ilagay ang mga sausage. Huwag siksikan ang kawali. Lutuin, regular na inililikot tuwing 2–3 minuto, ng 12–15 minuto kabuuan hanggang maging pantay ang pagkakayumanggi.",
+        "instruction_il": "Iteddu ti sausage. Saan nga pisiggemen ti kawali. Lutuan, nasurok-surok nga ikabaliwen tunggal 2–3 minuto, iti 12–15 minuto kadagupan agingga nagginggaw iti amin nga aglawlaw."
+      },
+      {
+        "step": 4,
+        "instruction": "Rest on kitchen paper for 1 minute before serving.",
+        "instruction_tl": "Hayaang magpahinga sa papel ng kusina ng 1 minuto bago ihain.",
+        "instruction_il": "Papayawen iti papel ti kusina iti 1 minuto sakbay ti pannakaiserbi."
+      }
+    ],
+    "estimated_cost_hkd": 60,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "sausage",
+      "protein",
+      "western"
+    ]
+  },
+  {
+    "id": "crispy-bacon",
+    "name": "Crispy Bacon",
+    "name_tl": "Krisping Bacon",
+    "name_il": "Nalagtiit nga Bacon",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 0,
+    "cook_time_mins": 10,
+    "hero_image": "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=tDBSQKEKrW4",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "streaky bacon rashers",
+        "amount": 12,
+        "unit": "rashers",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Lay the bacon strips in a cold pan in a single layer — do not preheat the pan. Starting cold renders the fat more evenly.",
+        "instruction_tl": "Ilatag ang mga bacon sa malamig na kawali sa isang patong — huwag painitin muna ang kawali. Ang pagsimula sa malamig ay nagpapalabas ng taba nang mas pantay.",
+        "instruction_il": "Ilatag ti bacon iti nalamiis nga kawali iti maysa nga patong — saan nga painitanen ti kawali. Ti pagsugatan iti nalamiis nga agpalabas ti taba iti mas pantay."
+      },
+      {
+        "step": 2,
+        "instruction": "Turn the heat to medium. Cook, turning every 2–3 minutes, until the bacon reaches your desired crispiness — about 8–10 minutes.",
+        "instruction_tl": "I-set ang apoy sa katamtaman. Lutuin, baligtarin tuwing 2–3 minuto, hanggang maabot ng bacon ang nais mong kalutong — mga 8–10 minuto.",
+        "instruction_il": "I-set ti init iti kasango-angut. Lutuan, ikabaliwen tunggal 2–3 minuto, agingga maabot ti bacon ti kayatmo nga nalagtiit — nasurok 8–10 minuto."
+      },
+      {
+        "step": 3,
+        "instruction": "Transfer to a plate lined with kitchen paper. Let rest 1 minute — it will crisp up further as it cools.",
+        "instruction_tl": "Ilipat sa plato na may papel ng kusina. Hayaang magpahinga ng 1 minuto — lalo itong lilutong habang lumalamig.",
+        "instruction_il": "Iluktan iti plato nga adda papel ti kusina. Pabayagen iti 1 minuto — lalo nga aglagtiit inton lummiis."
+      }
+    ],
+    "estimated_cost_hkd": 50,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "bacon",
+      "protein",
+      "western",
+      "crispy"
+    ]
+  },
+  {
+    "id": "buttered-toast",
+    "name": "Buttered Toast",
+    "name_tl": "Toast na may Mantikilya",
+    "name_il": "Toast nga adda Mantika",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 3,
+    "prep_time_mins": 1,
+    "cook_time_mins": 3,
+    "hero_image": "https://images.unsplash.com/photo-1603046891744-1f5545e14d02?w=600",
+    "youtube_url": "https://www.youtube.com/watch?v=rG8JHT1Tjos",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "bread (sourdough, white, or wholegrain)",
+        "amount": 4,
+        "unit": "slices",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter",
+        "amount": 30,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Toast the bread in a toaster or under the grill until golden and crisp on both sides.",
+        "instruction_tl": "I-toast ang tinapay sa toaster o sa ilalim ng grill hanggang maging gintuan at malutong sa magkabilang panig.",
+        "instruction_il": "Toasten ti tinapay iti toaster wenno iti sirok ti grill agingga nagasan ken nalagtiit iti dua nga aglawlaw."
+      },
+      {
+        "step": 2,
+        "instruction": "Butter the toast immediately while still hot. The butter should melt into the bread.",
+        "instruction_tl": "Lagyan agad ng mantikilya ang toast habang mainit pa. Dapat matunaw ang mantikilya sa tinapay.",
+        "instruction_il": "Ibutteran agus ti toast sidin napudot pay. Mabalin nga matunaw ti butter iti tinapay."
+      }
+    ],
+    "estimated_cost_hkd": 15,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "toast",
+      "basic",
+      "quick"
+    ]
+  },
+  {
+    "id": "croissant",
+    "name": "Croissant",
+    "name_tl": "Croissant",
+    "name_il": "Croissant",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 2,
+    "prep_time_mins": 1,
+    "cook_time_mins": 8,
+    "hero_image": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "croissants (from bakery)",
+        "amount": 4,
+        "unit": "whole",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "butter to serve",
+        "amount": 20,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "jam to serve (optional)",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Preheat oven to 160°C.",
+        "instruction_tl": "Painitin ang oven sa 160°C.",
+        "instruction_il": "Painitanen ti oven iti 160°C."
+      },
+      {
+        "step": 2,
+        "instruction": "Place croissants on a baking tray. Warm in the oven for 5–8 minutes until the outside is lightly crisp and the inside is soft and warm.",
+        "instruction_tl": "Ilagay ang mga croissant sa baking tray. Initin sa oven ng 5–8 minuto hanggang bahagyang malutong sa labas at malambot at mainit sa loob.",
+        "instruction_il": "Ilatag ti croissant iti baking tray. Initin iti oven iti 5–8 minuto agingga bassit nga nalagtiit iti ruar ken nagninas ken napudot iti uneg."
+      },
+      {
+        "step": 3,
+        "instruction": "Serve with butter and jam on the side.",
+        "instruction_tl": "Ihain kasama ang mantikilya at jam sa gilid.",
+        "instruction_il": "Iserbi nga adda butter ken jam iti abay."
+      }
+    ],
+    "estimated_cost_hkd": 50,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "pastry",
+      "basic",
+      "western"
+    ]
+  },
+  {
+    "id": "sliced-avocado",
+    "name": "Sliced Avocado",
+    "name_tl": "Hiniwa na Abokado",
+    "name_il": "Nahaplit nga Abokado",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 3,
+    "prep_time_mins": 3,
+    "cook_time_mins": 0,
+    "hero_image": "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "ripe avocado",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "lemon or lime",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "flaky sea salt",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "black pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Halve each avocado lengthwise. Twist to separate. Remove the stone with a spoon.",
+        "instruction_tl": "Hatiin ang bawat abokado sa haba. I-twist para maghiwalay. Alisin ang bato gamit ang kutsara.",
+        "instruction_il": "Bucodin ti tunggal abokado iti ngatngato. Iguyor tapno mabukod. Ikkaten ti bato babaen ti kutsara."
+      },
+      {
+        "step": 2,
+        "instruction": "Peel the skin off or scoop out the flesh. Slice into even wedges or fan out on the plate.",
+        "instruction_tl": "Balatan o kumuha ng laman. Hiwain sa pantay na mga wedge o ikalat sa plato.",
+        "instruction_il": "Balayan wenno kuwaen ti uneg. Haplaen iti pantay nga wedge wenno ibansag iti plato."
+      },
+      {
+        "step": 3,
+        "instruction": "Squeeze lemon or lime juice over the slices to keep them from browning. Season with flaky salt and pepper. Serve immediately.",
+        "instruction_tl": "Pigain ang limon o dayap sa mga hiwa para hindi malagnat. Timplahan ng flaky salt at paminta. Ihain agad.",
+        "instruction_il": "Pisilaen ti limon wenno dayap iti nahaplit tapno saan nga agduduma. Timplaan ti flaky salt ken paminta. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 30,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "avocado",
+      "healthy",
+      "no-cook",
+      "component"
+    ]
+  },
+  {
+    "id": "fresh-fruit-plate",
+    "name": "Fresh Fruit Plate",
+    "name_tl": "Plato ng Sariwang Prutas",
+    "name_il": "Plato ti Sariwa nga Prutas",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Any",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 10,
+    "cook_time_mins": 0,
+    "hero_image": "https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "papaya",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "mango",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "watermelon or melon",
+        "amount": 200,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "strawberries or grapes",
+        "amount": 100,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Wash all fruit thoroughly.",
+        "instruction_tl": "Hugasan nang mabuti ang lahat ng prutas.",
+        "instruction_il": "Hugasan nang nasayaat ti amin nga prutas."
+      },
+      {
+        "step": 2,
+        "instruction": "Peel and slice the papaya, removing seeds. Cut into wedges or cubes.",
+        "instruction_tl": "Balatan at hiwain ang papaya, alisin ang mga buto. Hiwain sa wedge o cubes.",
+        "instruction_il": "Balayan ken haplaen ti papaya, ikkaten ti buto. Haplaen iti wedge wenno cubes."
+      },
+      {
+        "step": 3,
+        "instruction": "Peel the mango and slice the flesh away from the stone. Slice or cube.",
+        "instruction_tl": "Balatan ang mangga at hiwain ang laman palayo sa buto. Hiwain o i-cube.",
+        "instruction_il": "Balayan ti mangga ken haplaen ti uneg palayo iti bato. Haplaen wenno icube."
+      },
+      {
+        "step": 4,
+        "instruction": "Cut melon or watermelon into wedges. Arrange all fruit on a plate and serve chilled.",
+        "instruction_tl": "Hiwain ang melon o pakwan sa mga wedge. Ayusin ang lahat ng prutas sa plato at ihain na malamig.",
+        "instruction_il": "Haplaen ti melon wenno pakwan iti wedge. Ayusin ti amin nga prutas iti plato ken iserbi iti nalamiis."
+      }
+    ],
+    "estimated_cost_hkd": 60,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "fruit",
+      "healthy",
+      "no-cook",
+      "component"
+    ]
+  },
+  {
+    "id": "smoked-salmon-plate",
+    "name": "Smoked Salmon",
+    "name_tl": "Pinausukang Salmon",
+    "name_il": "Nausinan nga Salmon",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 4,
+    "active_time_mins": 5,
+    "prep_time_mins": 5,
+    "cook_time_mins": 0,
+    "hero_image": "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "smoked salmon",
+        "amount": 200,
+        "unit": "g",
+        "category": "meat",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cream cheese",
+        "amount": 60,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "capers",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "lemon",
+        "amount": 0.5,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "fresh dill (optional)",
+        "amount": 5,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "black pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Remove smoked salmon from the fridge 5 minutes before serving to take the chill off.",
+        "instruction_tl": "Ilabas ang pinausukang salmon sa ref 5 minuto bago ihain para mawala ang lamig.",
+        "instruction_il": "Ilabas ti nausinan nga salmon iti ired 5 minuto sakbay ti pannakaiserbi tapno mawala ti nalamiis."
+      },
+      {
+        "step": 2,
+        "instruction": "Lay salmon slices on a plate. Add spoonfuls of cream cheese, capers, and a few sprigs of fresh dill.",
+        "instruction_tl": "Ilatag ang mga hiwa ng salmon sa plato. Dagdagan ng kutsaradang cream cheese, capers, at ilang sanga ng sariwang dill.",
+        "instruction_il": "Ilatag ti nahaplit nga salmon iti plato. Iteddu ti kutsarada ti cream cheese, capers, ken bassit nga sanga ti sariwa nga dill."
+      },
+      {
+        "step": 3,
+        "instruction": "Squeeze lemon juice over everything. Season with black pepper. Serve immediately.",
+        "instruction_tl": "Pigain ang katas ng limon sa lahat. Timplahan ng itim na paminta. Ihain agad.",
+        "instruction_il": "Pisilaen ti katas ti limon iti amin. Timplaan ti nangisit nga paminta. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 80,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "salmon",
+      "protein",
+      "no-cook",
+      "component",
+      "healthy"
+    ]
+  },
+  {
+    "id": "yoghurt-with-berries",
+    "name": "Yoghurt with Berries",
+    "name_tl": "Yogurt na may mga Berry",
+    "name_il": "Yogurt nga adda Berries",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 3,
+    "prep_time_mins": 3,
+    "cook_time_mins": 0,
+    "hero_image": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "Greek yoghurt",
+        "amount": 400,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "mixed berries (fresh or frozen)",
+        "amount": 150,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "honey",
+        "amount": 2,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "granola (optional)",
+        "amount": 30,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Spoon the yoghurt into serving bowls.",
+        "instruction_tl": "Kumuha ng yogurt sa mga serving bowl gamit ang kutsara.",
+        "instruction_il": "Kuwaen ti yogurt iti serving bowl babaen ti kutsara."
+      },
+      {
+        "step": 2,
+        "instruction": "Top with fresh or thawed berries.",
+        "instruction_tl": "Lagyan ng sariwang o natunaw na mga berry sa itaas.",
+        "instruction_il": "Lagyan ti sariwa wenno natunaw nga berries iti ngato."
+      },
+      {
+        "step": 3,
+        "instruction": "Drizzle with honey. Add a handful of granola if using. Serve immediately.",
+        "instruction_tl": "Buhusan ng pulot. Lagyan ng isang dakot ng granola kung gusto. Ihain agad.",
+        "instruction_il": "Budbuden ti dugis. Iteddu ti maysa nga kamay ti granola no kayat. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 45,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "yoghurt",
+      "healthy",
+      "no-cook",
+      "component",
+      "fruit"
+    ]
+  },
+  {
+    "id": "granola-with-milk",
+    "name": "Granola with Milk",
+    "name_tl": "Granola na may Gatas",
+    "name_il": "Granola nga adda Gatas",
+    "translations_verified": false,
+    "meal_type": [
+      "breakfast"
+    ],
+    "cuisine": "Western",
+    "serves_base": 2,
+    "active_time_mins": 1,
+    "prep_time_mins": 1,
+    "cook_time_mins": 0,
+    "hero_image": "https://images.unsplash.com/photo-1494597564530-871f2b93ac55?w=600",
+    "youtube_url": null,
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "granola",
+        "amount": 120,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cold whole milk or plant milk",
+        "amount": 250,
+        "unit": "ml",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh fruit or berries",
+        "amount": 50,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Pour granola into bowls.",
+        "instruction_tl": "Ibuhos ang granola sa mga mangkok.",
+        "instruction_il": "Ibutos ti granola iti planggana."
+      },
+      {
+        "step": 2,
+        "instruction": "Add cold milk — just enough to come halfway up the granola so it stays crunchy.",
+        "instruction_tl": "Lagyan ng malamig na gatas — sapat lang para maabot ang kalahati ng granola para manatiling malutong.",
+        "instruction_il": "Iteddu ti nalamiis nga gatas — sapat laengen tapno maabot ti kagudua ti granola tapno nalagtiit pay laengen."
+      },
+      {
+        "step": 3,
+        "instruction": "Top with fresh fruit and serve immediately.",
+        "instruction_tl": "Lagyan ng sariwang prutas sa itaas at ihain agad.",
+        "instruction_il": "Iteddu ti sariwa nga prutas iti ngato ken iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 35,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "breakfast",
+      "granola",
+      "quick",
+      "no-cook",
+      "component"
+    ]
+  },
+  {
+    "id": "congee",
+    "name": "Congee",
+    "name_tl": "Lugaw",
+    "name_il": "Lugaw",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Asian",
+    "serves_base": 4,
+    "active_time_mins": 10,
+    "prep_time_mins": 5,
+    "cook_time_mins": 60,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=K1GVvglZ6ck",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "jasmine rice",
+        "amount": 200,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "chicken or pork stock",
+        "amount": 1500,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "water",
+        "amount": 500,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "ginger",
+        "amount": 3,
+        "unit": "slices",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "salt",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "white pepper",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sesame oil",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      },
+      {
+        "item": "spring onions to garnish",
+        "amount": 2,
+        "unit": "stalks",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "soy sauce to serve",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Rinse the rice well. Place in a large pot with stock, water, and ginger slices.",
+        "instruction_tl": "Banlawan nang mabuti ang bigas. Ilagay sa malaking palayok kasama ang stock, tubig, at mga hiwa ng luya.",
+        "instruction_il": "Bagsaken nang nasayaat ti bagas. Ilatag iti dakkel nga palyok nga adda stock, danum, ken nahaplit nga luya."
+      },
+      {
+        "step": 2,
+        "instruction": "Bring to a boil over high heat, then reduce to a low simmer. Cook uncovered, stirring occasionally, for 45–60 minutes until the rice has completely broken down into a thick, silky porridge.",
+        "instruction_tl": "Pakuluan sa mataas na apoy, saka bawasan sa mababang simmer. Lutuin nang walang takip, paminsan-minsang hinahalo, ng 45–60 minuto hanggang ganap na masira ang bigas sa makapal, maliwanag na lugaw.",
+        "instruction_il": "Paaputiren iti nangato nga init, sa bawasan iti baba nga simmer. Lutuan nga awanan takder, nasurok-surok nga ikuting, iti 45–60 minuto agingga kumpleto nga nabukbok ti bagas iti natibek, nasileng nga lugaw."
+      },
+      {
+        "step": 3,
+        "instruction": "Remove the ginger slices. Season with salt and white pepper.",
+        "instruction_tl": "Alisin ang mga hiwa ng luya. Timplahan ng asin at puting paminta.",
+        "instruction_il": "Ikkaten ti nahaplit nga luya. Timplaan ti asin ken puraw nga paminta."
+      },
+      {
+        "step": 4,
+        "instruction": "Ladle into bowls. Drizzle with sesame oil and soy sauce. Top with sliced spring onions and serve hot.",
+        "instruction_tl": "Sandukuhin sa mga mangkok. Buhusan ng sesame oil at toyo. Lagyan ng mga hiwa ng sibuyas dahon at ihain ng mainit.",
+        "instruction_il": "Isaok iti planggana. Budbuden ti sesame oil ken soy sauce. Iteddu ti nahaplit nga kutsay ken iserbi iti napudot."
+      }
+    ],
+    "estimated_cost_hkd": 30,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "rice",
+      "porridge",
+      "asian",
+      "cantonese",
+      "comfort",
+      "light"
+    ]
   }
 ]

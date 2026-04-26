@@ -97,8 +97,8 @@
           .filter((r) => !r.meal_type || r.meal_type.includes(mealType))
           .filter((r) => {
             if (!componentType || showAll) return true;
-            if (!r.component_type) return true;
-            return r.component_type === componentType;
+            if (r.component_type) return r.component_type === componentType;
+            return (r.tags || []).includes(componentType);
           })
           .filter((r) => protein === "all" ? true : (r.tags || []).includes(protein))
           .filter((r) => style === "all" ? true : (r.tags || []).includes(style))
@@ -1233,7 +1233,7 @@
                   {r ? (
                     <span className="truncate leading-tight font-medium">{r.name}</span>
                   ) : (
-                    <span className="italic">Add {COMPONENT_LABELS[comp].toLowerCase()}</span>
+                    <span className="italic text-warm/50">{COMPONENT_LABELS[comp]}</span>
                   )}
                 </button>
               );

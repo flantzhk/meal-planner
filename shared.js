@@ -476,7 +476,7 @@
   // Best image for a recipe card: YouTube thumbnail if we have a real video,
   // else the curated hero_image. The caller can hide on error.
   MP.recipeImage = function recipeImage(recipe) {
-    return MP.youtubeThumb(recipe && recipe.youtube_url) || (recipe && recipe.hero_image) || null;
+    return (recipe && recipe.hero_image) || MP.youtubeThumb(recipe && recipe.youtube_url) || null;
   };
 
   // ---------- Formatting helpers ----------
