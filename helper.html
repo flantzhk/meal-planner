@@ -256,6 +256,74 @@
       );
     }
 
+    const SOURCE_LABEL = { "wet-market": "🥬 Wet Market", "supermarket": "🛒 Supermarket" };
+    const SOURCE_ORDER = ["wet-market", "supermarket"];
+
+    function MealShoppingList({ mealType, day, recipesById, planServes, lang }) {
+      const [open, setOpen] = useState(false);
+      const mealServes = day[mealType + "_serves"] || planServes;
+      const ids = MP.getMealRecipeIds(day, mealType);
+
+      const groups = useMemo(() => {
+        const byKey = new Map();
+        for (const id of ids) {
+          const r = recipesById[id]; if (!r) continue;
+          for (const ing of r.ingredients || []) {
+            if (ing.category === "pantry") continue;
+            const scaled = MP.scale(ing, mealServes, r.serves_base || 4);
+            const { family, value } = MP.units.toCanonical(scaled.amount, scaled.unit);
+            const key = `${ing.item.toLowerCase().trim()}|${ing.source}|${family}`;
+            const ex = byKey.get(key) || { item: ing.item, source: ing.source || "supermarket", category: ing.category, family, total: 0 };
+            ex.total += value;
+            byKey.set(key, ex);
+          }
+        }
+        const result = {};
+        for (const entry of byKey.values()) {
+          const src = entry.source || "supermarket";
+          if (!result[src]) result[src] = [];
+          const { amount, unit } = MP.units.fromCanonical(entry.family, entry.total);
+          const amtStr = amount % 1 === 0 ? String(amount) : amount.toFixed(1);
+          result[src].push({ item: entry.item, display: `${amtStr} ${unit}` });
+        }
+        return result;
+      }, [ids.join(","), mealServes]);
+
+      const totalItems = Object.values(groups).reduce((n, g) => n + g.length, 0);
+      if (totalItems === 0) return null;
+
+      return (
+        <div className="rounded-2xl overflow-hidden ring-1 ring-black/5 bg-white">
+          <button onClick={() => setOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left">
+            <div className="flex items-center gap-2">
+              <span className="text-lg">🛍️</span>
+              <span className="font-display text-base">What to buy</span>
+              <span className="text-xs text-warm/60 bg-sand px-2 py-0.5 rounded-full">{totalItems} items</span>
+            </div>
+            <span className="text-warm/50 text-lg transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>›</span>
+          </button>
+          {open && (
+            <div className="border-t border-sand divide-y divide-sand/60">
+              {SOURCE_ORDER.filter((s) => groups[s]?.length).map((src) => (
+                <div key={src} className="px-4 py-3">
+                  <div className="text-xs font-semibold text-warm/70 uppercase tracking-wide mb-2">{SOURCE_LABEL[src]}</div>
+                  <ul className="space-y-1">
+                    {groups[src].map((it, i) => (
+                      <li key={i} className="flex justify-between text-sm">
+                        <span>{it.item}</span>
+                        <span className="text-warm/70 num tabular-nums">{it.display}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    }
+
     // Renders a full meal: timing header + summary + accordion per component
     function MealSection({ mealType, day, recipesById, planServes, lang, onVerify, nowMin }) {
       const mealObj = MP.getMealObj(day, mealType);
@@ -354,6 +422,8 @@
               />
             );
           })}
+          {/* Shopping list for this meal */}
+          <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={planServes} lang={lang} />
         </div>
       );
     }
