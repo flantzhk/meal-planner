@@ -288,12 +288,14 @@
     return s;
   };
 
-  MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides) {
+  MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides, fromDate) {
     const servesTarget = weekplan.serves || 4;
     const overrides = sourceOverrides || {};
+    const cutoff = fromDate || MP.date.hkToday(); // skip days already passed
     const byKey = new Map(); // key: item|source → { item, source, category, total_canonical }
 
     for (const day of weekplan.days || []) {
+      if (day.date < cutoff) continue; // already cooked — don't need to buy
       for (const meal of ["breakfast", "lunch", "dinner"]) {
         const ids = MP.getMealRecipeIds(day, meal);
         if (!ids.length) continue;
