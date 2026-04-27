@@ -1042,13 +1042,14 @@
       const MEAL_LABEL = { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner" };
       const hasRecipes = MP.getMealRecipeIds(todayDay, activeMeal).length > 0;
       return (
-        <>
+        <div className="space-y-4">
           {/* Meal heading */}
           {hasRecipes && (
-            <div className="mb-3">
+            <div>
               <h2 className="font-display text-2xl text-ink leading-none">
                 {MEAL_EMOJI[activeMeal]} Please cook this for {MEAL_LABEL[activeMeal]}
               </h2>
+              <p className="text-base text-ink/60 mt-1">Tap each dish to see how to make it.</p>
             </div>
           )}
           <MealSection
@@ -1067,7 +1068,7 @@
           {/* Full day schedule and overnight prep — at the bottom for reference */}
           <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
           <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-        </>
+        </div>
       );
     }
 
@@ -1230,7 +1231,6 @@
                 <LangToggle lang={lang} onChange={setLang} />
               </div>
             </div>
-            {isMealTab && <p className="text-base text-ink/70 mt-3">Here is what you need to cook today. Tap each dish to see how to make it.</p>}
           </header>
 
           {isMealTab && (
