@@ -1181,6 +1181,11 @@
       const mealObj = getMealObj(day, meal);
       const componentRecipes = COMPONENTS.map((c) => mealObj[c] ? recipesById[mealObj[c]] : null);
       const mealIsEmpty = componentRecipes.every((r) => !r);
+      // All filled slots across every component type (for image strip)
+      const filledSlots = ALL_COMPONENTS
+        .map((c) => ({ comp: c, recipe: mealObj[c] ? recipesById[mealObj[c]] : null }))
+        .filter((s) => s.recipe);
+      const imageSlots = filledSlots.length > 0 ? filledSlots : COMPONENTS.map((c) => ({ comp: c, recipe: null }));
       const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
       const hasOvernightDep = ALL_COMPONENTS.some((c) => {
         const r = mealObj[c] ? recipesById[mealObj[c]] : null;
@@ -1190,12 +1195,13 @@
 
       return (
         <div className={`rounded-xl overflow-hidden ring-1 flex flex-col ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
-          {/* Three component images side by side */}
+          {/* Images for every filled component */}
           <div className="relative h-[80px] shrink-0 flex overflow-hidden">
-            {componentRecipes.map((r, i) => {
+            {imageSlots.map(({ comp, recipe: r }, i) => {
               const img = r ? MP.recipeImage(r) : null;
+              const pct = (100 / imageSlots.length).toFixed(4) + "%";
               return (
-                <div key={i} className="w-1/3 shrink-0 bg-sand/50 overflow-hidden relative">
+                <div key={comp} style={{ width: pct }} className="shrink-0 bg-sand/50 overflow-hidden relative">
                   {img ? (
                     <img src={img} alt="" className="w-full h-full object-cover"
                       onLoad={(e) => {
@@ -1214,7 +1220,7 @@
                       }} />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <span className="text-xl opacity-20">{COMPONENT_ICONS[COMPONENTS[i]]}</span>
+                      <span className="text-xl opacity-20">{COMPONENT_ICONS[comp]}</span>
                     </div>
                   )}
                 </div>
