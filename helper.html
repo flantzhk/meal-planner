@@ -1042,12 +1042,6 @@
       const hasRecipes = MP.getMealRecipeIds(todayDay, activeMeal).length > 0;
       return (
         <>
-          {/* Only show the UpNext banner when this tab IS the next upcoming meal */}
-          {activeMeal === upNextMeal && (
-            <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-          )}
-          <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
-          <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
           {/* Meal heading */}
           {hasRecipes && (
             <div className="mb-3">
@@ -1069,6 +1063,9 @@
           {!hasRecipes && (
             <div className="text-center text-warm/60 text-sm py-10">No meal planned for {MEAL_LABEL[activeMeal].toLowerCase()} today.</div>
           )}
+          {/* Full day schedule and overnight prep — at the bottom for reference */}
+          <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
+          <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
         </>
       );
     }
