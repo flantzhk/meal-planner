@@ -1186,9 +1186,9 @@
       const mealEmoji = meal === "breakfast" ? "🍳" : meal === "lunch" ? "🥗" : "🍽️";
 
       return (
-        <div className={`rounded-xl overflow-hidden ring-1 flex flex-col h-[220px] ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
-          {/* Three component images side by side — fixed 88px */}
-          <div className="relative h-[88px] shrink-0 flex overflow-hidden">
+        <div className={`rounded-xl overflow-hidden ring-1 flex flex-col ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
+          {/* Three component images side by side */}
+          <div className="relative h-[80px] shrink-0 flex overflow-hidden">
             {componentRecipes.map((r, i) => {
               const img = r ? MP.recipeImage(r) : null;
               return (
@@ -1220,19 +1220,20 @@
             {hasOvernightDep && (
               <span className="absolute top-1.5 right-1.5 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙</span>
             )}
-            {/* Serve time badge — label wraps hidden input for full tap area */}
-            <label onClick={(e) => e.stopPropagation()}
-              className="absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-black/50 hover:bg-black/65 text-white text-[11px] font-medium px-2 py-1 rounded-full cursor-pointer transition select-none">
-              <span>🍽️</span>
-              <span>{serveTime}</span>
-              <input type="time" value={serveTime}
-                onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
-                className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
-            </label>
           </div>
 
+          {/* Serve time bar */}
+          <label onClick={(e) => e.stopPropagation()}
+            className="relative flex items-center justify-center gap-1.5 py-1 border-b border-sand/60 bg-cream/60 cursor-pointer hover:bg-cream transition select-none">
+            <span className="text-[10px]">🍽️</span>
+            <span className="text-xs font-semibold text-ink">{serveTime}</span>
+            <input type="time" value={serveTime}
+              onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
+              className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+          </label>
+
           {/* Component rows */}
-          <div className="flex flex-col gap-0.5 p-1.5 flex-1 overflow-hidden">
+          <div className="flex flex-col gap-0.5 p-1.5">
             {COMPONENTS.map((comp) => {
               const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
               return (
@@ -1249,23 +1250,27 @@
               );
             })}
 
-            {/* Optional: soup / salad */}
-            <div className="flex items-center gap-1 pt-0.5">
-              {OPT_COMPONENTS.map((comp) => {
-                const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
-                return r ? (
-                  <button key={comp} onClick={() => onPreviewComponent(comp, r)}
-                    className="flex items-center gap-0.5 text-[10px] text-warm bg-sand px-1.5 py-0.5 rounded-full max-w-[50%] truncate">
-                    {COMPONENT_ICONS[comp]} <span className="truncate">{r.name}</span>
-                  </button>
-                ) : (
+            {/* Optional: soup / salad — full rows when filled, small pills when empty */}
+            {OPT_COMPONENTS.map((comp) => {
+              const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
+              return r ? (
+                <button key={comp} onClick={() => onPreviewComponent(comp, r)}
+                  className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
+                  <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
+                  <span className="truncate leading-tight font-medium">{r.name}</span>
+                </button>
+              ) : null;
+            })}
+            {OPT_COMPONENTS.some((comp) => !mealObj[comp]) && (
+              <div className="flex items-center gap-1 pt-0.5">
+                {OPT_COMPONENTS.filter((comp) => !mealObj[comp]).map((comp) => (
                   <button key={comp} onClick={() => onPickComponent(comp)}
                     className="text-[10px] text-warm/35 hover:text-warm px-1.5 py-0.5 rounded-full ring-1 ring-dashed ring-warm/20 transition">
                     +{comp}
                   </button>
-                );
-              })}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       );
