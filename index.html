@@ -1174,10 +1174,11 @@
     }
 
 
-    function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent }) {
+    function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent, onSetTime }) {
       const mealObj = getMealObj(day, meal);
       const componentRecipes = COMPONENTS.map((c) => mealObj[c] ? recipesById[mealObj[c]] : null);
       const mealIsEmpty = componentRecipes.every((r) => !r);
+      const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
       const hasOvernightDep = ALL_COMPONENTS.some((c) => {
         const r = mealObj[c] ? recipesById[mealObj[c]] : null;
         return r && MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] }).hasOvernightDep;
@@ -1239,8 +1240,8 @@
               );
             })}
 
-            {/* Optional: soup / salad */}
-            <div className="flex gap-1 pt-0.5">
+            {/* Optional: soup / salad + serve time */}
+            <div className="flex items-center gap-1 pt-0.5">
               {OPT_COMPONENTS.map((comp) => {
                 const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
                 return r ? (
@@ -1255,6 +1256,12 @@
                   </button>
                 );
               })}
+              <input
+                type="time" value={serveTime}
+                onClick={(e) => e.stopPropagation()}
+                onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
+                className="ml-auto text-[10px] text-warm/60 bg-transparent border-none outline-none cursor-pointer hover:text-ink transition"
+              />
             </div>
           </div>
         </div>
@@ -1655,6 +1662,7 @@
                             day={d} meal={meal} recipesById={recipesById} isNow={isNow}
                             onPickComponent={(comp) => setPicker({ dayIdx, meal, component: comp })}
                             onPreviewComponent={(comp, recipe) => setPreview({ dayIdx, meal, component: comp, recipe })}
+                            onSetTime={(time) => setSlotMeta(dayIdx, meal, { time, serves: d[meal + "_serves"] })}
                           />
                         </td>
                       );
