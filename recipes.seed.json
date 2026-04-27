@@ -10310,5 +10310,368 @@
       "light",
       "carb"
     ]
+  },
+  {
+    "id": "greek-salad",
+    "name": "Greek Salad",
+    "name_tl": "Griyegong Salad",
+    "name_il": "Griego nga Salad",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "active_time_mins": 15,
+    "prep_time_mins": 15,
+    "cook_time_mins": 0,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=36QOkwvNzts",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "extra-virgin olive oil",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "red wine vinegar",
+        "amount": 45,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic",
+        "amount": 1,
+        "unit": "clove",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "dried oregano",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "Dijon mustard",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sea salt",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "black pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "English cucumber",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "green bell pepper",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cherry tomatoes",
+        "amount": 300,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "feta cheese",
+        "amount": 140,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "red onion",
+        "amount": 60,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "Kalamata olives pitted",
+        "amount": 80,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh mint leaves",
+        "amount": 15,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Make the dressing: whisk together olive oil, red wine vinegar, minced garlic, oregano, Dijon mustard, salt, and pepper in a small bowl.",
+        "instruction_tl": "Gawin ang dressing: talunin ang olive oil, red wine vinegar, tinadtad na bawang, oregano, Dijon mustard, asin, at paminta sa maliit na mangkok.",
+        "instruction_il": "Gawen ti dressing: batbaten ti olive oil, red wine vinegar, tinaddad nga ahos, oregano, Dijon mustard, asin, ken paminta iti bassit nga planggana."
+      },
+      {
+        "step": 2,
+        "instruction": "Seed and slice the cucumber ¼-inch thick. Chop the bell pepper into 1-inch pieces. Halve the cherry tomatoes. Thinly slice the red onion.",
+        "instruction_tl": "Alisin ang binhi at hiwain ang pipino ng ¼ pulgada kapal. Tadtarin ang bell pepper sa 1-pulgada na piraso. Hatiin ang cherry tomatoes. Manipis na hiwain ang pulang sibuyas.",
+        "instruction_il": "Ikkaten ti buto ken haplaen ti pipino iti ¼ pulgada kapal. Tadtaren ti bell pepper iti 1-pulgada nga piraso. Bucodin ti cherry tomatoes. Manipis nga haplaen ti nalabbaga nga sibuyas."
+      },
+      {
+        "step": 3,
+        "instruction": "Arrange cucumber, bell pepper, cherry tomatoes, feta, red onion, and olives on a large platter.",
+        "instruction_tl": "Ayusin ang pipino, bell pepper, cherry tomatoes, feta, pulang sibuyas, at mga olibo sa malaking plato.",
+        "instruction_il": "Ayusen ti pipino, bell pepper, cherry tomatoes, feta, nalabbaga nga sibuyas, ken olibo iti dakkel nga plato."
+      },
+      {
+        "step": 4,
+        "instruction": "Drizzle the dressing over everything. Toss gently to combine.",
+        "instruction_tl": "Buhusan ng dressing ang lahat. Haluin nang dahan-dahan para pagsamahin.",
+        "instruction_il": "Budbuden ti dressing ti amin. Ikuting nang naulimek tapno makombina."
+      },
+      {
+        "step": 5,
+        "instruction": "Sprinkle generously with extra oregano and top with fresh mint leaves. Season to taste and serve immediately.",
+        "instruction_tl": "Budburan ng dagdag na oregano at lagyan ng sariwang dahon ng mint. Timplahan ayon sa panlasa at ihain agad.",
+        "instruction_il": "Budbuden nang naluag ti dadduma pay nga oregano ken iteddu ti sariwa nga dahon ti mint. Timplaan iti panlasa ken iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 60,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "salad",
+      "vegetarian",
+      "mediterranean",
+      "quick",
+      "light",
+      "no-cook",
+      "greek"
+    ]
+  },
+  {
+    "id": "mediterranean-chickpea-salad",
+    "name": "Mediterranean Chickpea Salad",
+    "name_tl": "Mediterranean na Salad na may Garbanzos",
+    "name_il": "Mediterranean nga Salad nga adda Garbanzos",
+    "translations_verified": false,
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "cuisine": "Mediterranean",
+    "serves_base": 4,
+    "active_time_mins": 20,
+    "prep_time_mins": 20,
+    "cook_time_mins": 0,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=UlBagK09XjU",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "extra-virgin olive oil",
+        "amount": 30,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "garlic",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "lemon zest",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "lemon juice",
+        "amount": 30,
+        "unit": "ml",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "sea salt",
+        "amount": 0.75,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "black pepper",
+        "amount": 0.25,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "cumin seeds",
+        "amount": 1.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chickpeas cooked or canned",
+        "amount": 400,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "cherry tomatoes",
+        "amount": 150,
+        "unit": "g",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "Medjool dates pitted",
+        "amount": 4,
+        "unit": "whole",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "Persian cucumbers",
+        "amount": 3,
+        "unit": "whole",
+        "category": "produce",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "roasted red peppers",
+        "amount": 80,
+        "unit": "g",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh parsley",
+        "amount": 15,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      },
+      {
+        "item": "soft goat cheese (chèvre)",
+        "amount": 85,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh mint",
+        "amount": 10,
+        "unit": "g",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "fixed"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Combine olive oil, minced garlic, lemon zest, lemon juice, salt, and pepper in a large bowl. Whisk together.",
+        "instruction_tl": "Pagsamahin ang olive oil, tinadtad na bawang, lemon zest, katas ng limon, asin, at paminta sa malaking mangkok. Talunin nang magkasama.",
+        "instruction_il": "Ikombina ti olive oil, tinaddad nga ahos, lemon zest, katas ti limon, asin, ken paminta iti dakkel nga planggana. Batbaten iti inubos."
+      },
+      {
+        "step": 2,
+        "instruction": "Toast cumin seeds in a dry skillet over medium-low heat for 30 seconds until fragrant. Crush lightly with a mortar and pestle, then stir into the dressing.",
+        "instruction_tl": "I-toast ang mga butil ng kumin sa tuyong kawali sa katamtamang mababang apoy ng 30 segundo hanggang mabango. Bahagyang durugin sa almires, saka ihalo sa dressing.",
+        "instruction_il": "Toasten ti cumin seeds iti tay nga kawali iti kasango-angut nga baba nga init iti 30 segundo agingga amangto. Bassit nga digulen iti mortar, sa ikombina iti dressing."
+      },
+      {
+        "step": 3,
+        "instruction": "Drain and rinse the chickpeas. Halve the cherry tomatoes. Dice the dates. Slice cucumbers into thin half-moons. Roughly chop the roasted red peppers and parsley.",
+        "instruction_tl": "Patausiin at banlawan ang mga garbanzos. Hatiin ang cherry tomatoes. Tadtarin ang mga datiles. Hiwain ang mga pipino sa manipis na kalahating bilog. Tadtarin nang magaspang ang mga inihaw na pulang paminta at perehil.",
+        "instruction_il": "Patausien ken bagsaken ti garbanzos. Bucodin ti cherry tomatoes. Tadtaren ti datiles. Haplaen ti pepino iti manipis nga kagudua nga aniyas. Tadtaren nang nangato ti narosbad nga nalabbaga nga paminta ken parsley."
+      },
+      {
+        "step": 4,
+        "instruction": "Add chickpeas, tomatoes, dates, cucumbers, roasted red pepper, and parsley to the bowl. Toss well to coat everything in the dressing.",
+        "instruction_tl": "Ilagay ang mga garbanzos, kamatis, datiles, pipino, inihaw na pulang paminta, at perehil sa mangkok. Haluin nang mabuti para mabuo ang balot ng lahat ng dressing.",
+        "instruction_il": "Iteddu ti garbanzos, kamatis, datiles, pepino, narosbad nga nalabbaga nga paminta, ken parsley iti planggana. Ikuting nang nasayaat tapno mabalotan ti amin ti dressing."
+      },
+      {
+        "step": 5,
+        "instruction": "Transfer to a serving platter. Dollop goat cheese over the top, scatter fresh mint, and season to taste. Serve immediately.",
+        "instruction_tl": "Ilipat sa serving plato. Ilagay ang mga patak ng goat cheese sa ibabaw, ikalat ang sariwang mint, at timplahan ayon sa panlasa. Ihain agad.",
+        "instruction_il": "Iluktan iti serving plato. Iteddu ti goat cheese iti ngato, ibansag ti sariwa nga mint, ken timplaan iti panlasa. Iserbi dagus."
+      }
+    ],
+    "estimated_cost_hkd": 65,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "salad",
+      "vegetarian",
+      "mediterranean",
+      "quick",
+      "light",
+      "healthy",
+      "chickpea",
+      "no-cook"
+    ]
   }
 ]
