@@ -1015,8 +1015,8 @@
           <div className={`px-5 py-4 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
             {overdue ? (
               <>
-                <div className="font-display text-2xl leading-tight">⚡ Please start cooking now!</div>
-                <p className="text-sm opacity-80 mt-2">Food for {MP.i18n.meals[lang][nextMeal.meal]} should be on the table by <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>.</p>
+                <div className="font-display text-2xl leading-tight">It's time to start cooking now.</div>
+                <p className="text-sm opacity-80 mt-2">Food for {MP.i18n.meals[lang][nextMeal.meal]} should be on the table by <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>. Thank you, Auntie Leni!</p>
               </>
             ) : (
               <>
@@ -1037,12 +1037,25 @@
 
     // Today meal view — shows schedule + one meal (meal controlled by App via bottom nav)
     function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify, activeMeal, upNextMeal }) {
+      const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
       const MEAL_LABEL = { breakfast: "Breakfast", lunch: "Lunch", dinner: "Dinner" };
+      const hasRecipes = MP.getMealRecipeIds(todayDay, activeMeal).length > 0;
       return (
         <>
-          <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+          {/* Only show the UpNext banner when this tab IS the next upcoming meal */}
+          {activeMeal === upNextMeal && (
+            <UpNextBanner day={todayDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+          )}
           <TodaySchedule day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
           <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
+          {/* Meal heading */}
+          {hasRecipes && (
+            <div className="mb-3">
+              <h2 className="font-display text-2xl text-ink leading-none">
+                {MEAL_EMOJI[activeMeal]} Please cook this for {MEAL_LABEL[activeMeal]}
+              </h2>
+            </div>
+          )}
           <MealSection
             key={activeMeal}
             mealType={activeMeal}
@@ -1053,8 +1066,8 @@
             onVerify={onVerify}
             nowMin={activeMeal === upNextMeal ? nowMin : null}
           />
-          {!MP.getMealRecipeIds(todayDay, activeMeal).length && (
-            <div className="text-center text-warm/60 text-sm py-10">No meal planned for {MEAL_LABEL[activeMeal].toLowerCase()}.</div>
+          {!hasRecipes && (
+            <div className="text-center text-warm/60 text-sm py-10">No meal planned for {MEAL_LABEL[activeMeal].toLowerCase()} today.</div>
           )}
         </>
       );
