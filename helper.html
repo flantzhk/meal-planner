@@ -56,17 +56,22 @@
 
     function LangToggle({ lang, onChange }) {
       return (
-        <div className="inline-flex rounded-full bg-sand p-1 text-sm">
-          {MP.i18n.languages.map((l) => (
-            <button
-              key={l.code}
-              onClick={() => onChange(l.code)}
-              className={`px-3 py-1 rounded-full transition ${
-                lang === l.code ? "bg-cream shadow text-ink" : "text-warm"
-              }`}>
-              {l.code.toUpperCase()}
-            </button>
-          ))}
+        <div>
+          <div className="text-[10px] font-semibold uppercase tracking-widest text-warm/50 text-center mb-1">Language</div>
+          <div className="inline-flex rounded-xl bg-sand p-1 gap-1 text-sm shadow-sm">
+            {MP.i18n.languages.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => onChange(l.code)}
+                className={`px-4 py-2 rounded-lg font-semibold transition ${
+                  lang === l.code
+                    ? "bg-terra text-cream shadow"
+                    : "text-warm hover:text-ink"
+                }`}>
+                {l.label}
+              </button>
+            ))}
+          </div>
         </div>
       );
     }

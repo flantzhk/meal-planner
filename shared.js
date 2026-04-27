@@ -146,7 +146,6 @@
     languages: [
       { code: "en", label: "English" },
       { code: "tl", label: "Tagalog" },
-      { code: "il", label: "Ilocano" },
     ],
     days: {
       en: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
