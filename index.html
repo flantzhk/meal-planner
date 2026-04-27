@@ -1181,11 +1181,10 @@
       const mealObj = getMealObj(day, meal);
       const componentRecipes = COMPONENTS.map((c) => mealObj[c] ? recipesById[mealObj[c]] : null);
       const mealIsEmpty = componentRecipes.every((r) => !r);
-      // All filled slots across every component type (for image strip)
-      const filledSlots = ALL_COMPONENTS
+      // Only filled slots get an image panel — no empty placeholders
+      const imageSlots = ALL_COMPONENTS
         .map((c) => ({ comp: c, recipe: mealObj[c] ? recipesById[mealObj[c]] : null }))
         .filter((s) => s.recipe);
-      const imageSlots = filledSlots.length > 0 ? filledSlots : COMPONENTS.map((c) => ({ comp: c, recipe: null }));
       const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
       const hasOvernightDep = ALL_COMPONENTS.some((c) => {
         const r = mealObj[c] ? recipesById[mealObj[c]] : null;
