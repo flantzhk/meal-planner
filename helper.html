@@ -270,8 +270,9 @@
             if (ing.category === "pantry") continue;
             const scaled = MP.scale(ing, mealServes, r.serves_base || 4);
             const { family, value } = MP.units.toCanonical(scaled.amount, scaled.unit);
-            const key = `${ing.item.toLowerCase().trim()}|${ing.source}|${family}`;
-            const ex = byKey.get(key) || { item: ing.item, source: ing.source || "supermarket", category: ing.category, family, total: 0 };
+            const itemKey = MP.normalizeIngredientKey(ing.item);
+            const key = `${itemKey}|${ing.source}|${family}`;
+            const ex = byKey.get(key) || { item: itemKey, source: ing.source || "supermarket", category: ing.category, family, total: 0 };
             ex.total += value;
             byKey.set(key, ex);
           }

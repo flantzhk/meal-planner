@@ -276,6 +276,18 @@
     return Object.values(v).filter((id) => id && typeof id === "string");
   };
 
+  // Normalize ingredient item name for deduplication:
+  // "garlic cloves, minced" and "garlic cloves, chopped" both → "garlic"
+  MP.normalizeIngredientKey = function normalizeIngredientKey(item) {
+    let s = item.toLowerCase().trim();
+    s = s.replace(/\s*\(.*?\)/g, '').trim();        // strip parentheticals: "ghee (clarified butter)" → "ghee"
+    s = s.replace(/,\s*.+$/, '').trim();             // strip prep notes after comma: "garlic, minced" → "garlic"
+    s = s.replace(/^garlic cloves?$/, 'garlic');     // "garlic cloves" / "garlic clove" → "garlic"
+    s = s.replace(/^garlic clove\b/, 'garlic');      // "garlic clove ..." → "garlic ..."
+    s = s.replace(/\s+(minced|chopped|crushed|grated|halved|sliced|diced|toasted|blanched|smashed|torn|crumbled)$/, '').trim();
+    return s;
+  };
+
   MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides) {
     const servesTarget = weekplan.serves || 4;
     const overrides = sourceOverrides || {};
@@ -292,11 +304,11 @@
         for (const ing of r.ingredients || []) {
           const scaled = MP.scale(ing, servesForThisMeal, r.serves_base || 4);
           const { family, value } = toCanonical(scaled.amount, scaled.unit);
-          const itemKey = ing.item.toLowerCase().trim();
+          const itemKey = MP.normalizeIngredientKey(ing.item);
           const source = overrides[itemKey] || ing.source || "other";
           const key = `${itemKey}|${source}|${family}`;
           const existing = byKey.get(key) || {
-            item: ing.item, source,
+            item: itemKey, source,
             category: ing.category || "other", family, total: 0,
           };
           existing.total += value;
