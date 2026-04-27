@@ -237,10 +237,8 @@
               </div>
             )}
             <div className="flex-1 min-w-0">
-              <div className="text-[11px] font-semibold uppercase tracking-wide text-warm/70">
-                {COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}
-              </div>
-              <div className="font-display text-base leading-snug truncate">{name}</div>
+              <div className="font-display text-lg leading-snug truncate">{name}</div>
+              <div className="text-xs text-warm/50 mt-0.5">Tap to see how to cook this</div>
             </div>
             <span className="text-warm/50 text-lg shrink-0 transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>
               ›
@@ -256,7 +254,7 @@
       );
     }
 
-    const SOURCE_LABEL = { "wet-market": "🥬 Wet Market", "supermarket": "🛒 Supermarket" };
+    const SOURCE_LABEL = { "wet-market": "🥬 From the wet market", "supermarket": "🛒 From the supermarket" };
     const SOURCE_ORDER = ["wet-market", "supermarket"];
 
     function MealShoppingList({ mealType, day, recipesById, planServes, lang }) {
@@ -296,12 +294,11 @@
         <div className="rounded-2xl overflow-hidden ring-1 ring-black/5 bg-white">
           <button onClick={() => setOpen((o) => !o)}
             className="w-full flex items-center justify-between px-4 py-3 text-left">
-            <div className="flex items-center gap-2">
-              <span className="text-lg">🛍️</span>
-              <span className="font-display text-base">What to buy</span>
-              <span className="text-xs text-warm/60 bg-sand px-2 py-0.5 rounded-full">{totalItems} items</span>
+            <div className="flex-1 min-w-0">
+              <div className="font-display text-base">Before you start — what to buy</div>
+              <div className="text-xs text-warm/60 mt-0.5">{totalItems} item{totalItems !== 1 ? "s" : ""} · tap to see the list</div>
             </div>
-            <span className="text-warm/50 text-lg transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>›</span>
+            <span className="text-warm/50 text-lg transition-transform ml-2 shrink-0" style={{ transform: open ? "rotate(180deg)" : "rotate(0deg)" }}>›</span>
           </button>
           {open && (
             <div className="border-t border-sand divide-y divide-sand/60">
@@ -393,24 +390,26 @@
           )}
           {/* Timing header */}
           {hasOvernightDep ? (
-            <div className="bg-warm text-cream px-5 py-3 rounded-2xl">
-              <div className="text-xs font-semibold uppercase tracking-widest opacity-70">⚠ Needs overnight prep</div>
-              <div className="font-display text-xl mt-0.5">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
-              <div className="text-xs opacity-80 mt-1 num">Serve at {servedAtLabel}</div>
+            <div className="bg-warm text-cream px-5 py-4 rounded-2xl">
+              <div className="text-sm font-semibold opacity-80">⚠️ This meal needs overnight preparation.</div>
+              <div className="font-display text-xl mt-1">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
+              <div className="text-sm opacity-80 mt-1">Food should be on the table by <span className="num font-semibold">{servedAtLabel}</span>. Please check with Faith.</div>
             </div>
           ) : (
-            <div className="bg-ink text-cream px-5 py-3 rounded-2xl flex items-baseline justify-between">
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-widest opacity-60 mb-0.5">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
-                <div className="font-display text-xl num leading-none">Start {startLabel}</div>
+            <div className="bg-ink text-cream px-5 py-4 rounded-2xl">
+              <div className="text-xs font-semibold uppercase tracking-widest opacity-50 mb-1">{mealEmoji} {MP.i18n.meals[lang][mealType]}</div>
+              <div className="text-base leading-snug">
+                Please start cooking at <span className="num font-display text-xl">{startLabel}</span>.
               </div>
-              <div className="text-right">
-                <div className="text-xs opacity-60 mb-0.5">Serve at</div>
-                <div className="font-display text-xl num leading-none">{servedAtLabel}</div>
+              <div className="text-base leading-snug mt-1">
+                Food should be on the table by <span className="num font-display text-xl">{servedAtLabel}</span>.
               </div>
             </div>
           )}
-          {/* Accordion per component */}
+          {/* Shopping list first — buy before cooking */}
+          <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={planServes} lang={lang} />
+          {/* Recipes — one accordion per component */}
+          <div className="text-xs font-semibold uppercase tracking-widest text-warm/50 px-1">How to cook each dish</div>
           {ALL_COMPONENTS.map((comp, i) => {
             const id = mealObj[comp]; if (!id) return null;
             const r = recipesById[id]; if (!r) return null;
@@ -422,8 +421,6 @@
               />
             );
           })}
-          {/* Shopping list for this meal */}
-          <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={planServes} lang={lang} />
         </div>
       );
     }
@@ -445,16 +442,15 @@
       if (items.length === 0) return null;
       return (
         <section className="rounded-2xl overflow-hidden shadow-sm mt-4">
-          {/* Warm brown header — distinct from ink (timing), sage (up next), terra (urgent) */}
-          <div className="bg-warm text-cream px-5 py-3">
-            <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Do this today</div>
-            <div className="font-display text-xl mt-0.5">Tonight's prep</div>
+          <div className="bg-warm text-cream px-5 py-4">
+            <div className="font-display text-xl">Before you go to sleep tonight</div>
+            <p className="text-sm opacity-80 mt-1">Auntie Leni, please do these things tonight so tomorrow's meals are ready.</p>
           </div>
           <div className="bg-sand/60 divide-y divide-warm/10">
             {items.map((it, i) => (
               <div key={i} className="flex items-start gap-3 px-5 py-4">
                 <span className="text-2xl leading-none mt-0.5">{it.icon}</span>
-                <p className="text-sm leading-relaxed">{it.text}</p>
+                <p className="text-base leading-relaxed">{it.text}</p>
               </div>
             ))}
           </div>
@@ -1006,35 +1002,33 @@
       const dishCount = nextMeal.count > 1 ? ` · ${nextMeal.count} dishes` : "";
       if (nextMeal.hasOvernightDep) return (
         <div className="mb-5 rounded-2xl overflow-hidden shadow-sm">
-          <div className="bg-warm text-cream px-5 py-3">
-            <div className="text-xs font-semibold uppercase tracking-widest opacity-70">Needs overnight prep</div>
-            <div className="font-display text-2xl leading-tight mt-0.5">{emoji} {MP.i18n.meals[lang][nextMeal.meal]}{dishCount}</div>
-          </div>
-          <div className="bg-white px-5 py-3">
-            <p className="text-sm text-ink">This meal needs preparation that should have started yesterday. Check with Faith before cooking.</p>
-            <p className="text-sm text-warm mt-1 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}</p>
+          <div className="bg-warm text-cream px-5 py-4">
+            <div className="font-display text-xl">⚠️ This meal needed overnight preparation.</div>
+            <p className="text-sm opacity-80 mt-2">Please check with Faith before you start cooking. Food should be on the table by <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>.</p>
           </div>
         </div>
       );
       const overdue = minsToStart <= 0;
-      const action = overdue ? "Start cooking now"
-        : minsToStart < 60 ? `Start cooking in ${minsToStart} min`
-        : `Start cooking at ${MP.schedule.fmtTime(nextMeal.startMin)}`;
       return (
         <div className={`mb-5 rounded-2xl overflow-hidden shadow-sm ${overdue ? "ring-2 ring-terra" : ""}`}>
-          <div className={`px-5 py-3 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
-            <div className="text-xs font-semibold uppercase tracking-widest opacity-80">{overdue ? "⚡ Cook now" : "Up next"}</div>
-            <div className="font-display text-2xl leading-tight mt-0.5">{emoji} {MP.i18n.meals[lang][nextMeal.meal]}{dishCount}</div>
-          </div>
-          <div className="bg-white px-5 py-3 flex items-center justify-between gap-4">
-            <div>
-              <div className={`font-semibold text-base ${overdue ? "text-terra" : "text-ink"}`}>{action}</div>
-              <div className="text-sm text-warm mt-0.5 num">Serve at {MP.schedule.fmtTime(nextMeal.serveMin)}{minsToServe > 0 && ` · ${minsToServe} min away`}</div>
-            </div>
-            <div className="text-right">
-              <div className="text-xs text-warm uppercase tracking-wide mb-0.5">Start at</div>
-              <div className={`num font-display text-3xl leading-none ${overdue ? "text-terra" : "text-sage"}`}>{MP.schedule.fmtTime(nextMeal.startMin)}</div>
-            </div>
+          <div className={`px-5 py-4 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
+            {overdue ? (
+              <>
+                <div className="font-display text-2xl leading-tight">⚡ Please start cooking now!</div>
+                <p className="text-sm opacity-80 mt-2">Food for {MP.i18n.meals[lang][nextMeal.meal]} should be on the table by <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>.</p>
+              </>
+            ) : (
+              <>
+                <div className="text-xs font-semibold uppercase tracking-widest opacity-70 mb-1">Coming up — {MP.i18n.meals[lang][nextMeal.meal]}</div>
+                <div className="text-base leading-snug">
+                  Please start cooking at <span className="num font-display text-2xl font-bold">{MP.schedule.fmtTime(nextMeal.startMin)}</span>.
+                </div>
+                <div className="text-base leading-snug mt-1 opacity-80">
+                  Food on the table by <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>
+                  {minsToServe > 0 && <span className="text-sm opacity-70"> ({minsToServe} min from now)</span>}.
+                </div>
+              </>
+            )}
           </div>
         </div>
       );
@@ -1213,10 +1207,11 @@
         <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
           <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
 
-          <header className="mb-5 mt-6">
-            <div className="text-xs font-semibold uppercase tracking-widest text-warm/50 mb-1">{headerTitle}</div>
+          <header className="mb-6 mt-6">
+            {isMealTab && <div className="font-display text-2xl text-terra mb-1">Hello Auntie Leni 👋</div>}
             <h1 className="font-display text-4xl leading-none">{MP.date.dayName(today, lang)}</h1>
             <div className="text-sm text-warm mt-1 num">{MP.date.prettyDate(today, lang)}</div>
+            {isMealTab && <p className="text-base text-ink/70 mt-3">Here is what you need to cook today. Tap each dish to see how to make it.</p>}
           </header>
 
           {isMealTab && (
