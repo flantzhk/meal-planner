@@ -1220,6 +1220,15 @@
             {hasOvernightDep && (
               <span className="absolute top-1.5 right-1.5 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙</span>
             )}
+            {/* Serve time badge — label wraps hidden input for full tap area */}
+            <label onClick={(e) => e.stopPropagation()}
+              className="absolute bottom-1.5 left-1.5 flex items-center gap-1 bg-black/50 hover:bg-black/65 text-white text-[11px] font-medium px-2 py-1 rounded-full cursor-pointer transition select-none">
+              <span>🍽️</span>
+              <span>{serveTime}</span>
+              <input type="time" value={serveTime}
+                onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
+                className="absolute inset-0 opacity-0 w-full h-full cursor-pointer" />
+            </label>
           </div>
 
           {/* Component rows */}
@@ -1240,7 +1249,7 @@
               );
             })}
 
-            {/* Optional: soup / salad + serve time */}
+            {/* Optional: soup / salad */}
             <div className="flex items-center gap-1 pt-0.5">
               {OPT_COMPONENTS.map((comp) => {
                 const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
@@ -1256,12 +1265,6 @@
                   </button>
                 );
               })}
-              <input
-                type="time" value={serveTime}
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
-                className="ml-auto text-[10px] text-warm/60 bg-transparent border-none outline-none cursor-pointer hover:text-ink transition"
-              />
             </div>
           </div>
         </div>
