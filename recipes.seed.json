@@ -10797,6 +10797,10 @@
     ]
   },
   {
+    "id": "test-small",
+    "name": "test"
+  },
+  {
     "id": "moo-ping-thai-grilled-pork",
     "name": "Moo Ping (Thai Grilled Pork Skewers)",
     "name_tl": "Inihaw na Baboy na Thai (Moo Ping)",
@@ -11031,8 +11035,8 @@
       {
         "step": 3,
         "instruction": "Boil the reserved marinade in a small pan for 3 minutes to make a safe basting sauce.",
-        "instruction_tl": "Pakuluan ang natitira na marinade sa maliit na palayok ng 3 minuto.",
-        "instruction_il": "Pakuluen ti natirang marinade iti bassit nga luto iti 3 minuto."
+        "instruction_tl": "Pakuluan ang natitira na marinade sa maliit na palayok ng 3 minuto para maging basting sauce.",
+        "instruction_il": "Pakuluen ti natirang marinade iti bassit nga luto iti 3 minuto tapno maaramid iti basting sauce."
       },
       {
         "step": 4,
@@ -11320,7 +11324,7 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Use day-old rice — break up all clumps with your hands before cooking.",
+        "instruction": "Use day-old rice — break up all clumps with your hands before cooking. Fresh rice will go mushy.",
         "instruction_tl": "Gumamit ng kanin na niluto kahapon — basagin ang lahat ng bukol bago magluto.",
         "instruction_il": "Usaren ti bagas nga naluto idi kalman — baklasen ti amin nga katumpung sakbay ti luto."
       },
@@ -11351,8 +11355,8 @@
       {
         "step": 6,
         "instruction": "Season with fish sauce, oyster sauce, and sugar. Taste and adjust. Toss through spring onion whites.",
-        "instruction_tl": "Timplahan ng patis, oyster sauce, at asukal. Tikman at ayusin.",
-        "instruction_il": "Timplaan iti patis, oyster sauce, ken asukal. Tikman ken i-adjust."
+        "instruction_tl": "Timplahan ng patis, oyster sauce, at asukal. Tikman at ayusin. Haluin ang dahon ng sibuyas.",
+        "instruction_il": "Timplaan iti patis, oyster sauce, ken asukal. Tikman ken i-adjust. Ikoting ti spring onion."
       },
       {
         "step": 7,
@@ -11697,15 +11701,15 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Julienne zucchini and carrot into thin matchsticks. Slice spring onions and capsicum. Toss with a pinch of salt, let sit 5 minutes, then squeeze out as much water as possible.",
-        "instruction_tl": "Hiwain ang zucchini at karot sa manipis na piraso. Hiwain ang sibuyas at capsicum. Haluin na may asin, hayaan ng 5 minuto, tapos pigain ang tubig.",
-        "instruction_il": "Ututen ti zucchini ken karot iti manipis nga piraso. Ututen ti spring onion ken capsicum. Ikalamokan iti asin, idulin iti 5 minuto, kalpasan pigaen ti danum."
+        "instruction": "Julienne zucchini and carrot into thin matchsticks. Slice spring onions and capsicum. Toss vegetables with a pinch of salt, let sit 5 minutes, then squeeze out as much water as possible.",
+        "instruction_tl": "Hiwain ang zucchini at karot sa manipis na piraso. Hiwain ang dahon ng sibuyas at capsicum. Haluin ang mga gulay na may asin, hayaan ng 5 minuto, tapos pigain ang tubig.",
+        "instruction_il": "Ututen ti zucchini ken karot iti manipis nga piraso. Ututen ti spring onion ken capsicum. Ikalamokan ti gulay iti asin, idulin iti 5 minuto, kalpasan pigaen ti danum."
       },
       {
         "step": 2,
         "instruction": "Whisk together flour, rice flour, ice cold water, eggs, garlic, and sesame oil into a smooth batter.",
-        "instruction_tl": "Paghaluin ang harina, rice flour, malamig na tubig, itlog, bawang, at sesame oil.",
-        "instruction_il": "Ikalamokan ti arina, rice flour, nalamiis nga danum, itlog, bawang, ken sesame oil."
+        "instruction_tl": "Paghaluin ang harina, rice flour, malamig na tubig, itlog, bawang, at sesame oil hanggang maging maayos na batter.",
+        "instruction_il": "Ikalamokan ti arina, rice flour, nalamiis nga danum, itlog, bawang, ken sesame oil agingga nga nalunsot nga batter."
       },
       {
         "step": 3,
@@ -11716,20 +11720,20 @@
       {
         "step": 4,
         "instruction": "Heat a generous amount of oil in a non-stick pan on medium-high. Ladle in batter and spread into a thin, even round about 1cm thick.",
-        "instruction_tl": "Initin ang maraming mantika sa kawali sa medium-high. Ilagay ang batter at kumayin sa manipis na bilog na mga 1cm ang kapal.",
-        "instruction_il": "Palamiisen ti adu nga lana iti kawali iti medium-high. Iteddu ti batter ken ihuyop iti manipis nga bilog nga mga 1cm ti kabilog."
+        "instruction_tl": "Initin ang maraming mantika sa kawali sa medium-high. Ilagay ang batter at kumayin sa manipis at pantay na bilog na mga 1cm ang kapal.",
+        "instruction_il": "Palamiisen ti adu nga lana iti kawali iti medium-high. Iteddu ti batter ken ihuyop iti manipis ken pantay nga bilog nga mga 1cm ti kabilog."
       },
       {
         "step": 5,
-        "instruction": "Cook 3-4 minutes until the bottom is deep golden and crispy. Press lightly with a spatula. Flip and cook another 3-4 minutes.",
-        "instruction_tl": "Lutuin ng 3-4 minuto hanggang maging gintong at malutong ang ibaba. Pindutin nang bahagya. I-flip at lutuin ng 3-4 minuto pa.",
-        "instruction_il": "Lutuen iti 3-4 minuto agingga nga maaramid iti bulawan ken malutong ti baba. Pindoten iti bassit. I-flip ken lutuen iti napaut a 3-4 minuto."
+        "instruction": "Cook 3-4 minutes until the bottom is deep golden and crispy. Press lightly with a spatula to ensure even browning. Flip and cook another 3-4 minutes.",
+        "instruction_tl": "Lutuin ng 3-4 minuto hanggang maging gintong at malutong ang ibaba. Pindutin nang bahagya gamit ang spatula. I-flip at lutuin ng isa pang 3-4 minuto.",
+        "instruction_il": "Lutuen iti 3-4 minuto agingga nga maaramid iti laud nga bulawan ken malutong ti baba. Pindoten iti bassit iti spatula. I-flip ken lutuen iti napaut a 3-4 minuto."
       },
       {
         "step": 6,
         "instruction": "Mix soy sauce, rice vinegar, and sesame seeds for the dipping sauce. Slice pancakes into wedges and serve immediately while crispy.",
-        "instruction_tl": "Paghaluin ang toyo, rice vinegar, at sesame seeds para sa dipping sauce. Hiwain at ihain agad habang malutong.",
-        "instruction_il": "Ikalamokan ti toyo, rice vinegar, ken sesame seeds para ti dipping sauce. Ututen ken iserbi dagus iti malutong pay."
+        "instruction_tl": "Paghaluin ang toyo, rice vinegar, at sesame seeds para sa dipping sauce. Hiwain ang pancake at ihain agad habang malutong.",
+        "instruction_il": "Ikalamokan ti toyo, rice vinegar, ken sesame seeds para ti dipping sauce. Ututen ti pancake iti birlo ken iserbi dagus iti malutong pay."
       }
     ],
     "estimated_cost_hkd": 45,
@@ -11879,9 +11883,9 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Whisk flour, dashi, and grated nagaimo together into a batter. Chill 30 minutes if possible — this relaxes the gluten and makes a fluffier pancake.",
-        "instruction_tl": "Paghaluin ang harina, dashi, at gadgad na nagaimo. Palamigin ng 30 minuto kung maaari.",
-        "instruction_il": "Ikalamokan ti arina, dashi, ken nagarud nga nagaimo. Palammiisen iti 30 minuto no mabalin."
+        "instruction": "Make the batter: whisk flour, dashi, and grated nagaimo together. Chill 30 minutes if possible — this relaxes the gluten and makes a fluffier pancake.",
+        "instruction_tl": "Gumawa ng batter: paghaluin ang harina, dashi, at gadgad na nagaimo. Palamigin ng 30 minuto kung maaari.",
+        "instruction_il": "Aramiden ti batter: ikalamokan ti arina, dashi, ken nagarud nga nagaimo. Palammiisen iti 30 minuto no mabalin."
       },
       {
         "step": 2,
@@ -11891,27 +11895,27 @@
       },
       {
         "step": 3,
-        "instruction": "Heat oil in a flat-bottomed pan on medium. Pour a quarter of the batter and mound into a round about 2cm thick. Lay pork slices on top.",
-        "instruction_tl": "Initin ang mantika sa kawali sa katamtaman. Ibuhos ang isang-kapat ng batter at hubugin sa bilog na mga 2cm. Ilagay ang baboy sa ibabaw.",
-        "instruction_il": "Palamiisen ti lana iti kawali iti katengnga. Ibuhos ti maysa nga kuarto ti batter ken aramiden iti bilog nga mga 2cm. Iteddu ti baboy iti ngato."
+        "instruction": "Heat oil in a flat-bottomed pan on medium. Pour a quarter of the batter and gently mound it into a round about 2cm thick. Lay pork slices on top.",
+        "instruction_tl": "Initin ang mantika sa kawali sa katamtamang apoy. Ibuhos ang isang-kapat ng batter at hubugin sa bilog na mga 2cm ang taas. Ilagay ang hiwa ng baboy sa ibabaw.",
+        "instruction_il": "Palamiisen ti lana iti kawali iti katengnga nga apoy. Ibuhos ti maysa nga kuarto ti batter ken aramiden iti bilog nga mga 2cm ti kaatiddog. Iteddu ti baboy iti ngato."
       },
       {
         "step": 4,
         "instruction": "Cover and cook 5 minutes until the base is set and golden. Flip in one confident move. Cook uncovered another 5 minutes.",
-        "instruction_tl": "Takpan at lutuin ng 5 minuto hanggang matatag at gintong ang ibaba. I-flip nang maingat. Lutuin pa ng 5 minuto na walang takip.",
-        "instruction_il": "Takyanan ken lutuen iti 5 minuto agingga nga nairteng ken bulawan ti baba. I-flip iti maysa nga gaaw. Lutuen pay iti 5 minuto nga awan takyaw."
+        "instruction_tl": "Takpan at lutuin ng 5 minuto hanggang maging matatag at gintong ang ibaba. I-flip nang maingat. Lutuin pa ng 5 minuto na walang takip.",
+        "instruction_il": "Takyanan ken lutuen iti 5 minuto agingga nga nairteng ken bulawan ti baba. I-flip iti maysa nga nagannaet nga gaaw. Lutuen pay iti 5 minuto nga awan takyaw."
       },
       {
         "step": 5,
-        "instruction": "Brush with okonomiyaki sauce, zigzag Japanese mayo on top. Sprinkle aonori and pile on bonito flakes — they'll wave from the heat.",
-        "instruction_tl": "Pahiran ng okonomiyaki sauce, lagyan ng Japanese mayo sa ibabaw. Budburan ng aonori at lagyan ng bonito flakes.",
-        "instruction_il": "Pahiran iti okonomiyaki sauce, lagyan ti Japanese mayo iti ngato. Ibansag ti aonori ken iteddu ti bonito flakes."
+        "instruction": "Brush with okonomiyaki sauce, then zigzag Japanese mayo on top. Sprinkle aonori and pile on bonito flakes — they'll wave from the heat.",
+        "instruction_tl": "Pahiran ng okonomiyaki sauce, tapos lagyan ng Japanese mayo sa ibabaw. Budburan ng aonori at lagyan ng bonito flakes — gagalaw ito sa init.",
+        "instruction_il": "Pahiran iti okonomiyaki sauce, kalpasan lagyan ti Japanese mayo iti ngato. Ibansag ti aonori ken iteddu ti bonito flakes — magebgeb daytoy iti ngina."
       },
       {
         "step": 6,
-        "instruction": "Serve immediately. Okonomiyaki does not wait.",
-        "instruction_tl": "Ihain agad. Hindi naghihintay ang okonomiyaki.",
-        "instruction_il": "Iserbi dagus. Saan mag-uray ti okonomiyaki."
+        "instruction": "Serve immediately in the pan. Eat straight away — okonomiyaki does not wait.",
+        "instruction_tl": "Ihain agad sa kawali. Kainin agad — hindi naghihintay ang okonomiyaki.",
+        "instruction_il": "Iserbi dagus iti kawali. Kanen dagus — saan mag-uray ti okonomiyaki."
       }
     ],
     "estimated_cost_hkd": 85,
@@ -11923,313 +11927,6 @@
       "fried",
       "egg",
       "cabbage"
-    ]
-  },
-  {
-    "id": "okonomiyaki-easy",
-    "name": "Okonomiyaki — Easy Home Version",
-    "name_tl": "Okonomiyaki — Madaling Gawin sa Bahay",
-    "name_il": "Okonomiyaki — Nalaka nga Aramiden iti Balay",
-    "translations_verified": false,
-    "meal_type": [
-      "lunch",
-      "dinner"
-    ],
-    "component_type": "protein",
-    "cuisine": "Japanese",
-    "serves_base": 4,
-    "active_time_mins": 25,
-    "prep_time_mins": 15,
-    "cook_time_mins": 20,
-    "hero_image": null,
-    "youtube_url": "https://www.youtube.com/watch?v=f2IEoi7Gu1U",
-    "dependencies": [],
-    "ingredients": [
-      {
-        "item": "plain flour",
-        "amount": 200,
-        "unit": "g",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "linear"
-      },
-      {
-        "item": "water",
-        "amount": 200,
-        "unit": "ml",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "linear"
-      },
-      {
-        "item": "eggs",
-        "amount": 3,
-        "unit": "whole",
-        "category": "dairy",
-        "source": "supermarket",
-        "scales": "linear"
-      },
-      {
-        "item": "cabbage, finely shredded",
-        "amount": 400,
-        "unit": "g",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "pork belly or bacon, thinly sliced",
-        "amount": 200,
-        "unit": "g",
-        "category": "meat",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "spring onions, sliced",
-        "amount": 3,
-        "unit": "stalks",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "taper"
-      },
-      {
-        "item": "soy sauce",
-        "amount": 1,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "okonomiyaki sauce (or Worcestershire + ketchup)",
-        "amount": 4,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "Japanese mayonnaise",
-        "amount": 3,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "aonori or nori, crumbled",
-        "amount": 1,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "none"
-      },
-      {
-        "item": "katsuobushi (bonito flakes), optional",
-        "amount": 10,
-        "unit": "g",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "none"
-      },
-      {
-        "item": "vegetable oil",
-        "amount": 2,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "none"
-      }
-    ],
-    "steps": [
-      {
-        "step": 1,
-        "instruction": "Mix flour, water, eggs, and soy sauce into a smooth batter.",
-        "instruction_tl": "Paghaluin ang harina, tubig, itlog, at toyo hanggang maging maayos na batter.",
-        "instruction_il": "Ikalamokan ti arina, danum, itlog, ken toyo agingga nga nalunsot nga batter."
-      },
-      {
-        "step": 2,
-        "instruction": "Fold in shredded cabbage and spring onions — the batter will look very cabbage-heavy, and that's exactly right.",
-        "instruction_tl": "Haluin ang repolyo at dahon ng sibuyas — maraming repolyo ang makikita sa batter, at tama iyon.",
-        "instruction_il": "Ikalamokan ti nakedkedan nga repolyo ken spring onion — adu ti repolyo iti batter, ken naaramid dayta."
-      },
-      {
-        "step": 3,
-        "instruction": "Heat oil in a non-stick pan on medium. Ladle batter into a round about 2cm thick. Lay pork or bacon on top.",
-        "instruction_tl": "Initin ang mantika sa kawali sa katamtaman. Ilagay ang batter sa bilog na mga 2cm ang kapal. Ilagay ang baboy o bacon sa ibabaw.",
-        "instruction_il": "Palamiisen ti lana iti non-stick nga kawali iti katengnga. Iteddu ti batter iti bilog nga mga 2cm. Iteddu ti baboy wenno bacon iti ngato."
-      },
-      {
-        "step": 4,
-        "instruction": "Cook 4-5 minutes until the base is golden and set. Flip carefully and cook another 4-5 minutes. The pork on top will now be underneath, crisping up nicely.",
-        "instruction_tl": "Lutuin ng 4-5 minuto hanggang gintong at matatag ang ibaba. I-flip nang maingat at lutuin ng isa pang 4-5 minuto. Ang baboy sa ibabaw ay magiging sa ibaba at magiging malutong.",
-        "instruction_il": "Lutuen iti 4-5 minuto agingga nga bulawan ken nairteng ti baba. I-flip iti nagannaet ken lutuen iti napaut a 4-5 minuto. Ti baboy iti ngato agbalin nga iti baba ken agmalutong."
-      },
-      {
-        "step": 5,
-        "instruction": "Top with okonomiyaki sauce, zigzag mayo, aonori, and bonito flakes. Serve immediately.",
-        "instruction_tl": "Lagyan ng okonomiyaki sauce, zigzag mayo, aonori, at bonito flakes. Ihain agad.",
-        "instruction_il": "Lagyan ti okonomiyaki sauce, zigzag mayo, aonori, ken bonito flakes. Iserbi dagus."
-      }
-    ],
-    "estimated_cost_hkd": 75,
-    "loved_by": [],
-    "avoid_for": [],
-    "tags": [
-      "pork",
-      "japanese",
-      "fried",
-      "egg",
-      "cabbage",
-      "quick"
-    ]
-  },
-  {
-    "id": "cod-en-papillote-mediterranean",
-    "name": "Mediterranean Cod en Papillote",
-    "name_tl": "Mediterranean na Isda sa Papel (Cod en Papillote)",
-    "name_il": "Mediterranean nga Isda iti Papel (Cod en Papillote)",
-    "translations_verified": false,
-    "meal_type": [
-      "lunch",
-      "dinner"
-    ],
-    "component_type": "protein",
-    "cuisine": "Mediterranean",
-    "serves_base": 4,
-    "active_time_mins": 15,
-    "prep_time_mins": 10,
-    "cook_time_mins": 20,
-    "hero_image": null,
-    "youtube_url": "https://www.youtube.com/watch?v=PkDjItVCTT0",
-    "dependencies": [],
-    "ingredients": [
-      {
-        "item": "cod fillets (or other firm white fish)",
-        "amount": 600,
-        "unit": "g",
-        "category": "meat",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "cherry tomatoes",
-        "amount": 200,
-        "unit": "g",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "kalamata olives, pitted",
-        "amount": 60,
-        "unit": "g",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "capers",
-        "amount": 2,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "garlic, thinly sliced",
-        "amount": 3,
-        "unit": "cloves",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "taper"
-      },
-      {
-        "item": "lemon",
-        "amount": 1,
-        "unit": "whole",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "none"
-      },
-      {
-        "item": "fresh parsley or oregano",
-        "amount": 1,
-        "unit": "handful",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "none"
-      },
-      {
-        "item": "olive oil",
-        "amount": 3,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "salt and black pepper",
-        "amount": 1,
-        "unit": "tsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "baking parchment paper",
-        "amount": 4,
-        "unit": "sheets",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "none"
-      }
-    ],
-    "steps": [
-      {
-        "step": 1,
-        "instruction": "Preheat oven to 200°C. Cut 4 large squares of parchment, big enough to fold into a sealed parcel around the fish.",
-        "instruction_tl": "Initin ang oven sa 200°C. Gupitin ang 4 na malaking parchment paper, sapat para mabalutin ang isda.",
-        "instruction_il": "Palamiisen ti oven iti 200°C. Gutiupen ti 4 nga dakkel nga parchment paper, sapat para mabalutin ti isda."
-      },
-      {
-        "step": 2,
-        "instruction": "Pat fish dry. Season both sides with salt and pepper. Place one fillet in the centre of each parchment sheet.",
-        "instruction_tl": "Patuyuin ang isda. Timplahan ng asin at paminta sa magkabilang gilid. Ilagay ang isang filet sa gitna ng bawat parchment.",
-        "instruction_il": "Patarawen ti isda. Timplaan iti asin ken paminta iti dua nga bangir. Iteddu ti maysa nga pilet iti tengnga ti tunggal parchment."
-      },
-      {
-        "step": 3,
-        "instruction": "Pile cherry tomatoes, olives, capers, and garlic on top. Drizzle with olive oil and a squeeze of lemon. Scatter fresh herbs.",
-        "instruction_tl": "Ilagay ang cherry tomatoes, olives, capers, at bawang sa ibabaw. Lagyan ng olive oil at lemon. Budburan ng mga dahon.",
-        "instruction_il": "Iteddu ti cherry tomatoes, olives, capers, ken bawang iti ngato. Lagyan ti olive oil ken lemon. Ibansag ti mga ramut."
-      },
-      {
-        "step": 4,
-        "instruction": "Fold the parchment over the fish and crimp the edges tightly to create a sealed parcel. No steam should escape.",
-        "instruction_tl": "Tiklupin ang parchment sa ibabaw ng isda at tiklupin ang mga gilid nang mahigpit. Walang singaw na dapat lumabas.",
-        "instruction_il": "Tiklopen ti parchment iti ngato ti isda ken tiklopen ti mga gilirna nang nagannaet. Awan singaw nga nasken nga lumabas."
-      },
-      {
-        "step": 5,
-        "instruction": "Bake 15-20 minutes. The parcel will puff up when ready. Let each person open their own parcel at the table — the steam and aroma are part of the experience.",
-        "instruction_tl": "I-bake ng 15-20 minuto. Magmamantsa ang parcel kapag handa na. Hayaan ang bawat isa na buksan ang kanilang parcel sa mesa.",
-        "instruction_il": "I-bake iti 15-20 minuto. Agpungtot ti parsel no iyaay na. Ipalubos ti tunggal tao nga buklasen ti sadiay parsel iti lamisaan."
-      }
-    ],
-    "estimated_cost_hkd": 110,
-    "loved_by": [],
-    "avoid_for": [],
-    "tags": [
-      "fish",
-      "seafood",
-      "baked",
-      "mediterranean",
-      "quick",
-      "light",
-      "healthy"
     ]
   },
   {
@@ -12342,27 +12039,27 @@
       },
       {
         "step": 2,
-        "instruction": "Mix paste with oyster sauce, fish sauce, soy sauce, palm sugar, and coconut milk. Score the pork neck lightly with a knife, rub marinade all over, and marinate at least 3 hours — overnight is best.",
-        "instruction_tl": "Paghaluin ang paste kasama ang oyster sauce, patis, toyo, asukal, at coconut milk. Gawang marka sa baboy, kuskusin ng marinade, at i-marinate ng hindi bababa sa 3 oras.",
-        "instruction_il": "Ikalamokan ti paste iti oyster sauce, patis, toyo, asukal, ken coconut milk. Lagyan ti marka ti baboy, kuskusan ti marinade, ken i-marinate iti nasayaat a 3 oras."
+        "instruction": "Mix paste with oyster sauce, fish sauce, soy sauce, palm sugar, and coconut milk. Score the pork neck lightly with a knife, then rub marinade all over. Marinate at least 3 hours — overnight is best.",
+        "instruction_tl": "Paghaluin ang paste kasama ang oyster sauce, patis, toyo, asukal, at coconut milk. Gawang marka sa baboy, tapos kuskusin ng marinade sa lahat ng bahagi. I-marinate ng hindi bababa sa 3 oras.",
+        "instruction_il": "Ikalamokan ti paste iti oyster sauce, patis, toyo, asukal, ken coconut milk. Lagyan ti marka ti baboy, kalpasan kuskusan ti marinade iti amin nga bangir. I-marinate iti nasayaat a 3 oras."
       },
       {
         "step": 3,
-        "instruction": "Grill on medium-high, turning every 3-4 minutes, for 20-25 minutes total. You want char marks on the outside and juicy meat through. Baste with leftover marinade (boiled first) as you go.",
-        "instruction_tl": "I-grill sa medium-high, iikot tuwing 3-4 minuto, ng 20-25 minuto. Gusto mo ang char sa labas at makatas na karne. Pahiran ng nalutong marinade.",
-        "instruction_il": "I-grill iti medium-high, iturong iti tunggal 3-4 minuto, iti 20-25 minuto. Kayat mo ti char iti ruar ken nadanum nga karne. Pahiran ti naluto nga marinade."
+        "instruction": "Grill on medium-high heat, turning every 3-4 minutes, for 20-25 minutes total. You want char marks on the outside and juicy meat all the way through. Baste with leftover marinade (boiled first) as you go.",
+        "instruction_tl": "I-grill sa medium-high na apoy, iikot tuwing 3-4 minuto, ng 20-25 minuto. Gusto mo ang char sa labas at makatas na karne sa loob. Pahiran ng nalutong marinade.",
+        "instruction_il": "I-grill iti medium-high nga apoy, iturong iti tunggal 3-4 minuto, iti 20-25 minuto. Kayat mo ti char iti ruar ken nadanum nga karne iti uneg. Pahiran ti naluto nga marinade."
       },
       {
         "step": 4,
-        "instruction": "Rest 5 minutes. Slice against the grain into 1cm pieces.",
-        "instruction_tl": "Pahingahin ng 5 minuto. Hiwain laban sa unat ng karne sa 1cm na piraso.",
-        "instruction_il": "Painawen iti 5 minuto. Ututen laban iti unat ti karne iti 1cm nga piraso."
+        "instruction": "Rest the pork 5 minutes before slicing. Slice against the grain into 1cm pieces.",
+        "instruction_tl": "Pahingahin ang baboy ng 5 minuto bago hiwain. Hiwain laban sa unat ng karne sa 1cm na piraso.",
+        "instruction_il": "Painawen ti baboy iti 5 minuto sakbay ti utut. Ututen laban iti unat ti karne iti 1cm nga piraso."
       },
       {
         "step": 5,
-        "instruction": "Serve with sticky rice and Thai nam jim jaew dipping sauce — roasted chili, fish sauce, lime, shallots, toasted rice powder.",
-        "instruction_tl": "Ihain kasama ang malagkit na kanin at Thai nam jim jaew sauce — toasted chili, patis, dayap, sibuyas, toasted rice powder.",
-        "instruction_il": "Iserbi kadagiti malagkit nga bagas ken Thai nam jim jaew sauce — toasted chili, patis, dayap, sibuyas, toasted rice powder."
+        "instruction": "Serve with sticky rice and a spicy Thai dipping sauce (nam jim jaew) — roasted chili, fish sauce, lime, shallots, toasted rice powder.",
+        "instruction_tl": "Ihain kasama ang malagkit na kanin at maanghang na Thai dipping sauce — toasted chili, patis, dayap, sibuyas, toasted rice powder.",
+        "instruction_il": "Iserbi kadagiti malagkit nga bagas ken nangato nga Thai dipping sauce — toasted chili, patis, dayap, sibuyas, toasted rice powder."
       }
     ],
     "estimated_cost_hkd": 95,
@@ -12479,33 +12176,33 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Make the broth: combine dashi, soy sauce, mirin, sake, and sugar in a pot. Bring to a simmer. Taste — it should be savoury, slightly sweet, deeply umami. Adjust seasoning.",
-        "instruction_tl": "Gumawa ng sabaw: pagsamahin ang dashi, toyo, mirin, sake, at asukal sa palayok. Pakuluin. Tikman — dapat matamis-alat at malalim ang umami.",
-        "instruction_il": "Aramiden ti sabaw: ikalamokan ti dashi, toyo, mirin, sake, ken asukal iti luto. Papaanawen. Tikman — nasken nga maalat-matam-is ken nadalem ti umami."
+        "instruction": "Make the broth: combine dashi, soy sauce, mirin, sake, and sugar in a pot. Bring to a simmer over medium heat. Taste — it should be savoury, slightly sweet, and deeply umami. Adjust seasoning.",
+        "instruction_tl": "Gumawa ng sabaw: pagsamahin ang dashi, toyo, mirin, sake, at asukal sa palayok. Pakuluin sa katamtamang apoy. Tikman — dapat matamis-alat at malalim ang umami.",
+        "instruction_il": "Aramiden ti sabaw: ikalamokan ti dashi, toyo, mirin, sake, ken asukal iti luto. Papaanawen iti katengnga nga apoy. Tikman — nasken nga maalat-matam-is ken nadalem ti umami."
       },
       {
         "step": 2,
-        "instruction": "Cook udon noodles in a separate pot of boiling water per packet — fresh udon needs only 1-2 minutes. Drain and divide into bowls.",
-        "instruction_tl": "Lutuin ang udon sa hiwalay na palayok ng kumukulong tubig ayon sa pakete — ang sariwang udon ay 1-2 minuto lang. Salain at hatiin sa mga mangkok.",
-        "instruction_il": "Lutuen ti udon iti sabali nga luto ti nakulkulaw nga danum urum iti pakete — ti sariwa nga udon 1-2 minuto laeng. Pigtaken ken ibingay iti platito."
+        "instruction": "Bring a separate large pot of water to a boil. Cook udon noodles according to packet — fresh udon only needs 1-2 minutes. Drain and divide into bowls.",
+        "instruction_tl": "Pakuluin ang tubig sa hiwalay na palayok. Lutuin ang udon ayon sa pakete — ang sariwang udon ay 1-2 minuto lang. Salain at hatiin sa mga mangkok.",
+        "instruction_il": "Pakuluen ti danum iti sabali nga dakkel nga luto. Lutuen ti udon urum iti pakete — ti sariwa nga udon 1-2 minuto laeng. Pigtaken ken ibingay iti platito."
       },
       {
         "step": 3,
-        "instruction": "Bring broth to a gentle boil. Add beef slices and cook 1-2 minutes until just cooked through — keep them tender, not tough.",
-        "instruction_tl": "Pakuluin nang bahagya ang sabaw. Ilagay ang baka at lutuin ng 1-2 minuto — manatiling malambot.",
-        "instruction_il": "Pakuluen iti nalumman ti sabaw. Iteddu ti baka ken lutuen iti 1-2 minuto — agpatingga iti nalamot."
+        "instruction": "Bring the broth to a gentle boil. Add beef slices and cook 1-2 minutes until just cooked through — they should stay tender, not tough.",
+        "instruction_tl": "Pakuluin nang bahagya ang sabaw. Ilagay ang hiwa ng baka at lutuin ng 1-2 minuto — dapat manatiling malambot.",
+        "instruction_il": "Pakuluen iti nalumman ti sabaw. Iteddu ti baka ken lutuen iti 1-2 minuto — nasken nga agpatingga iti nalamot."
       },
       {
         "step": 4,
-        "instruction": "Ladle hot broth and beef over the noodles. Top with spring onions and narutomaki if using.",
+        "instruction": "Ladle hot broth and beef over the noodles. Top with spring onions and narutomaki slices if using.",
         "instruction_tl": "Ibuhos ang mainit na sabaw at baka sa ibabaw ng noodles. Lagyan ng dahon ng sibuyas at narutomaki.",
         "instruction_il": "Ibuhos ti nangato nga sabaw ken baka iti ngato ti noodles. Lagyan ti spring onion ken narutomaki."
       },
       {
         "step": 5,
-        "instruction": "Serve immediately with shichimi togarashi on the side.",
-        "instruction_tl": "Ihain agad na may shichimi togarashi sa gilid.",
-        "instruction_il": "Iserbi dagus nga may shichimi togarashi iti bangir."
+        "instruction": "Serve immediately with shichimi togarashi on the side for heat.",
+        "instruction_tl": "Ihain agad na may shichimi togarashi sa gilid para sa anghang.",
+        "instruction_il": "Iserbi dagus nga may shichimi togarashi iti bangir para ti nangato."
       }
     ],
     "estimated_cost_hkd": 95,
@@ -12516,187 +12213,6 @@
       "japanese",
       "quick",
       "noodles"
-    ]
-  },
-  {
-    "id": "beef-stroganoff-marions",
-    "name": "Beef Stroganoff",
-    "name_tl": "Beef Stroganoff",
-    "name_il": "Beef Stroganoff",
-    "translations_verified": false,
-    "meal_type": [
-      "lunch",
-      "dinner"
-    ],
-    "component_type": "protein",
-    "cuisine": "Western",
-    "serves_base": 4,
-    "active_time_mins": 25,
-    "prep_time_mins": 15,
-    "cook_time_mins": 20,
-    "hero_image": null,
-    "youtube_url": "https://www.youtube.com/watch?v=YHYJoGmh7aI",
-    "dependencies": [],
-    "ingredients": [
-      {
-        "item": "beef sirloin or scotch fillet, thinly sliced",
-        "amount": 600,
-        "unit": "g",
-        "category": "meat",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "butter",
-        "amount": 40,
-        "unit": "g",
-        "category": "dairy",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "onion, thinly sliced",
-        "amount": 1,
-        "unit": "large",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "mushrooms, sliced",
-        "amount": 300,
-        "unit": "g",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "linear"
-      },
-      {
-        "item": "garlic, minced",
-        "amount": 3,
-        "unit": "cloves",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "taper"
-      },
-      {
-        "item": "beef stock",
-        "amount": 250,
-        "unit": "ml",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "linear"
-      },
-      {
-        "item": "sour cream",
-        "amount": 200,
-        "unit": "ml",
-        "category": "dairy",
-        "source": "supermarket",
-        "scales": "linear"
-      },
-      {
-        "item": "Dijon mustard",
-        "amount": 1,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "Worcestershire sauce",
-        "amount": 1,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "smoked paprika",
-        "amount": 1,
-        "unit": "tsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "salt and black pepper",
-        "amount": 1,
-        "unit": "tsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "taper"
-      },
-      {
-        "item": "vegetable oil",
-        "amount": 2,
-        "unit": "tbsp",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "none"
-      },
-      {
-        "item": "fresh parsley, to serve",
-        "amount": 1,
-        "unit": "handful",
-        "category": "produce",
-        "source": "wet-market",
-        "scales": "none"
-      },
-      {
-        "item": "egg noodles or rice, to serve",
-        "amount": 400,
-        "unit": "g",
-        "category": "pantry",
-        "source": "supermarket",
-        "scales": "linear"
-      }
-    ],
-    "steps": [
-      {
-        "step": 1,
-        "instruction": "Slice beef into thin strips against the grain. Season generously with salt, pepper, and paprika.",
-        "instruction_tl": "Hiwain ang baka sa manipis na strips laban sa unat ng karne. Timplahan nang sapat ng asin, paminta, at paprika.",
-        "instruction_il": "Ututen ti baka iti manipis nga strips laban iti unat ti karne. Timplaan nang sapat iti asin, paminta, ken paprika."
-      },
-      {
-        "step": 2,
-        "instruction": "Heat a wide pan on very high heat. Sear beef strips in a single layer — don't crowd — 1-2 minutes until browned. Work in batches. Remove and set aside.",
-        "instruction_tl": "Initin ang malawak na kawali sa napakataas na apoy. I-sear ang baka sa isang layer — huwag siksikan — 1-2 minuto. Gawin nang basta-basta. Alisin at itabi.",
-        "instruction_il": "Palamiisen ti nalawa nga kawali iti nangato unay nga apoy. I-sear ti baka iti maysa nga layer — saan punnoen — 1-2 minuto. Aramiden iti bassit-bassit. Ikuyog ken idulin."
-      },
-      {
-        "step": 3,
-        "instruction": "In the same pan, melt butter over medium heat. Cook onion 3-4 minutes until softened. Add garlic and mushrooms, cook until golden, about 5 minutes.",
-        "instruction_tl": "Sa parehong kawali, tunawin ang butter sa katamtamang apoy. Lutuin ang sibuyas ng 3-4 minuto. Ilagay ang bawang at mushrooms, lutuin hanggang mag-golden, mga 5 minuto.",
-        "instruction_il": "Iti agpada nga kawali, tunnawen ti butter iti katengnga nga apoy. Lutuen ti sibuyas iti 3-4 minuto. Iteddu ti bawang ken mushrooms, lutuen agingga nga mag-golden, mga 5 minuto."
-      },
-      {
-        "step": 4,
-        "instruction": "Add Worcestershire sauce and Dijon mustard. Pour in beef stock and simmer 3-4 minutes until slightly reduced.",
-        "instruction_tl": "Ilagay ang Worcestershire sauce at Dijon mustard. Ibuhos ang beef stock at pakuluin ng 3-4 minuto.",
-        "instruction_il": "Iteddu ti Worcestershire sauce ken Dijon mustard. Ibuhos ti beef stock ken papaanawen iti 3-4 minuto."
-      },
-      {
-        "step": 5,
-        "instruction": "Turn heat to low. Stir in sour cream — do not boil after this or it will split. Return beef to the pan, stir to combine, and warm through 1-2 minutes.",
-        "instruction_tl": "Bawasan ang apoy. Haluin ang sour cream — huwag pakuluin pagkatapos. Ibalik ang baka, haluin, at initin ng 1-2 minuto.",
-        "instruction_il": "Bawasan ti apoy. Ikoting ti sour cream — saan paaluton sakbay. Isubli ti baka, ikoting, ken palamiisen iti 1-2 minuto."
-      },
-      {
-        "step": 6,
-        "instruction": "Serve immediately over egg noodles or rice. Scatter fresh parsley.",
-        "instruction_tl": "Ihain agad sa ibabaw ng egg noodles o kanin. Budburan ng parsley.",
-        "instruction_il": "Iserbi dagus iti ngato ti egg noodles wenno bagas. Ibansag ti parsley."
-      }
-    ],
-    "estimated_cost_hkd": 130,
-    "loved_by": [],
-    "avoid_for": [],
-    "tags": [
-      "beef",
-      "quick",
-      "one-pan",
-      "mushroom"
     ]
   },
   {
@@ -12851,33 +12367,33 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Place beef in a large pot with water and bay leaves. Bring to a boil, skim any foam, then simmer on low for 30 minutes until starting to become tender.",
+        "instruction": "Place beef in a large pot with water and bay leaves. Bring to a boil, skim any foam, then simmer on low heat for 30 minutes until starting to become tender.",
         "instruction_tl": "Ilagay ang baka sa malaking palayok na may tubig at bay leaves. Pakuluin, alisin ang bula, tapos pakuluin sa mahinang apoy ng 30 minuto.",
         "instruction_il": "Iteddu ti baka iti dakkel nga luto iti danum ken bay leaves. Pakuluen, ikuyog ti bula, kalpasan papaanawen iti nalamiis nga apoy iti 30 minuto."
       },
       {
         "step": 2,
-        "instruction": "Meanwhile, grate the beet and carrot, cube the potatoes, dice the onion, and shred the cabbage.",
-        "instruction_tl": "Habang naghihintay, gadukin ang beet at karot, i-cube ang patatas, tadtarin ang sibuyas, at hiwain ang repolyo.",
-        "instruction_il": "Iti panawen ti panaguray, garudan ti beet ken karot, i-cube ti patatas, tadtaren ti sibuyas, ken kedkedan ti repolyo."
+        "instruction": "Meanwhile, peel and cube potatoes. Grate beet and carrot. Dice onion. Shred cabbage.",
+        "instruction_tl": "Habang naghihintay, balatan at i-cube ang patatas. Gadukin ang beet at karot. Tadtarin ang sibuyas. Hiwain ang repolyo.",
+        "instruction_il": "Iti panawen ti panaguray, panewan ken i-cube ti patatas. Garudan ti beet ken karot. Tadtaren ti sibuyas. Kedkedan ti repolyo."
       },
       {
         "step": 3,
-        "instruction": "Heat olive oil in a pan. Fry onion, carrot, and beet for 5 minutes until softened. Add garlic, tomato sauce, and red wine. Cook 3 more minutes.",
-        "instruction_tl": "Initin ang olive oil sa kawali. Igisa ang sibuyas, karot, at beet ng 5 minuto. Ilagay ang bawang, tomato sauce, at red wine. Lutuin ng 3 minuto pa.",
-        "instruction_il": "Palamiisen ti olive oil iti kawali. Igisa ti sibuyas, karot, ken beet iti 5 minuto. Iteddu ti bawang, tomato sauce, ken red wine. Lutuen iti 3 minuto pay."
+        "instruction": "Heat olive oil in a pan. Fry onion, carrot, and beet for 5 minutes until softened. Add garlic, tomato sauce, and red wine. Stir and cook 3 more minutes.",
+        "instruction_tl": "Initin ang olive oil sa kawali. Igisa ang sibuyas, karot, at beet ng 5 minuto. Ilagay ang bawang, tomato sauce, at red wine. Haluin at lutuin ng 3 minuto pa.",
+        "instruction_il": "Palamiisen ti olive oil iti kawali. Igisa ti sibuyas, karot, ken beet iti 5 minuto. Iteddu ti bawang, tomato sauce, ken red wine. Ikoting ken lutuen iti 3 minuto pay."
       },
       {
         "step": 4,
-        "instruction": "Add potatoes to the beef broth. Simmer 10 minutes. Add beet-tomato mixture and cabbage. Season with salt and pepper. Simmer 10-15 more minutes until everything is tender.",
-        "instruction_tl": "Ilagay ang patatas sa sabaw ng baka. Pakuluin ng 10 minuto. Ilagay ang beet-tomato mixture at repolyo. Timplahan. Pakuluin ng 10-15 minuto pa.",
-        "instruction_il": "Iteddu ti patatas iti sabaw ti baka. Papaanawen iti 10 minuto. Iteddu ti beet-tomato mixture ken repolyo. Timplaan. Papaanawen iti 10-15 minuto pay."
+        "instruction": "Add potatoes to the beef broth. Simmer 10 minutes. Then add the beet-tomato mixture and cabbage. Season with salt, pepper, and Italian seasoning. Simmer 10-15 more minutes until everything is tender.",
+        "instruction_tl": "Ilagay ang patatas sa sabaw ng baka. Pakuluin ng 10 minuto. Tapos ilagay ang beet-tomato mixture at repolyo. Timplahan ng asin at paminta. Pakuluin ng 10-15 minuto pa.",
+        "instruction_il": "Iteddu ti patatas iti sabaw ti baka. Papaanawen iti 10 minuto. Kalpasan iteddu ti beet-tomato mixture ken repolyo. Timplaan iti asin ken paminta. Papaanawen iti 10-15 minuto pay."
       },
       {
         "step": 5,
-        "instruction": "Taste and adjust salt. The soup should be deep ruby red and slightly tangy. Let it rest 10 minutes off the heat — borscht always improves.",
-        "instruction_tl": "Tikman at ayusin ang asin. Dapat malalim na pula at bahagyang maasim. Hayaan itong magpahinga ng 10 minuto.",
-        "instruction_il": "Tikman ken i-adjust ti asin. Nasken nga nadalem nga nalabbaga ken bassit nga samsam. Ipalubos iti 10 minuto."
+        "instruction": "Taste and adjust salt. The soup should be deep ruby red, hearty, and slightly tangy from the tomato and beet. Let it rest 10 minutes off the heat — borscht always improves.",
+        "instruction_tl": "Tikman at ayusin ang asin. Dapat malalim na pula, masustansya, at bahagyang maasim. Hayaan itong magpahinga ng 10 minuto — laging nagiging mas masarap ang borscht.",
+        "instruction_il": "Tikman ken i-adjust ti asin. Nasken nga nadalem nga nalabbaga, nasustan, ken bassit nga samsam ti imas. Ipalubos iti 10 minuto — agbabawag ti imas ti borscht."
       },
       {
         "step": 6,
@@ -13002,32 +12518,32 @@
       {
         "step": 1,
         "instruction": "Bring a large pot of salted water to a boil with a bay leaf. Dip the octopus in and out of the boiling water three times (this curls the tentacles), then submerge fully. Simmer on low heat 40-50 minutes until a knife slides through a thick tentacle with no resistance.",
-        "instruction_tl": "Pakuluin ang malaking palayok ng tubig na may asin at bay leaf. Isawsaw ang pugita sa kumukulong tubig nang tatlong beses, tapos ilubog nang buo. Pakuluin sa mahinang apoy ng 40-50 minuto hanggang madaling tusukin ng kutsilyo.",
-        "instruction_il": "Pakuluen ti dakkel nga luto ti naasiran nga danum ken bay leaf. Isawsaw ti pugita iti tallo nga daras, kalpasan ilubog amin. Papaanawen iti nalamiis nga apoy iti 40-50 minuto agingga nga nalaka ti tusdok."
+        "instruction_tl": "Pakuluin ang malaking palayok ng tubig na may asin at bay leaf. Isawsaw ang pugita sa kumukulong tubig nang tatlong beses (para maikot ang mga hita), tapos ilubog nang buo. Pakuluin sa mahinang apoy ng 40-50 minuto hanggang madaling tusukin ng kutsilyo.",
+        "instruction_il": "Pakuluen ti dakkel nga luto ti naasiran nga danum ken bay leaf. Isawsaw ti pugita iti nakulkulaw nga danum iti tallo nga daras (tapno magiaw ti mga sanga), kalpasan ilubog amin. Papaanawen iti nalamiis nga apoy iti 40-50 minuto agingga nga nalaka ti tusdok."
       },
       {
         "step": 2,
         "instruction": "Remove octopus and let cool to room temperature. Slice tentacles into 2cm rounds. Cut the head into strips.",
-        "instruction_tl": "Alisin ang pugita at hayaang lumamig. Hiwain ang mga hita sa 2cm na bilog. Hiwain ang ulo sa mga strips.",
-        "instruction_il": "Ikuyog ti pugita ken ipalubos nga lumammiis. Ututen ti mga sanga iti 2cm nga bilog. Ututen ti ulo iti mga strips."
+        "instruction_tl": "Alisin ang pugita at hayaang lumamig sa temperatura ng silid. Hiwain ang mga hita sa 2cm na bilog. Hiwain ang ulo sa mga strips.",
+        "instruction_il": "Ikuyog ti pugita ken ipalubos nga lumammiis iti temperatura ti kuarto. Ututen ti mga sanga iti 2cm nga bilog. Ututen ti ulo iti mga strips."
       },
       {
         "step": 3,
-        "instruction": "Whisk together olive oil, red wine vinegar, garlic, and a squeeze of lemon. Season generously with salt and pepper.",
-        "instruction_tl": "Paghaluin ang olive oil, red wine vinegar, bawang, at konting lemon. Timplahan nang sapat ng asin at paminta.",
-        "instruction_il": "Ikalamokan ti olive oil, red wine vinegar, bawang, ken bassit nga lemon. Timplaan nang sapat iti asin ken paminta."
+        "instruction": "In a large bowl, whisk together olive oil, red wine vinegar, garlic, and a squeeze of lemon. Season generously with salt and pepper.",
+        "instruction_tl": "Sa malaking mangkok, paghaluin ang olive oil, red wine vinegar, bawang, at konting lemon. Timplahan nang sapat ng asin at paminta.",
+        "instruction_il": "Iti dakkel nga planggana, ikalamokan ti olive oil, red wine vinegar, bawang, ken bassit nga lemon. Timplaan nang sapat iti asin ken paminta."
       },
       {
         "step": 4,
         "instruction": "Add the octopus, red onion, cilantro, and parsley. Toss well to coat. Taste and adjust — it should be bright, herby, and generously dressed.",
-        "instruction_tl": "Ilagay ang pugita, pulang sibuyas, cilantro, at parsley. Haluin nang mabuti. Tikman at ayusin.",
-        "instruction_il": "Iteddu ti pugita, nalabbaga nga lasona, cilantro, ken parsley. Ikoting nang nasayaat. Tikman ken i-adjust."
+        "instruction_tl": "Ilagay ang pugita, pulang sibuyas, cilantro, at parsley. Haluin nang mabuti. Tikman at ayusin — dapat maliwanag at masarap ang lasa.",
+        "instruction_il": "Iteddu ti pugita, nalabbaga nga lasona, cilantro, ken parsley. Ikoting nang nasayaat. Tikman ken i-adjust — nasken nga nalawag ken naimas."
       },
       {
         "step": 5,
-        "instruction": "Let rest at room temperature for at least 30 minutes before serving — the octopus absorbs the dressing beautifully. Serve chilled or at room temperature.",
-        "instruction_tl": "Hayaan sa temperatura ng silid ng hindi bababa sa 30 minuto bago ihain — nasisipsip ng pugita ang dressing. Ihain nang malamig o sa temperatura ng silid.",
-        "instruction_il": "Ipalubos iti temperatura ti kuarto iti nasayaat a 30 minuto sakbay ti serbisio. Iserbi iti nalamiis wenno iti temperatura ti kuarto."
+        "instruction": "Let the salad rest at room temperature for at least 30 minutes before serving — the octopus absorbs the dressing beautifully. Serve chilled or at room temperature.",
+        "instruction_tl": "Hayaan ang salad sa temperatura ng silid ng hindi bababa sa 30 minuto bago ihain — nasisipsip ng pugita ang dressing. Ihain nang malamig o sa temperatura ng silid.",
+        "instruction_il": "Ipalubos ti salad iti temperatura ti kuarto iti nasayaat a 30 minuto sakbay ti serbisio — sisipsipen ti pugita ti dressing. Iserbi iti nalamiis wenno iti temperatura ti kuarto."
       }
     ],
     "estimated_cost_hkd": 120,
@@ -13186,9 +12702,9 @@
     "steps": [
       {
         "step": 1,
-        "instruction": "Quick pickle: toss julienned daikon and carrot with rice vinegar, sugar, and salt. Set aside — they'll be ready in 10 minutes while you cook everything else.",
-        "instruction_tl": "Quick pickle: haluin ang daikon at karot na may rice vinegar, asukal, at asin. Itabi — magiging handa sa 10 minuto habang nagluluto ng iba.",
-        "instruction_il": "Quick pickle: ikoting ti daikon ken karot iti rice vinegar, asukal, ken asin. Idulin — iyaay iti 10 minuto iti panawen ti lutuen ti amin."
+        "instruction": "Quick pickle: toss julienned daikon and carrot with rice vinegar, sugar, and salt. Set aside — they'll soften and pickle in just 10 minutes while you cook everything else.",
+        "instruction_tl": "Quick pickle: haluin ang daikon at karot na may rice vinegar, asukal, at asin. Itabi — magsosoftened at mapipickling sa 10 minuto habang nagluluto ng iba.",
+        "instruction_il": "Quick pickle: ikoting ti daikon ken karot iti rice vinegar, asukal, ken asin. Idulin — agnalamot ken maipickle iti 10 minuto iti panawen ti lutuen ti amin."
       },
       {
         "step": 2,
@@ -13198,15 +12714,15 @@
       },
       {
         "step": 3,
-        "instruction": "Heat a pan on high. Add ground pork and break it up. Cook undisturbed 2 minutes until the bottom browns and crisps, then stir. Add garlic, fish sauce, and soy sauce. Cook until caramelised, about 5 minutes total.",
-        "instruction_tl": "Initin ang kawali sa mataas na apoy. Ilagay ang giniling na baboy at durugin. Lutuin nang hindi ginagalaw ng 2 minuto hanggang mag-brown ang ibaba, tapos haluin. Ilagay ang bawang, patis, at toyo. Lutuin hanggang makaramel, mga 5 minuto.",
-        "instruction_il": "Palamiisen ti kawali iti nangato. Iteddu ti giniling nga baboy ken baklasen. Lutuen nga saan na ikuting iti 2 minuto agingga nga mag-brown ti baba, kalpasan ikoting. Iteddu ti bawang, patis, ken toyo. Lutuen agingga nga makaramel, mga 5 minuto."
+        "instruction": "Heat a pan on high. Add ground pork and break it up. Cook undisturbed 2 minutes until the bottom gets brown and a little crispy, then stir. Add garlic, fish sauce, and soy sauce. Cook until pork is cooked through and caramelised, about 5 minutes total.",
+        "instruction_tl": "Initin ang kawali sa mataas na apoy. Ilagay ang giniling na baboy at durugin. Lutuin nang hindi ginagalaw ng 2 minuto hanggang mag-brown ang ibaba, tapos haluin. Ilagay ang bawang, patis, at toyo. Lutuin hanggang maluto at makaramel, mga 5 minuto.",
+        "instruction_il": "Palamiisen ti kawali iti nangato. Iteddu ti giniling nga baboy ken baklasen. Lutuen nga saan na ikuting iti 2 minuto agingga nga mag-brown ti baba, kalpasan ikoting. Iteddu ti bawang, patis, ken toyo. Lutuen agingga nga naluto ken makaramel, mga 5 minuto."
       },
       {
         "step": 4,
-        "instruction": "Split baguettes lengthways. Spread sriracha mayo on both cut sides. Fill with pork, pickled veg, cucumber, jalapeño, and a big handful of cilantro.",
-        "instruction_tl": "Hatiin ang baguette sa haba. Pahiran ng sriracha mayo sa magkabilang gilid. Punan ng baboy, pickled na gulay, pipino, jalapeño, at maraming cilantro.",
-        "instruction_il": "Baklasen ti baguette iti kabilogna. Pahiran ti sriracha mayo iti dua nga bangirna. Punnoen iti baboy, pickled nga gulay, pepino, jalapeño, ken dakkel nga cilantro."
+        "instruction": "Split baguettes lengthways. Spread sriracha mayo on both cut sides. Fill with pork, pickled veg, cucumber slices, jalapeño, and a big handful of cilantro.",
+        "instruction_tl": "Hatiin ang baguette sa haba. Pahiran ng sriracha mayo sa magkabilang gilid. Punan ng baboy, pickled na gulay, hiwa ng pipino, jalapeño, at malaking halumigmig ng cilantro.",
+        "instruction_il": "Baklasen ti baguette iti kabilogna. Pahiran ti sriracha mayo iti dua nga bangirna. Punnoen iti baboy, pickled nga gulay, hiwa ti pepino, jalapeño, ken dakkel nga cilantro."
       },
       {
         "step": 5,
@@ -13230,6 +12746,7 @@
     "name": "Beef Tacos",
     "name_tl": "Beef Tacos",
     "name_il": "Beef Tacos",
+    "translations_verified": false,
     "meal_type": [
       "lunch",
       "dinner"
@@ -13237,195 +12754,345 @@
     "component_type": "protein",
     "cuisine": "Mexican",
     "serves_base": 4,
+    "active_time_mins": 20,
     "prep_time_mins": 10,
-    "cook_time_mins": 20,
-    "active_time_mins": 25,
+    "cook_time_mins": 15,
+    "hero_image": null,
     "youtube_url": "https://www.youtube.com/watch?v=cNLp6WhP2UI",
+    "dependencies": [],
     "ingredients": [
       {
-        "item": "Ground beef",
+        "item": "ground beef",
         "amount": 500,
         "unit": "g",
         "category": "meat",
-        "source": "🥬",
-        "scales": true
+        "source": "wet-market",
+        "scales": "linear"
       },
       {
-        "item": "Corn or flour tortillas",
-        "amount": 8,
+        "item": "small corn or flour tortillas",
+        "amount": 12,
         "unit": "pieces",
-        "category": "carb",
-        "source": "🛒",
-        "scales": true
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "linear"
       },
       {
-        "item": "Onion",
+        "item": "onion, finely diced",
         "amount": 1,
         "unit": "medium",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "garlic, minced",
+        "amount": 3,
+        "unit": "cloves",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "tomato paste",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "beef stock or water",
+        "amount": 60,
+        "unit": "ml",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "none"
+      },
+      {
+        "item": "ground cumin",
+        "amount": 1.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "chili powder",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "smoked paprika",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "dried oregano",
+        "amount": 0.5,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "salt and black pepper",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "vegetable oil",
+        "amount": 1,
+        "unit": "tbsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "none"
+      },
+      {
+        "item": "shredded cheese (cheddar or Mexican blend)",
+        "amount": 100,
+        "unit": "g",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "sour cream",
+        "amount": 4,
+        "unit": "tbsp",
+        "category": "dairy",
+        "source": "supermarket",
+        "scales": "taper"
+      },
+      {
+        "item": "avocado",
+        "amount": 2,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "lime",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "none"
+      },
+      {
+        "item": "fresh cilantro",
+        "amount": 1,
+        "unit": "bunch",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "jalapeño, sliced (optional)",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "none"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Heat oil in a wide pan on medium-high. Add onion and cook 3 minutes until softened. Add garlic and cook 30 seconds.",
+        "instruction_tl": "Initin ang mantika sa malawak na kawali sa medium-high. Ilagay ang sibuyas at lutuin ng 3 minuto. Ilagay ang bawang at lutuin ng 30 segundo.",
+        "instruction_il": "Palamiisen ti lana iti nalawa nga kawali iti medium-high. Iteddu ti sibuyas ken lutuen iti 3 minuto. Iteddu ti bawang ken lutuen iti 30 segundo."
+      },
+      {
+        "step": 2,
+        "instruction": "Add ground beef. Break it up and cook on high heat until browned all over, about 4-5 minutes. Don't stir too often — let it sit and get some colour.",
+        "instruction_tl": "Ilagay ang giniling na baka. Durugin at lutuin sa mataas na apoy hanggang mag-brown, mga 4-5 minuto. Huwag masyadong haluin — hayaan itong magkulay.",
+        "instruction_il": "Iteddu ti giniling nga baka. Baklasen ken lutuen iti nangato nga apoy agingga nga mag-brown, mga 4-5 minuto. Saan masyadong ikoting — ipalubos nga agkulay."
+      },
+      {
+        "step": 3,
+        "instruction": "Drain excess fat if needed. Add cumin, chili powder, paprika, and oregano. Stir to coat the meat in the spices and cook 1 minute until fragrant.",
+        "instruction_tl": "Tanggalin ang sobrang taba kung kinakailangan. Ilagay ang cumin, chili powder, paprika, at oregano. Haluin at lutuin ng 1 minuto hanggang bumango.",
+        "instruction_il": "Ikuyog ti sobra nga taba no kasapulan. Iteddu ti cumin, chili powder, paprika, ken oregano. Ikoting ken lutuen iti 1 minuto agingga nga bumanglo."
+      },
+      {
+        "step": 4,
+        "instruction": "Add tomato paste and stock. Stir and simmer 2-3 minutes until the mixture is saucy but not wet. Season with salt and pepper. Taste and adjust.",
+        "instruction_tl": "Ilagay ang tomato paste at sabaw. Haluin at pakuluin ng 2-3 minuto hanggang maging saucy. Timplahan ng asin at paminta. Tikman at ayusin.",
+        "instruction_il": "Iteddu ti tomato paste ken sabaw. Ikoting ken papaanawen iti 2-3 minuto agingga nga maaramid iti saucy. Timplaan iti asin ken paminta. Tikman ken i-adjust."
+      },
+      {
+        "step": 5,
+        "instruction": "Warm tortillas directly over a gas flame 20-30 seconds per side until charred in spots, or in a dry pan. Keep wrapped in a tea towel to stay warm and pliable.",
+        "instruction_tl": "Initin ang tortilla sa apoy ng 20-30 segundo bawat gilid hanggang magkaroon ng char, o sa tuyong kawali. Balutin sa tela para manatiling mainit at malambot.",
+        "instruction_il": "Palamiisen ti tortilla iti apoy iti 20-30 segundo iti tunggal bangir agingga nga magkaroon iti char, wenno iti tuko nga kawali. Balutin iti tela tapno agpatingga iti nangato ken nalamot."
+      },
+      {
+        "step": 6,
+        "instruction": "Serve the beef in warm tortillas topped with avocado, cheese, sour cream, cilantro, jalapeño, and a squeeze of lime.",
+        "instruction_tl": "Ihain ang baka sa mainit na tortilla na may avocado, keso, sour cream, cilantro, jalapeño, at lemon sa ibabaw.",
+        "instruction_il": "Iserbi ti baka iti nangato nga tortilla nga may avocado, keso, sour cream, cilantro, jalapeño, ken lemon iti ngato."
+      }
+    ],
+    "estimated_cost_hkd": 100,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": [
+      "beef",
+      "mexican",
+      "quick",
+      "one-pan"
+    ]
+  },
+  {
+    "id": "som-tam",
+    "name": "Som Tam (Thai Green Papaya Salad)",
+    "name_tl": "Som Tam (Thai Green Papaya Salad)",
+    "name_il": "Som Tam (Thai Green Papaya Salad)",
+    "meal_type": [
+      "lunch",
+      "dinner"
+    ],
+    "component_type": "salad",
+    "cuisine": "Thai",
+    "serves_base": 2,
+    "prep_time_mins": 20,
+    "cook_time_mins": 0,
+    "active_time_mins": 20,
+    "youtube_url": "https://www.youtube.com/watch?v=o029x70dvlE",
+    "ingredients": [
+      {
+        "item": "Green papaya",
+        "amount": 300,
+        "unit": "g",
         "category": "vegetable",
         "source": "🥬",
+        "scales": true
+      },
+      {
+        "item": "Cherry tomatoes",
+        "amount": 100,
+        "unit": "g",
+        "category": "vegetable",
+        "source": "🥬",
+        "scales": true
+      },
+      {
+        "item": "Long beans (yard beans)",
+        "amount": 60,
+        "unit": "g",
+        "category": "vegetable",
+        "source": "🥬",
+        "scales": true
+      },
+      {
+        "item": "Dried shrimp",
+        "amount": 2,
+        "unit": "tbsp",
+        "category": "seafood",
+        "source": "🛒",
+        "scales": false
+      },
+      {
+        "item": "Roasted peanuts",
+        "amount": 3,
+        "unit": "tbsp",
+        "category": "nut",
+        "source": "🛒",
         "scales": false
       },
       {
         "item": "Garlic",
-        "amount": 3,
+        "amount": 2,
         "unit": "cloves",
         "category": "aromatics",
         "source": "🥬",
         "scales": false
       },
       {
-        "item": "Tomato paste",
+        "item": "Fresh red chilies",
+        "amount": 3,
+        "unit": "pieces",
+        "category": "vegetable",
+        "source": "🥬",
+        "scales": false
+      },
+      {
+        "item": "Fish sauce",
         "amount": 2,
         "unit": "tbsp",
         "category": "condiment",
         "source": "🛒",
-        "scales": true
+        "scales": false
       },
       {
-        "item": "Beef stock",
-        "amount": 60,
-        "unit": "ml",
+        "item": "Lime juice",
+        "amount": 3,
+        "unit": "tbsp",
         "category": "liquid",
-        "source": "🛒",
-        "scales": true
+        "source": "🥬",
+        "scales": false
       },
       {
-        "item": "Ground cumin",
+        "item": "Palm sugar (or brown sugar)",
         "amount": 1,
-        "unit": "tsp",
-        "category": "spice",
-        "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Chili powder",
-        "amount": 1,
-        "unit": "tsp",
-        "category": "spice",
-        "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Smoked paprika",
-        "amount": 0.5,
-        "unit": "tsp",
-        "category": "spice",
-        "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Dried oregano",
-        "amount": 0.5,
-        "unit": "tsp",
-        "category": "spice",
-        "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Salt",
-        "amount": 1,
-        "unit": "tsp",
+        "unit": "tbsp",
         "category": "seasoning",
         "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Oil",
-        "amount": 1,
-        "unit": "tbsp",
-        "category": "oil",
-        "source": "🛒",
-        "scales": false
-      },
-      {
-        "item": "Shredded cheese",
-        "amount": 100,
-        "unit": "g",
-        "category": "dairy",
-        "source": "🛒",
-        "scales": true
-      },
-      {
-        "item": "Sour cream",
-        "amount": 4,
-        "unit": "tbsp",
-        "category": "dairy",
-        "source": "🛒",
-        "scales": true
-      },
-      {
-        "item": "Avocado",
-        "amount": 1,
-        "unit": "medium",
-        "category": "vegetable",
-        "source": "🥬",
-        "scales": true
-      },
-      {
-        "item": "Lime",
-        "amount": 1,
-        "unit": "piece",
-        "category": "fruit",
-        "source": "🥬",
-        "scales": false
-      },
-      {
-        "item": "Fresh cilantro",
-        "amount": 1,
-        "unit": "handful",
-        "category": "herb",
-        "source": "🥬",
-        "scales": false
-      },
-      {
-        "item": "Jalapeño",
-        "amount": 1,
-        "unit": "piece",
-        "category": "vegetable",
-        "source": "🥬",
         "scales": false
       }
     ],
     "steps": [
       {
-        "instruction": "Dice onion and mince garlic. Slice avocado and jalapeño. Juice the lime.",
-        "instruction_tl": "Tadtarin ang sibuyas at bawang. Hiwain ang avocado at jalapeño. Pigain ang dayap.",
-        "instruction_il": "Ikkaten ti sibuyas ken bawang. Ribbanen ti avocado ken jalapeño. Piliiten ti limon."
+        "instruction": "Peel and shred the green papaya into thin matchsticks using a grater or peeler. Soak in cold water for 5 minutes, then drain.",
+        "instruction_tl": "Balatan at gadgarin ang berdeng papaya sa manipis na piraso. Ibabad sa malamig na tubig ng 5 minuto, tapos salain.",
+        "instruction_il": "Uggoten ken gadgaren ti berde a papaya nga manipis. Ibabad iti nalames a danum iti 5 minuto, kalpasan salaan."
       },
       {
-        "instruction": "Heat oil in a pan over high heat. Add onion and cook 2 minutes until softened.",
-        "instruction_tl": "Initin ang mantika sa kawali. Ilagay ang sibuyas at lutuin ng 2 minuto.",
-        "instruction_il": "Initanen ti mantika iti kawali. Iyan ti sibuyas ken lutuen iti 2 minuto."
+        "instruction": "In a large mortar, pound garlic and chilies to a rough paste. Add dried shrimp and lightly pound.",
+        "instruction_tl": "Sa malaking lusong, bayuhin ang bawang at sili hanggang maging paste. Ilagay ang tuyo at bahagyang bayuhin.",
+        "instruction_il": "Iti dakkel a lusong, bayugen ti bawang ken sili agingga nga naging paste. Iyan ti dried shrimp ken bassit a bayugen."
       },
       {
-        "instruction": "Add garlic and cook 30 seconds. Add ground beef and break it up, cooking until browned, about 5 minutes.",
-        "instruction_tl": "Ilagay ang bawang, lutuin ng 30 segundo. Ilagay ang giniling na baka at hatiin, lutuin hanggang magkulay, mga 5 minuto.",
-        "instruction_il": "Iyan ti bawang, lutuen iti 30 segundo. Iyan ti giniling a baka ken labagenen, lutuen agingga nga nangisit, mga 5 minuto."
+        "instruction": "Add long beans and tomatoes to the mortar. Lightly bruise — don't fully crush them.",
+        "instruction_tl": "Ilagay ang sitaw at kamatis sa lusong. Bahagyang pisilin lang — huwag ganap na durugin.",
+        "instruction_il": "Iyan ti sitaw ken kamatis iti lusong. Bassit laeng nga piksen — saan nga puro a durogen."
       },
       {
-        "instruction": "Add cumin, chili powder, paprika, oregano, salt, tomato paste, and beef stock. Stir well and cook 3–4 minutes until the sauce thickens.",
-        "instruction_tl": "Ilagay ang cumin, chili powder, paprika, oregano, asin, tomato paste, at sabaw ng baka. Haluin at lutuin ng 3–4 minuto.",
-        "instruction_il": "Iyan ti cumin, chili powder, paprika, oregano, asin, tomato paste, ken sabong baka. Urasem ken lutuen iti 3–4 minuto."
+        "instruction": "Add fish sauce, lime juice, and palm sugar. Stir and pound gently to combine.",
+        "instruction_tl": "Ilagay ang patis, katas ng dayap, at asukal. Haluin at bahagyang bayuhin.",
+        "instruction_il": "Iyan ti patis, innapuyan ti limon, ken asukar. Urasem ken bassit a bayugen."
       },
       {
-        "instruction": "Warm tortillas in a dry pan for 30 seconds each side, or wrap in a damp cloth and microwave for 1 minute.",
-        "instruction_tl": "Initin ang tortilla sa tuyong kawali ng 30 segundo bawat gilid, o balutin sa basang tela at i-microwave ng 1 minuto.",
-        "instruction_il": "Initanen ti tortilla iti agdan a kawali iti 30 segundo tunggal ngato, wenno ibalubal iti nabasa a tela ken i-microwave iti 1 minuto."
+        "instruction": "Add shredded papaya and toss everything together with a spoon and the pestle, mixing well to coat.",
+        "instruction_tl": "Ilagay ang kinudkod na papaya at haluing mabuti para mailangkap ang lahat.",
+        "instruction_il": "Iyan ti nakudkod a papaya ken urasem nang maimbag tapno mailangkap ti amin."
       },
       {
-        "instruction": "Spoon beef onto tortillas. Top with cheese, sour cream, avocado, jalapeño, cilantro, and a squeeze of lime.",
-        "instruction_tl": "Ilagay ang karne sa tortilla. Dagdagan ng keso, sour cream, avocado, jalapeño, cilantro, at katas ng dayap.",
-        "instruction_il": "Iyan ti karni iti tortilla. Idagdag ti keso, sour cream, avocado, jalapeño, cilantro, ken innapuyan ti limon."
+        "instruction": "Taste and adjust — more fish sauce for salt, lime for sour, sugar for sweet, chili for heat. Serve topped with roasted peanuts.",
+        "instruction_tl": "Tikman at ayusin — dagdag patis para alat, dayap para asim, asukal para tamis. Ihain na may mani sa ibabaw.",
+        "instruction_il": "Tikman ken ikeddeng — dagdagen ti patis para asin, limon para asem, asukar para natamis. Iserbi nga addaan mani iti ngato."
       }
     ],
     "tags": [
-      "beef",
-      "mexican",
+      "vegetarian",
+      "thai",
+      "salad",
+      "no-cook",
       "quick",
-      "one-pan"
+      "spicy"
     ],
-    "estimated_cost_hkd": 100,
+    "estimated_cost_hkd": 40,
     "loved_by": [],
     "avoid_for": []
   }
