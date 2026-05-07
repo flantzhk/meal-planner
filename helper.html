@@ -1187,6 +1187,20 @@
         return (plan.days || []).find((d) => d.date === tmr);
       }, [plan, today]);
 
+      // Auto-jump to the next upcoming meal tab when the plan first loads.
+      // MUST be before early returns (Rules of Hooks).
+      const autoTabDone = React.useRef(false);
+      useEffect(() => {
+        if (!todayDay || autoTabDone.current) return;
+        autoTabDone.current = true;
+        const nowMinVal = MP.date.hkNowMin();
+        const next = ["breakfast", "lunch", "dinner"].find((m) => {
+          const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
+          return MP.schedule.parseHM(mt) > nowMinVal;
+        }) || "dinner";
+        setTab(next);
+      }, [todayDay]);
+
       // MUST be declared before any early returns so hook count stays stable.
       const needCount = useMemo(() => {
         if (!recipes || !plan) return 0;
@@ -1253,20 +1267,6 @@
 
       const MEAL_TABS = ["breakfast", "lunch", "dinner"];
       const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
-
-      // Auto-jump to the next upcoming meal tab when the plan first loads.
-      // Only runs once — after that, the user is in control.
-      const autoTabDone = React.useRef(false);
-      useEffect(() => {
-        if (!todayDay || autoTabDone.current) return;
-        autoTabDone.current = true;
-        const nowMinVal = MP.date.hkNowMin();
-        const next = MEAL_TABS.find((m) => {
-          const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
-          return MP.schedule.parseHM(mt) > nowMinVal;
-        }) || "dinner";
-        setTab(next);
-      }, [todayDay]);
       const upNextMeal = todayDay ? MEAL_TABS.find((m) => {
         if (!MP.getMealRecipeIds(todayDay, m).length) return false;
         const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
