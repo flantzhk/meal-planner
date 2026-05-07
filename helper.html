@@ -42,13 +42,18 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const APP_VERSION = "v2.1 · 2026-04-24";
     const t = (lang, key) => MP.i18n.t(lang, key);
     const COMPONENTS = ["protein", "vegetable", "carb"];
-    const OPT_COMPONENTS = ["soup", "salad"];
+    const OPT_COMPONENTS = ["starter", "soup", "salad"];
     const ALL_COMPONENTS = [...COMPONENTS, ...OPT_COMPONENTS];
-    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", soup: "🍲", salad: "🥗" };
-    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", soup: "Soup", salad: "Salad" };
+    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", starter: "🍽️", soup: "🍲", salad: "🥗" };
+    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", starter: "Starter", soup: "Soup", salad: "Salad" };
+
+    function ytId(url) {
+      if (!url) return null;
+      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
+      return m ? m[1] : null;
+    }
 
     function langStore() {
       return localStorage.getItem("mpHelperLang") || "en";
@@ -124,14 +129,29 @@
 
     // Renders a single recipe's image, ingredients and steps
     function RecipeCard({ recipe, componentType, lang, onVerify, noImage }) {
+      const [playing, setPlaying] = useState(false);
       const name = MP.i18n.recipeName(recipe, lang);
       const showEng = !recipe.translations_verified && lang !== "en";
       const img = MP.recipeImage(recipe);
+      const vid = ytId(recipe.youtube_url);
+      const closeLabel = lang === "tl" ? "Isara ang video" : lang === "il" ? "Isarrek ti video" : "Close video";
       return (
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
-          {!noImage && img && (
-            <a href={recipe.youtube_url || undefined} target="_blank" rel="noopener"
-              className={recipe.youtube_url ? "block relative group" : "block"}>
+          {/* Inline player — shown when playing (both noImage and full modes) */}
+          {playing && vid && (
+            <div style={{ aspectRatio: "16/9" }}>
+              <iframe
+                src={`https://www.youtube.com/embed/${vid}?autoplay=1&rel=0`}
+                className="w-full h-full"
+                allow="autoplay; encrypted-media"
+                allowFullScreen
+              />
+            </div>
+          )}
+          {/* Thumbnail — only in full (non-accordion) mode when not playing */}
+          {!playing && !noImage && img && (
+            <button onClick={() => vid && setPlaying(true)}
+              className={`block w-full relative group ${vid ? "cursor-pointer" : "cursor-default"}`}>
               <img src={img} alt={name} className="w-full h-44 object-cover"
                 onLoad={(e) => {
                   if (!MP.isYoutubePlaceholder(e.target)) return;
@@ -146,12 +166,12 @@
                   if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
                   e.target.style.display = "none";
                 }} />
-              {recipe.youtube_url && (
+              {vid && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition">
-                  <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ Watch video</div>
+                  <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ {t(lang, "watch")}</div>
                 </div>
               )}
-            </a>
+            </button>
           )}
           <div className="p-5">
             <div className="flex items-center gap-2 text-warm text-xs uppercase tracking-wide mb-1">
@@ -160,11 +180,17 @@
             </div>
             <h2 className="font-display text-2xl leading-tight">{name}</h2>
             {showEng && <div className="text-sm text-warm/80 italic mt-0.5">{recipe.name}</div>}
-            {recipe.youtube_url && (
-              <a href={recipe.youtube_url} target="_blank" rel="noopener"
+            {vid && !playing && (
+              <button onClick={() => setPlaying(true)}
                 className="mt-3 inline-flex items-center gap-2 bg-terra text-cream px-4 py-2 rounded-full text-sm font-medium">
                 ▶ {t(lang, "watch")}
-              </a>
+              </button>
+            )}
+            {playing && (
+              <button onClick={() => setPlaying(false)}
+                className="mt-3 inline-flex items-center gap-2 bg-warm text-cream px-4 py-2 rounded-full text-sm font-medium">
+                ✕ {closeLabel}
+              </button>
             )}
             <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
             <ul className="mt-1 text-sm leading-relaxed">
@@ -232,13 +258,6 @@
                     if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
                     e.target.style.display = "none";
                   }} />
-                {recipe.youtube_url && (
-                  <a href={recipe.youtube_url} target="_blank" rel="noopener"
-                    onClick={(e) => e.stopPropagation()}
-                    className="absolute top-2 right-2 bg-black/60 text-white text-[11px] font-bold px-2 py-1 rounded-full">
-                    ▶ {t(lang, "watch")}
-                  </a>
-                )}
               </div>
             )}
             <div className="flex items-center justify-between px-4 py-3 gap-2">
@@ -929,151 +948,8 @@
       };
     }
 
-    function TodaySchedule({ day, nextDay, recipesById, nowMin, lang }) {
-      const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
-      if (tasks.length === 0) return null;
-
-      const [open, setOpen] = useState(false);
-
-      // Group tasks by timestamp
-      const groups = [];
-      for (const tk of tasks) {
-        const last = groups[groups.length - 1];
-        if (last && last.at === tk.at) { last.items.push(tk); }
-        else { groups.push({ at: tk.at, items: [tk] }); }
-      }
-
-      const kindIcon = { defrost: "❄️", marinate: "🧂", cook: "🔥", serve: "🍽️" };
-      const kindClass = {
-        defrost: "text-sky-700",
-        marinate: "text-amber-700",
-        cook: "text-terra",
-        serve: "text-sage",
-      };
-
-      // Find which group is "up next"
-      const upNextGroupIdx = groups.findIndex((g) => g.at > nowMin);
-      const upNext = upNextGroupIdx >= 0 ? groups[upNextGroupIdx] : null;
-      const upNextLabel = upNext
-        ? `${MP.schedule.fmtTime(upNext.at)} — ${upNext.items.map((t) => t.label).join(", ")}`
-        : "All done for today";
-
-      return (
-        <section className="bg-white rounded-2xl mb-6 shadow-sm ring-1 ring-black/5 overflow-hidden">
-          <button
-            onClick={() => setOpen((o) => !o)}
-            className="w-full flex items-center justify-between px-4 py-3.5 text-left"
-          >
-            <div>
-              <div className="text-xs font-semibold uppercase tracking-widest text-warm/60 mb-0.5">⏱ Today's schedule</div>
-              <div className={`text-sm font-medium ${upNext ? "text-terra" : "text-warm"}`}>{upNextLabel}</div>
-            </div>
-            <span className={`text-warm/40 text-xl transition-transform shrink-0 ml-3 ${open ? "rotate-180" : ""}`}>⌄</span>
-          </button>
-          {open && (
-            <div className="border-t border-sand px-4 pb-4 pt-3">
-              <ol className="space-y-0">
-                {groups.map((group, gi) => {
-                  const allPast = group.at <= nowMin;
-                  const isUpNext = gi === upNextGroupIdx;
-                  return (
-                    <li key={gi} className={`flex gap-4 ${allPast ? "opacity-40" : ""}`}>
-                      {/* Time column */}
-                      <div className="flex flex-col items-center">
-                        <div className={`num text-sm font-semibold min-w-[3.5rem] text-right pt-0.5 ${isUpNext ? "text-terra" : "text-warm"}`}>
-                          {MP.schedule.fmtTime(group.at)}
-                        </div>
-                        {gi < groups.length - 1 && (
-                          <div className="w-px flex-1 bg-sand mt-1.5 mb-0" style={{ minHeight: "1.5rem" }} />
-                        )}
-                      </div>
-                      {/* Tasks column */}
-                      <div className={`flex-1 pb-4 ${isUpNext ? "rounded-xl bg-terra/8 ring-1 ring-terra/30 px-3 py-2 -mx-1 mb-3" : ""}`}>
-                        {isUpNext && (
-                          <div className="text-[10px] font-bold uppercase tracking-widest text-terra mb-1">Up next</div>
-                        )}
-                        <ul className="space-y-1">
-                          {group.items.map((tk, ti) => (
-                            <li key={ti} className="flex items-start gap-2 text-sm">
-                              <span className={`${kindClass[tk.kind]} mt-0.5 shrink-0`}>{kindIcon[tk.kind]}</span>
-                              <span className={allPast ? "line-through text-warm" : ""}>{tk.label}</span>
-                              {tk.flagEarly && !allPast && (
-                                <span className="text-[11px] text-terra ml-1 shrink-0">⚠ early</span>
-                              )}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
-            </div>
-          )}
-        </section>
-      );
-    }
-
-    function UpNextBanner({ day, recipesById, nowMin, lang }) {
-      if (!day) return null;
-      const options = [];
-      for (const m of ["breakfast", "lunch", "dinner"]) {
-        const ids = MP.getMealRecipeIds(day, m); if (!ids.length) continue;
-        const mealTime = day[m + "_time"];
-        const serveMin = MP.schedule.parseHM(mealTime || MP.schedule.defaultMealTime(m));
-        let earliestStart = Infinity, hasOvernightDep = false;
-        for (const id of ids) {
-          const r = recipesById[id]; if (!r) continue;
-          const sched = MP.schedule.forMeal(m, r, { mealTime });
-          if (sched.startMin < earliestStart) earliestStart = sched.startMin;
-          if (sched.hasOvernightDep) hasOvernightDep = true;
-        }
-        const mealObj = MP.getMealObj(day, m);
-        const primaryId = mealObj.protein || ids[0];
-        options.push({ meal: m, recipe: recipesById[primaryId], serveMin, startMin: earliestStart, hasOvernightDep, count: ids.length });
-      }
-      const nextMeal = options.find((o) => o.serveMin > nowMin);
-      if (!nextMeal) return (
-        <div className="mb-5 px-5 py-4 rounded-2xl bg-sand/60 text-warm text-sm">{t(lang, "allMealsDone")}</div>
-      );
-      const minsToStart = nextMeal.startMin - nowMin;
-      const minsToServe = nextMeal.serveMin - nowMin;
-      if (nextMeal.hasOvernightDep) return (
-        <div className="mb-5 rounded-2xl overflow-hidden shadow-sm">
-          <div className="bg-warm text-cream px-5 py-4">
-            <div className="font-display text-xl">{t(lang, "overnightDone")}</div>
-            <p className="text-sm opacity-80 mt-2">{t(lang, "checkFaith")} {t(lang, "foodTableBy")} <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>.</p>
-          </div>
-        </div>
-      );
-      const overdue = minsToStart <= 0;
-      return (
-        <div className={`mb-5 rounded-2xl overflow-hidden shadow-sm ${overdue ? "ring-2 ring-terra" : ""}`}>
-          <div className={`px-5 py-4 ${overdue ? "bg-terra text-cream" : "bg-sage text-cream"}`}>
-            {overdue ? (
-              <>
-                <div className="font-display text-2xl leading-tight">{t(lang, "timeToStartNow")}</div>
-                <p className="text-sm opacity-80 mt-2">{t(lang, "foodTableBy")} <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>. {t(lang, "thankYouLeni")}</p>
-              </>
-            ) : (
-              <>
-                <div className="text-xs font-semibold uppercase tracking-widest opacity-70 mb-1">{t(lang, "comingUp")} — {MP.i18n.meals[lang][nextMeal.meal]}</div>
-                <div className="text-base leading-snug">
-                  {t(lang, "pleaseStartAt")} <span className="num font-display text-2xl font-bold">{MP.schedule.fmtTime(nextMeal.startMin)}</span>.
-                </div>
-                <div className="text-base leading-snug mt-1 opacity-80">
-                  {t(lang, "foodOnTable")} <span className="num font-semibold">{MP.schedule.fmtTime(nextMeal.serveMin)}</span>
-                  {minsToServe > 0 && <span className="text-sm opacity-70"> ({minsToServe} {t(lang, "minFromNow")})</span>}.
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      );
-    }
-
     // Today meal view — shows schedule + one meal (meal controlled by App via bottom nav)
-    function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify, activeMeal, upNextMeal }) {
+    function TodayView({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify, activeMeal }) {
       const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
       const hasRecipes = MP.getMealRecipeIds(todayDay, activeMeal).length > 0;
       const mealLabel = MP.i18n.meals[lang][activeMeal];
@@ -1169,7 +1045,6 @@
 
       const today = MP.date.hkToday();
       const nowMin = useNow();
-      const clockStr = MP.date.hkNowClock(lang);
       const recipesById = useMemo(() => {
         const m = {};
         (recipes || []).forEach((r) => { m[r.id] = r; });
@@ -1253,18 +1128,6 @@
       }
 
       const planServes = plan.serves || 4;
-      function scaleRecipe(r, servesOverride) {
-        if (!r) return r;
-        const s = servesOverride || planServes;
-        return {
-          ...r,
-          ingredients: (r.ingredients || []).map((i) => {
-            try { return MP.scale(i, s, r.serves_base || 4); }
-            catch (e) { return i; }
-          }),
-        };
-      }
-
       const MEAL_TABS = ["breakfast", "lunch", "dinner"];
       const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
       const upNextMeal = todayDay ? MEAL_TABS.find((m) => {
@@ -1273,7 +1136,6 @@
         return MP.schedule.parseHM(mt) > nowMin;
       }) : null;
       const isMealTab = MEAL_TABS.includes(tab);
-      const headerTitle = isMealTab ? t(lang, "cookToday") : tab === "coming" ? t(lang, "thisWeek") : t(lang, "shopping");
 
       return (
         <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
@@ -1297,7 +1159,7 @@
               todayDay={todayDay} tomorrowDay={tomorrowDay}
               recipesById={recipesById} planServes={planServes}
               nowMin={nowMin} lang={lang} onVerify={verify}
-              activeMeal={tab} upNextMeal={upNextMeal}
+              activeMeal={tab}
             />
           )}
 
