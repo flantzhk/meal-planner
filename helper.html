@@ -1077,6 +1077,12 @@
       const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
       const hasRecipes = MP.getMealRecipeIds(todayDay, activeMeal).length > 0;
       const mealLabel = MP.i18n.meals[lang][activeMeal];
+      const notPlannedMsg = {
+        en: [`Faith and Gustaf haven't planned ${activeMeal} yet.`, "Check back later — they may still add something."],
+        tl: [`Hindi pa nag-plan sina Faith at Gustaf ng ${mealLabel}.`, "Bumalik ka mamaya — baka may idagdag pa sila."],
+        il: [`Saan pay a nagsagana da Faith ken Gustaf ti ${mealLabel}.`, "Sumangpet manen — mabalin nga mangidagdag pay da."],
+      };
+      const [notPlannedLine1, notPlannedLine2] = notPlannedMsg[lang] || notPlannedMsg.en;
       return (
         <div className="space-y-4">
           {/* Meal heading */}
@@ -1099,7 +1105,11 @@
             nowMin={nowMin}
           />
           {!hasRecipes && (
-            <div className="text-center text-warm/60 text-sm py-10">{t(lang, "noMealPlanned")} {mealLabel}.</div>
+            <div className="mt-10 mx-auto max-w-xs text-center space-y-3">
+              <div className="text-5xl">{MEAL_EMOJI[activeMeal]}</div>
+              <p className="font-display text-xl text-ink/70">{notPlannedLine1}</p>
+              <p className="text-sm text-warm/50">{notPlannedLine2}</p>
+            </div>
           )}
           {/* Overnight prep reminder */}
           <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
@@ -1243,6 +1253,20 @@
 
       const MEAL_TABS = ["breakfast", "lunch", "dinner"];
       const MEAL_EMOJI = { breakfast: "🍳", lunch: "🥗", dinner: "🍽️" };
+
+      // Auto-jump to the next upcoming meal tab when the plan first loads.
+      // Only runs once — after that, the user is in control.
+      const autoTabDone = React.useRef(false);
+      useEffect(() => {
+        if (!todayDay || autoTabDone.current) return;
+        autoTabDone.current = true;
+        const nowMinVal = MP.date.hkNowMin();
+        const next = MEAL_TABS.find((m) => {
+          const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
+          return MP.schedule.parseHM(mt) > nowMinVal;
+        }) || "dinner";
+        setTab(next);
+      }, [todayDay]);
       const upNextMeal = todayDay ? MEAL_TABS.find((m) => {
         if (!MP.getMealRecipeIds(todayDay, m).length) return false;
         const mt = todayDay[m + "_time"] || MP.schedule.defaultMealTime(m);
