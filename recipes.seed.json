@@ -10673,5 +10673,116 @@
       "chickpea",
       "no-cook"
     ]
+  },
+  {
+    "id": "ceviche",
+    "name": "Ceviche",
+    "name_tl": "Siyebitche",
+    "name_il": "Siyebitche",
+    "translations_verified": false,
+    "meal_type": ["lunch", "dinner"],
+    "component_type": "starter",
+    "cuisine": "Latin American",
+    "serves_base": 4,
+    "active_time_mins": 20,
+    "prep_time_mins": 20,
+    "cook_time_mins": 0,
+    "hero_image": null,
+    "youtube_url": "https://www.youtube.com/watch?v=GDH6Xyzi_2Q",
+    "dependencies": [],
+    "ingredients": [
+      {
+        "item": "white fish (sea bass, halibut, or snapper), skinless",
+        "amount": 400,
+        "unit": "g",
+        "category": "meat",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh lime juice",
+        "amount": 120,
+        "unit": "ml",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "fresh lemon juice",
+        "amount": 60,
+        "unit": "ml",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "red onion",
+        "amount": 1,
+        "unit": "medium",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "linear"
+      },
+      {
+        "item": "jalapeño or red chili, deseeded",
+        "amount": 1,
+        "unit": "whole",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "fresh cilantro (coriander)",
+        "amount": 1,
+        "unit": "bunch",
+        "category": "produce",
+        "source": "wet-market",
+        "scales": "taper"
+      },
+      {
+        "item": "flaky sea salt",
+        "amount": 1,
+        "unit": "tsp",
+        "category": "pantry",
+        "source": "supermarket",
+        "scales": "taper"
+      }
+    ],
+    "steps": [
+      {
+        "step": 1,
+        "instruction": "Slice fish into 1cm cubes. Season generously with salt and toss to coat.",
+        "instruction_tl": "Hiwain ang isda sa 1cm na piraso. Timplahan nang sapat ng asin at haluin para mabuo ang balot.",
+        "instruction_il": "Ututen ti isda iti 1cm nga piraso. Timplaan nang sapat iti asin ken ikoting tapno mabalotan."
+      },
+      {
+        "step": 2,
+        "instruction": "Combine lime juice and lemon juice in a bowl. Add fish and toss to coat. Marinate for 15–20 minutes until fish turns opaque.",
+        "instruction_tl": "Pagsamahin ang katas ng dayap at limon sa mangkok. Ilagay ang isda at haluin. Ibabad ng 15–20 minuto hanggang maging puti ang isda.",
+        "instruction_il": "Pagtitiponen ti juice ti dayap ken limon iti planggana. Iteddu ti isda ken ikoting. Ibabad iti 15–20 minuto agingga nga tumangen ti kolor ti isda."
+      },
+      {
+        "step": 3,
+        "instruction": "Meanwhile, thinly slice red onion, finely mince the chili, and roughly chop the cilantro.",
+        "instruction_tl": "Habang naghihintay, manipis na hiwain ang sibuyas na pula, tadtarin ang sili, at roughly chop ang cilantro.",
+        "instruction_il": "Iti panawen ti panaguray, manipis nga ututen ti nalabbaga nga lasona, tadtaren ti sili, ken manipis nga tadtaren ti cilantro."
+      },
+      {
+        "step": 4,
+        "instruction": "Drain off most of the curing liquid (keep a little — this is the leche de tigre). Toss fish with onion, chili, and most of the cilantro.",
+        "instruction_tl": "Salain ang karamihan ng curing liquid (itago ang kaunti — ito ang leche de tigre). Haluin ang isda kasama ang sibuyas, sili, at karamihan ng cilantro.",
+        "instruction_il": "Pigtaken ti kaaduan ti curing liquid (idulin ti bassit — daytoy ti leche de tigre). Ikoting ti isda kadagiti lasona, sili, ken kaaduan ti cilantro."
+      },
+      {
+        "step": 5,
+        "instruction": "Taste and adjust salt. Serve immediately, garnished with remaining cilantro.",
+        "instruction_tl": "Tikman at ayusin ang asin. Ihain agad, garnished ng natirang cilantro.",
+        "instruction_il": "Tikman ken i-adjust ti asin. Iserbi dagus, garnished iti natirang cilantro."
+      }
+    ],
+    "estimated_cost_hkd": 80,
+    "loved_by": [],
+    "avoid_for": [],
+    "tags": ["fish", "seafood", "quick", "no-cook", "light", "healthy", "latin"]
   }
 ]

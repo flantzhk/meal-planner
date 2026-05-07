@@ -43,11 +43,11 @@
     const APP_VERSION = "v2.2 · 2026-04-27";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
-    const OPT_COMPONENTS = ["soup", "salad"];
+    const OPT_COMPONENTS = ["starter", "soup", "salad"];
     const ALL_COMPONENTS = [...COMPONENTS, ...OPT_COMPONENTS];
-    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", soup: "🍲", salad: "🥗", dessert: "🍮", "meal-prep": "🫙" };
-    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", soup: "Soup", salad: "Salad", dessert: "Dessert", "meal-prep": "Meal Prep" };
-    const ALL_LIB_COMPONENTS = ["protein", "vegetable", "carb", "soup", "salad", "dessert", "meal-prep"];
+    const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", starter: "🍽️", soup: "🍲", salad: "🥗", dessert: "🍮", "meal-prep": "🫙" };
+    const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", starter: "Starter", soup: "Soup", salad: "Salad", dessert: "Dessert", "meal-prep": "Meal Prep" };
+    const ALL_LIB_COMPONENTS = ["protein", "vegetable", "carb", "starter", "soup", "salad", "dessert", "meal-prep"];
     const getMealObj = (day, meal) => MP.getMealObj(day, meal);
     const getMealRecipeIds = (day, meal) => MP.getMealRecipeIds(day, meal);
 
@@ -808,6 +808,7 @@
                   <option value="protein">🥩 Protein</option>
                   <option value="vegetable">🥦 Vegetable</option>
                   <option value="carb">🍚 Carb</option>
+                  <option value="starter">🍽️ Starter</option>
                   <option value="soup">🍲 Soup</option>
                   <option value="salad">🥗 Salad</option>
                   <option value="dessert">🍮 Dessert</option>
