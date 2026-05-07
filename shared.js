@@ -439,8 +439,9 @@
     forMeal(mealType, recipe, opts = {}) {
       const cook = recipe.cook_time_mins || 0;
       const prep = recipe.prep_time_mins || 0;
+      const buffer = opts.buffer || 0;
       const servedAt = parseHM(opts.mealTime) ?? MEAL_TIME[mealType];
-      const startMin = servedAt - cook - prep;
+      const startMin = servedAt - cook - prep - buffer;
       const deps = (recipe.dependencies || []).map((d) => ({
         type: d.type,
         hours_before: d.hours_before,
@@ -476,7 +477,7 @@
         const serveMin = parseHM(mealTime) ?? MEAL_TIME[m];
         for (const id of ids) {
           const r = recipesById[id]; if (!r) continue;
-          const sched = MP.schedule.forMeal(m, r, { mealTime });
+          const sched = MP.schedule.forMeal(m, r, { mealTime, buffer: opts.buffer || 0 });
           tasks.push({ at: Math.max(0, sched.startMin), label: `Start cooking ${r.name}`, kind: "cook", meal: m, recipeId: r.id, priority: 2, flagEarly: sched.flagEarly });
           tasks.push({ at: serveMin, label: `Serve ${r.name}`, kind: "serve", meal: m, recipeId: r.id, priority: 3 });
           for (const d of r.dependencies || []) {

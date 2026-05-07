@@ -49,6 +49,8 @@
     const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", starter: "🍽️", soup: "🍲", salad: "🥗" };
     const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", starter: "Starter", soup: "Soup", salad: "Salad" };
 
+    const HELPER_BUFFER = 20; // extra mins added to every start time for Leni
+
     function ytId(url) {
       if (!url) return null;
       const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
@@ -88,7 +90,7 @@
       let overdue = false;
 
       if (day) {
-        const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById);
+        const tasks = MP.schedule.buildDayTasks(day, nextDay, recipesById, { buffer: HELPER_BUFFER });
         const upcoming = tasks.find((tk) => (tk.kind === "cook" || tk.kind === "serve") && tk.at > nowMin);
         if (upcoming) {
           const minsToStart = upcoming.at - nowMin;
@@ -386,7 +388,7 @@
       let hasOvernightDep = false;
       for (const id of ids) {
         const r = recipesById[id]; if (!r) continue;
-        const sched = MP.schedule.forMeal(mealType, r, { mealTime });
+        const sched = MP.schedule.forMeal(mealType, r, { mealTime, buffer: HELPER_BUFFER });
         if (sched.startMin < earliestStart) earliestStart = sched.startMin;
         if (sched.hasOvernightDep) hasOvernightDep = true;
       }
