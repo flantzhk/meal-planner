@@ -331,20 +331,38 @@
 
   // Consolidate a list of ingredients (possibly same item, different recipes/units)
   // into a shopping list grouped by source/category.
-  // Returns the meal object (new format) or a normalised {protein,vegetable,carb,soup,salad} object.
+  // Returns the meal object as {protein:[], vegetable:[], carb:[], starter:[], soup:[], salad:[]}.
+  // Each value is always an array of recipe IDs (never null). Handles old string format for
+  // backward compat with plans saved before multi-component support.
   MP.getMealObj = function getMealObj(day, meal) {
     const v = day[meal];
-    if (!v) return { protein: null, vegetable: null, carb: null, soup: null, salad: null };
-    if (typeof v === "string") return { protein: v, vegetable: null, carb: null, soup: null, salad: null };
-    return { protein: null, vegetable: null, carb: null, soup: null, salad: null, ...v };
+    const norm = (val) => {
+      if (!val) return [];
+      if (typeof val === "string") return [val];
+      if (Array.isArray(val)) return val.filter(Boolean);
+      return [];
+    };
+    const base = { protein: [], vegetable: [], carb: [], starter: [], soup: [], salad: [] };
+    if (!v) return base;
+    if (typeof v === "string") return { ...base, protein: [v] };
+    return {
+      protein: norm(v.protein), vegetable: norm(v.vegetable), carb: norm(v.carb),
+      starter: norm(v.starter), soup: norm(v.soup), salad: norm(v.salad),
+    };
   };
 
-  // Returns array of all recipe IDs assigned to a meal slot.
+  // Returns array of all recipe IDs assigned to a meal slot (flattens multi-component arrays).
   MP.getMealRecipeIds = function getMealRecipeIds(day, meal) {
     const v = day[meal];
     if (!v) return [];
     if (typeof v === "string") return [v];
-    return Object.values(v).filter((id) => id && typeof id === "string");
+    const ids = [];
+    for (const val of Object.values(v)) {
+      if (!val) continue;
+      if (typeof val === "string") ids.push(val);
+      else if (Array.isArray(val)) ids.push(...val.filter((id) => id && typeof id === "string"));
+    }
+    return ids;
   };
 
   // Normalize ingredient item name for deduplication:

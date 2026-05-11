@@ -44,7 +44,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useState } = React;
-    const APP_VERSION = "v2.3 · 2026-05-08";
+    const APP_VERSION = "v2.4 · 2026-05-11";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -1183,18 +1183,20 @@
 
 
     function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent, onSetTime }) {
-      const mealObj = getMealObj(day, meal);
-      const componentRecipes = COMPONENTS.map((c) => mealObj[c] ? recipesById[mealObj[c]] : null);
-      const mealIsEmpty = componentRecipes.every((r) => !r);
+      const mealObj = getMealObj(day, meal); // {protein:[], vegetable:[], ...}
+      const componentRecipes = COMPONENTS.flatMap((c) => (mealObj[c] || []).map((id) => recipesById[id]).filter(Boolean));
+      const mealIsEmpty = componentRecipes.length === 0;
       // Only filled slots get an image panel — no empty placeholders
       const imageSlots = ALL_COMPONENTS
-        .map((c) => ({ comp: c, recipe: mealObj[c] ? recipesById[mealObj[c]] : null }))
+        .flatMap((c) => (mealObj[c] || []).map((id) => ({ comp: c, recipe: recipesById[id] || null })))
         .filter((s) => s.recipe);
       const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
-      const hasOvernightDep = ALL_COMPONENTS.some((c) => {
-        const r = mealObj[c] ? recipesById[mealObj[c]] : null;
-        return r && MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] }).hasOvernightDep;
-      });
+      const hasOvernightDep = ALL_COMPONENTS.some((c) =>
+        (mealObj[c] || []).some((id) => {
+          const r = recipesById[id];
+          return r && MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] }).hasOvernightDep;
+        })
+      );
       const mealEmoji = meal === "breakfast" ? "🍳" : meal === "lunch" ? "🥗" : "🍽️";
 
       return (
@@ -1244,45 +1246,64 @@
               className="text-xs font-semibold text-ink bg-transparent border-none outline-none cursor-pointer" />
           </div>
 
-          {/* Component rows */}
+          {/* Component rows — supports multiple per component */}
           <div className="flex flex-col gap-0.5 p-1.5">
             {COMPONENTS.map((comp) => {
-              const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
+              const ids = mealObj[comp]; // array
               return (
-                <button key={comp}
-                  onClick={() => r ? onPreviewComponent(comp, r) : onPickComponent(comp)}
-                  className={`w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] ${r ? "text-ink" : "text-warm/40"}`}>
-                  <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
-                  {r ? (
-                    <span className="truncate leading-tight font-medium">{r.name}</span>
-                  ) : (
-                    <span className="italic text-warm/50">{COMPONENT_LABELS[comp]}</span>
-                  )}
-                </button>
+                <div key={comp}>
+                  {ids.map((id) => {
+                    const r = recipesById[id];
+                    return (
+                      <button key={id}
+                        onClick={() => r ? onPreviewComponent(comp, r) : null}
+                        className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
+                        <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
+                        <span className="truncate leading-tight font-medium">{r ? r.name : id}</span>
+                      </button>
+                    );
+                  })}
+                  {/* Empty placeholder / add-another row */}
+                  <button
+                    onClick={() => onPickComponent(comp)}
+                    className={`w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] ${ids.length > 0 ? "text-warm/30" : "text-warm/40"}`}>
+                    <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
+                    {ids.length > 0 ? (
+                      <span className="italic text-warm/30">+ {comp}</span>
+                    ) : (
+                      <span className="italic text-warm/50">{COMPONENT_LABELS[comp]}</span>
+                    )}
+                  </button>
+                </div>
               );
             })}
 
-            {/* Optional: soup / salad — full rows when filled, small pills when empty */}
+            {/* Optional components — full rows when filled, always show + pills */}
             {OPT_COMPONENTS.map((comp) => {
-              const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
-              return r ? (
-                <button key={comp} onClick={() => onPreviewComponent(comp, r)}
-                  className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
-                  <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
-                  <span className="truncate leading-tight font-medium">{r.name}</span>
-                </button>
-              ) : null;
+              const ids = mealObj[comp];
+              return (
+                <React.Fragment key={comp}>
+                  {ids.map((id) => {
+                    const r = recipesById[id];
+                    return r ? (
+                      <button key={id} onClick={() => onPreviewComponent(comp, r)}
+                        className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
+                        <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
+                        <span className="truncate leading-tight font-medium">{r.name}</span>
+                      </button>
+                    ) : null;
+                  })}
+                </React.Fragment>
+              );
             })}
-            {OPT_COMPONENTS.some((comp) => !mealObj[comp]) && (
-              <div className="flex items-center gap-1 pt-0.5">
-                {OPT_COMPONENTS.filter((comp) => !mealObj[comp]).map((comp) => (
-                  <button key={comp} onClick={() => onPickComponent(comp)}
-                    className="text-[10px] text-warm/35 hover:text-warm px-1.5 py-0.5 rounded-full ring-1 ring-dashed ring-warm/20 transition">
-                    +{comp}
-                  </button>
-                ))}
-              </div>
-            )}
+            <div className="flex items-center gap-1 pt-0.5 flex-wrap">
+              {OPT_COMPONENTS.map((comp) => (
+                <button key={comp} onClick={() => onPickComponent(comp)}
+                  className="text-[10px] text-warm/35 hover:text-warm px-1.5 py-0.5 rounded-full ring-1 ring-dashed ring-warm/20 transition">
+                  +{comp}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       );
@@ -1439,13 +1460,27 @@
         return plan.days.flatMap((d) => MEALS.flatMap((m) => getMealRecipeIds(d, m)));
       }, [plan]);
 
-      function setSlot(dayIdx, meal, component, id) {
+      // setSlot: add, replace, or remove a recipe ID from a component's array.
+      // - newId=null, replaceId=id  → remove that specific recipe
+      // - newId=id,   replaceId=id  → replace that specific recipe
+      // - newId=id,   replaceId=null → append (if not already present)
+      function setSlot(dayIdx, meal, component, newId, replaceId = null) {
         setPlan((p) => {
           const days = p.days.map((d, i) => {
             if (i !== dayIdx) return d;
-            const current = getMealObj(d, meal);
-            const updated = { ...current, [component]: id || null };
-            const allEmpty = ALL_COMPONENTS.every((c) => !updated[c]);
+            const current = getMealObj(d, meal); // returns {protein:[], vegetable:[], ...}
+            let compIds = [...(current[component] || [])];
+            if (!newId) {
+              compIds = replaceId ? compIds.filter((id) => id !== replaceId) : [];
+            } else if (replaceId) {
+              const idx = compIds.indexOf(replaceId);
+              if (idx >= 0) { compIds = [...compIds]; compIds[idx] = newId; }
+              else compIds = [...compIds, newId];
+            } else {
+              if (!compIds.includes(newId)) compIds = [...compIds, newId];
+            }
+            const updated = { ...current, [component]: compIds };
+            const allEmpty = ALL_COMPONENTS.every((c) => !updated[c] || updated[c].length === 0);
             const next = { ...d, [meal]: allEmpty ? null : updated };
             if (allEmpty) { delete next[meal + "_time"]; delete next[meal + "_serves"]; }
             return next;
@@ -1551,9 +1586,9 @@
       const tomorrowDay = todayDay ? plan.days.find((d) => d.date === MP.date.addDays(today, 1)) : null;
       const todayMealObj = todayDay ? getMealObj(todayDay, currentMeal) : null;
       const todayRecipe = todayMealObj
-        ? recipesById[todayMealObj.protein] || recipesById[todayMealObj.vegetable] || recipesById[todayMealObj.carb] || null
+        ? recipesById[(todayMealObj.protein || [])[0]] || recipesById[(todayMealObj.vegetable || [])[0]] || recipesById[(todayMealObj.carb || [])[0]] || null
         : null;
-      const todayComponentCount = todayMealObj ? ALL_COMPONENTS.filter((c) => todayMealObj[c]).length : 0;
+      const todayComponentCount = todayMealObj ? ALL_COMPONENTS.reduce((n, c) => n + (todayMealObj[c] || []).length, 0) : 0;
       const todayRecipeSched = todayRecipe ? MP.schedule.forMeal(currentMeal, todayRecipe, { mealTime: todayDay && todayDay[currentMeal + "_time"] }) : null;
 
       return (
@@ -1619,22 +1654,35 @@
                     {MEALS.map((meal) => {
                       const mealObj = getMealObj(d, meal);
                       const isNow = isToday && meal === currentMeal;
-                      const hasAny = COMPONENTS.some((c) => mealObj[c]);
+                      const hasAny = COMPONENTS.some((c) => (mealObj[c] || []).length > 0);
                       return (
                         <div key={meal} className={`rounded-xl ring-1 overflow-hidden ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
                           <div className={`text-xs uppercase tracking-wide px-2.5 pt-2 pb-1 ${isNow ? "text-terra font-semibold" : "text-warm"}`}>{meal}</div>
                           <div className="px-2 pb-2 space-y-0.5">
                             {COMPONENTS.map((comp) => {
-                              const r = mealObj[comp] ? recipesById[mealObj[comp]] : null;
+                              const ids = mealObj[comp]; // array
                               return (
-                                <button key={comp} onClick={() => r
-                                  ? setPreview({ dayIdx, meal, component: comp, recipe: r })
-                                  : setPicker({ dayIdx, meal, component: comp })}
-                                  className={`w-full flex items-center gap-1.5 text-left px-1.5 py-1 rounded-lg text-xs transition hover:bg-cream ${r ? "text-ink" : "text-warm/40"}`}>
-                                  <span>{COMPONENT_ICONS[comp]}</span>
-                                  {r ? <span className="truncate font-medium">{r.name}</span>
-                                     : <span className="italic">Add {COMPONENT_LABELS[comp].toLowerCase()}</span>}
-                                </button>
+                                <div key={comp}>
+                                  {ids.map((id) => {
+                                    const r = recipesById[id];
+                                    return (
+                                      <button key={id}
+                                        onClick={() => r ? setPreview({ dayIdx, meal, component: comp, recipe: r }) : null}
+                                        className="w-full flex items-center gap-1.5 text-left px-1.5 py-1 rounded-lg text-xs transition hover:bg-cream text-ink">
+                                        <span>{COMPONENT_ICONS[comp]}</span>
+                                        <span className="truncate font-medium">{r ? r.name : id}</span>
+                                      </button>
+                                    );
+                                  })}
+                                  <button
+                                    onClick={() => setPicker({ dayIdx, meal, component: comp })}
+                                    className={`w-full flex items-center gap-1.5 text-left px-1.5 py-1 rounded-lg text-xs transition hover:bg-cream ${ids.length > 0 ? "text-warm/30" : "text-warm/40"}`}>
+                                    <span>{COMPONENT_ICONS[comp]}</span>
+                                    {ids.length === 0
+                                      ? <span className="italic">Add {COMPONENT_LABELS[comp].toLowerCase()}</span>
+                                      : <span className="italic">+ {comp}</span>}
+                                  </button>
+                                </div>
                               );
                             })}
                           </div>
@@ -1701,7 +1749,7 @@
                 mealType={picker.meal} componentType={picker.component}
                 recipes={recipes} eatenLog={eatenLog}
                 usedIds={usedIds} lang={lang}
-                onPick={(id) => { setSlot(picker.dayIdx, picker.meal, picker.component, id); setPicker(null); }}
+                onPick={(id) => { setSlot(picker.dayIdx, picker.meal, picker.component, id, picker.replaceId || null); setPicker(null); }}
               />
             )}
           </Modal>
@@ -1725,8 +1773,8 @@
                 mealServes={plan.days[preview.dayIdx][preview.meal + "_serves"]}
                 planServes={plan.serves || 4}
                 onUpdate={({ time, serves }) => setSlotMeta(preview.dayIdx, preview.meal, { time, serves })}
-                onChange={() => { const p = preview; setPreview(null); setPicker({ dayIdx: p.dayIdx, meal: p.meal, component: p.component || "protein" }); }}
-                onRemove={() => { const p = preview; setPreview(null); setSlot(p.dayIdx, p.meal, p.component || "protein", null); }}
+                onChange={() => { const p = preview; setPreview(null); setPicker({ dayIdx: p.dayIdx, meal: p.meal, component: p.component || "protein", replaceId: p.recipe.id }); }}
+                onRemove={() => { const p = preview; setPreview(null); setSlot(p.dayIdx, p.meal, p.component || "protein", null, p.recipe.id); }}
                 onEdit={() => { setEditRecipe(preview.recipe); setPreview(null); }}
               />
             )}
