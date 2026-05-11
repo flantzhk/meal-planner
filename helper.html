@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F4F1EC'/%3E%3Cpolygon points='24,16 24,48 50,32' fill='%23C8392B'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -36,13 +36,26 @@
     /* No border-radius anywhere except small dot/circle UI (rounded-full) */
     [class*="rounded-"]:not([class*="rounded-full"]) { border-radius: 0 !important; }
   </style>
+  <link rel="preload" href="https://unpkg.com/@babel/standalone/babel.min.js" as="script" />
+  <link rel="preload" href="https://unpkg.com/react@18/umd/react.production.min.js" as="script" />
+  <link rel="preload" href="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" as="script" />
+</head>
+<body>
+  <!-- Static splash — visible instantly while scripts load -->
+  <div id="splash" style="max-width:560px;margin:0 auto;padding:56px 16px 24px">
+    <div style="height:28px;width:120px;background:#EAE3D9;margin-bottom:16px"></div>
+    <div style="height:40px;width:200px;background:#EAE3D9;margin-bottom:12px"></div>
+    <div style="height:16px;width:96px;background:#EAE3D9;opacity:.6;margin-bottom:20px"></div>
+    <div style="height:80px;background:rgba(200,57,43,.15);margin-bottom:16px"></div>
+    <div style="height:112px;background:#EAE3D9;margin-bottom:12px"></div>
+    <div style="height:112px;background:#EAE3D9;opacity:.7"></div>
+  </div>
+  <div id="root"></div>
+
   <script src="shared.js"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-</head>
-<body>
-  <div id="root"></div>
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
@@ -1381,6 +1394,8 @@
       el._to = setTimeout(() => { el.style.opacity = "0"; }, 2200);
     }
 
+    const splash = document.getElementById("splash");
+    if (splash) splash.remove();
     ReactDOM.createRoot(document.getElementById("root")).render(<App />);
   </script>
 </body>
