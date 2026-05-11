@@ -33,6 +33,9 @@
     .num { font-variant-numeric: tabular-nums; }
     /* No border-radius anywhere except small dot/circle UI (rounded-full) */
     [class*="rounded-"]:not([class*="rounded-full"]) { border-radius: 0 !important; }
+    /* Hide scrollbar on day-strip but keep scroll */
+    .no-scrollbar { scrollbar-width: none; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
   </style>
   <script src="shared.js"></script>
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -44,7 +47,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useState } = React;
-    const APP_VERSION = "v2.5 · 2026-05-11";
+    const APP_VERSION = "v2.6 · 2026-05-11";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -391,6 +394,12 @@
                                 <option value="other">Other</option>
                               </select>
                             )}
+                            <a href={`https://www.hktvmall.com/hktv/en/main?q=${encodeURIComponent(it.item)}&area=search_results`}
+                              target="_blank" rel="noopener"
+                              title="Search on HKTVmall"
+                              className="text-warm/30 hover:text-terra transition text-sm leading-none shrink-0">
+                              📦
+                            </a>
                           </li>
                         );
                       })}
@@ -1182,7 +1191,7 @@
     }
 
 
-    function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent, onSetTime }) {
+    function MealCell({ day, meal, recipesById, isNow, onPickComponent, onPreviewComponent, onSetTime, onSuggest }) {
       const mealObj = getMealObj(day, meal); // {protein:[], vegetable:[], ...}
       const componentRecipes = COMPONENTS.flatMap((c) => (mealObj[c] || []).map((id) => recipesById[id]).filter(Boolean));
       const mealIsEmpty = componentRecipes.length === 0;
@@ -1232,8 +1241,10 @@
                 </div>
               );
             })}
+            {/* Gradient overlay at bottom of image strip */}
+            <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-black/25 to-transparent pointer-events-none z-10" />
             {hasOvernightDep && (
-              <span className="absolute top-1.5 right-1.5 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙</span>
+              <span className="absolute top-1.5 right-1.5 z-20 bg-amber-100/90 text-amber-800 text-[10px] px-1.5 py-0.5 rounded-full">🌙</span>
             )}
           </div>
 
@@ -1258,16 +1269,22 @@
                       className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-warm/40">
                       <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
                       <span className="italic text-warm/50">{COMPONENT_LABELS[comp]}</span>
+                      {onSuggest && (
+                        <span onClick={(e) => { e.stopPropagation(); onSuggest(comp); }}
+                          title="Suggest a recipe"
+                          className="ml-auto shrink-0 text-warm/20 hover:text-terra transition cursor-pointer text-[11px]">✨</span>
+                      )}
                     </button>
                   ) : (
-                    // Filled: each recipe row; tiny + on the last one to add another
+                    // Filled: each recipe row; hover popover + tiny + on last to add another
                     ids.map((id, idx) => {
                       const r = recipesById[id];
                       const isLast = idx === ids.length - 1;
+                      const popImg = r ? MP.recipeImage(r) : null;
                       return (
                         <button key={id}
                           onClick={() => r ? onPreviewComponent(comp, r) : null}
-                          className="w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
+                          className="group relative w-full flex items-center gap-1.5 text-left px-1.5 py-0.5 rounded-lg transition hover:bg-cream text-xs min-h-[26px] text-ink">
                           <span className="shrink-0 leading-none">{COMPONENT_ICONS[comp]}</span>
                           <span className="truncate leading-tight font-medium flex-1">{r ? r.name : id}</span>
                           {isLast && (
@@ -1277,6 +1294,17 @@
                               className="shrink-0 w-4 h-4 flex items-center justify-center text-warm/30 hover:text-terra hover:bg-terra/10 rounded-full text-[11px] leading-none transition cursor-pointer">
                               +
                             </span>
+                          )}
+                          {/* Hover popover — shows to the right */}
+                          {r && (
+                            <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 z-50 w-44 bg-white shadow-2xl rounded-xl overflow-hidden pointer-events-none"
+                              style={{ border: "1px solid rgba(0,0,0,0.06)" }}>
+                              {popImg && <img src={popImg} className="w-full h-24 object-cover" alt="" />}
+                              <div className="p-2">
+                                <div className="text-xs font-semibold leading-tight">{r.name}</div>
+                                {r.cuisine && <div className="text-[10px] text-warm mt-0.5">{r.cuisine} · {(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}m</div>}
+                              </div>
+                            </div>
                           )}
                         </button>
                       );
@@ -1523,6 +1551,26 @@
         setIsDirty(true);
       }
 
+      // ✨ Suggest: pick the least-recently-eaten recipe for a given component slot
+      function suggest(dayIdx, meal, component) {
+        const today = MP.date.hkToday();
+        const candidates = (recipes || [])
+          .filter((r) => {
+            if (r.component_type && r.component_type !== component) return false;
+            if (r.meal_type && !r.meal_type.includes(meal)) return false;
+            if (usedIds.includes(r.id)) return false; // already on this week's plan
+            return true;
+          })
+          .map((r) => ({ r, days: MP.lastEaten(r.id, eatenLog, today).days ?? 9999 }))
+          .sort((a, b) => b.days - a.days); // most stale first
+        if (candidates.length > 0) {
+          setSlot(dayIdx, meal, component, candidates[0].r.id);
+          setFlashMsg(`✨ Suggested: ${candidates[0].r.name}`);
+        } else {
+          setFlashMsg("No matching recipes found — add some to the library first.");
+        }
+      }
+
       async function shiftWeek(delta) {
         const newStart = MP.date.addDays(plan.week_start, delta * 7);
         // Try to load a previously-saved plan for that week; fall back to empty scaffold.
@@ -1654,12 +1702,26 @@
 
           {todayDay && <TodayTimeline day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} />}
 
+          {/* Mobile: sticky day-selector strip */}
+          <div className="md:hidden sticky top-0 z-20 -mx-3 px-3 py-2 mb-3 bg-cream/95 backdrop-blur border-b border-warm/10 flex gap-1.5 overflow-x-auto no-scrollbar">
+            {plan.days.map((d) => {
+              const isToday = d.date === today;
+              return (
+                <button key={d.date}
+                  onClick={() => document.getElementById(`day-${d.date}`)?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className={`shrink-0 px-3 py-1 rounded-full text-xs font-semibold transition ${isToday ? "bg-terra text-cream" : "bg-sand text-ink hover:bg-sand/80"}`}>
+                  {d.day.slice(0, 3)}
+                </button>
+              );
+            })}
+          </div>
+
           {/* Mobile: vertical per-day card list */}
           <div className="md:hidden space-y-3">
             {plan.days.map((d, dayIdx) => {
               const isToday = d.date === today;
               return (
-                <div key={d.date} className={`rounded-2xl p-3 ring-1 ${isToday ? "bg-white ring-terra/40" : "bg-white ring-black/5"}`}>
+                <div id={`day-${d.date}`} key={d.date} className={`rounded-2xl p-3 ring-1 scroll-mt-16 ${isToday ? "bg-white ring-terra/40" : "bg-white ring-black/5"}`}>
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <span className={`font-display text-lg leading-none ${isToday ? "text-terra" : ""}`}>{d.day}</span>
@@ -1750,20 +1812,75 @@
                       const isToday = d.date === today;
                       const isNow = isToday && meal === currentMeal;
                       return (
-                        <td key={d.date} className={`${isToday ? "bg-terra/5" : ""} align-top`}>
+                        <td key={d.date} className={`${isToday ? "bg-terra/10" : ""} align-top`}>
                           <MealCell
                             day={d} meal={meal} recipesById={recipesById} isNow={isNow}
                             onPickComponent={(comp) => setPicker({ dayIdx, meal, component: comp })}
                             onPreviewComponent={(comp, recipe) => setPreview({ dayIdx, meal, component: comp, recipe })}
                             onSetTime={(time) => setSlotMeta(dayIdx, meal, { time, serves: d[meal + "_serves"] })}
+                            onSuggest={(comp) => suggest(dayIdx, meal, comp)}
                           />
                         </td>
                       );
                     })}
                   </tr>
                 ))}
+                {/* Budget row */}
+                {(() => {
+                  const dayTotals = plan.days.map((d) => {
+                    let total = 0;
+                    for (const meal of MEALS) {
+                      const ids = getMealRecipeIds(d, meal);
+                      const serves = d[meal + "_serves"] || plan.serves || 4;
+                      for (const id of ids) {
+                        const r = recipesById[id];
+                        if (r && r.estimated_cost_hkd) total += r.estimated_cost_hkd * (serves / (r.serves_base || 4));
+                      }
+                    }
+                    return Math.round(total);
+                  });
+                  const weekTotal = dayTotals.reduce((s, v) => s + v, 0);
+                  if (weekTotal === 0) return null;
+                  return (
+                    <tr className="align-top border-t-2 border-warm/10">
+                      <td className="text-xs uppercase tracking-wide pt-3 pr-2 text-warm/50">budget</td>
+                      {plan.days.map((d, i) => {
+                        const isToday = d.date === today;
+                        return (
+                          <td key={d.date} className={`${isToday ? "bg-terra/10" : ""} pt-3 align-top`}>
+                            {dayTotals[i] > 0 ? (
+                              <div className="text-xs num text-warm font-mono">HK${dayTotals[i]}</div>
+                            ) : (
+                              <div className="text-xs text-warm/20">—</div>
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  );
+                })()}
               </tbody>
             </table>
+            {/* Weekly budget total */}
+            {(() => {
+              let weekTotal = 0;
+              for (const d of plan.days) {
+                for (const meal of MEALS) {
+                  const ids = getMealRecipeIds(d, meal);
+                  const serves = d[meal + "_serves"] || plan.serves || 4;
+                  for (const id of ids) {
+                    const r = recipesById[id];
+                    if (r && r.estimated_cost_hkd) weekTotal += r.estimated_cost_hkd * (serves / (r.serves_base || 4));
+                  }
+                }
+              }
+              if (weekTotal < 1) return null;
+              return (
+                <div className="text-right text-xs text-warm/50 num mt-1 pr-3">
+                  Estimated week total: <span className="font-semibold text-warm">HK${Math.round(weekTotal)}</span>
+                </div>
+              );
+            })()}
           </div>
 
 

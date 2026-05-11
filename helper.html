@@ -211,11 +211,13 @@
               })}
             </ul>
             <h3 className="mt-5 font-display text-lg">{t(lang, "steps")}</h3>
-            <ol className="mt-1 space-y-3">
+            <ol className="mt-2 space-y-4">
               {(recipe.steps || []).map((s, i) => (
-                <li key={s.step ?? i} className="flex gap-3">
-                  <span className="step-num font-display text-terra text-lg leading-7 min-w-[1.5rem]">{s.step ?? i + 1}</span>
-                  <div className="leading-relaxed text-sm">
+                <li key={s.step ?? i} className="flex gap-3 items-start">
+                  <div className="shrink-0 w-8 h-8 rounded-full bg-terra text-cream flex items-center justify-center font-display text-base font-semibold leading-none step-num mt-0.5">
+                    {s.step ?? i + 1}
+                  </div>
+                  <div className="leading-relaxed text-sm pt-1.5">
                     <div>{MP.i18n.stepText(s, lang)}</div>
                     {showEng && <div className="text-warm/70 italic text-sm mt-0.5">{s.instruction}</div>}
                   </div>
@@ -399,27 +401,29 @@
       const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
       const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
 
-      // Collect all components that have both a recipe and an image
-      const compImages = ALL_COMPONENTS.map((comp) => {
-        const id = mealObj[comp]; if (!id) return null;
-        const r = recipesById[id]; if (!r) return null;
-        const img = MP.recipeImage(r); if (!img) return null;
-        return { comp, recipe: r, img };
-      }).filter(Boolean);
+      // Collect all recipes (across all components) that have an image
+      const compImages = ALL_COMPONENTS.flatMap((comp) => {
+        const ids = mealObj[comp]; // now always an array
+        return ids.map((id) => {
+          const r = recipesById[id]; if (!r) return null;
+          const img = MP.recipeImage(r); if (!img) return null;
+          return { comp, recipe: r, img };
+        }).filter(Boolean);
+      });
 
       return (
         <div className="space-y-3">
-          {/* Per-component image strip */}
+          {/* Recipe image strip — taller, with name overlays and gradient */}
           {compImages.length > 0 && (
-            <div className={`flex gap-1 rounded-2xl overflow-hidden`} style={{ height: "10rem" }}>
+            <div className="flex gap-1 rounded-2xl overflow-hidden" style={{ height: compImages.length === 1 ? "14rem" : "12rem" }}>
               {compImages.map(({ comp, recipe, img }) => (
-                <a key={comp}
+                <a key={`${comp}-${recipe.id}`}
                   href={recipe.youtube_url || undefined}
                   target="_blank" rel="noopener"
                   className="relative flex-1 overflow-hidden group"
                   style={{ minWidth: 0 }}
                   onClick={(e) => { if (!recipe.youtube_url) e.preventDefault(); }}>
-                  <img src={img} alt="" className="w-full h-full object-cover"
+                  <img src={img} alt="" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     onLoad={(e) => {
                       if (!MP.isYoutubePlaceholder(e.target)) return;
                       const s = e.target.src;
@@ -433,12 +437,14 @@
                       if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
                       e.target.closest("a").style.display = "none";
                     }} />
-                  {/* Recipe name only — no component type jargon */}
-                  <div className="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent px-2 pt-6 pb-2 pointer-events-none">
-                    <div className="text-white text-xs font-medium leading-tight truncate">{MP.i18n.recipeName(recipe, lang)}</div>
+                  {/* Gradient overlay with recipe name */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 inset-x-0 px-3 pb-3 pointer-events-none">
+                    <div className="text-[10px] uppercase tracking-wider text-white/60 font-medium leading-none mb-1">{COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}</div>
+                    <div className="text-white text-sm font-semibold leading-tight">{MP.i18n.recipeName(recipe, lang)}</div>
                   </div>
                   {recipe.youtube_url && (
-                    <div className="absolute top-2 right-2 bg-black/60 text-white text-[10px] font-bold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition">▶</div>
+                    <div className="absolute top-3 right-3 bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center opacity-0 group-hover:opacity-100 transition text-xs font-bold">▶</div>
                   )}
                 </a>
               ))}
@@ -467,18 +473,20 @@
           )}
           {/* Shopping list first — buy before cooking */}
           <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={planServes} lang={lang} nowMin={nowMin} />
-          {/* Recipes — one accordion per component */}
+          {/* Recipes — one accordion per recipe (multiple per component now supported) */}
           <div className="text-sm font-semibold text-warm/60 px-1 pt-2">{t(lang, "howToCook")}</div>
-          {ALL_COMPONENTS.map((comp, i) => {
-            const id = mealObj[comp]; if (!id) return null;
-            const r = recipesById[id]; if (!r) return null;
-            return (
-              <ComponentAccordion
-                key={comp} comp={comp} recipe={r}
-                mealServes={mealServes} lang={lang} onVerify={onVerify}
-                defaultOpen={false}
-              />
-            );
+          {ALL_COMPONENTS.flatMap((comp) => {
+            const ids = mealObj[comp]; // array
+            return ids.map((id) => {
+              const r = recipesById[id]; if (!r) return null;
+              return (
+                <ComponentAccordion
+                  key={`${comp}-${id}`} comp={comp} recipe={r}
+                  mealServes={mealServes} lang={lang} onVerify={onVerify}
+                  defaultOpen={false}
+                />
+              );
+            }).filter(Boolean);
           })}
         </div>
       );
@@ -591,12 +599,13 @@
                               </li>
                             );
                             const mealObj = MP.getMealObj(d, m);
-                            const names = ALL_COMPONENTS
-                              .filter((c) => mealObj[c])
-                              .map((c) => {
-                                const r = recipesById[mealObj[c]];
+                            const names = ALL_COMPONENTS.flatMap((c) => {
+                              const ids = mealObj[c]; // array
+                              return ids.map((id) => {
+                                const r = recipesById[id];
                                 return r ? `${COMPONENT_ICONS[c]} ${MP.i18n.recipeName(r, lang)}` : null;
                               }).filter(Boolean);
+                            });
                             const time = d[m + "_time"] || MP.schedule.defaultMealTime(m);
                             const allDeps = ids.flatMap((id) => (recipesById[id]?.dependencies || []));
                             const hasLongDep = allDeps.some((dep) => dep.hours_before >= 12);
@@ -629,6 +638,8 @@
       );
     }
 
+    const HKTVMALL_SEARCH = (q) => `https://www.hktvmall.com/hktv/en/main?q=${encodeURIComponent(q)}&area=search_results`;
+
     function ItemRow({ it, has, onTick, srcLabel }) {
       const amt = it.amount != null ? Number(Number(it.amount).toFixed(2)) : "";
       return (
@@ -644,6 +655,11 @@
           <span className="num text-warm/70 min-w-[4.5rem] text-xs">{amt} {it.unit || ""}</span>
           <span className={`flex-1 ${has ? "line-through text-warm/50" : ""}`}>{it.item}</span>
           {srcLabel && <span className="text-xs text-warm/50 shrink-0">{srcLabel}</span>}
+          <a href={HKTVMALL_SEARCH(it.item)} target="_blank" rel="noopener"
+            title="Search on HKTVmall"
+            className="shrink-0 text-warm/25 hover:text-terra transition text-base leading-none">
+            📦
+          </a>
         </li>
       );
     }
