@@ -199,13 +199,13 @@
               </button>
             )}
             <h3 className="mt-5 font-display text-lg">{t(lang, "ingredients")}</h3>
-            <ul className="mt-1 text-sm leading-relaxed">
+            <ul className="mt-1 divide-y divide-sand/50">
               {(recipe.ingredients || []).map((ing, i) => {
                 const amt = ing.amount != null ? Number(Number(ing.amount).toFixed(2)) : "";
                 return (
-                  <li key={i} className="flex gap-3 py-0.5">
-                    <span className="num text-warm min-w-[4.5rem]">{amt !== "" ? amt : ""} {ing.unit || ""}</span>
-                    <span>{ing.item || ""}</span>
+                  <li key={i} className="flex gap-3 py-2">
+                    <span className="num font-semibold text-ink min-w-[5rem] shrink-0">{amt !== "" ? amt : ""} {ing.unit || ""}</span>
+                    <span className="text-ink/80">{ing.item || ""}</span>
                   </li>
                 );
               })}
@@ -245,10 +245,11 @@
           try { return MP.scale(i, mealServes, recipe.serves_base || 4); } catch(e) { return i; }
         }),
       };
+      const vid = ytId(recipe.youtube_url);
       return (
         <div className={`rounded-2xl overflow-hidden ${open ? "ring-2 ring-terra/40" : "ring-1 ring-black/5"} bg-white`}>
-          <button onClick={() => setOpen((o) => !o)}
-            className="w-full text-left outline-none focus:outline-none">
+          {/* Header — div not button so <a> video link can live inside without invalid nesting */}
+          <div onClick={() => setOpen((o) => !o)} className="cursor-pointer select-none">
             {/* Image banner — full width, 96px tall */}
             {img && (
               <div className="relative w-full overflow-hidden" style={{ height: "96px" }}>
@@ -273,9 +274,19 @@
                 <div className="font-display text-xl leading-snug">{name}</div>
                 <div className="text-sm text-warm/60 mt-0.5">{open ? t(lang, "tapToClose") : t(lang, "tapToCook")}</div>
               </div>
-              <span className="text-warm/40 text-2xl shrink-0 leading-none" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>›</span>
+              <div className="flex items-center gap-2 shrink-0">
+                {/* ▶ Watch button — visible without opening; stops propagation so it doesn't toggle the accordion */}
+                {vid && !open && (
+                  <a href={recipe.youtube_url} target="_blank" rel="noopener"
+                    onClick={(e) => e.stopPropagation()}
+                    className="flex items-center gap-1 bg-terra text-cream px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap">
+                    ▶ {t(lang, "watch")}
+                  </a>
+                )}
+                <span className="text-warm/40 text-2xl leading-none" style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>›</span>
+              </div>
             </div>
-          </button>
+          </div>
           {open && (
             <div className="border-t border-sand/60">
               <RecipeCard recipe={scaled} componentType={comp} lang={lang} onVerify={onVerify} noImage />
@@ -400,6 +411,11 @@
       }
       const startLabel = isFinite(earliestStart) ? MP.schedule.fmtTime(earliestStart) : "—";
       const mealEmoji = mealType === "breakfast" ? "🍳" : mealType === "lunch" ? "🥗" : "🍽️";
+      // Recipe names for timing card — so Leni always knows what she's cooking
+      const timingNames = ids.map((id) => {
+        const r = recipesById[id];
+        return r ? MP.i18n.recipeName(r, lang) : null;
+      }).filter(Boolean);
 
       // Collect all recipes (across all components) that have an image
       const compImages = ALL_COMPONENTS.flatMap((comp) => {
@@ -450,24 +466,32 @@
               ))}
             </div>
           )}
-          {/* Timing card */}
+          {/* Timing card — always shows recipe name(s) so Leni knows what she's cooking */}
           {hasOvernightDep ? (
             <div className="bg-warm text-cream px-5 py-4 rounded-2xl">
+              {timingNames.length > 0 && (
+                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2 truncate">{timingNames.join(" · ")}</div>
+              )}
               <div className="text-sm font-semibold opacity-80 mb-2">{t(lang, "overnightWarn")}</div>
               <div className="flex items-baseline gap-3">
                 <div><div className="text-xs opacity-60 uppercase tracking-wide">{t(lang, "serveBy")}</div><div className="num font-display text-3xl leading-none">{servedAtLabel}</div></div>
               </div>
             </div>
           ) : (
-            <div className="bg-terra text-cream px-4 py-3 rounded-2xl flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <div className="text-[10px] font-semibold uppercase tracking-wider opacity-60 mb-1 leading-tight">{t(lang, "startCookingAt")}</div>
-                <div className="num font-display text-3xl leading-none">{startLabel}</div>
-              </div>
-              <div className="text-cream/30 text-2xl font-light shrink-0">→</div>
-              <div className="text-right min-w-0">
-                <div className="text-[10px] font-semibold uppercase tracking-wider opacity-60 mb-1 leading-tight">{t(lang, "serveBy")}</div>
-                <div className="num font-display text-3xl leading-none">{servedAtLabel}</div>
+            <div className="bg-terra text-cream px-4 py-3 rounded-2xl">
+              {timingNames.length > 0 && (
+                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2.5 truncate">{timingNames.join(" · ")}</div>
+              )}
+              <div className="flex items-center justify-between gap-2">
+                <div className="min-w-0">
+                  <div className="text-[10px] font-semibold uppercase tracking-wider opacity-60 mb-1 leading-tight">{t(lang, "startCookingAt")}</div>
+                  <div className="num font-display text-3xl leading-none">{startLabel}</div>
+                </div>
+                <div className="text-cream/30 text-2xl font-light shrink-0">→</div>
+                <div className="text-right min-w-0">
+                  <div className="text-[10px] font-semibold uppercase tracking-wider opacity-60 mb-1 leading-tight">{t(lang, "serveBy")}</div>
+                  <div className="num font-display text-3xl leading-none">{servedAtLabel}</div>
+                </div>
               </div>
             </div>
           )}
@@ -1057,9 +1081,12 @@
           else delete next[item];
           return next;
         });
-        try { await MP.api.togglePantry(item, have); }
+        try {
+          await MP.api.togglePantry(item, have);
+          flash(have ? "✓ Got it" : "Unmarked");
+        }
         catch (e) {
-          flash("Could not save: " + e.message, true);
+          flash("Could not save — tap to retry", true);
           const fresh = await MP.api.getPantry().catch(() => ({}));
           setPantry(fresh || {});
         }
@@ -1130,14 +1157,35 @@
 
       if (err) {
         return (
-          <div className="p-6 max-w-md mx-auto">
-            <p className="text-terra">Could not load: {err}</p>
-            <p className="text-warm text-sm mt-2">Check the Worker URL in <code>shared.js</code>.</p>
+          <div className="min-h-screen flex flex-col items-center justify-center px-6 text-center gap-4">
+            <div className="text-5xl">😔</div>
+            <p className="font-display text-2xl text-ink">Could not load the plan</p>
+            <p className="text-warm text-sm max-w-xs">Check your connection and try again. If it keeps failing, ask Faith to check the settings.</p>
+            <button onClick={() => window.location.reload()}
+              className="mt-2 bg-terra text-cream px-6 py-3 rounded-full text-sm font-semibold">
+              Try again
+            </button>
           </div>
         );
       }
       if (!recipes || !plan) {
-        return <div className="p-6 text-warm">Loading…</div>;
+        return (
+          <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
+            {/* NowBar skeleton */}
+            <div className="fixed top-0 left-0 right-0 z-20 bg-ink flex items-center justify-between px-4" style={{ height: "56px" }}>
+              <div className="h-5 w-20 bg-white/10 rounded-full animate-pulse" />
+              <div className="h-4 w-28 bg-white/10 rounded-full animate-pulse" />
+            </div>
+            <div className="mt-6 space-y-4">
+              <div className="h-7 w-32 bg-sand rounded-lg animate-pulse" />
+              <div className="h-10 w-44 bg-sand rounded-lg animate-pulse" />
+              <div className="h-4 w-24 bg-sand/60 rounded-lg animate-pulse" />
+              <div className="h-20 bg-terra/20 rounded-2xl animate-pulse" />
+              <div className="h-28 bg-sand rounded-2xl animate-pulse" />
+              <div className="h-28 bg-sand/70 rounded-2xl animate-pulse" />
+            </div>
+          </main>
+        );
       }
       if (!todayDay) {
         return (
@@ -1166,7 +1214,7 @@
           <header className="mb-6 mt-6">
             <div className="flex items-start justify-between gap-3">
               <div>
-                {isMealTab && <div className="font-display text-2xl text-terra mb-1">{t(lang, "helloLeni")}</div>}
+                <div className="font-display text-2xl text-terra mb-1">{t(lang, "helloLeni")}</div>
                 <h1 className="font-display text-4xl leading-none">{MP.date.dayName(today, lang)}</h1>
                 <div className="text-sm text-warm mt-1 num">{MP.date.prettyDate(today, lang)}</div>
               </div>
