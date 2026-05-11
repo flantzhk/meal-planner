@@ -47,7 +47,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
-    const APP_VERSION = "v2.8 · 2026-05-11";
+    const APP_VERSION = "v2.9 · 2026-05-11";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -1424,6 +1424,25 @@
       // consistent between loading and loaded renders.
       const nowMin = useNow();
 
+      useEffect(() => {
+        function handleKey(e) {
+          if ((e.metaKey || e.ctrlKey) && e.key === "s") {
+            e.preventDefault();
+            if (plan && !saving) savePlan();
+          }
+          if (e.key === "Escape") {
+            if (editRecipe !== null) { setEditRecipe(null); return; }
+            if (preview) { setPreview(null); return; }
+            if (picker) { setPicker(null); return; }
+            if (showShop) { setShowShop(false); return; }
+            if (showLibrary) { setShowLibrary(false); return; }
+            if (showSettings) { setShowSettings(false); return; }
+          }
+        }
+        window.addEventListener("keydown", handleKey);
+        return () => window.removeEventListener("keydown", handleKey);
+      }, [plan, saving, editRecipe, preview, picker, showShop, showLibrary, showSettings]);
+
       const lang = "en"; // planner stays English; language is for helper view.
 
       useEffect(() => {
@@ -1619,7 +1638,12 @@
           await MP.api.putWeekplan(plan);
           const el = await MP.api.getEatenLog();
           setEatenLog(el || {});
-          setFlashMsg("✓ Week saved. Helper will see it.");
+          const emptyDays = plan.days.filter((d) => !d.breakfast && !d.lunch && !d.dinner);
+          if (emptyDays.length > 0) {
+            setFlashMsg(`⚠ Saved, but ${emptyDays.length} day${emptyDays.length > 1 ? "s have" : " has"} no meals planned yet.`);
+          } else {
+            setFlashMsg("✓ Saved — Leni will see this plan now.");
+          }
           setIsDirty(false); // Change 2: clear dirty on successful save
         } catch (e) {
           setFlashMsg("Save failed: " + e.message);
@@ -1812,6 +1836,9 @@
                           {isToday && <span className="text-[9px] font-bold uppercase tracking-widest bg-terra text-white px-1.5 py-0.5 rounded-full leading-none">Today</span>}
                         </div>
                         <div className="text-[11px] text-warm/50 num mt-0.5">{d.date}</div>
+                        {!d.breakfast && !d.lunch && !d.dinner && (
+                          <div className="text-warm/30 text-[10px] italic mt-0.5">no meals yet</div>
+                        )}
                       </th>
                     );
                   })}

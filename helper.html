@@ -192,6 +192,9 @@
                 ▶ {t(lang, "watch")}
               </button>
             )}
+            {!vid && !playing && (
+              <div className="mt-3 text-sm text-warm/50 italic">No video added yet</div>
+            )}
             {playing && (
               <button onClick={() => setPlaying(false)}
                 className="mt-3 inline-flex items-center gap-2 bg-warm text-cream px-4 py-2 rounded-full text-sm font-medium">
@@ -396,6 +399,9 @@
       const mealObj = MP.getMealObj(day, mealType);
       const mealTime = day[mealType + "_time"];
       const mealServes = day[mealType + "_serves"] || planServes;
+      const [localServes, setLocalServes] = useState(null);
+      const effServes = localServes || mealServes;
+      const eatingLabel = ({ en: "Eating", tl: "Kakain", il: "Mangan" })[lang] || "Eating";
       const ids = MP.getMealRecipeIds(day, mealType);
       if (!ids.length) return null;
 
@@ -495,23 +501,38 @@
               </div>
             </div>
           )}
+          {/* Serves adjustment */}
+          <div className="flex items-center justify-between px-1 py-1">
+            <span className="text-xs text-warm">{eatingLabel}: {effServes} {effServes === 1 ? "person" : "people"}</span>
+            <div className="flex items-center gap-1.5">
+              <button onClick={() => setLocalServes(Math.max(1, effServes - 1))}
+                className="w-7 h-7 rounded-full bg-sand text-warm text-sm font-semibold flex items-center justify-center active:bg-warm/20">-</button>
+              <button onClick={() => setLocalServes(Math.min(12, effServes + 1))}
+                className="w-7 h-7 rounded-full bg-sand text-warm text-sm font-semibold flex items-center justify-center active:bg-warm/20">+</button>
+            </div>
+          </div>
           {/* Shopping list first — buy before cooking */}
-          <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={planServes} lang={lang} nowMin={nowMin} />
+          <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={effServes} lang={lang} nowMin={nowMin} />
           {/* Recipes — one accordion per recipe (multiple per component now supported) */}
           <div className="text-sm font-semibold text-warm/60 px-1 pt-2">{t(lang, "howToCook")}</div>
-          {ALL_COMPONENTS.flatMap((comp) => {
-            const ids = mealObj[comp]; // array
-            return ids.map((id) => {
-              const r = recipesById[id]; if (!r) return null;
-              return (
-                <ComponentAccordion
-                  key={`${comp}-${id}`} comp={comp} recipe={r}
-                  mealServes={mealServes} lang={lang} onVerify={onVerify}
-                  defaultOpen={false}
-                />
-              );
-            }).filter(Boolean);
-          })}
+          {(() => {
+            let isFirst = true;
+            return ALL_COMPONENTS.flatMap((comp) => {
+              const ids = mealObj[comp]; // array
+              return ids.map((id) => {
+                const r = recipesById[id]; if (!r) return null;
+                const shouldOpen = isFirst;
+                if (r) isFirst = false;
+                return (
+                  <ComponentAccordion
+                    key={`${comp}-${id}`} comp={comp} recipe={r}
+                    mealServes={effServes} lang={lang} onVerify={onVerify}
+                    defaultOpen={shouldOpen}
+                  />
+                );
+              }).filter(Boolean);
+            });
+          })()}
         </div>
       );
     }
@@ -1050,6 +1071,8 @@
       const [extras, setExtras] = useState([]);
       const [study, setStudy] = useState(null); // { recipe, mealType, date, mealTime, mealServes }
       const [err, setErr] = useState(null);
+      const [offline, setOffline] = useState(!navigator.onLine);
+      const [showOnboard, setShowOnboard] = useState(() => !localStorage.getItem("mpHelperOnboarded"));
 
       useEffect(() => { localStorage.setItem("mpHelperLang", lang); }, [lang]);
 
@@ -1140,6 +1163,16 @@
         return n;
       }, [recipes, plan, pantry]);
 
+      useEffect(() => {
+        const goOff = () => setOffline(true);
+        const goOn = () => setOffline(false);
+        window.addEventListener("offline", goOff);
+        window.addEventListener("online", goOn);
+        return () => { window.removeEventListener("offline", goOff); window.removeEventListener("online", goOn); };
+      }, []);
+
+      function dismissOnboard() { localStorage.setItem("mpHelperOnboarded", "1"); setShowOnboard(false); }
+
       async function verify(recipeId) {
         try {
           const r = recipesById[recipeId];
@@ -1210,6 +1243,11 @@
       return (
         <main className="max-w-xl mx-auto px-4 pt-14 pb-24">
           <NowBar day={todayDay} nextDay={tomorrowDay} recipesById={recipesById} nowMin={nowMin} lang={lang} />
+          {offline && (
+            <div className="fixed top-14 left-0 right-0 z-15 bg-amber-100 text-amber-800 text-center text-xs py-1.5 font-medium">
+              You're offline. Showing last loaded data
+            </div>
+          )}
 
           <header className="mb-6 mt-6">
             <div className="flex items-start justify-between gap-3">
@@ -1307,6 +1345,25 @@
                     recipesById={recipesById} planServes={planServes}
                     lang={lang} onVerify={verify} />
                 </div>
+              </div>
+            </div>
+          )}
+
+          {showOnboard && recipes && plan && (
+            <div className="fixed inset-0 z-50 bg-ink/70 flex items-center justify-center p-6" onClick={dismissOnboard}>
+              <div className="bg-cream max-w-sm w-full rounded-2xl p-6 text-center space-y-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
+                <div className="text-4xl">👋</div>
+                <h2 className="font-display text-2xl">{t(lang, "helloLeni")}</h2>
+                <div className="text-sm text-warm space-y-3 text-left">
+                  <p>🍳 <strong>Bottom tabs</strong> show each meal for today</p>
+                  <p>▶ <strong>Watch</strong> buttons open the cooking video</p>
+                  <p>🛒 <strong>Shopping</strong> tab has your full list</p>
+                  <p>📅 <strong>This week</strong> shows what's coming up</p>
+                </div>
+                <button onClick={dismissOnboard}
+                  className="w-full bg-terra text-cream py-3 rounded-full text-sm font-semibold mt-2">
+                  Got it!
+                </button>
               </div>
             </div>
           )}
