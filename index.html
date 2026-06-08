@@ -1104,6 +1104,7 @@
     function SettingsPanel({ onClose }) {
       const [base, setBase] = useState(localStorage.getItem("mpApiBase") || "");
       const [tok, setTok] = useState(localStorage.getItem("mpFaithToken") || "");
+      const [budget, setBudget] = useState(localStorage.getItem("mpWeeklyBudget") || "700");
       const [status, setStatus] = useState("");
       async function test() {
         if (base) MP.api.setBase(base);
@@ -1121,8 +1122,12 @@
           <label className="block text-sm text-warm mt-4">Faith token</label>
           <input value={tok} onChange={(e) => setTok(e.target.value)} type="password"
             className="mt-1 w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
+          <label className="block text-sm text-warm mt-4">Weekly dinner budget (HK$)</label>
+          <input value={budget} onChange={(e) => setBudget(e.target.value)} type="number"
+            placeholder="700"
+            className="mt-1 w-full rounded-lg border border-warm/20 bg-white px-3 py-2 text-sm" />
           <div className="mt-4 flex gap-2">
-            <button onClick={() => { MP.api.setBase(base); MP.api.setToken(tok); onClose(); location.reload(); }}
+            <button onClick={() => { MP.api.setBase(base); MP.api.setToken(tok); localStorage.setItem("mpWeeklyBudget", budget || "700"); onClose(); location.reload(); }}
               className="bg-ink text-cream px-4 py-2 rounded-lg">Save</button>
             <button onClick={test} className="bg-sand text-ink px-4 py-2 rounded-lg">Test</button>
           </div>
@@ -2100,9 +2105,15 @@
                 }
               }
               if (weekTotal < 1) return null;
+              const wBudget = parseInt(localStorage.getItem("mpWeeklyBudget") || "700");
+              const pct = weekTotal / wBudget;
+              const amtColor = pct > 1 ? "text-red-500" : pct > 0.8 ? "text-amber-500" : "text-green-600";
               return (
-                <div className="text-right text-xs text-warm/50 num mt-1 pr-3">
-                  Estimated week total: <span className="font-semibold text-warm">HK${Math.round(weekTotal)}</span>
+                <div className="text-right text-xs text-warm/50 num mt-1 pr-3 flex items-center justify-end gap-2">
+                  <span>Estimated week total:</span>
+                  <span className={`font-semibold ${amtColor}`}>HK${Math.round(weekTotal)}</span>
+                  <span className="text-warm/40">/ HK${wBudget}</span>
+                  {pct > 1 && <span className="text-red-500 font-semibold">⚠ over budget</span>}
                 </div>
               );
             })()}
