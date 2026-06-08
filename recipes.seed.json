@@ -2047,7 +2047,7 @@
         "instruction_il": "Ilikkar nang nainget ti salmon ken iruot iti napudot nga plato. Pakuransen ti sarsa iti nangato nga init agingga nalapot. Isabet ti parsley ken agus-usar iti ikan."
       }
     ],
-    "estimated_cost_hkd": 120,
+    "estimated_cost_hkd": 180,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -2855,7 +2855,7 @@
         "instruction_il": "Isabet ti capers ken dill. Timbangen nga ayon ti tikod. Isao nang nabayag ti sarsa iti nalpabor nga ikan. Iserbi dagus."
       }
     ],
-    "estimated_cost_hkd": 185,
+    "estimated_cost_hkd": 265,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -4766,7 +4766,7 @@
         "hours_before": 1
       }
     ],
-    "estimated_cost_hkd": 150,
+    "estimated_cost_hkd": 123,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -4970,7 +4970,7 @@
     "hero_image": null,
     "youtube_url": "https://www.youtube.com/watch?v=MPS49M64B0c",
     "dependencies": [],
-    "estimated_cost_hkd": 385,
+    "estimated_cost_hkd": 301,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -5132,7 +5132,7 @@
         "hours_before": 24
       }
     ],
-    "estimated_cost_hkd": 1080,
+    "estimated_cost_hkd": 719,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -5748,7 +5748,7 @@
         "hours_before": 2
       }
     ],
-    "estimated_cost_hkd": 680,
+    "estimated_cost_hkd": 223,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -8422,7 +8422,7 @@
         "instruction_il": "Haplaen kontra iti agpayso. Idagdag ti aniaman nga katas ti kawali iti ngato ken iserbi."
       }
     ],
-    "estimated_cost_hkd": 115,
+    "estimated_cost_hkd": 108,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
@@ -12944,7 +12944,7 @@
         "instruction_il": "Iserbi ti baka iti nangato nga tortilla nga may avocado, keso, sour cream, cilantro, jalapeño, ken lemon iti ngato."
       }
     ],
-    "estimated_cost_hkd": 145,
+    "estimated_cost_hkd": 165,
     "loved_by": [],
     "avoid_for": [],
     "tags": [
