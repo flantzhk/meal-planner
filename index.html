@@ -2291,7 +2291,7 @@
                       const isToday = d.date === today;
                       const isNow = isToday && meal === currentMeal;
                       return (
-                        <td key={d.date} className={`${isToday ? "bg-terra/10" : ""} align-top`}>
+                        <td key={d.date} className="align-top">
                           <MealCell
                             day={d} meal={meal} recipesById={recipesById} isNow={isNow} planServes={plan.serves || 4}
                             onPickComponent={(comp) => setPicker({ dayIdx, meal, component: comp })}
@@ -2347,9 +2347,8 @@
                     <tr className="align-top border-t-2 border-warm/10">
                       <td className="text-xs uppercase tracking-wide pt-3 pr-2 text-warm/50">day total</td>
                       {plan.days.map((d, i) => {
-                        const isToday = d.date === today;
                         return (
-                          <td key={d.date} className={`${isToday ? "bg-terra/10" : ""} pt-3 align-top`}>
+                          <td key={d.date} className="pt-3 align-top">
                             {dayTotals[i] > 0 ? (
                               <div className="text-xs num text-warm font-mono">HK${dayTotals[i]}</div>
                             ) : (
