@@ -1176,10 +1176,14 @@
       const [households, setHouseholds] = useState(plan.serves || 4);
 
       function finish() {
-        localStorage.setItem("mpCookMode", cookMode);
-        localStorage.setItem("mpFamilyName", familyName);
-        localStorage.setItem("mpCookName", cookName);
-        localStorage.setItem("mpOnboarded", "1");
+        // localStorage can throw (private browsing, storage disabled/full) — never let
+        // that trap someone on this screen forever. onDone() always fires regardless.
+        try {
+          localStorage.setItem("mpCookMode", cookMode);
+          localStorage.setItem("mpFamilyName", familyName);
+          localStorage.setItem("mpCookName", cookName);
+          localStorage.setItem("mpOnboarded", "1");
+        } catch (e) { /* ignore — see comment above */ }
         if (households !== (plan.serves || 4)) {
           setPlan((p) => ({ ...p, serves: households }));
           setIsDirty(true);
@@ -1187,9 +1191,25 @@
         onDone();
       }
 
+      // Skip — saves whatever's already been entered (possibly nothing) and marks
+      // onboarding done regardless. This is a cosmetic, optional flow (name/cook
+      // mode/household size); it should never be able to trap someone into seeing
+      // it again just because they didn't click through all 3 steps.
+      function skip() {
+        try {
+          localStorage.setItem("mpCookMode", cookMode);
+          if (familyName) localStorage.setItem("mpFamilyName", familyName);
+          if (cookName) localStorage.setItem("mpCookName", cookName);
+          localStorage.setItem("mpOnboarded", "1");
+        } catch (e) { /* ignore — see finish() comment above */ }
+        onDone();
+      }
+
       return (
         <div className="fixed inset-0 z-50 bg-ink/70 flex items-center justify-center p-6">
-          <div className="bg-cream max-w-sm w-full rounded-2xl p-6 shadow-xl">
+          <div className="relative bg-cream max-w-sm w-full rounded-2xl p-6 shadow-xl">
+            <button onClick={skip} title="Skip"
+              className="absolute top-3 right-3 text-warm/40 hover:text-ink text-xl leading-none w-8 h-8 flex items-center justify-center">×</button>
             <div className="flex justify-center gap-1.5 mb-4">
               {[1, 2, 3].map((n) => (
                 <span key={n} className={`h-1.5 rounded-full transition-all ${n === step ? "w-5 bg-terra" : "w-1.5 bg-sand"}`} />
