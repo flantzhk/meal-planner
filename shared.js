@@ -373,8 +373,29 @@
     s = s.replace(/,\s*.+$/, '').trim();             // strip prep notes after comma: "garlic, minced" → "garlic"
     s = s.replace(/^garlic cloves?$/, 'garlic');     // "garlic cloves" / "garlic clove" → "garlic"
     s = s.replace(/^garlic clove\b/, 'garlic');      // "garlic clove ..." → "garlic ..."
-    s = s.replace(/\s+(minced|chopped|crushed|grated|halved|sliced|diced|toasted|blanched|smashed|torn|crumbled)$/, '').trim();
+    const prepWord = /\s+(minced|chopped|crushed|grated|halved|sliced|diced|toasted|blanched|smashed|torn|crumbled|peeled|and)$/;
+    let prev;
+    do {
+      prev = s;
+      s = s.replace(prepWord, '').trim();
+    } while (s !== prev);
     return s;
+  };
+
+  // Scale one recipe ingredient, convert to canonical units, normalize its item key,
+  // and accumulate into `byKey` (Map keyed by "item|source|family"). The caller decides
+  // source/category — MP.buildShoppingList (week-scope, source overrides, "other"
+  // defaults) and helper.html's MealShoppingList (single-meal-scope, pantry-item
+  // skip, "supermarket" default) differ enough there that only this inner step —
+  // the part that was actually duplicated and bug-prone — is shared.
+  MP.aggregateIngredient = function aggregateIngredient(byKey, ing, servesForThisMeal, servesBase, source, category) {
+    const scaled = MP.scale(ing, servesForThisMeal, servesBase || 4);
+    const { family, value } = toCanonical(scaled.amount, scaled.unit);
+    const itemKey = MP.normalizeIngredientKey(ing.item);
+    const key = `${itemKey}|${source}|${family}`;
+    const existing = byKey.get(key) || { item: itemKey, source, category, family, total: 0 };
+    existing.total += value;
+    byKey.set(key, existing);
   };
 
   MP.buildShoppingList = function buildShoppingList(recipes, weekplan, sourceOverrides, fromDate) {
@@ -393,17 +414,9 @@
         const r = recipes.find((x) => x.id === id);
         if (!r) continue;
         for (const ing of r.ingredients || []) {
-          const scaled = MP.scale(ing, servesForThisMeal, r.serves_base || 4);
-          const { family, value } = toCanonical(scaled.amount, scaled.unit);
           const itemKey = MP.normalizeIngredientKey(ing.item);
           const source = overrides[itemKey] || ing.source || "other";
-          const key = `${itemKey}|${source}|${family}`;
-          const existing = byKey.get(key) || {
-            item: itemKey, source,
-            category: ing.category || "other", family, total: 0,
-          };
-          existing.total += value;
-          byKey.set(key, existing);
+          MP.aggregateIngredient(byKey, ing, servesForThisMeal, r.serves_base, source, ing.category || "other");
         }
         } // end for id of ids
       }
@@ -581,6 +594,25 @@
   // else the curated hero_image. The caller can hide on error.
   MP.recipeImage = function recipeImage(recipe) {
     return (recipe && recipe.hero_image) || MP.youtubeThumb(recipe && recipe.youtube_url) || null;
+  };
+
+  // Shared onLoad/onError fallback chain for recipe thumbnail <img>s:
+  // maxresdefault → hqdefault → hero_image → give up. Spread the result onto
+  // an <img>: {...MP.imgFallbackHandlers(recipe)}. Pass opts.onExhausted to
+  // override what "give up" does (default: hide the <img> itself) — e.g. when
+  // the image sits inside a wrapping <a> that should hide instead.
+  MP.imgFallbackHandlers = function imgFallbackHandlers(recipe, opts) {
+    const onExhausted = (opts && opts.onExhausted) || ((el) => { el.style.display = "none"; });
+    const advance = (el) => {
+      const s = el.src;
+      if (s.includes("maxresdefault")) { el.src = s.replace("maxresdefault", "hqdefault"); return; }
+      if (recipe && recipe.hero_image && s !== recipe.hero_image) { el.src = recipe.hero_image; return; }
+      onExhausted(el);
+    };
+    return {
+      onLoad: (e) => { if (MP.isYoutubePlaceholder(e.target)) advance(e.target); },
+      onError: (e) => advance(e.target),
+    };
   };
 
   // ---------- Formatting helpers ----------

@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23F4F1EC'/%3E%3Cpolygon points='24,16 24,48 50,32' fill='%23C8392B'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -33,8 +33,6 @@
     h1, h2, h3, h4 { font-family: "Source Serif 4", Georgia, serif; font-weight: 400; letter-spacing: -0.005em; }
     .step-num { font-variant-numeric: tabular-nums; }
     .num { font-variant-numeric: tabular-nums; }
-    /* No border-radius anywhere except small dot/circle UI (rounded-full) */
-    [class*="rounded-"]:not([class*="rounded-full"]) { border-radius: 0 !important; }
   </style>
   <link rel="preload" href="https://unpkg.com/@babel/standalone/babel.min.js" as="script" />
   <link rel="preload" href="https://unpkg.com/react@18/umd/react.production.min.js" as="script" />
@@ -59,7 +57,13 @@
 
   <script type="text/babel">
     const { useEffect, useState, useMemo } = React;
-    const t = (lang, key) => MP.i18n.t(lang, key);
+    // "Auntie Leni" appears verbatim (untranslated) in the en/tl strings this touches
+    // (helloLeni, prepInstructions, thankYouLeni) — one substitution covers every call site.
+    const t = (lang, key) => {
+      const raw = MP.i18n.t(lang, key);
+      const cookName = localStorage.getItem("mpCookName");
+      return cookName ? raw.replace(/Auntie Leni/g, cookName) : raw;
+    };
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
     const ALL_COMPONENTS = [...COMPONENTS, ...OPT_COMPONENTS];
@@ -67,12 +71,6 @@
     const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", starter: "Starter", soup: "Soup", salad: "Salad" };
 
     const HELPER_BUFFER = 20; // extra mins added to every start time for Leni
-
-    function ytId(url) {
-      if (!url) return null;
-      const m = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
-      return m ? m[1] : null;
-    }
 
     function langStore() {
       return localStorage.getItem("mpHelperLang") || "en";
@@ -152,7 +150,7 @@
       const name = MP.i18n.recipeName(recipe, lang);
       const showEng = !recipe.translations_verified && lang !== "en";
       const img = MP.recipeImage(recipe);
-      const vid = ytId(recipe.youtube_url);
+      const vid = MP.youtubeId(recipe.youtube_url);
       const closeLabel = lang === "tl" ? "Isara ang video" : lang === "il" ? "Isarrek ti video" : "Close video";
       return (
         <article className="bg-white rounded-2xl overflow-hidden shadow-sm ring-1 ring-black/5">
@@ -172,19 +170,7 @@
             <button onClick={() => vid && setPlaying(true)}
               className={`block w-full relative group ${vid ? "cursor-pointer" : "cursor-default"}`}>
               <img src={img} alt={name} className="w-full h-44 object-cover"
-                onLoad={(e) => {
-                  if (!MP.isYoutubePlaceholder(e.target)) return;
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                  e.target.style.display = "none";
-                }}
-                onError={(e) => {
-                  const s = e.target.src;
-                  if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                  if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                  e.target.style.display = "none";
-                }} />
+                {...MP.imgFallbackHandlers(recipe)} />
               {vid && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20 opacity-0 group-hover:opacity-100 transition">
                   <div className="bg-black/60 text-white rounded-full px-4 py-2 text-sm font-medium">▶ {t(lang, "watch")}</div>
@@ -261,7 +247,7 @@
           try { return MP.scale(i, mealServes, recipe.serves_base || 4); } catch(e) { return i; }
         }),
       };
-      const vid = ytId(recipe.youtube_url);
+      const vid = MP.youtubeId(recipe.youtube_url);
       return (
         <div className={`rounded-2xl overflow-hidden ${open ? "ring-2 ring-terra/40" : "ring-1 ring-black/5"} bg-white`}>
           {/* Header — div not button so <a> video link can live inside without invalid nesting */}
@@ -270,19 +256,7 @@
             {img && (
               <div className="relative w-full overflow-hidden" style={{ height: "96px" }}>
                 <img src={img} alt="" className="w-full h-full object-cover"
-                  onLoad={(e) => {
-                    if (!MP.isYoutubePlaceholder(e.target)) return;
-                    const s = e.target.src;
-                    if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                    if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                    e.target.style.display = "none";
-                  }}
-                  onError={(e) => {
-                    const s = e.target.src;
-                    if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                    if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                    e.target.style.display = "none";
-                  }} />
+                  {...MP.imgFallbackHandlers(recipe)} />
               </div>
             )}
             <div className="flex items-center justify-between px-4 py-3 gap-2">
@@ -333,13 +307,7 @@
           const r = recipesById[id]; if (!r) continue;
           for (const ing of r.ingredients || []) {
             if (ing.category === "pantry") continue;
-            const scaled = MP.scale(ing, mealServes, r.serves_base || 4);
-            const { family, value } = MP.units.toCanonical(scaled.amount, scaled.unit);
-            const itemKey = MP.normalizeIngredientKey(ing.item);
-            const key = `${itemKey}|${ing.source}|${family}`;
-            const ex = byKey.get(key) || { item: itemKey, source: ing.source || "supermarket", category: ing.category, family, total: 0 };
-            ex.total += value;
-            byKey.set(key, ex);
+            MP.aggregateIngredient(byKey, ing, mealServes, r.serves_base, ing.source || "supermarket", ing.category);
           }
         }
         const result = {};
@@ -459,19 +427,7 @@
                   style={{ minWidth: 0 }}
                   onClick={(e) => { if (!recipe.youtube_url) e.preventDefault(); }}>
                   <img src={img} alt="" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onLoad={(e) => {
-                      if (!MP.isYoutubePlaceholder(e.target)) return;
-                      const s = e.target.src;
-                      if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                      if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                      e.target.closest("a").style.display = "none";
-                    }}
-                    onError={(e) => {
-                      const s = e.target.src;
-                      if (s.includes("maxresdefault")) { e.target.src = s.replace("maxresdefault", "hqdefault"); return; }
-                      if (recipe.hero_image && s !== recipe.hero_image) { e.target.src = recipe.hero_image; return; }
-                      e.target.closest("a").style.display = "none";
-                    }} />
+                    {...MP.imgFallbackHandlers(recipe, { onExhausted: (el) => { el.closest("a").style.display = "none"; } })} />
                   {/* Gradient overlay with recipe name */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent pointer-events-none" />
                   <div className="absolute bottom-0 inset-x-0 px-3 pb-3 pointer-events-none">
@@ -489,7 +445,7 @@
           {hasOvernightDep ? (
             <div className="bg-warm text-cream px-5 py-4 rounded-2xl">
               {timingNames.length > 0 && (
-                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2 truncate">{timingNames.join(" · ")}</div>
+                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2">{timingNames.join(" · ")}</div>
               )}
               <div className="text-sm font-semibold opacity-80 mb-2">{t(lang, "overnightWarn")}</div>
               <div className="flex items-baseline gap-3">
@@ -499,7 +455,7 @@
           ) : (
             <div className="bg-terra text-cream px-4 py-3 rounded-2xl">
               {timingNames.length > 0 && (
-                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2.5 truncate">{timingNames.join(" · ")}</div>
+                <div className="text-cream/80 text-sm font-semibold leading-tight mb-2.5">{timingNames.join(" · ")}</div>
               )}
               <div className="flex items-center justify-between gap-2">
                 <div className="min-w-0">
@@ -623,7 +579,7 @@
           {weekKeys.map((wk) => {
             const label = wk === todayMonday ? t(lang, "thisWeek") :
                           wk === MP.date.addDays(todayMonday, 7) ? t(lang, "nextWeek") :
-                          `${t(lang, "weekOf")} ${MP.date.prettyDate(wk)}`;
+                          `${t(lang, "weekOf")} ${MP.date.prettyDate(wk, lang)}`;
             return (
               <section key={wk}>
                 <h3 className="font-display text-xl text-terra mb-2">{label}</h3>
@@ -640,10 +596,10 @@
                         <div className="flex items-baseline justify-between">
                           <div>
                             <div className="font-display text-lg leading-tight">
-                              {MP.date.dayName(d.date)}
+                              {MP.date.dayName(d.date, lang)}
                               {isToday && <span className="text-terra"> · {t(lang, "today")}</span>}
                             </div>
-                            <div className="text-xs text-warm num mt-0.5">{MP.date.prettyDate(d.date)}</div>
+                            <div className="text-xs text-warm num mt-0.5">{MP.date.prettyDate(d.date, lang)}</div>
                           </div>
                           {isPast && <span className="text-xs text-warm/50 italic">{t(lang, "doneLbl")}</span>}
                         </div>
@@ -1319,7 +1275,7 @@
                     <span className="absolute top-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-terra" />
                   )}
                   <span className="text-lg leading-none">{MEAL_EMOJI[meal]}</span>
-                  <span className="text-[9px] font-medium w-full text-center leading-tight truncate">{MP.i18n.meals[lang][meal]}</span>
+                  <span className="text-[9px] font-medium w-full text-center leading-tight">{MP.i18n.meals[lang][meal]}</span>
                   {isActive && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
                 </button>
               );
@@ -1327,13 +1283,13 @@
             <button onClick={() => setTab("coming")}
               className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition outline-none focus:outline-none min-w-0 px-1 ${tab === "coming" ? "text-terra" : "text-warm"}`}>
               <span className="text-lg leading-none">📅</span>
-              <span className="text-[9px] font-medium w-full text-center leading-tight truncate">{t(lang, "navThisWeek")}</span>
+              <span className="text-[9px] font-medium w-full text-center leading-tight">{t(lang, "navThisWeek")}</span>
               {tab === "coming" && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
             </button>
             <button onClick={() => setTab("shop")}
               className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition outline-none focus:outline-none min-w-0 px-1 ${tab === "shop" ? "text-terra" : "text-warm"}`}>
               <span className="text-lg leading-none">🛒</span>
-              <span className="text-[9px] font-medium w-full text-center leading-tight truncate relative">
+              <span className="text-[9px] font-medium w-full text-center leading-tight relative">
                 {t(lang, "navShopping")}
                 {needCount > 0 && <span className="absolute -top-2 -right-3 bg-terra text-cream text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{needCount}</span>}
               </span>

@@ -2,10 +2,14 @@
 // Storage: KV namespace MEAL_DATA
 // Keys:
 //   recipes                     → array of recipe objects
-//   weekplan:current            → current week plan
+//   weekplan:current            → current week plan (mirror of the latest weekplan:ws:* covering today)
+//   weekplan:ws:YYYY-MM-DD      → week plan keyed by week_start — the primary per-week record
 //   weekplan:archive:YYYY-MM-DD → archived week plans, keyed by week_start
 //   eaten-log                   → { [recipe_id]: ["YYYY-MM-DD", ...] }
 //   feedback:YYYY-WW            → array of feedback entries for ISO week
+//   pantry                      → { [item lowercased]: "YYYY-MM-DD" }
+//   sources                     → { [item lowercased]: "wet-market" | "supermarket" | "hktvmall" }
+//   extras                      → array of non-recipe shopping items
 
 const JSON_HEADERS = { "content-type": "application/json" };
 
@@ -70,12 +74,20 @@ async function getWeekplan(env) {
   return raw ? JSON.parse(raw) : null;
 }
 
+// Today's date in Hong Kong time as YYYY-MM-DD, independent of the runtime's own timezone.
+function hkTodayStr() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Hong_Kong",
+    year: "numeric", month: "2-digit", day: "2-digit",
+  }).format(new Date());
+}
+
 // Return Monday of the current week in HK timezone (YYYY-MM-DD)
 function hkMonday() {
-  const now = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
-  const day = now.getDay(); // 0=Sun … 6=Sat
+  const now = new Date(hkTodayStr() + "T00:00:00Z");
+  const day = now.getUTCDay(); // 0=Sun … 6=Sat
   const diff = day === 0 ? -6 : 1 - day;
-  now.setDate(now.getDate() + diff);
+  now.setUTCDate(now.getUTCDate() + diff);
   return now.toISOString().slice(0, 10);
 }
 
@@ -141,14 +153,28 @@ async function listWeekplans(env, fromDate) {
   return out;
 }
 
+// Mirrors shared.js MP.getMealRecipeIds — flattens a meal slot (legacy string id,
+// or the current {protein:[...], vegetable:[...], ...} object) into recipe ids.
+function mealRecipeIds(day, meal) {
+  const v = day[meal];
+  if (!v) return [];
+  if (typeof v === "string") return [v];
+  const ids = [];
+  for (const val of Object.values(v)) {
+    if (!val) continue;
+    if (typeof val === "string") ids.push(val);
+    else if (Array.isArray(val)) ids.push(...val.filter((id) => id && typeof id === "string"));
+  }
+  return ids;
+}
+
 async function putWeekplan(env, plan) {
   const body = JSON.stringify(plan);
   // Always store keyed by week_start so future/past weeks coexist.
   await env.MEAL_DATA.put(`weekplan:ws:${plan.week_start}`, body);
 
   // Figure out whether this plan covers "today" (HK). If so, it's the new current.
-  const today = new Date(new Date().toLocaleString("en-US", { timeZone: "Asia/Hong_Kong" }));
-  const todayStr = today.toISOString().slice(0, 10);
+  const todayStr = hkTodayStr();
   const startD = new Date(plan.week_start + "T00:00:00");
   const endD = new Date(startD); endD.setDate(endD.getDate() + 7);
   const coversToday = startD.toISOString().slice(0,10) <= todayStr && todayStr < endD.toISOString().slice(0,10);
@@ -168,10 +194,10 @@ async function putWeekplan(env, plan) {
   const log = await getEatenLog(env);
   for (const day of plan.days || []) {
     for (const meal of ["breakfast", "lunch", "dinner"]) {
-      const id = day[meal];
-      if (!id) continue;
-      log[id] = log[id] || [];
-      if (!log[id].includes(day.date)) log[id].push(day.date);
+      for (const id of mealRecipeIds(day, meal)) {
+        log[id] = log[id] || [];
+        if (!log[id].includes(day.date)) log[id].push(day.date);
+      }
     }
   }
   await env.MEAL_DATA.put("eaten-log", JSON.stringify(log));
@@ -276,7 +302,6 @@ async function getSources(env) {
 async function setSource(env, item, source) {
   const sources = await getSources(env);
   const key = String(item || "").toLowerCase().trim();
-  if (!key) throw new Error("item required");
   if (source) sources[key] = source;
   else delete sources[key];
   await env.MEAL_DATA.put("sources", JSON.stringify(sources));
@@ -286,7 +311,6 @@ async function setSource(env, item, source) {
 async function togglePantry(env, item, have) {
   const pantry = await getPantry(env);
   const key = String(item || "").toLowerCase().trim();
-  if (!key) throw new Error("item required");
   if (have) pantry[key] = new Date().toISOString().slice(0, 10);
   else delete pantry[key];
   await env.MEAL_DATA.put("pantry", JSON.stringify(pantry));
@@ -439,6 +463,7 @@ export default {
 
       return err(404, `no route: ${request.method} ${url.pathname}`, origin);
     } catch (e) {
+      if (e instanceof SyntaxError) return err(400, "malformed JSON body", origin);
       return err(500, String(e?.message || e), origin);
     }
   },

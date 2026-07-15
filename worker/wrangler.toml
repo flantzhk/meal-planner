@@ -14,4 +14,4 @@ id = "aa6ade0ba0094da4acb1e03123e09ea1"
 # - FAITH_TOKEN   — long random string Faith pastes into the planner Settings panel
 
 [vars]
-ALLOWED_ORIGIN = "*"
+ALLOWED_ORIGIN = "https://flantzhk.github.io"
