@@ -130,7 +130,7 @@
     function Sidebar({ familyName, onOpenLibrary, onOpenShop, onOpenSettings }) {
       const initial = (familyName || "").trim().charAt(0).toUpperCase();
       return (
-        <div className="hidden md:flex md:flex-col md:items-center md:w-20 md:shrink-0 md:pt-6 md:gap-6 md:border-r md:border-warm/10">
+        <div className="hidden md:flex md:flex-col md:items-center md:w-20 md:shrink-0 md:pt-6 md:gap-6 md:border-r md:border-warm/10 md:sticky md:top-0 md:self-start md:max-h-screen">
           <div className="w-8 h-8 rounded-full bg-terra text-cream flex items-center justify-center font-display text-sm">
             {initial || "🍽"}
           </div>
