@@ -361,21 +361,16 @@
   };
 
   // Nutritional plate roles a dish contributes (protein / vegetable / carb).
-  // Explicit recipe.covers wins; otherwise inferred from component_type plus
-  // name/tags keywords, so a one-pot dish like chicken tinola can cover
-  // protein + vegetable even though it's stored under a single bucket.
+  // Faith chooses roles explicitly via recipe.covers (checkboxes in the recipe
+  // form). Without an explicit choice, only the dish type counts — a noodle
+  // dish is carb even if it has beef in it. No keyword guessing.
   MP.coversOf = function coversOf(r) {
     if (!r) return [];
     if (Array.isArray(r.covers)) return r.covers; // explicit, even if empty — [] means "covers nothing"
-    const roles = new Set();
     const ct = r.component_type;
-    if (ct === "protein" || ct === "vegetable" || ct === "carb") roles.add(ct);
-    if (ct === "salad") roles.add("vegetable");
-    const hay = ((r.name || "") + " " + (r.tags || []).join(" ")).toLowerCase();
-    if (/\b(chicken|beef|pork|fish|salmon|shrimp|prawn|squid|tuna|seafood|halloumi|bacon|egg|tofu|lamb|duck|crab|meatball|sausage|adobo|tinola|sinigang|lechon|tapa|longganisa)\b/.test(hay)) roles.add("protein");
-    if (/\b(rice|noodle|noodles|pasta|spaghetti|bread|potato|potatoes|oat|oats|oatmeal|pancake|congee|lugaw|arroz|sinangag|quinoa|couscous|tortilla|bao|misua|bihon|sotanghon|pancit|champorado)\b/.test(hay)) roles.add("carb");
-    if (/\b(salad|vegetable|vegetables|veggie|greens|broccoli|kangkong|okra|eggplant|talong|pinakbet|chopsuey|gising|ensalada|ensaladang|spinach|cabbage|beans|sitaw|carrot|ampalaya|laing|squash|kalabasa)\b/.test(hay)) roles.add("vegetable");
-    return Array.from(roles);
+    if (ct === "protein" || ct === "vegetable" || ct === "carb") return [ct];
+    if (ct === "salad") return ["vegetable"];
+    return [];
   };
 
   // Returns array of all recipe IDs assigned to a meal slot (flattens multi-component arrays).

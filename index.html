@@ -74,7 +74,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
-    const APP_VERSION = "v4.2 · 2026-07-17";
+    const APP_VERSION = "v4.3 · 2026-07-17";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -704,6 +704,9 @@
                     <div className="mt-1 text-[11px] uppercase tracking-wide text-warm/70">
                       {(r.meal_type || []).join(" · ")}
                     </div>
+                    {MP.coversOf(r).length === 0 && !["dessert", "meal-prep"].includes(r.component_type) && (
+                      <div className="mt-1 text-[11px] text-amber-600">⚠ no plate role yet — edit to tag</div>
+                    )}
                   </div>
                 </button>
                 {onNew && (
@@ -861,7 +864,7 @@
                 </select>
               </div>
               <div>
-                <label className={labelCls}>Covers (plate roles — pre-ticked from name/type, tick to correct)</label>
+                <label className={labelCls}>Counts as (you decide — dish type pre-ticks one)</label>
                 <div className="flex gap-3 pt-1">
                   {["protein", "vegetable", "carb"].map((c) => {
                     const cur = form.covers ?? MP.coversOf(form);
@@ -1397,7 +1400,7 @@
     }
 
 
-    function MealCell({ day, meal, recipesById, isNow, planServes, onPickComponent, onPreviewComponent, onSetTime, onSetServes, onSuggest, onDragStart, onDragEnd, onDrop, dragSource }) {
+    function MealCell({ day, meal, recipesById, isNow, planServes, onPickComponent, onPreviewComponent, onSuggest, onDragStart, onDragEnd, onDrop, dragSource }) {
       const [dragOver, setDragOver] = useState(false);
       const mealObj = getMealObj(day, meal); // {protein:[], vegetable:[], ...}
       const allMealRecipes = MP.getMealRecipeIds(day, meal).map((id) => recipesById[id]).filter(Boolean);
@@ -1405,126 +1408,103 @@
       const allDishes = ALL_COMPONENTS.flatMap((comp) => (mealObj[comp] || []).map((id) => ({ comp, id })));
       const effServes = day[meal + "_serves"] || planServes || allMealRecipes[0]?.serves_base || 4;
       const mealCost = allMealRecipes.reduce((sum, r) => sum + (r.estimated_cost_hkd ? r.estimated_cost_hkd * (effServes / (r.serves_base || 4)) : 0), 0);
-      const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
+      // Time/serves editing lives in the dish preview modal now; the card only flags overrides.
+      const timeOverride = day[meal + "_time"] && day[meal + "_time"] !== MP.schedule.defaultMealTime(meal) ? day[meal + "_time"] : null;
+      const servesOverride = day[meal + "_serves"] && day[meal + "_serves"] !== (planServes || 4) ? day[meal + "_serves"] : null;
       const hasOvernightDep = ALL_COMPONENTS.some((c) =>
         (mealObj[c] || []).some((id) => {
           const r = recipesById[id];
           return r && MP.schedule.forMeal(meal, r, { mealTime: day[meal + "_time"] }).hasOvernightDep;
         })
       );
-      const mealEmoji = meal === "breakfast" ? "🍳" : meal === "lunch" ? "🥗" : "🍽️";
 
       return (
-        <div className={`rounded-xl overflow-hidden ring-1 flex flex-col ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}
-          onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}>
+        <div className={`rounded-xl overflow-hidden ring-1 flex flex-col bg-white ${isNow ? "ring-2 ring-terra" : "ring-black/5"} ${dragOver ? "ring-2 ring-terra bg-terra/5" : ""}`}
+          onDragOver={(e) => { if (!dragSource) return; e.preventDefault(); e.dataTransfer.dropEffect = "move"; setDragOver(true); }}
+          onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
+          onDrop={(e) => { e.preventDefault(); setDragOver(false); onDrop && onDrop(null); }}>
 
-          {/* Time / Serves buttons + Cost (per-person leads, total secondary — this is the number Faith budgets against) */}
-          <div className="flex flex-wrap items-start justify-between gap-x-1.5 gap-y-1 py-1.5 px-1.5 border-b border-sand/60 bg-cream/40">
-            <div className="flex items-center gap-1">
-              <div className="flex flex-col items-center bg-white ring-1 ring-warm/15 rounded-lg px-2 py-1 shadow-sm">
-                <span className="text-xs text-warm/50 font-semibold leading-none">Time</span>
-                <input type="time" value={serveTime}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => { e.stopPropagation(); onSetTime && onSetTime(e.target.value); }}
-                  className="text-xs font-semibold text-ink bg-transparent border-none outline-none cursor-pointer w-[64px]" />
-              </div>
-              <div className="flex flex-col items-center bg-white ring-1 ring-warm/15 rounded-lg px-2 py-1 shadow-sm">
-                <span className="text-xs text-warm/50 font-semibold leading-none">Serves</span>
-                <select value={effServes}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => { e.stopPropagation(); onSetServes && onSetServes(Number(e.target.value)); }}
-                  className="text-xs font-semibold text-ink bg-transparent border-none outline-none cursor-pointer appearance-none text-center">
-                  {[1,2,3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n}</option>)}
-                </select>
-              </div>
-            </div>
-            {mealCost > 0 && (
-              <div className="text-right shrink-0 pr-0.5 ml-auto">
-                <div className="text-xs font-semibold text-terra num leading-tight">HK${Math.round(mealCost / effServes)} <span className="font-normal text-warm/60">/pp</span></div>
-                <div className="text-xs text-warm/50 num leading-none">HK${Math.round(mealCost)} total</div>
-              </div>
-            )}
-          </div>
-
-          {hasOvernightDep && (
-            <div className="px-1.5 pt-1.5">
-              <span className="bg-amber-100/90 text-amber-800 text-xs px-1.5 py-0.5 rounded-full">🌙 overnight prep</span>
+          {(timeOverride || servesOverride || hasOvernightDep) && (
+            <div className="flex flex-wrap items-center gap-1.5 px-2 pt-1.5 text-xs text-warm">
+              {timeOverride && <span className="num">⏰ {timeOverride}</span>}
+              {servesOverride && <span className="num">{servesOverride}p</span>}
+              {hasOvernightDep && <span className="bg-amber-100/90 text-amber-800 px-1.5 py-0.5 rounded-full">🌙 overnight</span>}
             </div>
           )}
 
-          {/* Coverage pills — the plate rule (protein / vegetable / carb). ✓ once any dish covers the
-              role, dashed "+" to fill a missing one. Roles are satisfied by coverage, not by slots,
-              so a one-pot dish can tick more than one pill. */}
-          <div className="flex flex-col gap-1.5 p-1.5">
-            <div className="flex flex-wrap gap-1">
-              {COMPONENTS.map((role) => coveredRoles.has(role) ? (
-                <span key={role} className="inline-flex items-center gap-1 text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">✓ {COMPONENT_LABELS[role]}</span>
-              ) : (
-                <button key={role} onClick={() => onPickComponent(role)}
-                  className="inline-flex items-center gap-1 text-xs text-terra border border-dashed border-terra/40 px-2 py-1 rounded-full hover:bg-terra/5 transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
-                  + {COMPONENT_LABELS[role]}
-                  {onSuggest && (
-                    <span onClick={(e) => { e.stopPropagation(); onSuggest(role); }}
-                      title="Suggest a recipe"
-                      className="text-warm/25 hover:text-terra transition cursor-pointer">✨</span>
+          {/* One geometry for every state: each row is either a planned dish (✓ badge above the
+              name) or a dashed add-row for a role nothing covers yet. Symmetrical whether the
+              meal is empty, partial, or complete. */}
+          <div className="flex flex-col divide-y divide-cream p-1">
+            {allDishes.map(({ comp, id }) => {
+              const r = recipesById[id];
+              const img = r ? MP.recipeImage(r) : null;
+              const cov = r ? MP.coversOf(r) : [];
+              const isSourceItem = dragSource && dragSource.dayDate === day.date && dragSource.meal === meal && dragSource.component === comp && dragSource.recipeId === id;
+              return (
+                <button key={comp + id}
+                  draggable={true}
+                  onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart && onDragStart(comp, id); }}
+                  onDragEnd={() => { setDragOver(false); onDragEnd && onDragEnd(); }}
+                  onClick={() => r ? onPreviewComponent(comp, r) : null}
+                  className={`group relative w-full flex items-center gap-1.5 text-left px-1 py-1 min-h-[44px] transition hover:bg-cream cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1 ${isSourceItem ? "opacity-30 cursor-grabbing" : ""}`}>
+                  <span className="shrink-0 w-9 h-9 rounded-lg overflow-hidden bg-sand/50">
+                    {img ? (
+                      <img src={img} alt="" className="w-full h-full object-cover"
+                        {...MP.imgFallbackHandlers(r)} />
+                    ) : (
+                      <span className="w-full h-full flex items-center justify-center text-sm opacity-20">{COMPONENT_ICONS[comp]}</span>
+                    )}
+                  </span>
+                  <span className="min-w-0 flex-1 leading-tight">
+                    {cov.length > 0 && (
+                      <span className="block text-xs text-green-700 leading-tight">✓ {cov.map((c) => COMPONENT_LABELS[c]).join(" · ")}</span>
+                    )}
+                    <span className="block text-xs font-semibold text-ink">{r ? r.name : id}</span>
+                  </span>
+                  {/* Hover popover — shows to the right */}
+                  {r && (
+                    <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 z-50 w-44 bg-white shadow-2xl rounded-xl overflow-hidden pointer-events-none"
+                      style={{ border: "1px solid rgba(0,0,0,0.06)" }}>
+                      {img && <img src={img} className="w-full h-24 object-cover" alt="" />}
+                      <div className="p-2">
+                        <div className="text-xs font-semibold leading-tight">{r.name}</div>
+                        {r.cuisine && <div className="text-xs text-warm mt-0.5">{r.cuisine} · {(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}m</div>}
+                      </div>
+                    </div>
                   )}
                 </button>
-              ))}
-            </div>
+              );
+            })}
 
-            {/* Flat dish list — every dish in the meal, whatever bucket it's stored under. Coverage
-                icons prefix the name; the whole list is one drop target (bucket kept on drop). */}
+            {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
+              <button key={role} onClick={() => onPickComponent(role)}
+                className="w-full flex items-center gap-1.5 text-left px-1 py-1 min-h-[44px] transition hover:bg-cream outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1">
+                <span className="shrink-0 w-9 h-9 rounded-lg border border-dashed border-terra/30 flex items-center justify-center text-sm opacity-50">{COMPONENT_ICONS[role]}</span>
+                <span className="flex-1 text-xs text-terra/90">+ {COMPONENT_LABELS[role]}</span>
+                {onSuggest && (
+                  <span onClick={(e) => { e.stopPropagation(); onSuggest(role); }}
+                    title="Suggest a recipe"
+                    className="shrink-0 text-warm/20 hover:text-terra transition cursor-pointer text-xs pr-1">✨</span>
+                )}
+              </button>
+            ))}
+
+            {/* Footer only once something is planned — extras (soup, salad, second protein) + cost */}
             {allDishes.length > 0 && (
-              <div
-                onDragOver={(e) => { if (!dragSource) return; e.preventDefault(); e.dataTransfer.dropEffect = "move"; setDragOver(true); }}
-                onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
-                onDrop={(e) => { e.preventDefault(); setDragOver(false); onDrop && onDrop(null); }}
-                className={`rounded-lg ring-1 divide-y divide-sand/40 overflow-hidden bg-white ${dragOver ? "ring-terra bg-terra/5" : "ring-sand/60"}`}>
-                {allDishes.map(({ comp, id }) => {
-                  const r = recipesById[id];
-                  const img = r ? MP.recipeImage(r) : null;
-                  const cov = r ? MP.coversOf(r) : [];
-                  const isSourceItem = dragSource && dragSource.dayDate === day.date && dragSource.meal === meal && dragSource.component === comp && dragSource.recipeId === id;
-                  return (
-                    <button key={comp + id}
-                      draggable={true}
-                      onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart && onDragStart(comp, id); }}
-                      onDragEnd={() => { setDragOver(false); onDragEnd && onDragEnd(); }}
-                      onClick={() => r ? onPreviewComponent(comp, r) : null}
-                      className={`group relative w-full flex items-center gap-2 text-left px-1.5 py-1 min-h-[44px] transition hover:bg-cream cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1 ${isSourceItem ? "opacity-30 cursor-grabbing" : ""}`}>
-                      <span className="shrink-0 w-11 h-11 rounded-lg overflow-hidden bg-sand/50">
-                        {img ? (
-                          <img src={img} alt="" className="w-full h-full object-cover"
-                            {...MP.imgFallbackHandlers(r)} />
-                        ) : (
-                          <span className="w-full h-full flex items-center justify-center text-base opacity-20">{COMPONENT_ICONS[comp]}</span>
-                        )}
-                      </span>
-                      <span className="min-w-0 flex-1 text-xs font-semibold text-ink leading-tight">
-                        {cov.length > 0 && <span className="opacity-50 font-normal">{cov.map((c) => COMPONENT_ICONS[c]).join("")} </span>}{r ? r.name : id}
-                      </span>
-                      {/* Hover popover — shows to the right */}
-                      {r && (
-                        <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 z-50 w-44 bg-white shadow-2xl rounded-xl overflow-hidden pointer-events-none"
-                          style={{ border: "1px solid rgba(0,0,0,0.06)" }}>
-                          {img && <img src={img} className="w-full h-24 object-cover" alt="" />}
-                          <div className="p-2">
-                            <div className="text-xs font-semibold leading-tight">{r.name}</div>
-                            {r.cuisine && <div className="text-xs text-warm mt-0.5">{r.cuisine} · {(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}m</div>}
-                          </div>
-                        </div>
-                      )}
-                    </button>
-                  );
-                })}
+              <div className="flex items-center justify-between gap-1 px-1 py-1">
+                <button onClick={() => onPickComponent(null)}
+                  className="text-xs text-warm/50 hover:text-terra transition min-h-[36px] outline-none focus-visible:ring-2 focus-visible:ring-terra/50 rounded">
+                  + Add dish
+                </button>
+                {mealCost > 0 && (
+                  <div className="text-right shrink-0">
+                    <div className="text-xs font-semibold text-terra num leading-tight">HK${Math.round(mealCost / effServes)} <span className="font-normal text-warm/60">/pp</span></div>
+                    <div className="text-xs text-warm/50 num leading-none">HK${Math.round(mealCost)} total</div>
+                  </div>
+                )}
               </div>
             )}
-
-            {/* One add affordance for everything — mains, soups, salads, sides. Bucket derived from the dish. */}
-            <button onClick={() => onPickComponent(null)}
-              className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
-              + Add dish
-            </button>
           </div>
         </div>
       );
@@ -2138,55 +2118,59 @@
                       const hasAny = COMPONENTS.some((c) => (mealObj[c] || []).length > 0);
                       return (
                         <div key={meal} className={`rounded-xl ring-1 overflow-hidden ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
-                          <div className={`text-xs uppercase tracking-wide px-2.5 pt-2 pb-1 ${isNow ? "text-terra font-semibold" : "text-warm"}`}>{meal}</div>
-                          <div className="px-2 pb-2 space-y-1">
-                            {/* Coverage pills — same plate rule as desktop, 44px tap targets */}
+                          <div className={`text-xs uppercase tracking-wide px-2.5 pt-2 pb-1 ${isNow ? "text-terra font-semibold" : "text-warm"}`}>
+                            {meal === "breakfast" ? "🍳" : meal === "lunch" ? "🥗" : "🍽️"} {meal} · <span className="num normal-case">{d[meal + "_time"] || MP.schedule.defaultMealTime(meal)}</span>{isNow && " ●"}
+                          </div>
+                          {/* Same geometry as desktop: full-width rows — planned dish (✓ badge above
+                              name) or dashed add-row per missing role. Whole row is the tap target. */}
+                          <div className="px-2 pb-2 divide-y divide-cream">
                             {(() => {
                               const mealRecipes = MP.getMealRecipeIds(d, meal).map((id) => recipesById[id]).filter(Boolean);
                               const coveredRoles = new Set(mealRecipes.flatMap((r) => MP.coversOf(r)));
+                              const dishes = ALL_COMPONENTS.flatMap((comp) => (mealObj[comp] || []).map((id) => ({ comp, id })));
                               return (
-                                <div className="flex flex-wrap gap-1.5 px-1.5 pt-1">
-                                  {COMPONENTS.map((role) => coveredRoles.has(role) ? (
-                                    <span key={role} className="inline-flex items-center gap-1 text-xs bg-green-50 text-green-700 px-2.5 min-h-[36px] rounded-full">✓ {COMPONENT_LABELS[role]}</span>
-                                  ) : (
+                                <React.Fragment>
+                                  {dishes.map(({ comp, id }) => {
+                                    const r = recipesById[id];
+                                    const img = r ? MP.recipeImage(r) : null;
+                                    const cov = r ? MP.coversOf(r) : [];
+                                    return (
+                                      <button key={comp + id}
+                                        onClick={() => r ? setPreview({ dayIdx, meal, component: comp, recipe: r }) : null}
+                                        className="w-full flex items-center gap-2.5 text-left px-1 py-1.5 min-h-[56px] transition hover:bg-cream">
+                                        <span className="shrink-0 w-11 h-11 rounded-lg overflow-hidden bg-sand/50">
+                                          {img ? (
+                                            <img src={img} alt="" className="w-full h-full object-cover"
+                                              {...MP.imgFallbackHandlers(r)} />
+                                          ) : (
+                                            <span className="w-full h-full flex items-center justify-center text-lg opacity-20">{COMPONENT_ICONS[comp]}</span>
+                                          )}
+                                        </span>
+                                        <span className="min-w-0 flex-1">
+                                          {cov.length > 0 && (
+                                            <span className="block text-xs text-green-700 leading-tight">✓ {cov.map((c) => COMPONENT_LABELS[c]).join(" · ")}</span>
+                                          )}
+                                          <span className="block text-sm font-semibold text-ink leading-tight">{r ? r.name : id}</span>
+                                        </span>
+                                      </button>
+                                    );
+                                  })}
+                                  {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
                                     <button key={role} onClick={() => setPicker({ dayIdx, meal, component: role })}
-                                      className="inline-flex items-center gap-1 text-xs text-terra border border-dashed border-terra/40 px-2.5 min-h-[36px] rounded-full hover:bg-terra/5 transition">
-                                      + {COMPONENT_LABELS[role]}
+                                      className="w-full flex items-center gap-2.5 text-left px-1 py-1.5 min-h-[52px] transition hover:bg-cream">
+                                      <span className="shrink-0 w-11 h-11 rounded-lg border border-dashed border-terra/30 flex items-center justify-center text-base opacity-50">{COMPONENT_ICONS[role]}</span>
+                                      <span className="text-sm text-terra/90">+ {COMPONENT_LABELS[role]}</span>
                                     </button>
                                   ))}
-                                </div>
+                                  {dishes.length > 0 && (
+                                    <button onClick={() => setPicker({ dayIdx, meal, component: null })}
+                                      className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm/60 px-1 py-1 hover:text-terra transition">
+                                      + Add dish
+                                    </button>
+                                  )}
+                                </React.Fragment>
                               );
                             })()}
-                            {/* Flat dish list — coverage icons above the name instead of a bucket label */}
-                            {ALL_COMPONENTS.flatMap((comp) => (mealObj[comp] || []).map((id) => ({ comp, id }))).map(({ comp, id }) => {
-                              const r = recipesById[id];
-                              const img = r ? MP.recipeImage(r) : null;
-                              const cov = r ? MP.coversOf(r) : [];
-                              return (
-                                <button key={comp + id}
-                                  onClick={() => r ? setPreview({ dayIdx, meal, component: comp, recipe: r }) : null}
-                                  className="w-full flex items-center gap-2 text-left px-1.5 py-1.5 rounded-lg min-h-[56px] transition hover:bg-cream">
-                                  <span className="shrink-0 w-[52px] h-[52px] rounded-lg overflow-hidden bg-sand/50">
-                                    {img ? (
-                                      <img src={img} alt="" className="w-full h-full object-cover"
-                                        {...MP.imgFallbackHandlers(r)} />
-                                    ) : (
-                                      <span className="w-full h-full flex items-center justify-center text-lg opacity-20">{COMPONENT_ICONS[comp]}</span>
-                                    )}
-                                  </span>
-                                  <span className="min-w-0 flex-1">
-                                    {cov.length > 0 && (
-                                      <span className="block text-xs text-warm/50 font-semibold leading-none mb-0.5">{cov.map((c) => `${COMPONENT_ICONS[c]} ${COMPONENT_LABELS[c]}`).join(" · ")}</span>
-                                    )}
-                                    <span className="block text-sm font-semibold text-ink leading-tight">{r ? r.name : id}</span>
-                                  </span>
-                                </button>
-                              );
-                            })}
-                            <button onClick={() => setPicker({ dayIdx, meal, component: null })}
-                              className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition">
-                              + Add dish
-                            </button>
                           </div>
                         </div>
                       );
@@ -2197,112 +2181,112 @@
             })}
           </div>
 
-          {/* Desktop: week grid */}
-          <div className="hidden md:block overflow-x-auto">
-            <table className="w-full table-fixed border-separate border-spacing-3">
-              <thead>
-                <tr>
-                  <th className="w-24"></th>
-                  {plan.days.map((d) => {
+          {/* Desktop: dates as the top row, then one full-width band per meal ("🍳 Breakfast ——— 07:15")
+              with its seven day-cards directly beneath. No left label gutter — every day column gets
+              that width back. */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-7 gap-3">
+              {plan.days.map((d) => {
+                const isToday = d.date === today;
+                return (
+                  <div key={d.date} className={`px-1 ${isToday ? "border-t-2 border-terra pt-1" : "pt-1"}`}>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className={`font-display text-lg leading-none ${isToday ? "text-terra" : ""}`}>{d.day}</span>
+                      {isToday && <span className="text-[9px] font-bold uppercase tracking-widest bg-terra text-white px-1.5 py-0.5 rounded-full leading-none">Today</span>}
+                    </div>
+                    <div className="text-[11px] text-warm/50 num mt-0.5">{d.date}</div>
+                    {!d.breakfast && !d.lunch && !d.dinner && (
+                      <div className="text-warm/30 text-[10px] italic mt-0.5">no meals yet</div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            {MEALS.map((meal) => (
+              <React.Fragment key={meal}>
+                <div className="flex items-center gap-3 mt-4 mb-2">
+                  <span className={`text-xs font-semibold uppercase tracking-[0.12em] ${meal === currentMeal ? "text-terra" : "text-warm"}`}>
+                    {meal === "breakfast" ? "🍳" : meal === "lunch" ? "🥗" : "🍽️"} {meal}{meal === currentMeal && " ●"}
+                  </span>
+                  <div className="flex-1 h-px bg-sand"></div>
+                  <span className="text-xs text-warm/50 num">{MP.schedule.defaultMealTime(meal)}</span>
+                </div>
+                <div className="grid grid-cols-7 gap-3 items-start">
+                  {plan.days.map((d, dayIdx) => {
                     const isToday = d.date === today;
+                    const isNow = isToday && meal === currentMeal;
                     return (
-                      <th key={d.date} className={`w-[calc((100%-6rem)/7)] text-left font-normal px-2 ${isToday ? "border-t-2 border-terra pt-1" : "pt-1"}`}>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          <span className={`font-display text-lg leading-none ${isToday ? "text-terra" : ""}`}>{d.day}</span>
-                          {isToday && <span className="text-[9px] font-bold uppercase tracking-widest bg-terra text-white px-1.5 py-0.5 rounded-full leading-none">Today</span>}
-                        </div>
-                        <div className="text-[11px] text-warm/50 num mt-0.5">{d.date}</div>
-                        {!d.breakfast && !d.lunch && !d.dinner && (
-                          <div className="text-warm/30 text-[10px] italic mt-0.5">no meals yet</div>
-                        )}
-                      </th>
+                      <MealCell key={d.date}
+                        day={d} meal={meal} recipesById={recipesById} isNow={isNow} planServes={plan.serves || 4}
+                        onPickComponent={(comp) => setPicker({ dayIdx, meal, component: comp })}
+                        onPreviewComponent={(comp, recipe) => setPreview({ dayIdx, meal, component: comp, recipe })}
+                        onSuggest={(comp) => suggest(dayIdx, meal, comp)}
+                        dragSource={dragSource}
+                        onDragStart={(comp, recipeId) => {
+                          const src = { dayDate: d.date, meal, component: comp, recipeId };
+                          dragSourceRef.current = src;
+                          setDragSource(src);
+                        }}
+                        onDragEnd={() => { dragSourceRef.current = null; setDragSource(null); }}
+                        onDrop={(comp) => {
+                          const src = dragSourceRef.current;
+                          if (!src) return;
+                          const srcDayIdx = plan.days.findIndex((dd) => dd.date === src.dayDate);
+                          if (srcDayIdx < 0) return;
+                          // Dish keeps its bucket when dropped on the flat list (comp=null)
+                          const destComp = comp || src.component;
+                          // Skip no-op drops (same cell)
+                          if (src.dayDate === d.date && src.meal === meal && src.component === destComp) {
+                            dragSourceRef.current = null; setDragSource(null); return;
+                          }
+                          setSlot(srcDayIdx, src.meal, src.component, null, src.recipeId);
+                          setSlot(dayIdx, meal, destComp, src.recipeId);
+                          dragSourceRef.current = null;
+                          setDragSource(null);
+                          setFlashMsg(`✓ Moved to ${d.day} ${meal}`);
+                        }}
+                      />
                     );
                   })}
-                </tr>
-              </thead>
-              <tbody>
-                {MEALS.map((meal) => (
-                  <tr key={meal} className="align-top">
-                    <td className={`text-sm uppercase tracking-wide pt-3 pr-2 ${meal === currentMeal ? "text-terra font-semibold" : "text-warm"}`}>
-                      {meal}{meal === currentMeal && " ●"}
-                    </td>
-                    {plan.days.map((d, dayIdx) => {
-                      const isToday = d.date === today;
-                      const isNow = isToday && meal === currentMeal;
-                      return (
-                        <td key={d.date} className="align-top">
-                          <MealCell
-                            day={d} meal={meal} recipesById={recipesById} isNow={isNow} planServes={plan.serves || 4}
-                            onPickComponent={(comp) => setPicker({ dayIdx, meal, component: comp })}
-                            onPreviewComponent={(comp, recipe) => setPreview({ dayIdx, meal, component: comp, recipe })}
-                            onSetTime={(time) => setSlotMeta(dayIdx, meal, { time, serves: d[meal + "_serves"] })}
-                            onSetServes={(serves) => setSlotMeta(dayIdx, meal, { time: d[meal + "_time"], serves })}
-                            onSuggest={(comp) => suggest(dayIdx, meal, comp)}
-                            dragSource={dragSource}
-                            onDragStart={(comp, recipeId) => {
-                              const src = { dayDate: d.date, meal, component: comp, recipeId };
-                              dragSourceRef.current = src;
-                              setDragSource(src);
-                            }}
-                            onDragEnd={() => { dragSourceRef.current = null; setDragSource(null); }}
-                            onDrop={(comp) => {
-                              const src = dragSourceRef.current;
-                              if (!src) return;
-                              const srcDayIdx = plan.days.findIndex((dd) => dd.date === src.dayDate);
-                              if (srcDayIdx < 0) return;
-                              // Dish keeps its bucket when dropped on the flat list (comp=null)
-                              const destComp = comp || src.component;
-                              // Skip no-op drops (same cell)
-                              if (src.dayDate === d.date && src.meal === meal && src.component === destComp) {
-                                dragSourceRef.current = null; setDragSource(null); return;
-                              }
-                              setSlot(srcDayIdx, src.meal, src.component, null, src.recipeId);
-                              setSlot(dayIdx, meal, destComp, src.recipeId);
-                              dragSourceRef.current = null;
-                              setDragSource(null);
-                              setFlashMsg(`✓ Moved to ${d.day} ${meal}`);
-                            }}
-                          />
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-                {/* Budget row */}
-                {(() => {
-                  const dayTotals = plan.days.map((d) => {
-                    let total = 0;
-                    for (const meal of MEALS) {
-                      const ids = getMealRecipeIds(d, meal);
-                      const serves = d[meal + "_serves"] || plan.serves || 4;
-                      for (const id of ids) {
-                        const r = recipesById[id];
-                        if (r && r.estimated_cost_hkd) total += r.estimated_cost_hkd * (serves / (r.serves_base || 4));
-                      }
-                    }
-                    return Math.round(total);
-                  });
-                  const weekTotal = dayTotals.reduce((s, v) => s + v, 0);
-                  if (weekTotal === 0) return null;
-                  return (
-                    <tr className="align-top border-t-2 border-warm/10">
-                      <td className="text-xs uppercase tracking-wide pt-3 pr-2 text-warm/50">day total</td>
-                      {plan.days.map((d, i) => {
-                        return (
-                          <td key={d.date} className="pt-3 align-top">
-                            {dayTotals[i] > 0 ? (
-                              <div className="text-xs num text-warm font-mono">HK${dayTotals[i]}</div>
-                            ) : (
-                              <div className="text-xs text-warm/20">—</div>
-                            )}
-                          </td>
-                        );
-                      })}
-                    </tr>
-                  );
-                })()}
-              </tbody>
-            </table>
+                </div>
+              </React.Fragment>
+            ))}
+            {/* Day totals */}
+            {(() => {
+              const dayTotals = plan.days.map((d) => {
+                let total = 0;
+                for (const meal of MEALS) {
+                  const ids = getMealRecipeIds(d, meal);
+                  const serves = d[meal + "_serves"] || plan.serves || 4;
+                  for (const id of ids) {
+                    const r = recipesById[id];
+                    if (r && r.estimated_cost_hkd) total += r.estimated_cost_hkd * (serves / (r.serves_base || 4));
+                  }
+                }
+                return Math.round(total);
+              });
+              const weekTotal = dayTotals.reduce((s, v) => s + v, 0);
+              if (weekTotal === 0) return null;
+              return (
+                <React.Fragment>
+                  <div className="flex items-center gap-3 mt-4 mb-2">
+                    <span className="text-xs font-semibold uppercase tracking-[0.12em] text-warm/50">day totals</span>
+                    <div className="flex-1 h-px bg-sand"></div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-3">
+                    {plan.days.map((d, i) => (
+                      <div key={d.date} className="px-1">
+                        {dayTotals[i] > 0 ? (
+                          <div className="text-xs num text-warm font-mono">HK${dayTotals[i]}</div>
+                        ) : (
+                          <div className="text-xs text-warm/20">—</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </React.Fragment>
+              );
+            })()}
             {/* Weekly budget total */}
             {(() => {
               let weekTotal = 0;
