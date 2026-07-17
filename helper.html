@@ -1325,11 +1325,11 @@
             </button>
             <button onClick={() => setTab("shop")}
               className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition outline-none focus:outline-none min-w-0 px-1 ${tab === "shop" ? "text-terra" : "text-warm"}`}>
+              {needCount > 0 && (
+                <span className="absolute top-1 right-3 bg-terra text-cream text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{needCount}</span>
+              )}
               <span className="text-lg leading-none">🛒</span>
-              <span className="text-[9px] font-medium w-full text-center leading-tight relative">
-                {t(lang, "navShopping")}
-                {needCount > 0 && <span className="absolute -top-2 -right-3 bg-terra text-cream text-[9px] font-bold rounded-full w-4 h-4 flex items-center justify-center">{needCount}</span>}
-              </span>
+              <span className="text-[9px] font-medium w-full text-center leading-tight">{t(lang, "navShopping")}</span>
               {tab === "shop" && <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-terra rounded-full" />}
             </button>
           </nav>
