@@ -78,22 +78,19 @@
 
     function LangToggle({ lang, onChange }) {
       return (
-        <div>
-          <div className="text-[10px] font-semibold uppercase tracking-widest text-warm/50 text-center mb-1">Language</div>
-          <div className="inline-flex rounded-xl bg-sand p-1 gap-1 text-sm shadow-sm">
-            {MP.i18n.languages.map((l) => (
-              <button
-                key={l.code}
-                onClick={() => onChange(l.code)}
-                className={`px-4 py-2 rounded-lg font-semibold transition ${
-                  lang === l.code
-                    ? "bg-terra text-cream shadow"
-                    : "text-warm hover:text-ink"
-                }`}>
-                {l.label}
-              </button>
-            ))}
-          </div>
+        <div className="inline-flex rounded-full bg-sand p-1 gap-0.5 text-xs shadow-sm">
+          {MP.i18n.languages.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => onChange(l.code)}
+              className={`px-3 py-1.5 rounded-full font-semibold transition ${
+                lang === l.code
+                  ? "bg-terra text-cream shadow"
+                  : "text-warm hover:text-ink"
+              }`}>
+              {l.label}
+            </button>
+          ))}
         </div>
       );
     }
@@ -487,26 +484,20 @@
           </div>
           {/* Shopping list first — buy before cooking */}
           <MealShoppingList mealType={mealType} day={day} recipesById={recipesById} planServes={effServes} lang={lang} nowMin={nowMin} />
-          {/* Recipes — one accordion per recipe (multiple per component now supported) */}
+          {/* Recipes: one accordion per recipe, all closed until Leni taps one */}
           <div className="text-sm font-semibold text-warm/60 px-1 pt-2">{t(lang, "howToCook")}</div>
-          {(() => {
-            let isFirst = true;
-            return ALL_COMPONENTS.flatMap((comp) => {
-              const ids = mealObj[comp]; // array
-              return ids.map((id) => {
-                const r = recipesById[id]; if (!r) return null;
-                const shouldOpen = isFirst;
-                if (r) isFirst = false;
-                return (
-                  <ComponentAccordion
-                    key={`${comp}-${id}`} comp={comp} recipe={r}
-                    mealServes={effServes} lang={lang} onVerify={onVerify}
-                    defaultOpen={shouldOpen}
-                  />
-                );
-              }).filter(Boolean);
-            });
-          })()}
+          {ALL_COMPONENTS.flatMap((comp) => {
+            const ids = mealObj[comp]; // array
+            return ids.map((id) => {
+              const r = recipesById[id]; if (!r) return null;
+              return (
+                <ComponentAccordion
+                  key={`${comp}-${id}`} comp={comp} recipe={r}
+                  mealServes={effServes} lang={lang} onVerify={onVerify}
+                />
+              );
+            }).filter(Boolean);
+          })}
         </div>
       );
     }
@@ -522,12 +513,12 @@
             const recipeName = MP.i18n.recipeName(r, lang);
             if (d.type === "defrost" && d.hours_before >= 12)
               items.push({ icon: "❄️", text: lang === "tl"
-                ? `Ilabas ang ${recipeName} sa freezer ngayon — para sa ${mealName} bukas.`
-                : `Take ${recipeName} out of the freezer today — for tomorrow's ${mealName}.` });
+                ? `Ilabas ang ${recipeName} sa freezer ngayon, para sa ${mealName} bukas.`
+                : `Take ${recipeName} out of the freezer today, for tomorrow's ${mealName}.` });
             if (d.type === "marinate" && d.hours_before >= 8)
               items.push({ icon: "🧴", text: lang === "tl"
-                ? `Simulan ang pag-marinate ng ${recipeName} ngayong gabi — para sa ${mealName} bukas.`
-                : `Start marinating the ${recipeName} tonight — for tomorrow's ${mealName}.` });
+                ? `Simulan ang pag-marinate ng ${recipeName} bago ka umuwi, para sa ${mealName} bukas.`
+                : `Start marinating the ${recipeName} before you go home, for tomorrow's ${mealName}.` });
           }
         }
       }
@@ -1414,16 +1405,16 @@
             </div>
           )}
 
-          <header className="mb-6 mt-6">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="font-display text-2xl text-terra mb-1">{t(lang, "helloLeni")}</div>
-                <h1 className="font-display text-4xl leading-none">{MP.date.dayName(today, lang)}</h1>
-                <div className="text-sm text-warm mt-1 num">{MP.date.prettyDate(today, lang)}</div>
-              </div>
-              <div className="shrink-0 mt-1">
-                <LangToggle lang={lang} onChange={setLang} />
-              </div>
+          <header className="mb-5 mt-5 flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-terra leading-tight">{t(lang, "helloLeni")}</div>
+              <h1 className="font-display text-3xl leading-tight whitespace-nowrap">
+                {MP.date.dayName(today, lang)}
+                <span className="text-warm text-lg font-normal num"> · {MP.date.prettyDate(today, lang)}</span>
+              </h1>
+            </div>
+            <div className="shrink-0">
+              <LangToggle lang={lang} onChange={setLang} />
             </div>
           </header>
 
