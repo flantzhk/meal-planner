@@ -74,7 +74,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
-    const APP_VERSION = "v4.3 · 2026-07-17";
+    const APP_VERSION = "v4.4 · 2026-07-17";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -1477,24 +1477,29 @@
               );
             })}
 
-            {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
-              <button key={role} onClick={() => onPickComponent(role)}
-                className="w-full flex items-center gap-1.5 text-left px-1 py-1 min-h-[44px] transition hover:bg-cream outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1">
-                <span className="shrink-0 w-9 h-9 rounded-lg border border-dashed border-terra/30 flex items-center justify-center text-sm opacity-50">{COMPONENT_ICONS[role]}</span>
-                <span className="flex-1 text-xs text-terra/90">+ {COMPONENT_LABELS[role]}</span>
-                {onSuggest && (
-                  <span onClick={(e) => { e.stopPropagation(); onSuggest(role); }}
-                    title="Suggest a recipe"
-                    className="shrink-0 text-warm/20 hover:text-terra transition cursor-pointer text-xs pr-1">✨</span>
-                )}
-              </button>
-            ))}
+            {/* Missing roles as one compact chip row, a gentle to-do rather than ghost dishes.
+                Chip tap opens the picker filtered to that role; ✨ suggests one directly. */}
+            {COMPONENTS.some((role) => !coveredRoles.has(role)) && (
+              <div className="flex flex-wrap gap-1 px-1 py-1.5">
+                {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
+                  <button key={role} onClick={() => onPickComponent(role)}
+                    className="inline-flex items-center gap-1 rounded-full border border-dashed border-warm/40 px-2.5 py-1 text-xs text-warm hover:text-terra hover:border-terra/60 transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
+                    <span className="whitespace-nowrap">+ {COMPONENT_LABELS[role]}</span>
+                    {onSuggest && (
+                      <span onClick={(e) => { e.stopPropagation(); onSuggest(role); }}
+                        title="Suggest a recipe"
+                        className="opacity-40 hover:opacity-100 transition cursor-pointer">✨</span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Footer only once something is planned — extras (soup, salad, second protein) + cost */}
             {allDishes.length > 0 && (
               <div className="flex items-center justify-between gap-1 px-1 py-1">
                 <button onClick={() => onPickComponent(null)}
-                  className="text-xs text-warm/50 hover:text-terra transition min-h-[36px] outline-none focus-visible:ring-2 focus-visible:ring-terra/50 rounded">
+                  className="text-xs text-warm/50 hover:text-terra transition min-h-[36px] whitespace-nowrap shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-terra/50 rounded">
                   + Add dish
                 </button>
                 {mealCost > 0 && (
@@ -2155,13 +2160,17 @@
                                       </button>
                                     );
                                   })}
-                                  {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
-                                    <button key={role} onClick={() => setPicker({ dayIdx, meal, component: role })}
-                                      className="w-full flex items-center gap-2.5 text-left px-1 py-1.5 min-h-[52px] transition hover:bg-cream">
-                                      <span className="shrink-0 w-11 h-11 rounded-lg border border-dashed border-terra/30 flex items-center justify-center text-base opacity-50">{COMPONENT_ICONS[role]}</span>
-                                      <span className="text-sm text-terra/90">+ {COMPONENT_LABELS[role]}</span>
-                                    </button>
-                                  ))}
+                                  {/* Missing roles as one compact chip row, same treatment as desktop */}
+                                  {COMPONENTS.some((role) => !coveredRoles.has(role)) && (
+                                    <div className="flex flex-wrap gap-1.5 px-1 py-2">
+                                      {COMPONENTS.filter((role) => !coveredRoles.has(role)).map((role) => (
+                                        <button key={role} onClick={() => setPicker({ dayIdx, meal, component: role })}
+                                          className="inline-flex items-center rounded-full border border-dashed border-warm/40 px-3 py-2.5 text-sm text-warm active:text-terra active:border-terra/60 transition whitespace-nowrap">
+                                          + {COMPONENT_LABELS[role]}
+                                        </button>
+                                      ))}
+                                    </div>
+                                  )}
                                   {dishes.length > 0 && (
                                     <button onClick={() => setPicker({ dayIdx, meal, component: null })}
                                       className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm/60 px-1 py-1 hover:text-terra transition">
