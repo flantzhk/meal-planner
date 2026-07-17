@@ -276,7 +276,10 @@
             serves: "Para iti", language: "Pagsasao", newRecipe: "+ Baro a resipe",
             settings: "Dagiti setting", apiBase: "URL ti Worker", token: "Token ni Faith",
             conflict: "Agdidinnupag ti kalan",
-            startEarly: "Irugi iti napalabas nga aldaw — palubusan ni Faith" },
+            startEarly: "Irugi iti napalabas nga aldaw — palubusan ni Faith",
+            navRecipes: "Dagiti Resipe",
+            searchRecipes: "Agsapul iti resipe",
+            noRecipesFound: "Awan ti nasarakan a resipe." },
     },
     t(lang, key) {
       return (this.ui[lang] && this.ui[lang][key]) || this.ui.en[key] || key;

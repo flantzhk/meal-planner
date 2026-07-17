@@ -956,33 +956,49 @@
     // Full recipe library, browsable and searchable, independent of what's planned.
     // Buckets derived from each recipe's free-form `tags` array. Not every recipe carries
     // a tag for every bucket, so recipes with no match just fall out when that filter is used.
-    // They still show up under "All".
+    // They still show up under "All". Ilocano labels are a best effort, lower confidence than
+    // Tagalog since it's a much lower-resource language, worth a native-speaker check.
+    function pickLabel(label, lang) {
+      return (label && (label[lang] || label.en)) || "";
+    }
+
+    const FILTER_TITLES = {
+      protein: { en: "Protein", tl: "Protina", il: "Protina" },
+      style: { en: "Cooking style", tl: "Paraan ng Pagluluto", il: "Pamay-an ti Panagluto" },
+      time: { en: "Prep time", tl: "Oras ng Paghahanda", il: "Oras ti Panagisagana" },
+    };
+
     const PROTEIN_FILTERS = [
-      { key: "chicken", label: "Chicken", icon: "🐔", tags: ["chicken"] },
-      { key: "beef", label: "Beef", icon: "🥩", tags: ["beef", "steak"] },
-      { key: "pork", label: "Pork", icon: "🥓", tags: ["pork", "bacon", "sausage"] },
-      { key: "lamb", label: "Lamb", icon: "🐑", tags: ["lamb"] },
-      { key: "seafood", label: "Seafood", icon: "🐟", tags: ["fish", "salmon", "shrimp", "squid", "seafood"] },
-      { key: "egg", label: "Egg", icon: "🥚", tags: ["egg", "eggs"] },
-      { key: "vegetarian", label: "Vegetarian", icon: "🌱", tags: ["vegetarian"] },
+      { key: "chicken", icon: "🐔", label: { en: "Chicken", tl: "Manok", il: "Manok" }, tags: ["chicken"] },
+      { key: "beef", icon: "🥩", label: { en: "Beef", tl: "Baka", il: "Baka" }, tags: ["beef", "steak"] },
+      { key: "pork", icon: "🥓", label: { en: "Pork", tl: "Baboy", il: "Baboy" }, tags: ["pork", "bacon", "sausage"] },
+      { key: "lamb", icon: "🐑", label: { en: "Lamb", tl: "Tupa", il: "Karnero" }, tags: ["lamb"] },
+      { key: "seafood", icon: "🐟", label: { en: "Seafood", tl: "Pagkaing-dagat", il: "Sidaen ti Baybay" }, tags: ["fish", "salmon", "shrimp", "squid", "seafood"] },
+      { key: "egg", icon: "🥚", label: { en: "Egg", tl: "Itlog", il: "Itlog" }, tags: ["egg", "eggs"] },
+      { key: "vegetarian", icon: "🌱", label: { en: "Vegetarian", tl: "Vegetarian", il: "Vegetarian" }, tags: ["vegetarian"] },
     ];
     const STYLE_FILTERS = [
-      { key: "roasted", label: "Roasted", tags: ["roast"] },
-      { key: "baked", label: "Baked", tags: ["baked", "oven"] },
-      { key: "grilled", label: "Grilled", tags: ["grilled", "skewers"] },
-      { key: "fried", label: "Fried", tags: ["fried", "pan-fried", "crispy"] },
-      { key: "stir-fry", label: "Stir-fry", tags: ["stir-fry"] },
-      { key: "steamed", label: "Steamed", tags: ["steamed"] },
-      { key: "braised", label: "Braised", tags: ["braised"] },
-      { key: "sheet-pan", label: "Sheet-pan", tags: ["sheet-pan", "one-pan"] },
-      { key: "soup", label: "Soup", tags: ["soup"] },
-      { key: "no-cook", label: "No-cook", tags: ["no-cook"] },
+      { key: "roasted", label: { en: "Roasted", tl: "Hinurnong Inihaw", il: "Naihawan iti Hurno" }, tags: ["roast"] },
+      { key: "baked", label: { en: "Baked", tl: "Hinurno", il: "Naihurno" }, tags: ["baked", "oven"] },
+      { key: "grilled", label: { en: "Grilled", tl: "Inihaw", il: "Naihaw" }, tags: ["grilled", "skewers"] },
+      { key: "fried", label: { en: "Fried", tl: "Prito", il: "Naprito" }, tags: ["fried", "pan-fried", "crispy"] },
+      { key: "stir-fry", label: { en: "Stir-fry", tl: "Ginisa", il: "Naginisa" }, tags: ["stir-fry"] },
+      { key: "steamed", label: { en: "Steamed", tl: "Pinasingawan", il: "Napasingaw" }, tags: ["steamed"] },
+      { key: "braised", label: { en: "Braised", tl: "Nilaga", il: "Nailaga" }, tags: ["braised"] },
+      { key: "sheet-pan", label: { en: "Sheet-pan", tl: "Isang-Bandehang Lutuin", il: "Maysa a Bandeha a Lutuen" }, tags: ["sheet-pan", "one-pan"] },
+      { key: "soup", label: { en: "Soup", tl: "Sabaw", il: "Digo" }, tags: ["soup"] },
+      { key: "no-cook", label: { en: "No-cook", tl: "Walang Lutuin", il: "Saan a Masapul ti Panagluto" }, tags: ["no-cook"] },
     ];
     const TIME_FILTERS = [
-      { key: "under30", label: "Under 30 min", test: (mins) => mins < 30 },
-      { key: "3060", label: "30–60 min", test: (mins) => mins >= 30 && mins <= 60 },
-      { key: "over60", label: "Over 1 hour", test: (mins) => mins > 60 },
+      { key: "under30", label: { en: "Under 30 min", tl: "Wala pang 30 minuto", il: "Basbassit ngem 30 minuto" }, test: (mins) => mins < 30 },
+      { key: "3060", label: { en: "30–60 min", tl: "30–60 minuto", il: "30–60 minuto" }, test: (mins) => mins >= 30 && mins <= 60 },
+      { key: "over60", label: { en: "Over 1 hour", tl: "Higit sa 1 oras", il: "Nasursurok ngem 1 oras" }, test: (mins) => mins > 60 },
     ];
+    const FILTER_ALL_LABELS = {
+      protein: { en: "All proteins", tl: "Lahat ng protina", il: "Amin a protina" },
+      style: { en: "All styles", tl: "Lahat ng istilo", il: "Amin a pamay-an" },
+      time: { en: "Any time", tl: "Kahit anong oras", il: "Aniaman nga oras" },
+    };
 
     function FilterRow({ title, active, onSelect, allLabel, options, labelOf, keyOf }) {
       return (
@@ -1048,17 +1064,17 @@
             {q && <button onClick={() => setQ("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-warm">×</button>}
           </div>
 
-          <FilterRow title="Protein" active={protein} onSelect={setProtein}
-            allLabel="All proteins" options={PROTEIN_FILTERS}
-            keyOf={(p) => p.key} labelOf={(p) => `${p.icon} ${p.label}`} />
+          <FilterRow title={pickLabel(FILTER_TITLES.protein, lang)} active={protein} onSelect={setProtein}
+            allLabel={pickLabel(FILTER_ALL_LABELS.protein, lang)} options={PROTEIN_FILTERS}
+            keyOf={(p) => p.key} labelOf={(p) => `${p.icon} ${pickLabel(p.label, lang)}`} />
 
-          <FilterRow title="Cooking style" active={style} onSelect={setStyle}
-            allLabel="All styles" options={STYLE_FILTERS}
-            keyOf={(s) => s.key} labelOf={(s) => s.label} />
+          <FilterRow title={pickLabel(FILTER_TITLES.style, lang)} active={style} onSelect={setStyle}
+            allLabel={pickLabel(FILTER_ALL_LABELS.style, lang)} options={STYLE_FILTERS}
+            keyOf={(s) => s.key} labelOf={(s) => pickLabel(s.label, lang)} />
 
-          <FilterRow title="Prep time" active={timeBucket} onSelect={setTimeBucket}
-            allLabel="Any time" options={TIME_FILTERS}
-            keyOf={(tb) => tb.key} labelOf={(tb) => tb.label} />
+          <FilterRow title={pickLabel(FILTER_TITLES.time, lang)} active={timeBucket} onSelect={setTimeBucket}
+            allLabel={pickLabel(FILTER_ALL_LABELS.time, lang)} options={TIME_FILTERS}
+            keyOf={(tb) => tb.key} labelOf={(tb) => pickLabel(tb.label, lang)} />
 
           <div className="text-xs text-warm mb-2 num">{filtered.length}</div>
 
