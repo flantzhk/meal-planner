@@ -295,12 +295,6 @@
       const mealServes = day[mealType + "_serves"] || planServes;
       const ids = MP.getMealRecipeIds(day, mealType);
 
-      // Hide when meal time has already passed
-      if (nowMin != null) {
-        const serveMin = MP.schedule.parseHM(day[mealType + "_time"] || MP.schedule.defaultMealTime(mealType));
-        if (serveMin < nowMin) return null;
-      }
-
       const groups = useMemo(() => {
         const byKey = new Map();
         for (const id of ids) {
@@ -321,6 +315,13 @@
         return result;
       }, [ids.join(","), mealServes]);
 
+      // Hide once the meal's serve time has passed, or once there's nothing to show.
+      // (Checked after the hook above, never before. Early returns ahead of a hook
+      // change how many hooks run between renders and crash React.)
+      if (nowMin != null) {
+        const serveMin = MP.schedule.parseHM(day[mealType + "_time"] || MP.schedule.defaultMealTime(mealType));
+        if (serveMin < nowMin) return null;
+      }
       const totalItems = Object.values(groups).reduce((n, g) => n + g.length, 0);
       if (totalItems === 0) return null;
 
@@ -992,9 +993,10 @@
       return null;
     }
 
-    // One collapsible ticket per meal, always mounted so the bottom nav can scroll to and
-    // open any meal (including ones already served), not just whichever is "current".
-    function MealTicket({ mealType, day, recipesById, planServes, lang, onVerify, nowMin, open, onToggle, setRef }) {
+    // Today's meal view: the bottom nav's Breakfast/Lunch/Dinner tabs are exclusive,
+    // each shows ONLY that meal, never the other two. Multiple dishes within the one
+    // active meal still each get their own accordion (handled inside MealSection).
+    function MealTicket({ mealType, day, recipesById, planServes, lang, onVerify, nowMin }) {
       const label = MP.i18n.meals[lang][mealType];
       const ids = MP.getMealRecipeIds(day, mealType);
       const hasRecipes = ids.length > 0;
@@ -1018,10 +1020,8 @@
       const notPlannedMsg = { en: "Not planned yet", tl: "Hindi pa planado", il: "Saan pay a naplano" };
 
       return (
-        <div ref={setRef} style={{ scrollMarginTop: "64px" }}
-          className={`rounded-2xl overflow-hidden bg-white shadow-sm ring-1 transition ${open ? "ring-terra/40" : "ring-black/5"}`}>
-          <button onClick={hasRecipes ? onToggle : undefined}
-            className={`w-full flex items-center gap-3 px-4 py-3.5 text-left outline-none focus:outline-none ${hasRecipes ? "" : "cursor-default"}`}>
+        <div className="rounded-2xl overflow-hidden bg-white shadow-sm ring-1 ring-black/5">
+          <div className="flex items-center gap-3 px-4 py-3.5">
             <span className="text-2xl shrink-0">{MEAL_EMOJI[mealType]}</span>
             <div className="flex-1 min-w-0">
               <div className="font-display text-lg leading-tight">{label}</div>
@@ -1032,12 +1032,8 @@
               </div>
             </div>
             <StatusPill status={status} lang={lang} />
-            {hasRecipes && (
-              <span className="text-warm/40 text-2xl leading-none shrink-0"
-                style={{ transform: open ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>›</span>
-            )}
-          </button>
-          {open && hasRecipes && (
+          </div>
+          {hasRecipes && (
             <div className="border-t border-sand/60 px-4 pb-4 pt-3">
               <p className="text-sm text-ink/60 mb-3">{t(lang, "tapEachDish")}</p>
               <MealSection
@@ -1051,26 +1047,20 @@
       );
     }
 
-    // Today board: all three meals visible as tickets. Whichever meal matches "now"
-    // opens itself; the others stay collapsed but any one can still be opened by hand.
-    function KitchenBoard({ todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify, openMeals, onToggleMeal, ticketRefs }) {
+    // Renders only the one active meal (set by the bottom nav) plus tonight's prep reminder.
+    function TodayMealView({ activeMeal, todayDay, tomorrowDay, recipesById, planServes, nowMin, lang, onVerify }) {
       return (
         <div className="space-y-3">
-          {["breakfast", "lunch", "dinner"].map((mealType) => (
-            <MealTicket
-              key={mealType}
-              mealType={mealType}
-              day={todayDay}
-              recipesById={recipesById}
-              planServes={planServes}
-              lang={lang}
-              onVerify={onVerify}
-              nowMin={nowMin}
-              open={!!openMeals[mealType]}
-              onToggle={() => onToggleMeal(mealType)}
-              setRef={(el) => { ticketRefs.current[mealType] = el; }}
-            />
-          ))}
+          <MealTicket
+            key={activeMeal}
+            mealType={activeMeal}
+            day={todayDay}
+            recipesById={recipesById}
+            planServes={planServes}
+            lang={lang}
+            onVerify={onVerify}
+            nowMin={nowMin}
+          />
           {/* Overnight prep reminder */}
           <PrepTomorrow tomorrowDay={tomorrowDay} recipesById={recipesById} lang={lang} />
         </div>
@@ -1080,8 +1070,6 @@
     function App() {
       const [lang, setLang] = useState(langStore());
       const [tab, setTab] = useState(MP.date.currentMeal()); // "breakfast"|"lunch"|"dinner"|"coming"|"shop"
-      const [openMeals, setOpenMeals] = useState({}); // which meal tickets are expanded on the board
-      const ticketRefs = React.useRef({});
       const [recipes, setRecipes] = useState(null);
       const [plan, setPlan] = useState(null);
       const [upcoming, setUpcoming] = useState([]);
@@ -1153,7 +1141,7 @@
         return (plan.days || []).find((d) => d.date === tmr);
       }, [plan, today]);
 
-      // Auto-open the next upcoming meal's ticket when the plan first loads.
+      // Auto-jump to the next upcoming meal tab when the plan first loads.
       // MUST be before early returns (Rules of Hooks).
       const autoTabDone = React.useRef(false);
       useEffect(() => {
@@ -1165,20 +1153,7 @@
           return MP.schedule.parseHM(mt) > nowMinVal;
         }) || "dinner";
         setTab(next);
-        setOpenMeals({ [next]: true });
       }, [todayDay]);
-
-      function toggleMealOpen(meal) {
-        setOpenMeals((o) => ({ ...o, [meal]: !o[meal] }));
-      }
-      // Bottom nav: opens that meal's ticket (others stay as they are) and scrolls to it,
-      // so breakfast is still reachable at dinnertime and vice versa.
-      function openAndScrollToMeal(meal) {
-        setTab(meal);
-        setOpenMeals((o) => ({ ...o, [meal]: true }));
-        const el = ticketRefs.current[meal];
-        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
 
       // MUST be declared before any early returns so hook count stays stable.
       const needCount = useMemo(() => {
@@ -1294,12 +1269,11 @@
           </header>
 
           {isMealTab && (
-            <KitchenBoard
+            <TodayMealView
+              activeMeal={tab}
               todayDay={todayDay} tomorrowDay={tomorrowDay}
               recipesById={recipesById} planServes={planServes}
               nowMin={nowMin} lang={lang} onVerify={verify}
-              openMeals={openMeals} onToggleMeal={toggleMealOpen}
-              ticketRefs={ticketRefs}
             />
           )}
 
@@ -1331,7 +1305,7 @@
               const isUpNext = meal === upNextMeal;
               const hasRecipes = todayDay && MP.getMealRecipeIds(todayDay, meal).length > 0;
               return (
-                <button key={meal} onClick={() => openAndScrollToMeal(meal)}
+                <button key={meal} onClick={() => setTab(meal)}
                   className={`flex-1 flex flex-col items-center py-2.5 gap-0.5 relative transition outline-none focus:outline-none min-w-0 px-1
                     ${isActive ? "text-terra" : hasRecipes ? "text-warm" : "text-warm/30"}`}>
                   {isUpNext && !isActive && (
