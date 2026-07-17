@@ -1405,17 +1405,17 @@
             </div>
           )}
 
-          <header className="mb-5 mt-5 flex items-center justify-between gap-3">
-            <div className="min-w-0">
-              <div className="text-sm font-semibold text-terra leading-tight">{t(lang, "helloLeni")}</div>
-              <h1 className="font-display text-3xl leading-tight whitespace-nowrap">
-                {MP.date.dayName(today, lang)}
-                <span className="text-warm text-lg font-normal num"> · {MP.date.prettyDate(today, lang)}</span>
-              </h1>
+          <header className="mb-5 mt-5">
+            <div className="flex items-center justify-between gap-3">
+              <div className="text-sm font-semibold text-terra leading-tight min-w-0 truncate">{t(lang, "helloLeni")}</div>
+              <div className="shrink-0">
+                <LangToggle lang={lang} onChange={setLang} />
+              </div>
             </div>
-            <div className="shrink-0">
-              <LangToggle lang={lang} onChange={setLang} />
-            </div>
+            <h1 className="font-display text-2xl leading-tight whitespace-nowrap mt-1">
+              {MP.date.dayName(today, lang)}
+              <span className="text-warm font-normal num"> · {MP.date.prettyDate(today, lang)}</span>
+            </h1>
           </header>
 
           {isMealTab && (
