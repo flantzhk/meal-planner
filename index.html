@@ -74,7 +74,7 @@
 
   <script type="text/babel">
     const { useEffect, useMemo, useRef, useState } = React;
-    const APP_VERSION = "v4.1 · 2026-07-15";
+    const APP_VERSION = "v4.2 · 2026-07-17";
     const MEALS = ["breakfast", "lunch", "dinner"];
     const COMPONENTS = ["protein", "vegetable", "carb"];
     const OPT_COMPONENTS = ["starter", "soup", "salad"];
@@ -82,6 +82,9 @@
     const COMPONENT_ICONS  = { protein: "🥩", vegetable: "🥦", carb: "🍚", starter: "🍽️", soup: "🍲", salad: "🥗", dessert: "🍮", "meal-prep": "🫙" };
     const COMPONENT_LABELS = { protein: "Protein", vegetable: "Vegetable", carb: "Carb", starter: "Starter", soup: "Soup", salad: "Salad", dessert: "Dessert", "meal-prep": "Meal Prep" };
     const ALL_LIB_COMPONENTS = ["protein", "vegetable", "carb", "starter", "soup", "salad", "dessert", "meal-prep"];
+    // Storage bucket for a dish added without an explicit slot ("+ Add dish"):
+    // primary coverage role, else its legacy component key, else starter.
+    const primaryBucket = (r) => MP.coversOf(r)[0] || (ALL_COMPONENTS.includes(r?.component_type) ? r.component_type : "starter");
     const getMealObj = (day, meal) => MP.getMealObj(day, meal);
     const getMealRecipeIds = (day, meal) => MP.getMealRecipeIds(day, meal);
 
@@ -162,6 +165,8 @@
           .filter((r) => !r.meal_type || r.meal_type.includes(mealType))
           .filter((r) => {
             if (!componentType || showAll) return true;
+            const cov = MP.coversOf(r);
+            if (cov.length) return cov.includes(componentType);
             if (r.component_type) return r.component_type === componentType;
             return (r.tags || []).includes(componentType);
           })
@@ -842,9 +847,9 @@
                 </datalist>
               </div>
               <div>
-                <label className={labelCls}>Component type</label>
+                <label className={labelCls}>Dish type</label>
                 <select value={form.component_type || ""} onChange={(e) => setF("component_type", e.target.value)} className={inputCls}>
-                  <option value="">— any (shows in all slots) —</option>
+                  <option value="">— any —</option>
                   <option value="protein">🥩 Protein</option>
                   <option value="vegetable">🥦 Vegetable</option>
                   <option value="carb">🍚 Carb</option>
@@ -854,6 +859,22 @@
                   <option value="dessert">🍮 Dessert</option>
                   <option value="meal-prep">🫙 Meal Prep</option>
                 </select>
+              </div>
+              <div>
+                <label className={labelCls}>Covers (plate roles — pre-ticked from name/type, tick to correct)</label>
+                <div className="flex gap-3 pt-1">
+                  {["protein", "vegetable", "carb"].map((c) => {
+                    const cur = form.covers ?? MP.coversOf(form);
+                    return (
+                      <label key={c} className="flex items-center gap-1.5 text-sm cursor-pointer capitalize">
+                        <input type="checkbox" className="accent-terra"
+                          checked={cur.includes(c)}
+                          onChange={(e) => setF("covers", e.target.checked ? [...cur, c] : cur.filter((x) => x !== c))} />
+                        {COMPONENT_ICONS[c]} {c}
+                      </label>
+                    );
+                  })}
+                </div>
               </div>
               <div>
                 <label className={labelCls}>Meal type</label>
@@ -1377,11 +1398,11 @@
 
 
     function MealCell({ day, meal, recipesById, isNow, planServes, onPickComponent, onPreviewComponent, onSetTime, onSetServes, onSuggest, onDragStart, onDragEnd, onDrop, dragSource }) {
-      const [dragOverComp, setDragOverComp] = useState(null);
+      const [dragOver, setDragOver] = useState(false);
       const mealObj = getMealObj(day, meal); // {protein:[], vegetable:[], ...}
-      const componentRecipes = COMPONENTS.flatMap((c) => (mealObj[c] || []).map((id) => recipesById[id]).filter(Boolean));
-      const mealIsEmpty = componentRecipes.length === 0;
       const allMealRecipes = MP.getMealRecipeIds(day, meal).map((id) => recipesById[id]).filter(Boolean);
+      const coveredRoles = new Set(allMealRecipes.flatMap((r) => MP.coversOf(r)));
+      const allDishes = ALL_COMPONENTS.flatMap((comp) => (mealObj[comp] || []).map((id) => ({ comp, id })));
       const effServes = day[meal + "_serves"] || planServes || allMealRecipes[0]?.serves_base || 4;
       const mealCost = allMealRecipes.reduce((sum, r) => sum + (r.estimated_cost_hkd ? r.estimated_cost_hkd * (effServes / (r.serves_base || 4)) : 0), 0);
       const serveTime = day[meal + "_time"] || MP.schedule.defaultMealTime(meal);
@@ -1395,7 +1416,7 @@
 
       return (
         <div className={`rounded-xl overflow-hidden ring-1 flex flex-col ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}
-          onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOverComp(null); }}>
+          onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}>
 
           {/* Time / Serves buttons + Cost (per-person leads, total secondary — this is the number Faith budgets against) */}
           <div className="flex flex-wrap items-start justify-between gap-x-1.5 gap-y-1 py-1.5 px-1.5 border-b border-sand/60 bg-cream/40">
@@ -1431,129 +1452,79 @@
             </div>
           )}
 
-          {/* Dish rows — one row per dish, thumbnail on the left, name stacked on the right. Never sliced, however many dishes are planned. */}
+          {/* Coverage pills — the plate rule (protein / vegetable / carb). ✓ once any dish covers the
+              role, dashed "+" to fill a missing one. Roles are satisfied by coverage, not by slots,
+              so a one-pot dish can tick more than one pill. */}
           <div className="flex flex-col gap-1.5 p-1.5">
-            <div className="rounded-lg ring-1 ring-sand/60 divide-y divide-sand/40 overflow-hidden bg-white">
-              {COMPONENTS.map((comp) => {
-                const ids = mealObj[comp];
-                const isDropTarget = dragOverComp === comp;
-                return (
-                  <div key={comp}
-                    onDragOver={(e) => { if (!dragSource) return; e.preventDefault(); e.dataTransfer.dropEffect = "move"; setDragOverComp(comp); }}
-                    onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOverComp(null); }}
-                    onDrop={(e) => { e.preventDefault(); setDragOverComp(null); onDrop && onDrop(comp); }}
-                    className={isDropTarget ? "ring-1 ring-terra bg-terra/5" : ""}>
-                    {ids.length === 0 ? (
-                      // Empty: dashed thumbnail placeholder + "Add x", full-row 44px tap target
-                      <button onClick={() => onPickComponent(comp)}
-                        className="w-full flex items-center gap-2 text-left px-1.5 py-1 min-h-[44px] transition hover:bg-cream outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1">
-                        <span className="shrink-0 w-11 h-11 rounded-lg border border-dashed border-warm/25 flex items-center justify-center text-base opacity-35">{COMPONENT_ICONS[comp]}</span>
-                        <span className="italic text-xs text-warm/50 flex-1">Add {COMPONENT_LABELS[comp].toLowerCase()}</span>
-                        {onSuggest && (
-                          <span onClick={(e) => { e.stopPropagation(); onSuggest(comp); }}
-                            title="Suggest a recipe"
-                            className="shrink-0 text-warm/20 hover:text-terra transition cursor-pointer text-xs">✨</span>
-                        )}
-                      </button>
-                    ) : (
-                      // Filled: thumbnail + dish name (wraps up to 2 lines rather than truncating to a few characters);
-                      // draggable, hover popover + tiny + on last to add another (add button and drag handle are
-                      // hover-only on this desktop grid to leave room for the name — kept always-visible on mobile,
-                      // where there's no hover to reveal them)
-                      ids.map((id, idx) => {
-                        const r = recipesById[id];
-                        const isLast = idx === ids.length - 1;
-                        const img = r ? MP.recipeImage(r) : null;
-                        const isSourceItem = dragSource && dragSource.dayDate === day.date && dragSource.meal === meal && dragSource.component === comp && dragSource.recipeId === id;
-                        return (
-                          <button key={id}
-                            draggable={true}
-                            onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart && onDragStart(comp, id); }}
-                            onDragEnd={() => { setDragOverComp(null); onDragEnd && onDragEnd(); }}
-                            onClick={() => r ? onPreviewComponent(comp, r) : null}
-                            className={`group relative w-full flex items-center gap-2 text-left px-1.5 py-1 min-h-[44px] transition hover:bg-cream cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1 ${isSourceItem ? "opacity-30 cursor-grabbing" : ""}`}>
-                            <span className="shrink-0 w-11 h-11 rounded-lg overflow-hidden bg-sand/50">
-                              {img ? (
-                                <img src={img} alt="" className="w-full h-full object-cover"
-                                  {...MP.imgFallbackHandlers(r)} />
-                              ) : (
-                                <span className="w-full h-full flex items-center justify-center text-base opacity-20">{COMPONENT_ICONS[comp]}</span>
-                              )}
-                            </span>
-                            <span className="min-w-0 flex-1 text-xs font-semibold text-ink leading-tight">
-                              <span className="opacity-50 font-normal">{COMPONENT_ICONS[comp]}</span> {r ? r.name : id}
-                            </span>
-                            {isLast && (
-                              <span
-                                onClick={(e) => { e.stopPropagation(); onPickComponent(comp); }}
-                                title={`Add another ${comp}`}
-                                className="absolute right-1 top-1 opacity-0 group-hover:opacity-100 w-[18px] h-[18px] flex items-center justify-center text-warm/30 hover:text-terra hover:bg-terra/10 bg-white rounded-full text-xs leading-none transition cursor-pointer z-10">
-                                +
-                              </span>
-                            )}
-                            {/* Hover popover — shows to the right */}
-                            {r && (
-                              <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 z-50 w-44 bg-white shadow-2xl rounded-xl overflow-hidden pointer-events-none"
-                                style={{ border: "1px solid rgba(0,0,0,0.06)" }}>
-                                {img && <img src={img} className="w-full h-24 object-cover" alt="" />}
-                                <div className="p-2">
-                                  <div className="text-xs font-semibold leading-tight">{r.name}</div>
-                                  {r.cuisine && <div className="text-xs text-warm mt-0.5">{r.cuisine} · {(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}m</div>}
-                                </div>
-                              </div>
-                            )}
-                          </button>
-                        );
-                      })
-                    )}
-                  </div>
-                );
-              })}
+            <div className="flex flex-wrap gap-1">
+              {COMPONENTS.map((role) => coveredRoles.has(role) ? (
+                <span key={role} className="inline-flex items-center gap-1 text-xs bg-green-50 text-green-700 px-2 py-1 rounded-full">✓ {COMPONENT_LABELS[role]}</span>
+              ) : (
+                <button key={role} onClick={() => onPickComponent(role)}
+                  className="inline-flex items-center gap-1 text-xs text-terra border border-dashed border-terra/40 px-2 py-1 rounded-full hover:bg-terra/5 transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
+                  + {COMPONENT_LABELS[role]}
+                  {onSuggest && (
+                    <span onClick={(e) => { e.stopPropagation(); onSuggest(role); }}
+                      title="Suggest a recipe"
+                      className="text-warm/25 hover:text-terra transition cursor-pointer">✨</span>
+                  )}
+                </button>
+              ))}
             </div>
 
-            {/* Optional dishes already added (starter / soup / salad) — same thumbnail-row treatment as required components */}
-            {OPT_COMPONENTS.some((c) => (mealObj[c] || []).length > 0) && (
-              <div className="rounded-lg ring-1 ring-sand/60 divide-y divide-sand/40 overflow-hidden bg-white">
-                {OPT_COMPONENTS.flatMap((comp) => {
-                  const ids = mealObj[comp];
-                  return ids.map((id, idx) => {
-                    const r = recipesById[id];
-                    const isLast = idx === ids.length - 1;
-                    const img = r ? MP.recipeImage(r) : null;
-                    return r ? (
-                      <button key={comp + id} onClick={() => onPreviewComponent(comp, r)}
-                        className="group relative w-full flex items-center gap-2 text-left px-1.5 py-1 min-h-[44px] transition hover:bg-cream outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1">
-                        <span className="shrink-0 w-11 h-11 rounded-lg overflow-hidden bg-sand/50">
-                          {img ? <img src={img} alt="" className="w-full h-full object-cover" {...MP.imgFallbackHandlers(r)} /> : <span className="w-full h-full flex items-center justify-center text-base opacity-20">{COMPONENT_ICONS[comp]}</span>}
-                        </span>
-                        <span className="min-w-0 flex-1 text-xs font-semibold text-ink leading-tight">
-                          <span className="opacity-50 font-normal">{COMPONENT_ICONS[comp]}</span> {r.name}
-                        </span>
-                        {isLast && (
-                          <span
-                            onClick={(e) => { e.stopPropagation(); onPickComponent(comp); }}
-                            title={`Add another ${comp}`}
-                            className="absolute right-1 top-1 opacity-0 group-hover:opacity-100 w-[18px] h-[18px] flex items-center justify-center text-warm/30 hover:text-terra hover:bg-terra/10 bg-white rounded-full text-xs leading-none transition cursor-pointer z-10">
-                            +
-                          </span>
+            {/* Flat dish list — every dish in the meal, whatever bucket it's stored under. Coverage
+                icons prefix the name; the whole list is one drop target (bucket kept on drop). */}
+            {allDishes.length > 0 && (
+              <div
+                onDragOver={(e) => { if (!dragSource) return; e.preventDefault(); e.dataTransfer.dropEffect = "move"; setDragOver(true); }}
+                onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
+                onDrop={(e) => { e.preventDefault(); setDragOver(false); onDrop && onDrop(null); }}
+                className={`rounded-lg ring-1 divide-y divide-sand/40 overflow-hidden bg-white ${dragOver ? "ring-terra bg-terra/5" : "ring-sand/60"}`}>
+                {allDishes.map(({ comp, id }) => {
+                  const r = recipesById[id];
+                  const img = r ? MP.recipeImage(r) : null;
+                  const cov = r ? MP.coversOf(r) : [];
+                  const isSourceItem = dragSource && dragSource.dayDate === day.date && dragSource.meal === meal && dragSource.component === comp && dragSource.recipeId === id;
+                  return (
+                    <button key={comp + id}
+                      draggable={true}
+                      onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; onDragStart && onDragStart(comp, id); }}
+                      onDragEnd={() => { setDragOver(false); onDragEnd && onDragEnd(); }}
+                      onClick={() => r ? onPreviewComponent(comp, r) : null}
+                      className={`group relative w-full flex items-center gap-2 text-left px-1.5 py-1 min-h-[44px] transition hover:bg-cream cursor-grab outline-none focus-visible:ring-2 focus-visible:ring-terra/50 focus-visible:ring-offset-1 ${isSourceItem ? "opacity-30 cursor-grabbing" : ""}`}>
+                      <span className="shrink-0 w-11 h-11 rounded-lg overflow-hidden bg-sand/50">
+                        {img ? (
+                          <img src={img} alt="" className="w-full h-full object-cover"
+                            {...MP.imgFallbackHandlers(r)} />
+                        ) : (
+                          <span className="w-full h-full flex items-center justify-center text-base opacity-20">{COMPONENT_ICONS[comp]}</span>
                         )}
-                      </button>
-                    ) : null;
-                  });
+                      </span>
+                      <span className="min-w-0 flex-1 text-xs font-semibold text-ink leading-tight">
+                        {cov.length > 0 && <span className="opacity-50 font-normal">{cov.map((c) => COMPONENT_ICONS[c]).join("")} </span>}{r ? r.name : id}
+                      </span>
+                      {/* Hover popover — shows to the right */}
+                      {r && (
+                        <div className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute left-full top-0 ml-2 z-50 w-44 bg-white shadow-2xl rounded-xl overflow-hidden pointer-events-none"
+                          style={{ border: "1px solid rgba(0,0,0,0.06)" }}>
+                          {img && <img src={img} className="w-full h-24 object-cover" alt="" />}
+                          <div className="p-2">
+                            <div className="text-xs font-semibold leading-tight">{r.name}</div>
+                            {r.cuisine && <div className="text-xs text-warm mt-0.5">{r.cuisine} · {(r.prep_time_mins || 0) + (r.cook_time_mins || 0)}m</div>}
+                          </div>
+                        </div>
+                      )}
+                    </button>
+                  );
                 })}
               </div>
             )}
 
-            {/* Starter / soup / salad — always-visible footer so the options are discoverable before anything else is planned; "+" prefix keeps it reading as "add another" even when one's already shown above, not a duplicate prompt. Wraps rather than clipping on narrow desktop columns, 44px tap targets */}
-            <div className="flex flex-wrap gap-1">
-              {OPT_COMPONENTS.map((comp) => (
-                <button key={comp} onClick={() => onPickComponent(comp)}
-                  className="flex-1 min-w-[64px] min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
-                  <span>{COMPONENT_ICONS[comp]}</span>
-                  <span>+ {COMPONENT_LABELS[comp]}</span>
-                </button>
-              ))}
-            </div>
+            {/* One add affordance for everything — mains, soups, salads, sides. Bucket derived from the dish. */}
+            <button onClick={() => onPickComponent(null)}
+              className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition outline-none focus-visible:ring-2 focus-visible:ring-terra/50">
+              + Add dish
+            </button>
           </div>
         </div>
       );
@@ -1849,12 +1820,14 @@
         const used = new Set(usedIds);
         plan.days.forEach((d, dayIdx) => {
           MEALS.forEach((meal) => {
-            const mealObj = getMealObj(d, meal);
+            const covered = new Set(
+              getMealRecipeIds(d, meal).map((id) => recipesById[id]).filter(Boolean).flatMap((r) => MP.coversOf(r))
+            );
             COMPONENTS.forEach((comp) => {
-              if ((mealObj[comp] || []).length > 0) return;
+              if (covered.has(comp)) return;
               const candidate = (recipes || [])
                 .filter((r) => {
-                  if (r.component_type && r.component_type !== comp) return false;
+                  if (!MP.coversOf(r).includes(comp)) return false;
                   if (r.meal_type && !r.meal_type.includes(meal)) return false;
                   if (used.has(r.id)) return false;
                   return true;
@@ -1864,6 +1837,8 @@
               if (candidate) {
                 setSlot(dayIdx, meal, comp, candidate.r.id);
                 used.add(candidate.r.id);
+                // A one-pot pick may satisfy the remaining roles too
+                MP.coversOf(candidate.r).forEach((role) => covered.add(role));
                 count++;
               }
             });
@@ -1878,7 +1853,7 @@
         const today = MP.date.hkToday();
         const candidates = (recipes || [])
           .filter((r) => {
-            if (r.component_type && r.component_type !== component) return false;
+            if (!MP.coversOf(r).includes(component)) return false;
             if (r.meal_type && !r.meal_type.includes(meal)) return false;
             if (usedIds.includes(r.id)) return false; // already on this week's plan
             return true;
@@ -2165,92 +2140,53 @@
                         <div key={meal} className={`rounded-xl ring-1 overflow-hidden ${isNow ? "ring-2 ring-terra" : "ring-black/5"} bg-white`}>
                           <div className={`text-xs uppercase tracking-wide px-2.5 pt-2 pb-1 ${isNow ? "text-terra font-semibold" : "text-warm"}`}>{meal}</div>
                           <div className="px-2 pb-2 space-y-1">
-                            {COMPONENTS.map((comp) => {
-                              const ids = mealObj[comp];
+                            {/* Coverage pills — same plate rule as desktop, 44px tap targets */}
+                            {(() => {
+                              const mealRecipes = MP.getMealRecipeIds(d, meal).map((id) => recipesById[id]).filter(Boolean);
+                              const coveredRoles = new Set(mealRecipes.flatMap((r) => MP.coversOf(r)));
                               return (
-                                <div key={comp}>
-                                  {ids.length === 0 ? (
-                                    <button onClick={() => setPicker({ dayIdx, meal, component: comp })}
-                                      className="w-full flex items-center gap-2 text-left px-1.5 py-1.5 rounded-lg min-h-[56px] transition hover:bg-cream">
-                                      <span className="shrink-0 w-[52px] h-[52px] rounded-lg border border-dashed border-warm/25 flex items-center justify-center text-lg opacity-35">{COMPONENT_ICONS[comp]}</span>
-                                      <span className="italic text-xs text-warm/50">Add {COMPONENT_LABELS[comp].toLowerCase()}</span>
-                                    </button>
+                                <div className="flex flex-wrap gap-1.5 px-1.5 pt-1">
+                                  {COMPONENTS.map((role) => coveredRoles.has(role) ? (
+                                    <span key={role} className="inline-flex items-center gap-1 text-xs bg-green-50 text-green-700 px-2.5 min-h-[36px] rounded-full">✓ {COMPONENT_LABELS[role]}</span>
                                   ) : (
-                                    ids.map((id, idx) => {
-                                      const r = recipesById[id];
-                                      const isLast = idx === ids.length - 1;
-                                      const img = r ? MP.recipeImage(r) : null;
-                                      return (
-                                        <button key={id}
-                                          onClick={() => r ? setPreview({ dayIdx, meal, component: comp, recipe: r }) : null}
-                                          className="w-full flex items-center gap-2 text-left px-1.5 py-1.5 rounded-lg min-h-[56px] transition hover:bg-cream">
-                                          <span className="shrink-0 w-[52px] h-[52px] rounded-lg overflow-hidden bg-sand/50">
-                                            {img ? (
-                                              <img src={img} alt="" className="w-full h-full object-cover"
-                                                {...MP.imgFallbackHandlers(r)} />
-                                            ) : (
-                                              <span className="w-full h-full flex items-center justify-center text-lg opacity-20">{COMPONENT_ICONS[comp]}</span>
-                                            )}
-                                          </span>
-                                          <span className="min-w-0 flex-1">
-                                            <span className="block text-xs text-warm/50 font-semibold leading-none mb-0.5">{COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}</span>
-                                            <span className="block text-sm font-semibold text-ink leading-tight">{r ? r.name : id}</span>
-                                          </span>
-                                          {isLast && (
-                                            <span
-                                              onClick={(e) => { e.stopPropagation(); setPicker({ dayIdx, meal, component: comp }); }}
-                                              className="shrink-0 w-6 h-6 flex items-center justify-center text-warm/30 hover:text-terra rounded-full text-sm leading-none transition cursor-pointer">
-                                              +
-                                            </span>
-                                          )}
-                                        </button>
-                                      );
-                                    })
-                                  )}
+                                    <button key={role} onClick={() => setPicker({ dayIdx, meal, component: role })}
+                                      className="inline-flex items-center gap-1 text-xs text-terra border border-dashed border-terra/40 px-2.5 min-h-[36px] rounded-full hover:bg-terra/5 transition">
+                                      + {COMPONENT_LABELS[role]}
+                                    </button>
+                                  ))}
                                 </div>
                               );
-                            })}
-                            {OPT_COMPONENTS.some((c) => (mealObj[c] || []).length > 0) && (
-                              <div>
-                                {OPT_COMPONENTS.flatMap((comp) => {
-                                  const ids = mealObj[comp];
-                                  return ids.map((id, idx) => {
-                                    const r = recipesById[id];
-                                    const isLast = idx === ids.length - 1;
-                                    const img = r ? MP.recipeImage(r) : null;
-                                    return r ? (
-                                      <button key={comp + id}
-                                        onClick={() => setPreview({ dayIdx, meal, component: comp, recipe: r })}
-                                        className="w-full flex items-center gap-2 text-left px-1.5 py-1.5 rounded-lg min-h-[56px] transition hover:bg-cream">
-                                        <span className="shrink-0 w-[52px] h-[52px] rounded-lg overflow-hidden bg-sand/50">
-                                          {img ? <img src={img} alt="" className="w-full h-full object-cover" /> : <span className="w-full h-full flex items-center justify-center text-lg opacity-20">{COMPONENT_ICONS[comp]}</span>}
-                                        </span>
-                                        <span className="min-w-0 flex-1">
-                                          <span className="block text-xs text-warm/50 font-semibold leading-none mb-0.5">{COMPONENT_ICONS[comp]} {COMPONENT_LABELS[comp]}</span>
-                                          <span className="block text-sm font-semibold text-ink leading-tight">{r.name}</span>
-                                        </span>
-                                        {isLast && (
-                                          <span
-                                            onClick={(e) => { e.stopPropagation(); setPicker({ dayIdx, meal, component: comp }); }}
-                                            className="shrink-0 w-6 h-6 flex items-center justify-center text-warm/30 hover:text-terra rounded-full text-sm leading-none transition cursor-pointer">
-                                            +
-                                          </span>
-                                        )}
-                                      </button>
-                                    ) : null;
-                                  });
-                                })}
-                              </div>
-                            )}
-                            <div className="flex items-center gap-1.5 pt-1">
-                              {OPT_COMPONENTS.map((comp) => (
-                                <button key={comp} onClick={() => setPicker({ dayIdx, meal, component: comp })}
-                                  className="flex-1 min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition">
-                                  <span>{COMPONENT_ICONS[comp]}</span>
-                                  <span>+ {COMPONENT_LABELS[comp]}</span>
+                            })()}
+                            {/* Flat dish list — coverage icons above the name instead of a bucket label */}
+                            {ALL_COMPONENTS.flatMap((comp) => (mealObj[comp] || []).map((id) => ({ comp, id }))).map(({ comp, id }) => {
+                              const r = recipesById[id];
+                              const img = r ? MP.recipeImage(r) : null;
+                              const cov = r ? MP.coversOf(r) : [];
+                              return (
+                                <button key={comp + id}
+                                  onClick={() => r ? setPreview({ dayIdx, meal, component: comp, recipe: r }) : null}
+                                  className="w-full flex items-center gap-2 text-left px-1.5 py-1.5 rounded-lg min-h-[56px] transition hover:bg-cream">
+                                  <span className="shrink-0 w-[52px] h-[52px] rounded-lg overflow-hidden bg-sand/50">
+                                    {img ? (
+                                      <img src={img} alt="" className="w-full h-full object-cover"
+                                        {...MP.imgFallbackHandlers(r)} />
+                                    ) : (
+                                      <span className="w-full h-full flex items-center justify-center text-lg opacity-20">{COMPONENT_ICONS[comp]}</span>
+                                    )}
+                                  </span>
+                                  <span className="min-w-0 flex-1">
+                                    {cov.length > 0 && (
+                                      <span className="block text-xs text-warm/50 font-semibold leading-none mb-0.5">{cov.map((c) => `${COMPONENT_ICONS[c]} ${COMPONENT_LABELS[c]}`).join(" · ")}</span>
+                                    )}
+                                    <span className="block text-sm font-semibold text-ink leading-tight">{r ? r.name : id}</span>
+                                  </span>
                                 </button>
-                              ))}
-                            </div>
+                              );
+                            })}
+                            <button onClick={() => setPicker({ dayIdx, meal, component: null })}
+                              className="w-full min-h-[44px] flex items-center justify-center gap-1 text-xs text-warm px-1 py-1.5 rounded-lg ring-1 ring-warm/25 hover:ring-terra/50 hover:text-terra transition">
+                              + Add dish
+                            </button>
                           </div>
                         </div>
                       );
@@ -2314,12 +2250,14 @@
                               if (!src) return;
                               const srcDayIdx = plan.days.findIndex((dd) => dd.date === src.dayDate);
                               if (srcDayIdx < 0) return;
-                              // Skip no-op drops (same cell, same component)
-                              if (src.dayDate === d.date && src.meal === meal && src.component === comp) {
+                              // Dish keeps its bucket when dropped on the flat list (comp=null)
+                              const destComp = comp || src.component;
+                              // Skip no-op drops (same cell)
+                              if (src.dayDate === d.date && src.meal === meal && src.component === destComp) {
                                 dragSourceRef.current = null; setDragSource(null); return;
                               }
                               setSlot(srcDayIdx, src.meal, src.component, null, src.recipeId);
-                              setSlot(dayIdx, meal, comp, src.recipeId);
+                              setSlot(dayIdx, meal, destComp, src.recipeId);
                               dragSourceRef.current = null;
                               setDragSource(null);
                               setFlashMsg(`✓ Moved to ${d.day} ${meal}`);
@@ -2399,10 +2337,16 @@
             title={picker ? `${plan.days[picker.dayIdx].day} — ${picker.meal}` : ""}>
             {picker && (
               <RecipePicker
-                mealType={picker.meal} componentType={picker.component}
+                mealType={picker.meal}
+                componentType={COMPONENTS.includes(picker.component) ? picker.component : null}
                 recipes={recipes} eatenLog={eatenLog}
                 usedIds={usedIds} lang={lang}
-                onPick={(id) => { setSlot(picker.dayIdx, picker.meal, picker.component, id, picker.replaceId || null); setPicker(null); }}
+                onPick={(id) => {
+                  // Storage bucket: the slot that was tapped, or derived from the dish for "+ Add dish"
+                  const comp = picker.component || primaryBucket(recipesById[id]);
+                  setSlot(picker.dayIdx, picker.meal, comp, id, picker.replaceId || null);
+                  setPicker(null);
+                }}
               />
             )}
           </Modal>
